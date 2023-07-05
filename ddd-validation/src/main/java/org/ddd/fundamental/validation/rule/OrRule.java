@@ -4,21 +4,32 @@ import org.ddd.fundamental.validation.base.ParameterValidationResult;
 
 public class OrRule implements Rule{
 
-    public OrRule(Rule rule,Rule other) {
+    private Rule rule;
 
+    private Rule other;
+
+    public OrRule(Rule rule,Rule other) {
+        this.rule = rule;
+        this.other = other;
     }
     @Override
     public ParameterValidationResult validate() {
-        return null;
+        ParameterValidationResult bLeftResult = this.rule.validate();
+        ParameterValidationResult bRightResult = this.other.validate();
+        if (bLeftResult.isSuccess() || bRightResult.isSuccess()) {
+            return ParameterValidationResult.success();
+        }
+        return ParameterValidationResult.failed(bLeftResult.getMessage()
+                + "||"+ bRightResult.getMessage());
     }
 
     @Override
     public Rule and(Rule rule) {
-        return null;
+        return new AndRule(this, rule);
     }
 
     @Override
     public Rule or(Rule rule) {
-        return null;
+        return new OrRule(this, rule);
     }
 }

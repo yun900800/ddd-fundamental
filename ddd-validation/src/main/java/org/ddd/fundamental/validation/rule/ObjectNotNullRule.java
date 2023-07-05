@@ -21,7 +21,7 @@ public class ObjectNotNullRule extends RuleBase<DomainModel> {
      * @param target       验证的目标
      */
     public ObjectNotNullRule(String nameOfTarget, DomainModel target) {
-        this(nameOfTarget, target, "");
+        this(nameOfTarget, target, nameOfTarget+" is null");
     }
 
     public ObjectNotNullRule(String nameOfTarget, DomainModel target, String customErrorMessage) {
@@ -29,7 +29,7 @@ public class ObjectNotNullRule extends RuleBase<DomainModel> {
     }
 
     public ObjectNotNullRule(String nameOfTarget, String target) {
-        super(nameOfTarget, null, "");
+        super(nameOfTarget, null, nameOfTarget+" is null");
         this.target = target;
     }
 
@@ -39,9 +39,6 @@ public class ObjectNotNullRule extends RuleBase<DomainModel> {
      */
     @Override
     public ParameterValidationResult validate() {
-        if (this.target == null) {
-            return ParameterValidationResult.failed(this.getDefaultErrorMessage());
-        }
         if(this.getTarget() == null && this.target == null){
             return ParameterValidationResult.failed(this.getDefaultErrorMessage());
         }

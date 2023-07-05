@@ -27,4 +27,8 @@ public class CompositeParameterValidateResult extends ParameterValidationResult{
     public void addValidationResult(ParameterValidationResult result) {
         this.resultList.add(result);
     }
+
+    public List<ParameterValidationResult> getResultList() {
+        return resultList;
+    }
 }
