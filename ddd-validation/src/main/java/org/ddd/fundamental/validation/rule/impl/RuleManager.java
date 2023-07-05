@@ -1,9 +1,11 @@
-package org.ddd.fundamental.validation.rule;
+package org.ddd.fundamental.validation.rule.impl;
 
 import org.ddd.fundamental.validation.Validatable;
 import org.ddd.fundamental.validation.base.CompositeParameterValidateResult;
 import org.ddd.fundamental.validation.base.DomainModel;
 import org.ddd.fundamental.validation.base.ParameterValidationResult;
+import org.ddd.fundamental.validation.rule.Rule;
+import org.ddd.fundamental.validation.rule.impl.EmbeddedObjectRule;
 
 import java.util.ArrayList;
 import java.util.List;

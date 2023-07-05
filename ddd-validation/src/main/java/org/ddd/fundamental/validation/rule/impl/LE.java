@@ -1,9 +1,10 @@
-package org.ddd.fundamental.validation.rule;
+package org.ddd.fundamental.validation.rule.impl;
 
 import org.ddd.fundamental.validation.base.DomainModel;
 import org.ddd.fundamental.validation.base.ParameterValidationResult;
+import org.ddd.fundamental.validation.rule.RuleBase;
 
-public class LE extends RuleBase<DomainModel>{
+public class LE extends RuleBase<DomainModel> {
 
     private int expected;
 

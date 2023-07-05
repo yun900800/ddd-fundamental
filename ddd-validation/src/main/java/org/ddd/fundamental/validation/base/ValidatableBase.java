@@ -1,7 +1,7 @@
 package org.ddd.fundamental.validation.base;
 
 import org.ddd.fundamental.validation.Validatable;
-import org.ddd.fundamental.validation.rule.RuleManager;
+import org.ddd.fundamental.validation.rule.impl.RuleManager;
 
 public abstract class ValidatableBase implements Validatable {
 

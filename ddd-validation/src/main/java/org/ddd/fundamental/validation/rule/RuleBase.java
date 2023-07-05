@@ -1,6 +1,8 @@
 package org.ddd.fundamental.validation.rule;
 
 import org.ddd.fundamental.validation.base.DomainModel;
+import org.ddd.fundamental.validation.rule.impl.AndRule;
+import org.ddd.fundamental.validation.rule.impl.OrRule;
 
 public abstract class RuleBase<TTarget extends DomainModel> implements Rule {
 

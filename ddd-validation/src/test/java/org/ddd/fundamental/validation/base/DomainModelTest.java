@@ -1,14 +1,10 @@
 package org.ddd.fundamental.validation.base;
 
-import org.ddd.fundamental.validation.rule.LE;
-import org.ddd.fundamental.validation.rule.ObjectNotNullRule;
-import org.ddd.fundamental.validation.rule.Rule;
-import org.ddd.fundamental.validation.rule.RuleManager;
-import org.junit.Assert;
+import org.ddd.fundamental.validation.rule.impl.LE;
+import org.ddd.fundamental.validation.rule.impl.ObjectNotNullRule;
+import org.ddd.fundamental.validation.rule.impl.RuleManager;
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
-import org.mockito.internal.matchers.CapturesArguments;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
