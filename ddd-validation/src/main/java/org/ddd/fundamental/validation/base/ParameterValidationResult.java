@@ -16,19 +16,30 @@ public class ParameterValidationResult {
     }
 
     public void fail(){
+        this.fail("failed");
+    }
+
+    public void fail(String message) {
         this.success = false;
-        this.message = "failed";
+        this.message = message;
+    }
+    public String getMessage() {
+        return message;
     }
 
     public static ParameterValidationResult failed(String message) {
         return new ParameterValidationResult(false,message);
     }
 
-    public String getMessage() {
-        return message;
+    public static ParameterValidationResult failed() {
+        return ParameterValidationResult.failed("failed");
     }
 
     public static ParameterValidationResult success() {
-        return new ParameterValidationResult(true,"success");
+        return ParameterValidationResult.success("success");
+    }
+
+    public static ParameterValidationResult success(String message) {
+        return new ParameterValidationResult(true,message);
     }
 }
