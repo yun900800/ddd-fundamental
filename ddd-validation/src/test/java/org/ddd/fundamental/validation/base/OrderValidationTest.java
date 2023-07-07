@@ -12,10 +12,10 @@ public class OrderValidationTest {
     @Test
     public void testOrderFailedValidation() {
         Contact contact = new Contact();
-        Order order = new Order("airplane",null);
+        Order order = new Order("airplane",contact);
         ParameterValidationResult result = order.validate();
         Assert.assertEquals(result.isSuccess(), false);
-        Assert.assertEquals(((CompositeParameterValidateResult)result).getResultList().size(),3);
+        Assert.assertEquals(((CompositeParameterValidateResult)result).getResultList().size(),1);
     }
 
     @Test
@@ -45,6 +45,7 @@ public class OrderValidationTest {
         public Order(String name, Contact contact) {
             this.name = name;
             this.contact = contact;
+            this.amount = 0;
         }
 
         public Order(String name, Contact contact, int amount) {

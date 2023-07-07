@@ -1,6 +1,7 @@
 package org.ddd.fundamental.validation.rule.impl;
 
 import org.ddd.fundamental.validation.base.DomainModel;
+import org.ddd.fundamental.validation.base.EmptyModel;
 import org.ddd.fundamental.validation.base.ParameterValidationResult;
 import org.ddd.fundamental.validation.rule.RuleBase;
 
@@ -30,7 +31,7 @@ public class ObjectNotNullRule extends RuleBase<DomainModel> {
     }
 
     public ObjectNotNullRule(String nameOfTarget, String target) {
-        super(nameOfTarget, null, nameOfTarget+" is null");
+        super(nameOfTarget, new EmptyModel(), nameOfTarget+" is null");
         this.target = target;
     }
 
@@ -46,3 +47,4 @@ public class ObjectNotNullRule extends RuleBase<DomainModel> {
         return ParameterValidationResult.success();
     }
 }
+

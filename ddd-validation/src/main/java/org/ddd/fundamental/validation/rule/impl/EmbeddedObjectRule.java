@@ -6,7 +6,7 @@ import org.ddd.fundamental.validation.rule.RuleBase;
 
 public class EmbeddedObjectRule extends RuleBase<DomainModel> {
 
-    private DomainModel target;
+    private final DomainModel target;
     /**
      * 规则基类
      *
@@ -20,7 +20,7 @@ public class EmbeddedObjectRule extends RuleBase<DomainModel> {
 
     @Override
     public ParameterValidationResult validate() {
-        return null;
+        return this.target.validate();
     }
 
     public DomainModel getTarget() {

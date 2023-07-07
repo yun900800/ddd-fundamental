@@ -1,6 +1,7 @@
 package org.ddd.fundamental.validation.rule.impl;
 
 import org.ddd.fundamental.validation.base.DomainModel;
+import org.ddd.fundamental.validation.base.EmptyModel;
 import org.ddd.fundamental.validation.base.ParameterValidationResult;
 import org.ddd.fundamental.validation.rule.RuleBase;
 
@@ -16,7 +17,7 @@ public class LE extends RuleBase<DomainModel> {
     }
 
     public LE(String nameOfTarget, int actual, int expected) {
-        super(nameOfTarget,null,"");
+        super(nameOfTarget,new EmptyModel(),"");
         this.expected = expected;
         this.actual = actual;
     }

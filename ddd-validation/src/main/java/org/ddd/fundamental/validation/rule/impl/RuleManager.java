@@ -5,7 +5,6 @@ import org.ddd.fundamental.validation.base.CompositeParameterValidateResult;
 import org.ddd.fundamental.validation.base.DomainModel;
 import org.ddd.fundamental.validation.base.ParameterValidationResult;
 import org.ddd.fundamental.validation.rule.Rule;
-import org.ddd.fundamental.validation.rule.impl.EmbeddedObjectRule;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +15,7 @@ public class RuleManager implements Validatable {
     private DomainModel owner;
 
     //规则列表
-    private List<Rule> rules = new ArrayList<Rule>();
+    private List<Rule> rules = new ArrayList<>();
 
 
     /**
@@ -43,15 +42,10 @@ public class RuleManager implements Validatable {
             //针对嵌入式对象的验证
             if (rule instanceof EmbeddedObjectRule){
                 EmbeddedObjectRule embeddedObjectRule = (EmbeddedObjectRule) rule;
-                if (embeddedObjectRule.getTarget() == null) {
+                ParameterValidationResult validationResult = embeddedObjectRule.getTarget().validate();
+                if(!validationResult.isSuccess()){
                     result.addValidationResult(new ParameterValidationResult(false,
-                            embeddedObjectRule.getDefaultErrorMessage()));
-                } else {
-                    ParameterValidationResult validationResult = embeddedObjectRule.getTarget().validate();
-                    if(!validationResult.isSuccess()){
-                        result.addValidationResult(new ParameterValidationResult(false,
-                                "EmbeddedObject validate failed"));
-                    }
+                            "EmbeddedObject validate failed:"+ validationResult.getMessage()));
                 }
                 continue;
             }
@@ -62,5 +56,13 @@ public class RuleManager implements Validatable {
             }
         }
         return result;
+    }
+
+    public DomainModel getOwner() {
+        return owner;
+    }
+
+    public List<Rule> getRules() {
+        return rules;
     }
 }

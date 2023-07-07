@@ -4,6 +4,8 @@ import org.ddd.fundamental.validation.base.DomainModel;
 import org.ddd.fundamental.validation.rule.impl.AndRule;
 import org.ddd.fundamental.validation.rule.impl.OrRule;
 
+import java.security.InvalidParameterException;
+
 public abstract class RuleBase<TTarget extends DomainModel> implements Rule {
 
     //验证的目标
@@ -26,6 +28,9 @@ public abstract class RuleBase<TTarget extends DomainModel> implements Rule {
         this.customErrorMessage = customErrorMessage;
         this.nameOfTarget = nameOfTarget;
         this.target = target;
+        if (this.target == null) {
+            throw new InvalidParameterException("parameter "+ this.nameOfTarget + " is not null.");
+        }
     }
 
     /**

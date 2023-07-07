@@ -35,4 +35,12 @@ public class AndRule implements Rule {
     public Rule or(Rule rule) {
         return new OrRule(this, rule);
     }
+
+    public Rule getRule() {
+        return rule;
+    }
+
+    public Rule getOther() {
+        return other;
+    }
 }
