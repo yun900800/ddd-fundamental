@@ -24,11 +24,11 @@ public class ObjectNotNullRule extends RuleBase<DomainModel> {
      */
     public ObjectNotNullRule(String nameOfTarget, DomainModel target) {
         this(nameOfTarget, target, nameOfTarget+" is null");
-        this.target = "";
     }
 
     public ObjectNotNullRule(String nameOfTarget, DomainModel target, String customErrorMessage) {
         super(nameOfTarget, target, customErrorMessage);
+        this.target = "";
     }
 
     public ObjectNotNullRule(String nameOfTarget, String target) {
