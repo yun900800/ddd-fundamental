@@ -19,7 +19,9 @@ public class Validator implements Validationable {
      */
     @Override
     public void validate(final ValidationContext validationContext) throws ValidationException {
-        this.validationContext = validationContext;
+        if (this.validationContext == null) {
+            this.validationContext = validationContext;
+        }
         Iterator<ValidationSpecificationBase> iterator  = this.specifications.iterator();
         while (iterator.hasNext()) {
             ValidationSpecificationBase validationSpecification = iterator.next();
@@ -40,6 +42,10 @@ public class Validator implements Validationable {
 
     public ValidationContext getContext() {
         return this.validationContext;
+    }
+
+    public List<ValidationSpecificationBase> getSpecifications() {
+        return specifications;
     }
 
     public Validator addContext(ValidationContext context) {

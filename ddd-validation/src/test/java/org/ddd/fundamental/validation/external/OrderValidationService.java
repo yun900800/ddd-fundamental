@@ -3,7 +3,7 @@ package org.ddd.fundamental.validation.external;
 public class OrderValidationService extends ValidationServiceBase {
     /**
      * 构建验证器
-     *
+     * 这里的Validator和ValidationContext是聚合在一起还是分开比较好呢？
      * @param validator 验证器
      */
     @Override

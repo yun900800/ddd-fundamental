@@ -54,6 +54,10 @@ public class ParameterValidators {
         return this;
     }
 
+    public List<Validatable> getParameters() {
+        return parameters;
+    }
+
     public static ParameterValidators build() {
         return new ParameterValidators();
     }
