@@ -28,20 +28,11 @@ public class ValidatorTest {
     }
 
     @Test
-    public void testAddContext() {
-        ValidationContext context = Mockito.mock(ValidationContext.class);
-        Validator validator = new Validator();
-        validator.addContext(context);
-        Assert.assertNotNull(validator.getContext());
-    }
-
-    @Test
     public void testValidate() {
         ValidationContext context = Mockito.mock(ValidationContext.class);
         ValidationSpecificationBase base = Mockito.mock(ValidationSpecificationBase.class, Answers.CALLS_REAL_METHODS);
         ArgumentCaptor<ValidationContext> argumentCaptor = ArgumentCaptor.forClass(ValidationContext.class);
-        Validator validator = new Validator();
-        validator.addContext(context);
+        Validator validator = new Validator(context);
         validator.addSpecification(base);
         validator.validate(context);
         verify(base, Mockito.times(1)).validate(argumentCaptor.capture());

@@ -13,7 +13,7 @@ public abstract class ValidationServiceBase implements Validationable{
      */
     @Override
     public void validate(final ValidationContext validationContext) throws ValidationException {
-        this.validatorThreadLocal.set(new Validator().addContext(validationContext));
+        this.validatorThreadLocal.set(new Validator(validationContext));
         this.buildValidator(this.validatorThreadLocal.get());
         this.validatorThreadLocal.get().validate(validationContext);
     }

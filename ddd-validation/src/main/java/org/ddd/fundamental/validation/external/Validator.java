@@ -12,6 +12,13 @@ public class Validator implements Validationable {
 
     private ValidationContext validationContext;
 
+    public Validator() {
+    }
+
+    public Validator(ValidationContext validationContext) {
+        this.validationContext = validationContext;
+    }
+
     /**
      * 验证方法
      * @param validationContext  验证上下文
@@ -19,9 +26,6 @@ public class Validator implements Validationable {
      */
     @Override
     public void validate(final ValidationContext validationContext) throws ValidationException {
-        if (this.validationContext == null) {
-            this.validationContext = validationContext;
-        }
         Iterator<ValidationSpecificationBase> iterator  = this.specifications.iterator();
         while (iterator.hasNext()) {
             ValidationSpecificationBase validationSpecification = iterator.next();
@@ -46,10 +50,5 @@ public class Validator implements Validationable {
 
     public List<ValidationSpecificationBase> getSpecifications() {
         return specifications;
-    }
-
-    public Validator addContext(ValidationContext context) {
-        this.validationContext = context;
-        return this;
     }
 }

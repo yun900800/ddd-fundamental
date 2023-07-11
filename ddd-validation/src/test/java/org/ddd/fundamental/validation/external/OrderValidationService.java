@@ -8,6 +8,7 @@ public class OrderValidationService extends ValidationServiceBase {
      */
     @Override
     protected void buildValidator(Validator validator) {
+        //外部验证的时候此方法一定需要ValidationContext
         Customer customer = this.constructAccount(validator);
         //账号状态验证
         validator.addSpecification(new AccountBalanceSpec(customer));
