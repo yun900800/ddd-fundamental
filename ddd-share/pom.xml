@@ -83,6 +83,24 @@
             <version>5.3.1</version>
             <scope>test</scope>
         </dependency>
+        <!--   以下三个依赖解决Mockito Could not initialize plugin: interface org.mockito.plugins.MockMaker 报错的问题    -->
+        <dependency>
+            <groupId>net.bytebuddy</groupId>
+            <artifactId>byte-buddy</artifactId>
+            <version>1.12.18</version>
+        </dependency>
+        <dependency>
+            <groupId>org.objenesis</groupId>
+            <artifactId>objenesis</artifactId>
+            <version>3.3</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.bytebuddy</groupId>
+            <artifactId>byte-buddy-agent</artifactId>
+            <version>1.12.18</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
 </project>

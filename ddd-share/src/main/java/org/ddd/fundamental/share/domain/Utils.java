@@ -22,11 +22,21 @@ public final class Utils {
 
     public static String jsonEncode(HashMap<String, Serializable> map) {
         try {
-            return new ObjectMapper().writeValueAsString(map);
+            ObjectMapper mapper = new ObjectMapper();
+            return jsonEncode(map,mapper);
         } catch (JsonProcessingException e) {
             return "";
         }
     }
+    public static String jsonEncode(HashMap<String, Serializable> map,
+                                    ObjectMapper mapper) throws JsonProcessingException {
+        try {
+            return mapper.writeValueAsString(map);
+        } catch (JsonProcessingException e) {
+            return "";
+        }
+    }
+
 
     public static HashMap<String, Serializable> jsonDecode(String body) {
         try {
