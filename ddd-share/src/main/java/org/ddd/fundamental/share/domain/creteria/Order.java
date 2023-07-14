@@ -1,5 +1,7 @@
 package org.ddd.fundamental.share.domain.creteria;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.Optional;
 
 public final class Order {
@@ -12,8 +14,20 @@ public final class Order {
     }
 
     public static Order fromValues(Optional<String> orderBy, Optional<String> orderType) {
-        return orderBy.map(order -> new Order(new OrderBy(order), OrderType.valueOf(orderType.orElse("ASC"))))
-                .orElseGet(Order::none);
+        final Optional<String> validOrderType;
+        if (orderType == null || StringUtils.isEmpty(orderType.orElse(""))) {
+            validOrderType = Optional.empty();
+        } else {
+            validOrderType = Optional.of(orderType.get().toUpperCase());
+        }
+        Order  resOrder;
+        try {
+            resOrder = orderBy.map(order -> new Order(new OrderBy(order), OrderType.valueOf(validOrderType.orElse("ASC"))))
+                    .orElseGet(Order::none);
+        } catch (IllegalArgumentException e) {
+            resOrder = Order.none();
+        }
+        return resOrder;
     }
 
     public static Order none() {
