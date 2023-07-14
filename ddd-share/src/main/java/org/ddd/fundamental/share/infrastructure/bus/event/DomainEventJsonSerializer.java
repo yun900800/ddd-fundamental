@@ -1,11 +1,13 @@
 package org.ddd.fundamental.share.infrastructure.bus.event;
 
+import org.ddd.fundamental.share.domain.Service;
 import org.ddd.fundamental.share.domain.Utils;
 import org.ddd.fundamental.share.domain.bus.event.DomainEvent;
 
 import java.io.Serializable;
 import java.util.HashMap;
 
+@Service
 public final class DomainEventJsonSerializer {
     public static String serialize(DomainEvent domainEvent) {
         HashMap<String, Serializable> attributes = domainEvent.toPrimitives();

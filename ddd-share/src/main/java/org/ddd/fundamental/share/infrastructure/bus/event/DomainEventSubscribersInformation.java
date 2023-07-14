@@ -1,5 +1,6 @@
 package org.ddd.fundamental.share.infrastructure.bus.event;
 
+import org.ddd.fundamental.share.domain.Service;
 import org.ddd.fundamental.share.domain.bus.event.DomainEventSubscriber;
 import org.reflections.Reflections;
 
@@ -8,6 +9,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Set;
 
+@Service
 public final class DomainEventSubscribersInformation {
     HashMap<Class<?>, DomainEventSubscriberInformation> information;
 

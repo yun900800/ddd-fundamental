@@ -1,5 +1,6 @@
 package org.ddd.fundamental.share.infrastructure.bus.event;
 
+import org.ddd.fundamental.share.domain.Service;
 import org.ddd.fundamental.share.domain.Utils;
 import org.ddd.fundamental.share.domain.bus.event.DomainEvent;
 
@@ -8,6 +9,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 
+@Service
 public final class DomainEventJsonDeserializer {
     private final DomainEventsInformation information;
 

@@ -1,10 +1,11 @@
 package org.ddd.fundamental.share.infrastructure.bus.event;
 
+import org.ddd.fundamental.share.domain.Service;
 import org.ddd.fundamental.share.domain.Utils;
 import org.ddd.fundamental.share.domain.bus.event.DomainEvent;
 
 import java.util.List;
-
+//@Service
 public final class DomainEventSubscriberInformation {
     private final Class<?>                           subscriberClass;
     private final List<Class<? extends DomainEvent>> subscribedEvents;
