@@ -31,6 +31,10 @@ public final class QueryHandlersInformation {
         return queryHandlerClass;
     }
 
+    public Integer queryHandlerSize() {
+        return this.indexedQueryHandlers.size();
+    }
+
     private HashMap<Class<? extends Query>, Class<? extends QueryHandler>> formatHandlers(
             Set<Class<? extends QueryHandler>> queryHandlers
     ) {

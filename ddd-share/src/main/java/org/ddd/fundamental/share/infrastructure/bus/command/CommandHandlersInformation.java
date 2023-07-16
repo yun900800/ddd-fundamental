@@ -31,6 +31,10 @@ public final class CommandHandlersInformation {
         return commandHandlerClass;
     }
 
+    public Integer commandHandlerSize() {
+        return this.indexedCommandHandlers.size();
+    }
+
     private HashMap<Class<? extends Command>, Class<? extends CommandHandler>> formatHandlers(
             Set<Class<? extends CommandHandler>> commandHandlers
     ) {

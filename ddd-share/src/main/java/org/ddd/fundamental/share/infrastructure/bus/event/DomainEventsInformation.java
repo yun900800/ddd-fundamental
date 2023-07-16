@@ -14,15 +14,30 @@ import java.util.Set;
 public final class DomainEventsInformation {
     HashMap<String, Class<? extends DomainEvent>> indexedDomainEvents;
 
-    public DomainEventsInformation() {
-        Reflections                       reflections = new Reflections("org.ddd.fundamental");
-        Set<Class<? extends DomainEvent>> classes     = reflections.getSubTypesOf(DomainEvent.class);
+    private static final String DEFAULT_DOMAIN_EVENT_PATH = "org.ddd.fundamental";
 
+    public DomainEventsInformation() {
+        Reflections                       reflections = new Reflections(DEFAULT_DOMAIN_EVENT_PATH);
+        Set<Class<? extends DomainEvent>> classes     = reflections.getSubTypesOf(DomainEvent.class);
         try {
             indexedDomainEvents = formatEvents(classes);
         } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
             e.printStackTrace();
         }
+    }
+
+    public DomainEventsInformation appendScanDomainEventPah(String path) {
+        Reflections reflections = new Reflections(path);
+        Set<Class<? extends DomainEvent>> classes     = reflections.getSubTypesOf(DomainEvent.class);
+        try {
+            HashMap<String, Class<? extends DomainEvent>> addedScanDomainEvents = formatEvents(classes);
+            for (Map.Entry<String,Class<? extends DomainEvent>> entry:addedScanDomainEvents.entrySet()) {
+                indexedDomainEvents.put(entry.getKey(),entry.getValue());
+            }
+        } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        return this;
     }
 
     public Class<? extends DomainEvent> forName(String name) {
@@ -37,14 +52,23 @@ public final class DomainEventsInformation {
                 .findFirst().orElse("");
     }
 
+    public Integer eventSize() {
+        return indexedDomainEvents.size();
+    }
+
     private HashMap<String, Class<? extends DomainEvent>> formatEvents(
             Set<Class<? extends DomainEvent>> domainEvents
     ) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         HashMap<String, Class<? extends DomainEvent>> events = new HashMap<>();
 
         for (Class<? extends DomainEvent> domainEvent : domainEvents) {
-            DomainEvent nullInstance = domainEvent.getConstructor().newInstance();
-
+            DomainEvent nullInstance;
+            try {
+                 nullInstance = domainEvent.getConstructor().newInstance();
+            } catch (Exception e) {
+                e.printStackTrace();
+                continue;
+            }
             events.put((String) domainEvent.getMethod("eventName").invoke(nullInstance), domainEvent);
         }
 
