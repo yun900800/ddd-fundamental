@@ -20,6 +20,10 @@ import java.util.stream.Collectors;
 public final class HibernateConfigurationFactory {
     private final ResourcePatternResolver resourceResolver;
 
+    private final String HSQL_DRIVER = org.hsqldb.jdbcDriver.class.getName();
+
+    private final String HSQL_URL = "jdbc:hsqldb:mem:mydb";
+
     public HibernateConfigurationFactory(ResourcePatternResolver resourceResolver) {
         this.resourceResolver = resourceResolver;
     }
@@ -52,6 +56,7 @@ public final class HibernateConfigurationFactory {
     ) throws IOException {
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
+        dataSource.setDriverClassName(HSQL_DRIVER);
         dataSource.setUrl(
                 String.format(
                         "jdbc:mysql://%s:%s/%s?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC",
@@ -60,6 +65,7 @@ public final class HibernateConfigurationFactory {
                         databaseName
                 )
         );
+        dataSource.setUrl(HSQL_URL);
         dataSource.setUsername(username);
         dataSource.setPassword(password);
 
@@ -90,12 +96,12 @@ public final class HibernateConfigurationFactory {
     }
 
     private List<String> subdirectoriesFor(String contextName) {
-        String path = "./src/" + contextName + "/main/tv/codely/" + contextName + "/";
+        String path = "./src/" + contextName + "/main/org/ddd/fundamental/" + contextName + "/";
 
         String[] files = new File(path).list((current, name) -> new File(current, name).isDirectory());
 
         if (null == files) {
-            path  = "./main/tv/codely/" + contextName + "/";
+            path  = "./main/org/ddd/fundamental/" + contextName + "/";
             files = new File(path).list((current, name) -> new File(current, name).isDirectory());
         }
 

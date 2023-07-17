@@ -3,6 +3,7 @@ package org.ddd.fundamental.share.infrastructure.bus.event.spring;
 import org.ddd.fundamental.share.domain.Service;
 import org.ddd.fundamental.share.domain.bus.event.DomainEvent;
 import org.ddd.fundamental.share.domain.bus.event.EventBus;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Primary;
 
@@ -18,7 +19,7 @@ public class SpringApplicationEventBus implements EventBus {
     }
 
     @Override
-    public void publish(final List<DomainEvent> events) {
+    public void publish(@NotNull final List<DomainEvent> events) {
         events.forEach(this::publish);
     }
 
