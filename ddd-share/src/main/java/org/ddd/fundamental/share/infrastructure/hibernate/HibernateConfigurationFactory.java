@@ -1,7 +1,12 @@
 package org.ddd.fundamental.share.infrastructure.hibernate;
 
+import net.ttddyy.dsproxy.listener.ChainListener;
+import net.ttddyy.dsproxy.listener.DataSourceQueryCountListener;
+import net.ttddyy.dsproxy.listener.logging.SLF4JQueryLoggingListener;
+import net.ttddyy.dsproxy.support.ProxyDataSourceBuilder;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.ddd.fundamental.share.domain.Service;
+import org.ddd.fundamental.share.infrastructure.hibernate.logger.InlineQueryLogEntryCreator;
 import org.hibernate.cfg.AvailableSettings;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -15,6 +20,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static net.ttddyy.dsproxy.listener.logging.CommonsLogLevel.INFO;
 
 @Service
 public final class HibernateConfigurationFactory {
@@ -76,7 +83,18 @@ public final class HibernateConfigurationFactory {
 
         dataSource.setConnectionInitSqls(new ArrayList<>(Arrays.asList(mysqlSentences.split(";"))));
 
-        return dataSource;
+        ChainListener listener = new ChainListener();
+        SLF4JQueryLoggingListener loggingListener = new SLF4JQueryLoggingListener();
+        loggingListener.setQueryLogEntryCreator(new InlineQueryLogEntryCreator());
+        listener.addListener(loggingListener);
+        listener.addListener(new DataSourceQueryCountListener());
+        return ProxyDataSourceBuilder
+                .create(dataSource)
+                .logQueryByCommons(INFO)
+                .name("Fundamental")
+                .listener(listener)
+                .build();
+        //return dataSource;
     }
 
     private List<Resource> searchMappingFiles(String contextName) {

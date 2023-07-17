@@ -34,7 +34,6 @@ public final class HibernateCriteriaConverter<T> {
         if (criteria.order().hasOrder()) {
             Path<Object> orderBy = root.get(criteria.order().orderBy().value());
             Order order   = criteria.order().orderType().isAsc() ? builder.asc(orderBy) : builder.desc(orderBy);
-
             hibernateCriteria.orderBy(order);
         }
 
