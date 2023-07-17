@@ -35,7 +35,7 @@ public final class HibernateConfigurationFactory {
         return transactionManager;
     }
 
-    public LocalSessionFactoryBean sessionFactory(String contextName, DataSource dataSource) {
+    public LocalSessionFactoryBean sessionFactory(String contextName, DataSource dataSource) throws IOException {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource);
         sessionFactory.setHibernateProperties(hibernateProperties());
@@ -43,7 +43,6 @@ public final class HibernateConfigurationFactory {
         List<Resource> mappingFiles = searchMappingFiles(contextName);
 
         sessionFactory.setMappingLocations(mappingFiles.toArray(new Resource[mappingFiles.size()]));
-
         return sessionFactory;
     }
 
@@ -96,12 +95,12 @@ public final class HibernateConfigurationFactory {
     }
 
     private List<String> subdirectoriesFor(String contextName) {
-        String path = "./src/" + contextName + "/main/org/ddd/fundamental/" + contextName + "/";
+        String path = "./src/" + contextName + "/main/java/org/ddd/" + contextName + "/";
 
         String[] files = new File(path).list((current, name) -> new File(current, name).isDirectory());
 
         if (null == files) {
-            path  = "./main/org/ddd/fundamental/" + contextName + "/";
+            path  = "src/main/java/org/ddd/" + contextName + "/";
             files = new File(path).list((current, name) -> new File(current, name).isDirectory());
         }
 
@@ -129,6 +128,8 @@ public final class HibernateConfigurationFactory {
         hibernateProperties.put(AvailableSettings.HBM2DDL_AUTO, "none");
         hibernateProperties.put(AvailableSettings.SHOW_SQL, "false");
         hibernateProperties.put(AvailableSettings.DIALECT, "org.hibernate.dialect.MySQL8Dialect");
+        hibernateProperties.put(AvailableSettings.DIALECT, "org.hibernate.dialect.HSQLDialect");
+
 
         return hibernateProperties;
     }

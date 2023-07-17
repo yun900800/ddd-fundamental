@@ -1,6 +1,9 @@
 package org.ddd.fundamental.share.infrastructure.hibernate;
 
 
+import org.ddd.fundamental.share.infrastructure.persistence.hibernate.Courses;
+import org.ddd.fundamental.share.infrastructure.utils.HibernateUtils;
+import org.hibernate.query.Query;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,6 +12,7 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.support.ResourcePatternResolver;
+import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.sql.DataSource;
@@ -58,6 +62,37 @@ public class HibernateConfigurationFactoryTest {
         executeStatement(connection,"insert into courses(id,name,duration) values('1','yun900800','50') ");
         List<String> courses = selectColumnList(connection,"select * from courses",String.class);
         Assert.assertEquals(courses.size(),1);
+        executeStatement(connection,"drop table courses ");
+    }
+
+    @Test
+    public void testSessionFactory() throws IOException {
+        DataSource dataSource = hibernateConfigurationFactory.dataSource(
+                "localhost",3306,"domain","sa","");
+        LocalSessionFactoryBean sessionFactory = hibernateConfigurationFactory.sessionFactory("fundamental",dataSource);
+        Assert.assertNotNull(sessionFactory);
+    }
+
+    @Test
+    public void testExecuteSessionFactory() throws IOException {
+        DataSource dataSource = hibernateConfigurationFactory.dataSource(
+                "localhost",3306,"domain","sa","");
+        LocalSessionFactoryBean sessionFactory = hibernateConfigurationFactory.sessionFactory("fundamental",dataSource);
+        sessionFactory.setPackagesToScan("org.ddd.fundamental");
+        sessionFactory.afterPropertiesSet();
+        HibernateUtils.doInHibernate((session)->{
+            Courses courses = new Courses();
+            courses.setId("2");
+            courses.setName("yun900800");
+            courses.setDuration("50");
+            session.persist(courses);
+            String hql = "FROM Courses AS E";
+            Query query = session.createQuery(hql);
+            List<Courses> results = query.list();
+            Assert.assertEquals(results.size(),1);
+            Assert.assertEquals(results.get(0).getName(),"yun900800");
+            session.flush();
+        },sessionFactory.getObject());
     }
 
     protected void executeStatement(Connection connection, String sql) {
@@ -87,34 +122,3 @@ public class HibernateConfigurationFactoryTest {
     }
 }
 
-class Courses {
-    private String id;
-
-    private String name;
-
-    private String duration;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDuration() {
-        return duration;
-    }
-
-    public void setDuration(String duration) {
-        this.duration = duration;
-    }
-}
