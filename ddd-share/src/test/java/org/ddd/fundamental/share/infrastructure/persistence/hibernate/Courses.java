@@ -1,25 +1,35 @@
 package org.ddd.fundamental.share.infrastructure.persistence.hibernate;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+
+import javax.persistence.*;
 
 @Table
 @Entity
 public class Courses {
 
-    @Id
-    private String id;
+    @Column( columnDefinition = "varchar(100)", nullable = false)
+    @EmbeddedId
+    private StringIdentifier id;
 
     private String name;
 
     private String duration;
 
-    public String getId() {
+    public Courses() {
+
+    }
+
+    public Courses(StringIdentifier id, String name,String duration) {
+        this.id = id;
+        this.name = name;
+        this.duration = duration;
+    }
+
+    public StringIdentifier getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(StringIdentifier id) {
         this.id = id;
     }
 

@@ -1,7 +1,9 @@
 package org.ddd.fundamental.share.infrastructure.hibernate;
 
 
+import org.ddd.fundamental.share.infrastructure.JavaUuidGenerator;
 import org.ddd.fundamental.share.infrastructure.persistence.hibernate.Courses;
+import org.ddd.fundamental.share.infrastructure.persistence.hibernate.StringIdentifier;
 import org.ddd.fundamental.share.infrastructure.utils.HibernateUtils;
 import org.hibernate.query.Query;
 import org.junit.Assert;
@@ -36,10 +38,19 @@ public class HibernateConfigurationFactoryTest {
         public HibernateConfigurationFactory hibernateConfigurationFactory(ResourcePatternResolver resourceResolver) {
             return new HibernateConfigurationFactory(resourceResolver);
         }
+
+        @Bean
+        public JavaUuidGenerator javaUuidGenerator(){
+            return new JavaUuidGenerator();
+        }
+
     }
 
     @Autowired
     private HibernateConfigurationFactory hibernateConfigurationFactory;
+
+    @Autowired
+    private JavaUuidGenerator javaUuidGenerator;
 
     @Test
     public void testHibernateConfigurationFactoryNotNull() {
@@ -57,7 +68,7 @@ public class HibernateConfigurationFactoryTest {
     @Test
     public void testExecuteSQL() throws IOException, SQLException {
         DataSource dataSource = hibernateConfigurationFactory.dataSource(
-                "localhost",3306,"domain","sa","");
+                "localhost",3306,"devnote","root","rootpassword");
         Connection connection = dataSource.getConnection();
         executeStatement(connection,"insert into courses(id,name,duration) values('1','yun900800','50') ");
         List<String> courses = selectColumnList(connection,"select * from courses",String.class);
@@ -68,7 +79,7 @@ public class HibernateConfigurationFactoryTest {
     @Test
     public void testSessionFactory() throws IOException {
         DataSource dataSource = hibernateConfigurationFactory.dataSource(
-                "localhost",3306,"domain","sa","");
+                "localhost",3306,"devnote","root","rootpassword");
         LocalSessionFactoryBean sessionFactory = hibernateConfigurationFactory.sessionFactory("fundamental",dataSource);
         Assert.assertNotNull(sessionFactory);
     }
@@ -76,13 +87,13 @@ public class HibernateConfigurationFactoryTest {
     @Test
     public void testExecuteSessionFactory() throws IOException {
         DataSource dataSource = hibernateConfigurationFactory.dataSource(
-                "localhost",3306,"domain","sa","");
+                "localhost",3306,"devnote","root","rootpassword");
         LocalSessionFactoryBean sessionFactory = hibernateConfigurationFactory.sessionFactory("fundamental",dataSource);
         sessionFactory.setPackagesToScan("org.ddd.fundamental");
         sessionFactory.afterPropertiesSet();
         HibernateUtils.doInHibernate((session)->{
             Courses courses = new Courses();
-            courses.setId("2");
+            courses.setId(new StringIdentifier(javaUuidGenerator.generate()));
             courses.setName("yun900800");
             courses.setDuration("50");
             session.persist(courses);

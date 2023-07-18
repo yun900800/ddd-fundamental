@@ -29,7 +29,7 @@ public final class HibernateConfigurationFactory {
 
     private final String HSQL_DRIVER = org.hsqldb.jdbcDriver.class.getName();
 
-    private final String HSQL_URL = "jdbc:hsqldb:mem:mydb";
+    private final String HSQL_URL = "jdbc:hsqldb:mem:devnote";
 
     public HibernateConfigurationFactory(ResourcePatternResolver resourceResolver) {
         this.resourceResolver = resourceResolver;
@@ -50,6 +50,7 @@ public final class HibernateConfigurationFactory {
         List<Resource> mappingFiles = searchMappingFiles(contextName);
 
         sessionFactory.setMappingLocations(mappingFiles.toArray(new Resource[mappingFiles.size()]));
+        sessionFactory.setPackagesToScan("org.ddd.fundamental");
         return sessionFactory;
     }
 
@@ -62,7 +63,7 @@ public final class HibernateConfigurationFactory {
     ) throws IOException {
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        dataSource.setDriverClassName(HSQL_DRIVER);
+        //dataSource.setDriverClassName(HSQL_DRIVER);
         dataSource.setUrl(
                 String.format(
                         "jdbc:mysql://%s:%s/%s?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC",
@@ -71,7 +72,7 @@ public final class HibernateConfigurationFactory {
                         databaseName
                 )
         );
-        dataSource.setUrl(HSQL_URL);
+        //dataSource.setUrl(HSQL_URL);
         dataSource.setUsername(username);
         dataSource.setPassword(password);
 
@@ -143,7 +144,8 @@ public final class HibernateConfigurationFactory {
 
     private Properties hibernateProperties() {
         Properties hibernateProperties = new Properties();
-        hibernateProperties.put(AvailableSettings.HBM2DDL_AUTO, "none");
+        hibernateProperties.put(AvailableSettings.HBM2DDL_AUTO, "create-drop");
+
         hibernateProperties.put(AvailableSettings.SHOW_SQL, "false");
         hibernateProperties.put(AvailableSettings.DIALECT, "org.hibernate.dialect.MySQL8Dialect");
         hibernateProperties.put(AvailableSettings.DIALECT, "org.hibernate.dialect.HSQLDialect");

@@ -1,9 +1,11 @@
 package org.ddd.fundamental.share.domain;
 
+import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.UUID;
 
+@MappedSuperclass
 public abstract class Identifier implements Serializable {
     final protected String value;
 

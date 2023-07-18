@@ -3,7 +3,10 @@ package org.ddd.fundamental.share.infrastructure.hibernate;
 import org.ddd.fundamental.share.domain.creteria.Criteria;
 import org.ddd.fundamental.share.domain.creteria.Filters;
 import org.ddd.fundamental.share.domain.creteria.Order;
+import org.ddd.fundamental.share.infrastructure.JavaUuidGenerator;
+import org.ddd.fundamental.share.infrastructure.config.EnvironmentConfig;
 import org.ddd.fundamental.share.infrastructure.persistence.hibernate.Courses;
+import org.ddd.fundamental.share.infrastructure.persistence.hibernate.StringIdentifier;
 import org.ddd.fundamental.share.infrastructure.utils.HibernateUtils;
 import org.junit.Assert;
 import org.junit.Before;
@@ -13,9 +16,11 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -35,13 +40,25 @@ public class HibernateCriteriaConverterTest {
     @MockBean
     private ResourcePatternResolver resourceResolver;
 
+    @Autowired
+    private ApplicationContext applicationContext;
+
+
     @TestConfiguration
     static class HibernateConfigurationFactoryImplTestContextConfiguration {
         @Bean
         public HibernateConfigurationFactory hibernateConfigurationFactory(ResourcePatternResolver resourceResolver) {
             return new HibernateConfigurationFactory(resourceResolver);
         }
+
+        @Bean
+        public JavaUuidGenerator javaUuidGenerator(){
+            return new JavaUuidGenerator();
+        }
     }
+
+    @Autowired
+    private JavaUuidGenerator javaUuidGenerator;
 
     @Autowired
     private HibernateConfigurationFactory hibernateConfigurationFactory;
@@ -49,6 +66,11 @@ public class HibernateCriteriaConverterTest {
     @Before
     public void setUp() {
 
+    }
+
+    @Test
+    public void testApplicationContextNotNull() {
+        Assert.assertNotNull(applicationContext);
     }
 
     @Test
@@ -77,12 +99,12 @@ public class HibernateCriteriaConverterTest {
         CriteriaQuery<Courses> notContainsEQuery = hibernateCriteriaConverter.convert(createNotContainsCriteria(), Courses.class);
         HibernateUtils.doInHibernate((session)->{
             Courses courses = new Courses();
-            courses.setId("2");
+            courses.setId(new StringIdentifier(javaUuidGenerator.generate()));
             courses.setName("yun900800");
             courses.setDuration("50");
             session.persist(courses);
             Courses courses1 = new Courses();
-            courses1.setId("3");
+            courses1.setId(new StringIdentifier(javaUuidGenerator.generate()));
             courses1.setName("yun9008009");
             courses1.setDuration("60");
             session.persist(courses1);
