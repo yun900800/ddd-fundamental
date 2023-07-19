@@ -23,7 +23,7 @@ public class SpringApplicationEventBus implements EventBus {
         events.forEach(this::publish);
     }
 
-    private void publish(final DomainEvent event) {
+    public void publish(final DomainEvent event) {
         this.publisher.publishEvent(event);
     }
 }

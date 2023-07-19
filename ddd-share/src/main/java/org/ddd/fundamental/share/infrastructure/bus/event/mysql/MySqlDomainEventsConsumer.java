@@ -36,6 +36,7 @@ public class MySqlDomainEventsConsumer {
     @Transactional
     public void consume() {
         while (!shouldStop) {
+            System.out.println("shouldStop:"+shouldStop);
             NativeQuery query = sessionFactory.getCurrentSession().createSQLQuery(
                     "SELECT * FROM domain_events ORDER BY occurred_on ASC LIMIT :chunk"
             );
@@ -51,7 +52,7 @@ public class MySqlDomainEventsConsumer {
                             (String) event[1],
                             (String) event[2],
                             (String) event[3],
-                            (Timestamp) event[4]
+                            (String) event[4]
                     );
                 }
             } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
@@ -67,7 +68,7 @@ public class MySqlDomainEventsConsumer {
     }
 
     private void executeSubscribers(
-            String id, String aggregateId, String eventName, String body, Timestamp occurredOn
+            String id, String aggregateId, String eventName, String body, String occurredOn
     ) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
 
         Class<? extends DomainEvent> domainEventClass = domainEventsInformation.forName(eventName);
@@ -87,7 +88,7 @@ public class MySqlDomainEventsConsumer {
                 aggregateId,
                 Utils.jsonDecode(body),
                 id,
-                Utils.dateToString(occurredOn)
+                occurredOn
         );
 
         bus.publish(Collections.singletonList((DomainEvent) domainEvent));

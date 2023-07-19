@@ -21,6 +21,6 @@ public class DomainEventSubscriberInformationTest {
         Assert.assertEquals("share",information.moduleName());
         Assert.assertEquals("fundamental",information.contextName());
         Assert.assertEquals(domainEventClassLists,information.subscribedEvents());
-        Assert.assertEquals("ddd.fundamental.fundamental.share.empty_domain_event_subscriber",information.formatRabbitMqQueueName());
+        Assert.assertEquals("org.ddd.fundamental.share.empty_domain_event_subscriber",information.formatRabbitMqQueueName());
     }
 }
