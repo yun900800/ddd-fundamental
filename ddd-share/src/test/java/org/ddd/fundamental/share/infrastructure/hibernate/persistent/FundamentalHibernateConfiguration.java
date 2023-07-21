@@ -42,28 +42,19 @@ public class FundamentalHibernateConfiguration {
 
     @Bean("fundamental-session_factory")
     public LocalSessionFactoryBean sessionFactory() throws IOException, ParameterNotExist {
-        ChainListener listener = new ChainListener();
-        SLF4JQueryLoggingListener loggingListener = new SLF4JQueryLoggingListener();
-        loggingListener.setQueryLogEntryCreator(new InlineQueryLogEntryCreator());
-        listener.addListener(loggingListener);
-        listener.addListener(new DataSourceQueryCountListener());
-        DataSource newDataSource =  ProxyDataSourceBuilder
-                .create(dataSource)
-                .logQueryByCommons(INFO)
-                .name("Fundamental")
-                .listener(listener)
-                .build();
+
+        DataSource newDataSource = factory.proxyDataSource(dataSource());
         return factory.sessionFactory(CONTEXT_NAME, newDataSource);
     }
 
-//    @Bean("fundamental-data_source")
-//    public DataSource dataSource() throws IOException, ParameterNotExist {
-//        return factory.dataSource(
-//                config.get("FUNDAMENTAL_HOST"),
-//                config.getInt("FUNDAMENTAL_DATABASE_PORT"),
-//                config.get("FUNDAMENTAL_DATABASE_NAME"),
-//                config.get("FUNDAMENTAL_DATABASE_USER"),
-//                config.get("FUNDAMENTAL_DATABASE_PASSWORD")
-//        );
-//    }
+    @Bean("fundamental-data_source")
+    public DataSource dataSource() throws IOException, ParameterNotExist {
+        return factory.dataSource(
+                config.get("FUNDAMENTAL_HOST"),
+                config.getInt("FUNDAMENTAL_DATABASE_PORT"),
+                config.get("FUNDAMENTAL_DATABASE_NAME"),
+                config.get("FUNDAMENTAL_DATABASE_USER"),
+                config.get("FUNDAMENTAL_DATABASE_PASSWORD")
+        );
+    }
 }

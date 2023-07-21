@@ -31,6 +31,10 @@ public final class HibernateConfigurationFactory {
 
     private final String HSQL_URL = "jdbc:hsqldb:mem:devnote";
 
+    public ResourcePatternResolver getResourceResolver() {
+        return resourceResolver;
+    }
+
     public HibernateConfigurationFactory(ResourcePatternResolver resourceResolver) {
         this.resourceResolver = resourceResolver;
     }
@@ -52,6 +56,20 @@ public final class HibernateConfigurationFactory {
         sessionFactory.setMappingLocations(mappingFiles.toArray(new Resource[mappingFiles.size()]));
         sessionFactory.setPackagesToScan("org.ddd.fundamental");
         return sessionFactory;
+    }
+
+    public DataSource proxyDataSource(DataSource dataSource) {
+        ChainListener listener = new ChainListener();
+        SLF4JQueryLoggingListener loggingListener = new SLF4JQueryLoggingListener();
+        loggingListener.setQueryLogEntryCreator(new InlineQueryLogEntryCreator());
+        listener.addListener(loggingListener);
+        listener.addListener(new DataSourceQueryCountListener());
+        return ProxyDataSourceBuilder
+                .create(dataSource)
+                .logQueryByCommons(INFO)
+                .name("Fundamental")
+                .listener(listener)
+                .build();
     }
 
     public DataSource dataSource(
@@ -83,19 +101,7 @@ public final class HibernateConfigurationFactory {
         String mysqlSentences = new Scanner(mysqlResource.getInputStream(), "UTF-8").useDelimiter("\\A").next();
 
         dataSource.setConnectionInitSqls(new ArrayList<>(Arrays.asList(mysqlSentences.split(";"))));
-
-        ChainListener listener = new ChainListener();
-        SLF4JQueryLoggingListener loggingListener = new SLF4JQueryLoggingListener();
-        loggingListener.setQueryLogEntryCreator(new InlineQueryLogEntryCreator());
-        listener.addListener(loggingListener);
-        listener.addListener(new DataSourceQueryCountListener());
-        return ProxyDataSourceBuilder
-                .create(dataSource)
-                .logQueryByCommons(INFO)
-                .name("Fundamental")
-                .listener(listener)
-                .build();
-        //return dataSource;
+        return dataSource;
     }
 
     private List<Resource> searchMappingFiles(String contextName) {

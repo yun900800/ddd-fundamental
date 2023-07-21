@@ -1,6 +1,5 @@
 package org.ddd.fundamental.share.infrastructure.hibernate;
 
-import org.ddd.fundamental.share.domain.Service;
 import org.ddd.fundamental.share.domain.creteria.Criteria;
 import org.ddd.fundamental.share.domain.creteria.Filters;
 import org.ddd.fundamental.share.domain.creteria.Order;
@@ -8,18 +7,19 @@ import org.ddd.fundamental.share.infrastructure.JavaUuidGenerator;
 import org.ddd.fundamental.share.infrastructure.bus.event.rabbitmq.RabbitMqDomainEventsConsumer;
 import org.ddd.fundamental.share.infrastructure.bus.event.rabbitmq.RabbitMqPublisher;
 import org.ddd.fundamental.share.infrastructure.hibernate.persistent.CourseHibernateRepository;
+import org.ddd.fundamental.share.infrastructure.hibernate.persistent.TestHibernateConfiguration;
 import org.ddd.fundamental.share.infrastructure.persistence.hibernate.Courses;
 import org.ddd.fundamental.share.infrastructure.persistence.hibernate.StringIdentifier;
-import org.hibernate.SessionFactory;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.FilterType;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
@@ -28,9 +28,9 @@ import java.util.List;
 import java.util.Optional;
 
 @RunWith(SpringRunner.class)
-@DataJpaTest( includeFilters = @ComponentScan.Filter(type = FilterType.ANNOTATION, classes = Service.class),
-        excludeAutoConfiguration ={RabbitMqDomainEventsConsumer.class}
-)
+@DataJpaTest
+@AutoConfigureTestDatabase(replace= AutoConfigureTestDatabase.Replace.NONE)
+@Import(TestHibernateConfiguration.class)
 public class HibernateRepositoryTest {
 
     @Autowired
