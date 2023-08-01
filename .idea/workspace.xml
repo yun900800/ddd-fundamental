@@ -1,0 +1,450 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="c69dad5c-3b58-4406-8049-6b3f5bd54d8c" name="Changes" comment="test(ddd-share) 抽取出一个创建代理数据源的方法&#10;1. 抽取出一个使用内存数据库的测试配置类&#10;2. 配置了数据源需要@AutoConfigureTestDatabase(replace= AutoConfigureTestDatabase.Replace.NONE)">
+      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/jpa-buddy.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ddd-app/.env" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ddd-app/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ddd-app/.m2/copy_reference_file.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ddd-app/.m2/settings-docker.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ddd-app/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ddd-app/ReadMe.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ddd-app/docker-compose.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ddd-app/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ddd-app/src/main/java/org/ddd/fundamental/app/AppApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ddd-app/src/main/java/org/ddd/fundamental/app/api/client/OkHttpClientUtils.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ddd-app/src/main/java/org/ddd/fundamental/app/api/user/UserRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ddd-app/src/main/java/org/ddd/fundamental/app/config/ProducerConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ddd-app/src/main/java/org/ddd/fundamental/app/config/Publisher.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ddd-app/src/main/java/org/ddd/fundamental/app/controller/DockerController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ddd-app/src/main/java/org/ddd/fundamental/app/listener/ConsumerConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ddd-app/src/main/java/org/ddd/fundamental/app/listener/EmailListener.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ddd-app/src/main/java/org/ddd/fundamental/app/listener/OrderConsumer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ddd-app/src/main/java/org/ddd/fundamental/app/listener/TextListener.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ddd-app/src/main/java/org/ddd/fundamental/app/listener/UserEventListener.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ddd-app/src/main/java/org/ddd/fundamental/app/model/UserEvent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ddd-app/src/main/java/org/ddd/fundamental/app/model/UserModel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ddd-app/src/main/java/org/ddd/fundamental/app/repository/user/UserRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ddd-app/src/main/java/org/ddd/fundamental/app/service/user/UserService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ddd-app/src/main/java/org/ddd/fundamental/share/config/AppHibernateConfiguration.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ddd-app/src/main/resources/.env" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ddd-app/src/main/resources/application.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ddd-app/src/main/resources/database/app_db.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ddd-app/src/test/java/org/ddd/fundamental/app/AppApplicationTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ddd-share/src/main/java/org/ddd/fundamental/share/infrastructure/hibernate/HibernateConfigurationFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/ddd-share/src/main/java/org/ddd/fundamental/share/infrastructure/hibernate/HibernateConfigurationFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ddd-validation/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ddd-validation/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="AnnotationType" />
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="jar://$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-autoconfigure/2.2.5.RELEASE/spring-boot-autoconfigure-2.2.5.RELEASE-sources.jar!/org/springframework/boot/autoconfigure/AutoConfigurationImportSelector.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/ddd-app/.env" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/ddd-app/Dockerfile" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/ddd-app/docker-compose.yml" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/ddd-app/pom.xml" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/ddd-app/src/main/java/org/ddd/fundamental/app/AppApplication.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/ddd-share/src/test/resources/.env" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="JpbToolWindowState">
+    <option name="myId2FirstActivated">
+      <map>
+        <entry key="com.haulmont.jpb.jpaInspector" value="true" />
+        <entry key="com.haulmont.jpb.jpaPalette" value="true" />
+        <entry key="com.haulmont.jpb.jpaStructure" value="true" />
+      </map>
+    </option>
+    <option name="myId2Visible">
+      <map>
+        <entry key="com.haulmont.jpb.jpaInspector" value="false" />
+        <entry key="com.haulmont.jpb.jpaPalette" value="false" />
+        <entry key="com.haulmont.jpb.jpaStructure" value="false" />
+      </map>
+    </option>
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="MavenRunner">
+    <option name="vmOptions" value="-DarchetypeCatalog=local" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectId" id="2S8NHmljZO9kVOsTrpWBsGFCESt" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;11&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/86135/Desktop/我的demo/maven-multi-module-docker-cache&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;MavenSettings&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\86135\Desktop\我的demo\ddd-fundamental\ddd-app\src\main\resources" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\86135\Desktop\我的demo\ddd-fundamental\ddd-share\src\test\resources\database" />
+    </key>
+    <key name="ExtractSuperBase.RECENT_KEYS">
+      <recent name="org.ddd.fundamental.share.infrastructure.hibernate" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="org.ddd.fundamental.share.infrastructure.hibernate" />
+      <recent name="org.ddd.fundamental.share.infrastructure.bus.event" />
+    </key>
+  </component>
+  <component name="RunAnythingCache">
+    <option name="myCommands">
+      <command value="mvn dependency:analyze" />
+      <command value="mvn dependency:tree" />
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration name="AppApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="org.ddd.fundamental.app.AppApplication" />
+      <module name="ddd-app" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.ddd.fundamental.app.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.AppApplication" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="c69dad5c-3b58-4406-8049-6b3f5bd54d8c" name="Changes" comment="" />
+      <created>1688524164300</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1688524164300</updated>
+    </task>
+    <task id="LOCAL-00001" summary="[ddd-fundamental 增加一个领域驱动设计的验证框架]">
+      <created>1688535772520</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1688535772520</updated>
+    </task>
+    <task id="LOCAL-00002" summary="[ddd-fundamental 增加一个AndRule和OrRule的实现和测试方法]">
+      <created>1688541184287</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1688541184287</updated>
+    </task>
+    <task id="LOCAL-00003" summary="[ddd-fundamental 增加对base目录下的基础类的单元测试]">
+      <created>1688555738143</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1688555738143</updated>
+    </task>
+    <task id="LOCAL-00004" summary="[ddd-fundamental 调整rule包下的目录结构]">
+      <created>1688556196744</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1688556196744</updated>
+    </task>
+    <task id="LOCAL-00005" summary="[ddd-fundamental 增加一个外部验证的功能代码和对外部验证服务的测试]">
+      <created>1688618145625</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1688618145625</updated>
+    </task>
+    <task id="LOCAL-00006" summary="[ddd-fundamental 增加一个外部验证的功能代码和对外部验证服务的测试]">
+      <created>1688618163626</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1688618163626</updated>
+    </task>
+    <task id="LOCAL-00007" summary="[ddd-fundamental 增加一个领域验证RuleManager测试，RuleBase测试,增加了一个RuleBase空对象的判断]">
+      <created>1688703295605</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1688703295605</updated>
+    </task>
+    <task id="LOCAL-00008" summary="[ddd-fundamental 修正ObjectNotNullRule的bug]">
+      <created>1688704260493</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1688704260493</updated>
+    </task>
+    <task id="LOCAL-00009" summary="[ddd-fundamental 修正ObjectNotNullRule的bug]">
+      <created>1688704698022</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1688704698022</updated>
+    </task>
+    <task id="LOCAL-00010" summary="test(Validator,ParameterValidators) 增加Validator,ParameterValidators的测试&#10;&#10;1.ValidatorTest用于测试Validator类&#10;2.ParameterValidatorsTest用于测试ParameterValidators类&#10;&#10;added ValidatorTest和ParameterValidatorsTest modified Validator,ParameterValidators 等">
+      <created>1689070020865</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1689070020865</updated>
+    </task>
+    <task id="LOCAL-00011" summary="test(RuleManager) 增加RuleManagerTest的测试&#10;&#10;1.RuleManagerTest用于测试RuleManager类用于测试&#10;&#10;added RuleManagerTest">
+      <created>1689073236741</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1689073236741</updated>
+    </task>
+    <task id="LOCAL-00012" summary="feature(ddd-share) 增加一个ddd-share共享的模块&#10;1、增加了Command,Query,Event等领域相关的组件和测试类&#10;2、增加了spring,mysql和rabbitMQ对事件总线的实现&#10;3、增加对Command和Query总线的内存实现">
+      <created>1689217314186</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1689217314186</updated>
+    </task>
+    <task id="LOCAL-00013" summary="feature(ddd-share) 增加一个ddd-share共享的模块&#10;1、增加了Command,Query,Event等领域相关的组件和测试类&#10;2、增加了spring,mysql和rabbitMQ对事件总线的实现&#10;3、增加对Command和Query总线的内存实现">
+      <created>1689217341850</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1689217341850</updated>
+    </task>
+    <task id="LOCAL-00014" summary="test(ddd-share) 增加Utils类,DomainEvent类的测试&#10;&#10;1、增加UtilsTest类对Utils工具的测试&#10;2、增加DomainEventTest类对DomainEvent领域事件类的测试&#10;3、增加Mockito依赖包，解决Mockito Could not initialize plugin: interface org.mockito.plugins.MockMaker 的问题&#10;&#10;added UtilsTest DomainEventTest modified pom.xml">
+      <created>1689222108913</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1689222108913</updated>
+    </task>
+    <task id="LOCAL-00015" summary="test(ddd-share) 增加Order类,Filter类,Filters类,AggregateRoot类的测试&#10;&#10;1、增加OrderTest类对Order类的测试&#10;2、增加FilterTest类对Filter类的测试&#10;3、增加FiltersTest类对Filters类进行测试&#10;4、增加AggregateRootTest类对AggregateRoot类进行测试&#10;5、修正Order类中方法的bug&#10;&#10;added OrderTest FilterTest FiltersTest AggregateRootTest">
+      <created>1689310763187</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1689310763187</updated>
+    </task>
+    <task id="LOCAL-00016" summary="test(ddd-share) 增加对SpringBoot环境的测试&#10;&#10;1、修复整理测试过程中缺少的注解&#10;2、增加启动类的注解扫描配置&#10;3、修复领域事件测试类由内部类抽取为公共类&#10;4、增加EnvironmentConfig类的测试&#10;5、增加Parameter类的测试&#10;&#10;added OrderTest FilterTest FiltersTest AggregateRootTest">
+      <created>1689328223264</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1689328223264</updated>
+    </task>
+    <task id="LOCAL-00017" summary="test(ddd-share) 增加对infrastructure/bus部分功能的测试&#10;&#10;1、增加bus部分command部分的测试&#10;2、增加bus部分event部分的测试&#10;3、增加bus部分query部分的测试&#10;4、修复测试中DomainEventSubscriberInformation没有实现equal和hashCode方法&#10;&#10;added infrastructure/bus测试部分目录, modified 存在bug的文件">
+      <created>1689507782313</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1689507782313</updated>
+    </task>
+    <task id="LOCAL-00018" summary="test(ddd-share) 增加对infrastructure/bus部分功能的测试和hibernate部分的测试&#10;&#10;1. 增加对spring事件部分的测试&#10;2. 增加对hibernate部分的测试">
+      <created>1689578324313</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1689578324313</updated>
+    </task>
+    <task id="LOCAL-00019" summary="test(ddd-share) 增加对infrastructure/bus部分功能的测试和hibernate部分的测试&#10;&#10;1. 增加对spring事件部分的测试&#10;2. 增加对hibernate部分的测试">
+      <created>1689583173101</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1689583173101</updated>
+    </task>
+    <task id="LOCAL-00020" summary="test(ddd-share) 增加对infrastructure/hibernate Criteria接口转化的测试&#10;1. 使用内存数据库对Criteria接口进行测试&#10;2. 增加了对SQL日志和参数的打印配置">
+      <created>1689608951293</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1689608951293</updated>
+    </task>
+    <task id="LOCAL-00021" summary="test(ddd-share) 增加对infrastructure/hibernate HibernateRepository类的测试&#10;1. 使用@DataJpaTest对HibernateRepository进行测试&#10;2. 增加一个StringIdentifier类主键.">
+      <created>1689659328359</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1689659328359</updated>
+    </task>
+    <task id="LOCAL-00022" summary="test(ddd-share) 增加对infrastructure/bus/event/rabbitmq的测试&#10;1. 增加对rabbitmq部分类的测试&#10;2. 考虑引入testContainer进行测试">
+      <created>1689757195247</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1689757195247</updated>
+    </task>
+    <task id="LOCAL-00023" summary="test(ddd-share) 抽取出一个创建代理数据源的方法&#10;1. 抽取出一个使用内存数据库的测试配置类&#10;2. 配置了数据源需要@AutoConfigureTestDatabase(replace= AutoConfigureTestDatabase.Replace.NONE)">
+      <created>1689937576986</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1689937576986</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="[ddd-fundamental 增加一个领域驱动设计的验证框架]" />
+    <MESSAGE value="[ddd-fundamental 增加一个AndRule和OrRule的实现和测试方法]" />
+    <MESSAGE value="[ddd-fundamental 增加对base目录下的基础类的单元测试]" />
+    <MESSAGE value="[ddd-fundamental 调整rule包下的目录结构]" />
+    <MESSAGE value="[ddd-fundamental 增加一个外部验证的功能代码和对外部验证服务的测试]" />
+    <MESSAGE value="[ddd-fundamental 增加一个领域验证RuleManager测试，RuleBase测试,增加了一个RuleBase空对象的判断]" />
+    <MESSAGE value="[ddd-fundamental 修正ObjectNotNullRule的bug]" />
+    <MESSAGE value="test(Validator,ParameterValidators) 增加Validator,ParameterValidators的测试&#10;&#10;1.ValidatorTest用于测试Validator类&#10;2.ParameterValidatorsTest用于测试ParameterValidators类&#10;&#10;added ValidatorTest和ParameterValidatorsTest modified Validator,ParameterValidators 等" />
+    <MESSAGE value="test(RuleManager) 增加RuleManagerTest的测试&#10;&#10;1.RuleManagerTest用于测试RuleManager类用于测试&#10;&#10;added RuleManagerTest" />
+    <MESSAGE value="feature(ddd-share) 增加一个ddd-share共享的模块&#10;1、增加了Command,Query,Event等领域相关的组件和测试类&#10;2、增加了spring,mysql和rabbitMQ对事件总线的实现&#10;3、增加对Command和Query总线的内存实现" />
+    <MESSAGE value="test(ddd-share) 增加Utils类,DomainEvent类的测试&#10;&#10;1、增加UtilsTest类对Utils工具的测试&#10;2、增加DomainEventTest类对DomainEvent领域事件类的测试&#10;3、增加Mockito依赖包，解决Mockito Could not initialize plugin: interface org.mockito.plugins.MockMaker 的问题&#10;&#10;added UtilsTest DomainEventTest modified pom.xml" />
+    <MESSAGE value="test(ddd-share) 增加Order类,Filter类,Filters类,AggregateRoot类的测试&#10;&#10;1、增加OrderTest类对Order类的测试&#10;2、增加FilterTest类对Filter类的测试&#10;3、增加FiltersTest类对Filters类进行测试&#10;4、增加AggregateRootTest类对AggregateRoot类进行测试&#10;5、修正Order类中方法的bug&#10;&#10;added OrderTest FilterTest FiltersTest AggregateRootTest" />
+    <MESSAGE value="test(ddd-share) 增加对SpringBoot环境的测试&#10;&#10;1、修复整理测试过程中缺少的注解&#10;2、增加启动类的注解扫描配置&#10;3、修复领域事件测试类由内部类抽取为公共类&#10;4、增加EnvironmentConfig类的测试&#10;5、增加Parameter类的测试&#10;&#10;added OrderTest FilterTest FiltersTest AggregateRootTest" />
+    <MESSAGE value="test(ddd-share) 增加对infrastructure/bus部分功能的测试&#10;&#10;1、增加bus部分command部分的测试&#10;2、增加bus部分event部分的测试&#10;3、增加bus部分query部分的测试&#10;4、修复测试中DomainEventSubscriberInformation没有实现equal和hashCode方法&#10;&#10;added infrastructure/bus测试部分目录, modified 存在bug的文件" />
+    <MESSAGE value="test(ddd-share) 增加对infrastructure/bus部分功能的测试和hibernate部分的测试&#10;&#10;1. 增加对spring事件部分的测试&#10;2. 增加对hibernate部分的测试" />
+    <MESSAGE value="test(ddd-share) 增加对infrastructure/hibernate Criteria接口转化的测试&#10;1. 使用内存数据库对Criteria接口进行测试&#10;2. 增加了对SQL日志和参数的打印配置" />
+    <MESSAGE value="test(ddd-share) 增加对infrastructure/hibernate HibernateRepository类的测试&#10;1. 使用@DataJpaTest对HibernateRepository进行测试&#10;2. 增加一个StringIdentifier类主键." />
+    <MESSAGE value="test(ddd-share) 增加对infrastructure/bus/event/rabbitmq的测试&#10;1. 增加对rabbitmq部分类的测试&#10;2. 考虑引入testContainer进行测试" />
+    <MESSAGE value="test(ddd-share) 抽取出一个创建代理数据源的方法&#10;1. 抽取出一个使用内存数据库的测试配置类&#10;2. 配置了数据源需要@AutoConfigureTestDatabase(replace= AutoConfigureTestDatabase.Replace.NONE)" />
+    <option name="LAST_COMMIT_MESSAGE" value="test(ddd-share) 抽取出一个创建代理数据源的方法&#10;1. 抽取出一个使用内存数据库的测试配置类&#10;2. 配置了数据源需要@AutoConfigureTestDatabase(replace= AutoConfigureTestDatabase.Replace.NONE)" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/ddd-validation/src/main/java/org/ddd/fundamental/validation/base/ValidatableBase.java</url>
+          <line>12</line>
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/ddd-validation/src/main/java/org/ddd/fundamental/validation/rule/impl/ObjectNotNullRule.java</url>
+          <line>24</line>
+          <option name="timeStamp" value="11" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/ddd-validation/src/main/java/org/ddd/fundamental/validation/rule/impl/RuleManager.java</url>
+          <line>39</line>
+          <option name="timeStamp" value="12" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/ddd-validation/src/test/java/org/ddd/fundamental/validation/base/OrderValidationTest.java</url>
+          <line>58</line>
+          <option name="timeStamp" value="13" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/ddd-validation/src/main/java/org/ddd/fundamental/validation/rule/impl/ObjectNotNullRule.java</url>
+          <line>44</line>
+          <option name="timeStamp" value="16" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/ddd-validation/src/main/java/org/ddd/fundamental/validation/rule/impl/EmbeddedObjectRule.java</url>
+          <line>26</line>
+          <option name="timeStamp" value="17" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/ddd-validation/src/test/java/org/ddd/fundamental/validation/base/impl/RuleManagerTest.java</url>
+          <line>53</line>
+          <option name="timeStamp" value="19" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/ddd-validation/src/main/java/org/ddd/fundamental/validation/rule/impl/RuleManager.java</url>
+          <line>43</line>
+          <option name="timeStamp" value="20" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/ddd-share/src/test/java/org/ddd/fundamental/share/domain/UtilsTest.java</url>
+          <line>49</line>
+          <option name="timeStamp" value="25" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/ddd-share/src/main/java/org/ddd/fundamental/share/domain/creteria/Order.java</url>
+          <line>16</line>
+          <option name="timeStamp" value="26" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/ddd-share/src/test/java/org/ddd/fundamental/share/infrastructure/bus/event/DomainEventsInformationTest.java</url>
+          <line>53</line>
+          <option name="timeStamp" value="28" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/ddd-share/src/test/java/org/ddd/fundamental/share/infrastructure/utils/HibernateUtils.java</url>
+          <line>13</line>
+          <option name="timeStamp" value="35" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/ddd-share/src/test/java/org/ddd/fundamental/share/infrastructure/hibernate/HibernateCriteriaConverterTest.java</url>
+          <line>93</line>
+          <option name="timeStamp" value="46" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/ddd-share/src/test/java/org/ddd/fundamental/share/infrastructure/hibernate/persistent/FundamentalHibernateConfiguration.java</url>
+          <line>51</line>
+          <option name="timeStamp" value="50" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/ddd-share/src/test/java/org/ddd/fundamental/share/infrastructure/hibernate/persistent/TestHibernateConfiguration.java</url>
+          <line>51</line>
+          <option name="timeStamp" value="51" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>

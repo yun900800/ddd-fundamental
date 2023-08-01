@@ -10,6 +10,7 @@
   <modules>
     <module>ddd-validation</module>
     <module>ddd-share</module>
+    <module>ddd-app</module>
   </modules>
   <packaging>pom</packaging>
   <parent>
