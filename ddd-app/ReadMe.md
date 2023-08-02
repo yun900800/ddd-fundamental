@@ -55,4 +55,7 @@ done
 
 4. 理解在rabbitMq中如何使用一个队列多个消费者来消费,理解exchange,queue,routingKey它们之间的关系
   一个队列对应多个消费者,一个exchange对应多个queue;以及message Queue和pub_sub之间的怎么应用.
-5. 
+5. 在监听器中存在大数据操作的时候,最好放到线程当中去做,这里数据库有一个bug,显示的数据条数不是很匹配
+6. 在测试发送数据的时候,每个连接一个channel发送效果最快(workers=20, throughput=67605),但是比较消耗资源
+    其次是单个连接普通IO(workers=20, throughput=22375),最后是单个连接NIO(workers=20, throughput=15979),共享的连接效果最差.
+7. 

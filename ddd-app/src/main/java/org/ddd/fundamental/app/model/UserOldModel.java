@@ -6,9 +6,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "user_model")
-public class UserModel implements Cloneable{
-
+@Table(name = "user_old_model")
+public class UserOldModel {
     @Id
     private String id;
 
@@ -18,11 +17,11 @@ public class UserModel implements Cloneable{
     @Column(name = "password")
     private String password;
 
-    public UserModel(){
+    public UserOldModel(){
 
     }
 
-    public UserModel(String userName,String password) {
+    public UserOldModel(String userName,String password) {
         this.userName = userName;
         this.password = password;
     }
@@ -49,16 +48,5 @@ public class UserModel implements Cloneable{
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    @Override
-    public UserModel clone() {
-        UserModel userModel;
-        try {
-            userModel = (UserModel) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new IllegalStateException(e);
-        }
-        return userModel;
     }
 }

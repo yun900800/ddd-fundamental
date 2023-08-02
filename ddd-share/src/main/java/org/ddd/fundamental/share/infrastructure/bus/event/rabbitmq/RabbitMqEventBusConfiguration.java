@@ -53,11 +53,13 @@ public class RabbitMqEventBusConfiguration {
         TopicExchange domainEventsExchange           = new TopicExchange(exchangeName, true, false);
         TopicExchange    retryDomainEventsExchange      = new TopicExchange(retryExchangeName, true, false);
         TopicExchange    deadLetterDomainEventsExchange = new TopicExchange(deadLetterExchangeName, true, false);
+        //创建三个exchange
         List<Declarable> declarables                    = new ArrayList<>();
         declarables.add(domainEventsExchange);
         declarables.add(retryDomainEventsExchange);
         declarables.add(deadLetterDomainEventsExchange);
 
+        //创建三个exchange对应的绑定
         Collection<Declarable> queuesAndBindings = declareQueuesAndBindings(
                 domainEventsExchange,
                 retryDomainEventsExchange,
@@ -79,12 +81,15 @@ public class RabbitMqEventBusConfiguration {
             String retryQueueName      = RabbitMqQueueNameFormatter.formatRetry(information);
             String deadLetterQueueName = RabbitMqQueueNameFormatter.formatDeadLetter(information);
 
+            //创建三个队列的名字
             Queue queue = QueueBuilder.durable(queueName).build();
             Queue retryQueue = QueueBuilder.durable(retryQueueName).withArguments(
                     retryQueueArguments(domainEventsExchange, queueName)
             ).build();
             Queue deadLetterQueue = QueueBuilder.durable(deadLetterQueueName).build();
 
+
+            //创建以队列名称为route-key的绑定
             Binding fromExchangeSameQueueBinding = BindingBuilder
                     .bind(queue)
                     .to(domainEventsExchange)
@@ -99,6 +104,7 @@ public class RabbitMqEventBusConfiguration {
                     .bind(deadLetterQueue)
                     .to(deadLetterDomainEventsExchange)
                     .with(queueName);
+
 
             List<Binding> fromExchangeDomainEventsBindings = information.subscribedEvents().stream().map(
                     domainEventClass -> {

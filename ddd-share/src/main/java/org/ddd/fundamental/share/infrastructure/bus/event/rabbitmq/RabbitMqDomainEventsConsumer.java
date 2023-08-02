@@ -44,10 +44,10 @@ public final class RabbitMqDomainEventsConsumer {
     }
 
     public void consume() {
+
         AbstractMessageListenerContainer container = (AbstractMessageListenerContainer) registry.getListenerContainer(
                 CONSUMER_NAME
         );
-
         container.addQueueNames(information.rabbitMqFormattedNames());
 
         container.start();
