@@ -11,9 +11,14 @@ import org.springframework.context.annotation.Configuration;
 public class ConsumerConfig {
     private static final String MESSAGE_QUEUE = "pizza-message-queue";
 
+    private static final String QUEUE_MESSAGES_DLQ = "pizza-message-queue.dlq";
+
     private static final String MESSAGE_QUEUE1 = "pizza-message-queue1";
 
     private static final String MESSAGE_QUEUE2 = "pizza-message-queue2";
+
+    public static final String PUB_SUB_TEXT_ERROR_QUEUE = "text-error-queue";
+    public static final String PUB_SUB_TEXT_ERROR_QUEUE_DLQ = "text-error-queue.dlq";
 
 //    @Bean
 //    public Queue queueConsume() {
@@ -24,7 +29,10 @@ public class ConsumerConfig {
     public SimpleMessageListenerContainer container(ConnectionFactory connectionFactory, MessageListenerAdapter listenerAdapter) {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
-        container.setQueueNames(new String[]{MESSAGE_QUEUE, MESSAGE_QUEUE1, MESSAGE_QUEUE2});
+        container.setQueueNames(new String[]{
+                MESSAGE_QUEUE, MESSAGE_QUEUE1, MESSAGE_QUEUE2,
+                QUEUE_MESSAGES_DLQ
+        });
         container.setMessageListener(listenerAdapter);
         return container;
     }

@@ -15,4 +15,6 @@ public class EmailListener {
         String msg = new String(message.getBody());
         LOGGER.info("message:{}",msg);
     }
+
+
 }

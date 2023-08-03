@@ -44,6 +44,16 @@ public class DockerController {
     }
 
     @RestController
+    public class ErrorUserController {
+        @Autowired
+        private UserService userService;
+        @GetMapping(value = "/error-register")
+        public void registerUser() {
+            userService.errorRegisterUser();
+        }
+    }
+
+    @RestController
     public class BeachMarkController {
         @Autowired
         private BeachMarkService beachMarkService;

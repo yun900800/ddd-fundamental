@@ -79,4 +79,19 @@ public class UserService {
         long cost = (System.currentTimeMillis() - startTime)/1000;
         LOGGER.info("请求处理时间:"+cost+"s");
     }
+
+
+    @Transactional
+    public void errorRegisterUser() {
+        service.submit(()->{
+            String userName = uuidGenerator.generate();
+            String password = userName.substring(0,20);
+            try {
+                String json = OkHttpClientUtils.asyncRegister(userName,password);
+                String url = "http://localhost:9000/register";
+                String ret = OkHttpClientUtils.post(url,json);
+            } catch (Exception e){
+            }
+        });
+    }
 }
