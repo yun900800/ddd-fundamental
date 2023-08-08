@@ -20,8 +20,8 @@ import java.util.Map;
 
 @Service
 public final class RabbitMqDomainEventsConsumer {
-    private final String                      CONSUMER_NAME          = "domain_events_consumer";
-    private final int                         MAX_RETRIES            = 2;
+    private final static String                      CONSUMER_NAME          = "domain_events_consumer";
+    private final static int                         MAX_RETRIES            = 2;
     private final DomainEventJsonDeserializer deserializer;
     private final ApplicationContext context;
     private final RabbitMqPublisher           publisher;

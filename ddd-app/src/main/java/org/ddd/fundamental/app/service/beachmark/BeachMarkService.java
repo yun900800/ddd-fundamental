@@ -21,7 +21,7 @@ import java.util.stream.IntStream;
 @Service
 public class BeachMarkService {
 
-    private static final Logger log = LoggerFactory.getLogger(BeachMarkService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BeachMarkService.class);
 
     @Autowired
     private Parameter config;
@@ -41,7 +41,7 @@ public class BeachMarkService {
             factory.setUsername(config.get("RABBITMQ_LOGIN"));
             factory.setPassword(config.get("RABBITMQ_PASSWORD"));
         } catch (ParameterNotExist e){
-            log.error("error,{}", e.getStackTrace());
+            LOGGER.error("error,{}", e.getStackTrace());
         }
 
         LongSummaryStatistics summary = IntStream.range(0, 9)
@@ -49,7 +49,7 @@ public class BeachMarkService {
                 .map(p -> p.call())
                 .collect(Collectors.summarizingLong((l) -> l));
 
-        log.info("[I66] workers={}, throughput={}", workerCount, (int)Math.floor(summary.getAverage()));
+        LOGGER.info("[I66] workers={}, throughput={}", workerCount, (int)Math.floor(summary.getAverage()));
     }
 
     @Transactional(transactionManager = "transactionManager")
@@ -65,7 +65,7 @@ public class BeachMarkService {
                 .map(p -> p.call())
                 .collect(Collectors.summarizingLong((l) -> l));
 
-        log.info("[I66] workers={}, throughput={}", workerCount, (int)Math.floor(summary.getAverage()));
+        LOGGER.info("[I66] workers={}, throughput={}", workerCount, (int)Math.floor(summary.getAverage()));
     }
 
     @Transactional(transactionManager = "transactionManager")
@@ -75,6 +75,6 @@ public class BeachMarkService {
                 .map(p -> p.call())
                 .collect(Collectors.summarizingLong((l) -> l));
 
-        log.info("[I66] workers={}, throughput={}", workerCount, (int)Math.floor(summary.getAverage()));
+        LOGGER.info("[I66] workers={}, throughput={}", workerCount, (int)Math.floor(summary.getAverage()));
     }
 }

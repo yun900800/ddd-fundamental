@@ -7,6 +7,10 @@ import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfigurat
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 
+
+/**
+ * App项目启动工程
+ */
 @SpringBootApplication(exclude = HibernateJpaAutoConfiguration.class )
 @ComponentScan(
         includeFilters = @ComponentScan.Filter(type = FilterType.ANNOTATION, classes = Service.class),
@@ -14,6 +18,10 @@ import org.springframework.context.annotation.FilterType;
 )
 public class AppApplication {
 
+    /**
+     *
+     * @param args
+     */
     public static void main(String[] args) {
         SpringApplication.run(AppApplication.class, args);
     }

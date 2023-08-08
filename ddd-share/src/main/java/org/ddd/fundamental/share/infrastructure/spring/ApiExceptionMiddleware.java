@@ -30,8 +30,8 @@ public final class ApiExceptionMiddleware implements Filter {
             ServletResponse response,
             FilterChain chain
     ) throws ServletException {
-        HttpServletRequest httpRequest  = ((HttpServletRequest) request);
-        HttpServletResponse httpResponse = ((HttpServletResponse) response);
+        HttpServletRequest httpRequest  = (HttpServletRequest) request;
+        HttpServletResponse httpResponse = (HttpServletResponse) response;
 
         try {
             Object possibleController = (

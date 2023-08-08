@@ -11,7 +11,7 @@ import java.util.concurrent.*;
 
 public class ConnectionPerChannelPublisher implements Callable<Long> {
 
-    private static final Logger log = LoggerFactory.getLogger(ConnectionPerChannelPublisher.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ConnectionPerChannelPublisher.class);
     private final ConnectionFactory factory;
     private final int workerCount;
     private final int iterations;
@@ -39,11 +39,11 @@ public class ConnectionPerChannelPublisher implements Callable<Long> {
             ExecutorService executor = new ThreadPoolExecutor(workerCount, workerCount,
                     0, TimeUnit.SECONDS, new ArrayBlockingQueue<>(workerCount, true));
             long start = System.currentTimeMillis();
-            log.info("[I61] Starting {} workers...", workers.size());
+            LOGGER.info("[I61] Starting {} workers...", workers.size());
             executor.invokeAll(workers);
             if (counter.await(5, TimeUnit.MINUTES)) {
                 long elapsed = System.currentTimeMillis() - start;
-                log.info("[I59] Tasks completed: #workers={}, #iterations={}, elapsed={}ms, stats={}", workerCount, iterations, elapsed);
+                LOGGER.info("[I59] Tasks completed: #workers={}, #iterations={}, elapsed={}ms, stats={}", workerCount, iterations, elapsed);
                 return throughput(workerCount, iterations, elapsed);
             } else {
                 throw new RuntimeException("[E61] Timeout waiting workers to complete");

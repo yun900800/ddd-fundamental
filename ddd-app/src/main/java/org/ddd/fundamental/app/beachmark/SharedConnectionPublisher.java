@@ -17,20 +17,20 @@ import java.util.stream.Collectors;
 
 @Service
 public class SharedConnectionPublisher {
-    private static final Logger log =
+    private static final Logger LOGGER =
             LoggerFactory.getLogger(SharedConnectionPublisher.class);
 
     public void sharedConnection(ConnectionFactory factory, int workerCount,int iterations,
                                  int payloadSize,int channelsPerConnection,long extraWork) {
         try {
-            log.info("[I35] Creating {} worker{}...", workerCount, (workerCount > 1)?"s":"");
+            LOGGER.info("[I35] Creating {} worker{}...", workerCount, (workerCount > 1)?"s":"");
             List<Worker> workers = new ArrayList<>();
             CountDownLatch counter = new CountDownLatch(workerCount);
 
             int connCount = (workerCount + channelsPerConnection-1)/channelsPerConnection;
             List<Connection> connections = new ArrayList<>(connCount);
             for( int i =0 ; i< connCount; i++) {
-                log.info("[I59] Creating connection#{}", i);
+                LOGGER.info("[I59] Creating connection#{}", i);
                 connections.add(factory.newConnection());
             }
 
@@ -40,13 +40,13 @@ public class SharedConnectionPublisher {
 
             ExecutorService executor = new ThreadPoolExecutor(workerCount, workerCount, 0, TimeUnit.SECONDS, new ArrayBlockingQueue<>(workerCount, true));
             long start = System.currentTimeMillis();
-            log.info("[I61] Starting workers...");
+            LOGGER.info("[I61] Starting workers...");
             List<Future<WorkerResult>> results = executor.invokeAll(workers);
 
-            log.info("[I55] Waiting workers to complete...");
+            LOGGER.info("[I55] Waiting workers to complete...");
             if( counter.await(5, TimeUnit.MINUTES) ) {
                 long elapsed = System.currentTimeMillis() - start ;
-                log.info("[I59] Tasks completed: #workers={}, #iterations={}, elapsed={}ms",
+                LOGGER.info("[I59] Tasks completed: #workers={}, #iterations={}, elapsed={}ms",
                         workerCount,
                         iterations,
                         elapsed);
@@ -56,12 +56,12 @@ public class SharedConnectionPublisher {
                         .map(r -> r.elapsed)
                         .collect(Collectors.summarizingLong((l) -> l));
 
-                log.info("[I74] stats={}", summary);
-                log.info("[I79] result: workers={}, throughput={}",workerCount,throughput(workerCount,iterations,elapsed));
+                LOGGER.info("[I74] stats={}", summary);
+                LOGGER.info("[I79] result: workers={}, throughput={}",workerCount,throughput(workerCount,iterations,elapsed));
 
             }
             else {
-                log.error("[E61] Timeout waiting workers to complete");
+                LOGGER.error("[E61] Timeout waiting workers to complete");
             }
         } catch(Exception ex) {
             throw new RuntimeException(ex);

@@ -29,6 +29,8 @@ public class UserService {
 
     private  static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
+    private static final double AMOUNT = 50.00;
+
     @Autowired
     private UserRepository repository;
 
@@ -78,6 +80,7 @@ public class UserService {
                     String url = "http://localhost:9000/register";
                     String ret = OkHttpClientUtils.post(url,json);
                 } catch (Exception e){
+                    e.printStackTrace();
                 }
             });
         }
@@ -96,6 +99,7 @@ public class UserService {
                 String url = "http://localhost:9000/register";
                 String ret = OkHttpClientUtils.post(url,json);
             } catch (Exception e){
+                e.printStackTrace();
             }
         });
     }
@@ -105,13 +109,11 @@ public class UserService {
         UserModel model = new UserModel(name, password);
         model.setId(uuidGenerator.generate());
         repository.save(model);
-
-
     }
 
     @Transactional(transactionManager = "note-transactionManager")
     public void saveOrder(String name) {
-        Order order = new Order(name,50.0);
+        Order order = new Order(name,AMOUNT);
         order.setId(uuidGenerator.generate());
         orderRepository.save(order);
     }

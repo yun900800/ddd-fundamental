@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 public final class Validator {
-    private static final HashMap<String, FieldValidator> validators = new HashMap<String, FieldValidator>() {{
+    private static final HashMap<String, FieldValidator> VALIDATORS = new HashMap<String, FieldValidator>() {{
         put("required", new RequiredValidator());
         put("string", new StringValidator());
         put("not_empty", new NotEmptyValidator());
@@ -26,7 +26,7 @@ public final class Validator {
             String[] rules = entry.getValue().split("\\|");
 
             for (String rule : rules) {
-                FieldValidator validator = validators.get(rule);
+                FieldValidator validator = VALIDATORS.get(rule);
 
                 if (null == validator) {
                     throw new ValidatorNotExist(rule);

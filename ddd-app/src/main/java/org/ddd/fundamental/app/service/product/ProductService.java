@@ -22,7 +22,7 @@ public class ProductService {
 
     private  static final Logger LOGGER = LoggerFactory.getLogger(ProductService.class);
 
-    private static final int requestQty = 100000;
+    private static final int REQUEST_QTY = 100000;
 
     private static final int THREAD_COUNT = 500;
 
@@ -158,9 +158,9 @@ public class ProductService {
     public int batchSnatchProduct() {
         //initProductCount();
         redisTemplate.delete("77e50cf7-de9b-4a58-84b9-aee1a219734d");
-        CountDownLatch latch = new CountDownLatch(requestQty);
+        CountDownLatch latch = new CountDownLatch(REQUEST_QTY);
         long startTime = System.currentTimeMillis();
-        for (int i = 0 ;i <requestQty; i++) {
+        for (int i = 0 ;i <REQUEST_QTY; i++) {
             service.submit(()->{
                 try {
                     String json = "{}";
@@ -169,6 +169,7 @@ public class ProductService {
                     String ret = OkHttpClientUtils.post(url,json);
                     latch.countDown();
                 } catch (Exception e){
+                    e.printStackTrace();
                 }
             });
         }
@@ -178,13 +179,13 @@ public class ProductService {
             e.printStackTrace();
         }
 
-        long cost = (System.currentTimeMillis() - startTime);
+        long cost = System.currentTimeMillis() - startTime;
         LOGGER.info("请求处理时间:{}s",new BigDecimal(cost).divide(BigDecimal.valueOf(1000L),2,BigDecimal.ROUND_DOWN).toBigInteger());
 
 
-        LOGGER.info("接口的吞吐量是:{}/s",new BigDecimal(requestQty*1000).divide(BigDecimal.valueOf(cost),
+        LOGGER.info("接口的吞吐量是:{}/s",new BigDecimal(REQUEST_QTY*1000).divide(BigDecimal.valueOf(cost),
                 2,BigDecimal.ROUND_DOWN).toBigInteger());
-        LOGGER.info("每个请求平均耗时是:{}",BigDecimal.valueOf(cost).divide(BigDecimal.valueOf(requestQty),
+        LOGGER.info("每个请求平均耗时是:{}",BigDecimal.valueOf(cost).divide(BigDecimal.valueOf(REQUEST_QTY),
                 2,BigDecimal.ROUND_DOWN).toBigInteger());
         LOGGER.info("hit to cache count:{}",cacheSelectCount.get());
         LOGGER.info("hit to db count:{}",dbSelectCount.get());

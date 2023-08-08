@@ -12,7 +12,7 @@ import java.util.concurrent.*;
 import java.util.stream.Collectors;
 
 public class SingleConnectionPublisher implements Callable<Long> {
-    private static final Logger log = LoggerFactory.getLogger(SingleConnectionPublisher.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SingleConnectionPublisher.class);
 
     private final ConnectionFactory factory;
     private final int workerCount;
@@ -41,7 +41,7 @@ public class SingleConnectionPublisher implements Callable<Long> {
 
             ExecutorService executor = new ThreadPoolExecutor(workerCount, workerCount, 0, TimeUnit.SECONDS, new ArrayBlockingQueue<>(workerCount, true));
             long start = System.currentTimeMillis();
-            log.info("[I61] Starting {} workers...", workers.size());
+            LOGGER.info("[I61] Starting {} workers...", workers.size());
             List<Future<Worker.WorkerResult>> results = executor.invokeAll(workers);
 
             if( counter.await(5, TimeUnit.MINUTES) ) {
@@ -52,7 +52,7 @@ public class SingleConnectionPublisher implements Callable<Long> {
                         .map(r -> r.elapsed)
                         .collect(Collectors.summarizingLong((l) -> l));
 
-                log.info("[I59] Tasks completed: #workers={}, #iterations={}, elapsed={}ms, stats={}",
+                LOGGER.info("[I59] Tasks completed: #workers={}, #iterations={}, elapsed={}ms, stats={}",
                         workerCount,
                         iterations,
                         elapsed, summary);

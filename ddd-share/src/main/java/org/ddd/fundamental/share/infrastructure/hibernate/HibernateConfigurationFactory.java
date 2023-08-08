@@ -27,9 +27,9 @@ import static net.ttddyy.dsproxy.listener.logging.CommonsLogLevel.INFO;
 public final class HibernateConfigurationFactory {
     private final ResourcePatternResolver resourceResolver;
 
-    private final String HSQL_DRIVER = org.hsqldb.jdbcDriver.class.getName();
+    private final static String HSQL_DRIVER = org.hsqldb.jdbcDriver.class.getName();
 
-    private final String HSQL_URL = "jdbc:hsqldb:mem:devnote";
+    private final static String HSQL_URL = "jdbc:hsqldb:mem:devnote";
 
     public ResourcePatternResolver getResourceResolver() {
         return resourceResolver;

@@ -50,7 +50,9 @@ public class TextListener {
         //version3 设置一个限定的值
         Integer retriesCnt = (Integer) failedMessage.getMessageProperties()
                 .getHeaders().get(HEADER_X_RETRIES_COUNT);
-        if (retriesCnt == null) retriesCnt = 1;
+        if (retriesCnt == null)  {
+            retriesCnt = 1;
+        };
         if (retriesCnt > MAX_RETRIES_COUNT) {
             LOGGER.info("Discarding message");
             LOGGER.info("Sending message to the parking lot queue");
