@@ -107,6 +107,11 @@
           <artifactId>maven-project-info-reports-plugin</artifactId>
           <version>3.0.0</version>
         </plugin>
+<!--        <plugin>-->
+<!--          <groupId>io.github.dathin</groupId>-->
+<!--          <artifactId>jhusky</artifactId>-->
+<!--          <version>1.0.9</version> &lt;!&ndash;  Currently this is the latest version  &ndash;&gt;-->
+<!--        </plugin>-->
       </plugins>
     </pluginManagement>
   </build>

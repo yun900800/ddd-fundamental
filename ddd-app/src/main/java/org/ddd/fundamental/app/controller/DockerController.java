@@ -1,15 +1,25 @@
 package org.ddd.fundamental.app.controller;
 
 import org.ddd.fundamental.app.api.user.UserRequest;
+import org.ddd.fundamental.app.exception.MyCustomException;
 import org.ddd.fundamental.app.service.beachmark.BeachMarkService;
+import org.ddd.fundamental.app.service.product.ProductService;
 import org.ddd.fundamental.app.service.user.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
+
+import org.springframework.http.HttpStatus;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
 
 @Controller
 public class DockerController {
+
+    private  static final Logger LOGGER = LoggerFactory.getLogger(DockerController.class);
 
 
     @RestController
@@ -30,6 +40,13 @@ public class DockerController {
 
             userService.registerUser(request.getUserName(),
                     request.getPassword());
+        }
+
+        @PostMapping(value = "/test-multiple-data-source")
+        public void testMultiPleDataSource(@RequestBody UserRequest request) {
+            userService.saveUserModel(request.getUserName(),
+                    request.getPassword());
+            userService.saveOrder(request.getUserName());
         }
     }
 
@@ -85,5 +102,50 @@ public class DockerController {
                                      @PathVariable("payloadSize")int payloadSize ) {
             beachMarkService.singleConnectionNio(workerCount,iterations,payloadSize);
         }
+    }
+
+    @RestController
+    public class ProductController {
+
+        @Autowired
+        private ProductService productService;
+        @PostMapping(value = "/snatchProduct/{productId}")
+        public void snatchProduct(@PathVariable("productId") String productId) {
+            productService.snatchProduct(productId);
+        }
+
+        @PostMapping(value = "/snatchProduct")
+        public void batchSnatchProduct() {
+            productService.initProductCount();
+            productService.batchSnatchProduct();
+        }
+
+    }
+
+    @RestController
+    public class ErrorOrExceptionController {
+
+        @ExceptionHandler({ MyCustomException.class})
+        public void handleException() {
+            LOGGER.info("this is a exception handler for a special controller");
+        }
+
+        @GetMapping(value = "/exception")
+        public void exceptionRequest() {
+            throw new IllegalArgumentException();
+            //throw new MyCustomException("error request");
+        }
+
+        @GetMapping(value = "/exception1")
+        public void exceptionRequest1() {
+            try {
+                int ret = 10 / 0;
+            }catch (RuntimeException e){
+                throw new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "除数不能为0呀，兄弟", e);
+            }
+            //throw new MyCustomException("error request");
+        }
+
     }
 }

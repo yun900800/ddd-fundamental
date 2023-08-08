@@ -32,7 +32,7 @@ public class BeachMarkService {
     @Autowired
     private SharedConnectionPublisher sharedConnectionPublisher;
 
-    @Transactional
+    @Transactional(transactionManager = "transactionManager")
     public void connectionPerChannel(int workerCount, int iterations, int payloadSize){
         ConnectionFactory factory = new ConnectionFactory();
         try {
@@ -52,13 +52,13 @@ public class BeachMarkService {
         log.info("[I66] workers={}, throughput={}", workerCount, (int)Math.floor(summary.getAverage()));
     }
 
-    @Transactional
+    @Transactional(transactionManager = "transactionManager")
     public void sharedConnection(int workerCount, int iterations, int payloadSize) {
         sharedConnectionPublisher.sharedConnection(connectionFactory.getRabbitConnectionFactory(),
                 workerCount,iterations,payloadSize,5,5);
     }
 
-    @Transactional
+    @Transactional(transactionManager = "transactionManager")
     public void singleConnection(int workerCount, int iterations, int payloadSize) {
         LongSummaryStatistics summary = IntStream.range(0, 9)
                 .mapToObj(idx -> new SingleConnectionPublisher(connectionFactory.getRabbitConnectionFactory(), workerCount, iterations, payloadSize))
@@ -68,7 +68,7 @@ public class BeachMarkService {
         log.info("[I66] workers={}, throughput={}", workerCount, (int)Math.floor(summary.getAverage()));
     }
 
-    @Transactional
+    @Transactional(transactionManager = "transactionManager")
     public void singleConnectionNio(int workerCount, int iterations, int payloadSize) {
         LongSummaryStatistics summary = IntStream.range(0, 9)
                 .mapToObj(idx -> new SingleConnectionPublisherNio(connectionFactory.getRabbitConnectionFactory(), workerCount, iterations, payloadSize))

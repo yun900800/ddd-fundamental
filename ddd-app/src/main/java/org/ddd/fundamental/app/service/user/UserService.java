@@ -6,6 +6,8 @@ import org.ddd.fundamental.app.listener.UserEventListener;
 import org.ddd.fundamental.app.model.UserEvent;
 import org.ddd.fundamental.app.model.UserModel;
 import org.ddd.fundamental.app.model.UserOldModel;
+import org.ddd.fundamental.app.note.model.Order;
+import org.ddd.fundamental.app.note.repository.OrderRepository;
 import org.ddd.fundamental.app.repository.user.UserOldRepository;
 import org.ddd.fundamental.app.repository.user.UserRepository;
 import org.ddd.fundamental.share.domain.Service;
@@ -31,6 +33,9 @@ public class UserService {
     private UserRepository repository;
 
     @Autowired
+    private OrderRepository orderRepository;
+
+    @Autowired
     private UserOldRepository userOldRepository;
 
     @Autowired
@@ -50,7 +55,7 @@ public class UserService {
     }
 
 
-    @Transactional
+    @Transactional(transactionManager = "transactionManager")
     public void registerUser(String name, String password) {
         UserModel model = new UserModel(name, password);
         model.setId(uuidGenerator.generate());
@@ -61,7 +66,7 @@ public class UserService {
         rabbitMqPublisher.publish(new UserEvent(name,password,model.getId()),"domain_events");
         //consumer.consume();
     }
-    @Transactional
+    @Transactional(transactionManager = "transactionManager")
     public void asyncRegisterUser() {
         long startTime = System.currentTimeMillis();
         for (int i = 0 ;i <100000; i++) {
@@ -81,7 +86,7 @@ public class UserService {
     }
 
 
-    @Transactional
+    @Transactional(transactionManager = "transactionManager")
     public void errorRegisterUser() {
         service.submit(()->{
             String userName = uuidGenerator.generate();
@@ -93,5 +98,21 @@ public class UserService {
             } catch (Exception e){
             }
         });
+    }
+
+    @Transactional(transactionManager = "transactionManager")
+    public void saveUserModel(String name, String password) {
+        UserModel model = new UserModel(name, password);
+        model.setId(uuidGenerator.generate());
+        repository.save(model);
+
+
+    }
+
+    @Transactional(transactionManager = "note-transactionManager")
+    public void saveOrder(String name) {
+        Order order = new Order(name,50.0);
+        order.setId(uuidGenerator.generate());
+        orderRepository.save(order);
     }
 }

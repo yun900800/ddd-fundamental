@@ -34,7 +34,7 @@ public class TextListener {
     public void consume1(Message message) throws Exception{
         String msg = new String(message.getBody());
         LOGGER.info("consume1 message:{}",msg);
-        throw new RuntimeException("error handler!");
+        //throw new RuntimeException("error handler!");
     }
 
     @RabbitListener(queues = "text-error-queue.dlq")
