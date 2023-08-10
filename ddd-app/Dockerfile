@@ -1,4 +1,5 @@
-FROM maven:3-openjdk-11-slim
+FROM adoptopenjdk/openjdk11:alpine-jre
+###以上的镜像是最小的镜像
 EXPOSE 8080
 ARG JAR_FILE=target/ddd-app-1.0-SNAPSHOT.jar
 ADD ${JAR_FILE} app.jar

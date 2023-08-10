@@ -2,6 +2,7 @@ version: "3.8"
 
 services:
   mysqldb:
+    container_name: mysqldb-app
     image: mysql:5.7
     restart: unless-stopped
     env_file: ./.env
@@ -17,6 +18,7 @@ services:
   app:
     depends_on:
       - mysqldb
+      - rabbitmq
     build: ./
     restart: on-failure
     env_file: ./.env
@@ -46,6 +48,8 @@ services:
       AMQP_URL: 'amqp://rabbitmq?connection_attempts=5&retry_delay=5'
       RABBITMQ_DEFAULT_USER: "admin"
       RABBITMQ_DEFAULT_PASS: "password"
+    networks:
+      - spring-cloud-network
 
 volumes:
   db:
