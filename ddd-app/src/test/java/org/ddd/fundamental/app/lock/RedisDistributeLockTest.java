@@ -1,7 +1,7 @@
 package org.ddd.fundamental.app.lock;
 
 
-import org.ddd.fundamental.app.AppApplication;
+import org.ddd.fundamental.app.AppApplicationTest;
 import org.ddd.fundamental.share.infrastructure.JavaUuidGenerator;
 import org.junit.Assert;
 import org.junit.Test;
@@ -12,11 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@SpringBootTest(classes = AppApplication.class)
+@SpringBootTest(classes = AppApplicationTest.class)
 @RunWith(SpringRunner.class)
 public class RedisDistributeLockTest {
 
@@ -24,9 +25,6 @@ public class RedisDistributeLockTest {
 
     @Autowired
     private RedisDistributeLock redisDistributeLock;
-
-    @Autowired
-    private JavaUuidGenerator javaUuidGenerator;
 
     private ExecutorService service = Executors.newFixedThreadPool(10);
 
@@ -38,7 +36,7 @@ public class RedisDistributeLockTest {
     public void testDistributeLock() {
         String key = "productId";
         for (int i = 0 ; i< 10; i++) {
-            String requestId = javaUuidGenerator.generate();
+            String requestId = new UUID(100,1000).toString();
             boolean res = redisDistributeLock.lock(key,requestId,1);
             System.out.println("res:"+res);
             if (res) {
@@ -57,7 +55,7 @@ public class RedisDistributeLockTest {
     public void testDistributeLockAndRelease() {
         String key = "productId";
         for (int i = 0 ; i< 10; i++) {
-            String requestId = javaUuidGenerator.generate();
+            String requestId = new UUID(100,1000).toString();
             boolean res = redisDistributeLock.lock(key,requestId,1);
             System.out.println("res:"+res);
             if (res) {
