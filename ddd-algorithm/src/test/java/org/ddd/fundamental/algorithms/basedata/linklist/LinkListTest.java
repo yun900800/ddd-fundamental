@@ -124,4 +124,52 @@ public class LinkListTest {
         Assert.assertEquals(2,actual,0);
     }
 
+    @Test
+    public void testReverseAll() {
+        LinkList<Integer> linkList1 = new LinkList<>();
+        linkList1.addSortData(2);
+        linkList1.addSortData(5);
+        linkList1.addSortData(8);
+        linkList1.addSortData(9);
+        linkList1.addSortData(10);
+        linkList1.addSortData(12);
+        LinkNode<Integer> head = linkList1.reverseAll(linkList1.getHead());
+        LinkList<Integer> linkList2 = new LinkList<>(head);
+        Integer[] expect = new Integer[]{12, 10, 9, 8, 5,2};
+        List<Integer> actual = linkList2.forIterator();
+        Assert.assertEquals(expect, actual.toArray());
+    }
+
+    @Test
+    public void testReverseN() {
+        LinkList<Integer> linkList1 = new LinkList<>();
+        linkList1.addSortData(2);
+        linkList1.addSortData(5);
+        linkList1.addSortData(8);
+        linkList1.addSortData(9);
+        linkList1.addSortData(10);
+        linkList1.addSortData(12);
+        LinkNode<Integer> head = linkList1.reverseN(linkList1.getHead(),4);
+        LinkList<Integer> linkList2 = new LinkList<>(head);
+        Integer[] expect = new Integer[]{ 9, 8, 5,2, 10,12};
+        List<Integer> actual = linkList2.forIterator();
+        Assert.assertEquals(expect, actual.toArray());
+    }
+
+    @Test
+    public void testReverseMN() {
+        LinkList<Integer> linkList1 = new LinkList<>();
+        linkList1.addSortData(2);
+        linkList1.addSortData(5);
+        linkList1.addSortData(8);
+        linkList1.addSortData(9);
+        linkList1.addSortData(10);
+        linkList1.addSortData(12);
+        LinkNode<Integer> head = linkList1.reverseMN(linkList1.getHead(),3,4);
+        LinkList<Integer> linkList2 = new LinkList<>(head);
+        Integer[] expect = new Integer[]{ 2,5, 9, 8, 10,12};
+        List<Integer> actual = linkList2.forIterator();
+        Assert.assertEquals(expect, actual.toArray());
+    }
+
 }

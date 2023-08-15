@@ -7,6 +7,8 @@ public class LinkList<T extends Comparable<T>> {
 
     private LinkNode<T> head;
 
+    private LinkNode<T> postNode;
+
     public LinkList() {
         this.head = null;
     }
@@ -135,6 +137,47 @@ public class LinkList<T extends Comparable<T>> {
         this.recursivePostAndCollect(head.getNext(), collectors);
         T data = head.getData();
         collectors.add(data);
+    }
+
+    /**
+     * 从head开始反转整个链表
+     * @return
+     */
+    public LinkNode<T> reverseAll(LinkNode<T> head) {
+        if(head.getNext() == null) {
+            return head;
+        }
+        LinkNode<T> last = reverseAll(head.getNext());
+        head.getNext().setNext(head);
+        head.setNext(null);
+        return last;
+    }
+
+    /**
+     * 反转从第一个节点开始的前N个节点
+     * @param head
+     * @return
+     */
+    public LinkNode<T> reverseN(LinkNode<T> head, int n) {
+        if (n == 1 ) {
+            postNode = head.getNext();
+            return head;
+        }
+        LinkNode<T> last = reverseN(head.getNext(), n-1);
+        head.getNext().setNext(head);
+        if (postNode != null) {
+            head.setNext(postNode);
+        }
+        return last;
+    }
+
+    public LinkNode<T> reverseMN(LinkNode<T> head, int m, int n) {
+        if (m == 1) {
+            return reverseN(head,n);
+        }
+        LinkNode<T> last = reverseMN(head.getNext(), m-1, n-1);
+        head.setNext(last);
+        return head;
     }
 
     public void setHead(LinkNode<T> head) {
