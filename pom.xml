@@ -11,6 +11,7 @@
     <module>ddd-validation</module>
     <module>ddd-share</module>
     <module>ddd-app</module>
+      <module>ddd-algorithm</module>
   </modules>
   <packaging>pom</packaging>
   <parent>
