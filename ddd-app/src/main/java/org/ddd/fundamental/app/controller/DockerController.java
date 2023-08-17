@@ -1,5 +1,6 @@
 package org.ddd.fundamental.app.controller;
 
+import org.apache.commons.lang3.StringUtils;
 import org.ddd.fundamental.app.api.user.UserRequest;
 import org.ddd.fundamental.app.exception.MyCustomException;
 import org.ddd.fundamental.app.service.beachmark.BeachMarkService;
@@ -9,11 +10,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 
 @Controller
@@ -21,12 +28,19 @@ public class DockerController {
 
     private  static final Logger LOGGER = LoggerFactory.getLogger(DockerController.class);
 
+    @Value("${server.port}")
+    private String port;
 
     @RestController
     public class DockerMessageController {
         @GetMapping(value = "/messages")
-        public String getMessage() {
-            return "Hello from Docker!";
+        public String getMessage(HttpServletRequest req, HttpServletResponse res) {
+            String str = req.getHeader("security");
+            if (StringUtils.isEmpty(str)) {
+                return "Hello from Docker! no secure access, this server port is:" + port +".";
+            } else {
+                return "Hello from Docker! secure access, this server port is:" + port +".";
+            }
         }
     }
 

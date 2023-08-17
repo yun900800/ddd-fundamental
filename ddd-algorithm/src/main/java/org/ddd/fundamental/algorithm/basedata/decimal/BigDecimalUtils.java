@@ -2,6 +2,7 @@ package org.ddd.fundamental.algorithm.basedata.decimal;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.math.RoundingMode;
 
 public class BigDecimalUtils {
 
@@ -46,6 +47,23 @@ public class BigDecimalUtils {
         BigDecimal decimalB = new BigDecimal(Double.toString(b));
         MathContext mc = new MathContext(scale);
         return decimalA.divide(decimalB, mc).doubleValue();
+    }
+
+    /**
+     * 这个方法不常用,在一些需要不同的舍入模式的时候用到
+     * @param a
+     * @param b
+     * @param scale
+     * @param mode
+     * @return
+     */
+    public static double div(Double a, Double b, int scale, RoundingMode mode) {
+        if (scale < 0) {
+            throw new IllegalArgumentException("精度不能为负值");
+        }
+        BigDecimal decimalA = new BigDecimal(Double.toString(a));
+        BigDecimal decimalB = new BigDecimal(Double.toString(b));
+        return decimalA.divide(decimalB, scale, mode).doubleValue();
     }
 
 

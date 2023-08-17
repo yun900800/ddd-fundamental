@@ -12,6 +12,7 @@
     <module>ddd-share</module>
     <module>ddd-app</module>
       <module>ddd-algorithm</module>
+      <module>ddd-ribbon</module>
   </modules>
   <packaging>pom</packaging>
   <parent>

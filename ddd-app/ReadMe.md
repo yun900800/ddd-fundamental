@@ -77,3 +77,12 @@ done
     或者采用别的方案:比如hibernate依赖的net-buddy和mockito依赖的net-buddy存在的冲突就不好解决
     这个问题暂时还没有好的方案,其他的问题还算好解决
 
+12. 快速启动多个springboot工程方法:
+    - 首先将idea修改成可以并发运行,其次，修改端口号,没修改一下运行一次
+    - 能否通过脚本来运行: 首先新建三个脚本a.bat;b.bat;c.bat;然后用一个start.bat来运行
+    ./start.bat
+
+13. springboot获取httpRequest请求的时候,需要区分HttpServeletRequest和HttpRequest;遇到过在controller中设置HttpRequest
+    导致请求返回409的bug
+
+
