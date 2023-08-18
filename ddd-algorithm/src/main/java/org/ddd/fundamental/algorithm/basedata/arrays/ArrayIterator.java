@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -70,5 +71,83 @@ public class ArrayIterator {
             results.add(geStr);
         }
         return results;
+    }
+
+    public static void searchSumK(int[] arrays, int k) {
+        int[] sortArrays = fastSearch(arrays,0, arrays.length-1);
+        searchSum(sortArrays,k);
+    }
+
+    public static void searchSum(int[] arrays,int k) {
+        int left = 0 ;
+        int right = arrays.length-1;
+        while (left < right) {
+            if (arrays[left] + arrays[right] > k) {
+                right--;
+            } else if (arrays[left] + arrays[right] < k) {
+                left++;
+            } else if (arrays[left] + arrays[right] == k) {
+                System.out.println("number1:" + arrays[left] +" number2:"+ arrays[right]  );
+                return;
+            }
+        }
+        System.out.println("not found");
+    }
+
+    public static int[] fastSearch(int[] arrays, int begin, int end) {
+        if (begin<end) {
+            int index = partitionFromBegin(arrays,begin,end );
+            fastSearch(arrays, begin, index-1);
+            fastSearch(arrays, index+1, end);
+        }
+
+        return arrays;
+    }
+
+    public static int partition(int[] arrays, int begin, int end) {
+        int pivot = arrays[end];
+        int i = begin-1;
+        for (int k = begin; k < end; k++) {
+            if (arrays[k] < pivot) {
+                i++;
+                int temp = arrays[i];
+                arrays[i] = arrays[k];
+                arrays[k] = temp;
+            }
+        }
+        int temp = arrays[i+1];
+        arrays[i+1] = arrays[end];
+        arrays[end] = temp;
+        return i+1;
+    }
+
+    public static int partitionFromBegin(int[] arrays, int begin, int end) {
+        int pivot = arrays[begin];
+        int i = begin-1;
+        int pivotIndex = 0;
+        for (int k = begin+1; k <= end; k++) {
+            if (arrays[k] < pivot) {
+                i++;
+                int temp = arrays[i];
+                arrays[i] = arrays[k];
+                arrays[k] = temp;
+                if (pivotIndex == i) {//刚好是替换的pivot
+                    pivotIndex = k;
+                }
+
+            }
+        }
+        int temp = arrays[i+1];
+        arrays[i+1] = arrays[pivotIndex];
+        arrays[pivotIndex] = temp;
+        return i+1;
+    }
+
+    public static void main(String[] args) {
+        int[] arrays = new int[]{9,8,5,1,2,15,4};
+        searchSumK(arrays,17);
+        int[] arrays1 = new int[]{8,9,5,1,2,15,4};
+        System.out.println(partitionFromBegin(arrays1,0,6));
+        System.out.println(Arrays.toString(arrays1));
     }
 }
