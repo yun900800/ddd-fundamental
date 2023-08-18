@@ -1,0 +1,1 @@
+java -jar ./target/ddd-eureka-server-1.0-SNAPSHOT.jar --spring.profiles.active=peer3 --server.port=6003

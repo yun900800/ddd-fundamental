@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: spring-cloud-module-user
+  security:
+    user:
+      name: yun900800
+      password: 123456
+    basic:
+      enabled: false
+server:
+  port: 6000
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://peer1:6001/eureka/,http://peer2:6002/eureka/,http://peer3:6003/eureka/
+  instance:
+    preferIpAddress: true
+
+management:
+  server:
+    port: 6500
+    address: 10.0.0.118
+  endpoints:
+    web:
+      exposure:
+        # 开放所有端点
+        include: '*'
+  security:
+    enabled: true

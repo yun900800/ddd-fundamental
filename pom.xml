@@ -13,6 +13,8 @@
     <module>ddd-app</module>
       <module>ddd-algorithm</module>
       <module>ddd-ribbon</module>
+      <module>ddd-eureka-server</module>
+      <module>ddd-user</module>
   </modules>
   <packaging>pom</packaging>
   <parent>
@@ -125,4 +127,24 @@
       </plugins>
     </pluginManagement>
   </build>
+  <profiles>
+    <profile>
+      <id>peer1</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+    </profile>
+    <profile>
+      <id>peer2</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+    </profile>
+    <profile>
+      <id>peer3</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+    </profile>
+  </profiles>
 </project>

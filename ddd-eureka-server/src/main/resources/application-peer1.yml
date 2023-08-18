@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: eureka-server-cluster
+  profiles: peer1
+server:
+  port: 6001
+eureka:
+  instance:
+    hostname: peer1
+  client:
+    service-url:
+      # 向peer2 peer3节点注册自己
+      defaultZone: http://peer2:6002/eureka,http://peer3:6003/eureka
