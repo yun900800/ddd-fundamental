@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: user-gateway
+  datasource:
+    driver-class-name: org.hsqldb.jdbc.JDBCDriver
+    url: jdbc:hsqldb:mem:testdb;DB_CLOSE_DELAY=-1
+    username: sa
+    password:
+server:
+  port: 8888
+  ribbon:
+    ServerListRefreshInterval: 10000
+eureka:
+  client:
+    healthcheck:
+      enabled: true
+    register-with-eureka: true #本微服务为服务消费者，不需要将自己注册到服务注册中心
+    fetch-registry: true  #本微服务为服务消费者，需要到服务注册中心搜索服务
+    service-url:
+      defaultZone: http://peer1:6001/eureka/,http://peer2:6002/eureka/,http://peer3:6003/eureka/
+#spring-cloud-module-user:
+#  ribbon:
+#    eureka:
+#      enabled: false
+#    listOfServers: localhost:16000
+#    ServerListRefreshInterval: 15000

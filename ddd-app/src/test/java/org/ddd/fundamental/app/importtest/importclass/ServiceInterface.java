@@ -1,4 +1,4 @@
-package org.ddd.fundamental.app.importtest.zhihu;
+package org.ddd.fundamental.app.importtest.importclass;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -6,22 +6,22 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 public interface ServiceInterface {
-    void test();
+    String test();
 }
 
 class ServiceA implements ServiceInterface {
 
     @Override
-    public void test() {
-        System.out.println("ServiceA");
+    public String test() {
+        return "ServiceA";
     }
 }
 
 class ServiceB implements ServiceInterface {
 
     @Override
-    public void test() {
-        System.out.println("ServiceB");
+    public String test() {
+        return "ServiceB";
     }
 }
 
@@ -43,3 +43,38 @@ class ConfigB {
         return new ServiceB();
     }
 }
+
+@Configuration
+@Import(ConfigD.class)
+class ConfigC {
+    @Bean
+    public ServiceInterface getServiceA() {
+        return new ServiceA();
+    }
+}
+@Configuration
+class ConfigD {
+    @Bean
+    public ServiceInterface getServiceB() {
+        return new ServiceB();
+    }
+}
+
+@Configuration
+@Import(ConfigF.class)
+class ConfigE {
+    @Bean
+    @ConditionalOnMissingBean
+    public ServiceInterface getServiceA() {
+        return new ServiceA();
+    }
+}
+@Configuration
+class ConfigF {
+    @Bean
+    public ServiceInterface getServiceB() {
+        return new ServiceB();
+    }
+}
+
+

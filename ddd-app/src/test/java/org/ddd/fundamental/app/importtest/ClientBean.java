@@ -6,8 +6,8 @@ public class ClientBean {
     @Autowired
     private AppBean appBean;
 
-    public void doSomething () {
-        System.out.println(appBean.getMessage());
+    public String doSomething () {
+        return appBean.getMessage();
     }
 
 }

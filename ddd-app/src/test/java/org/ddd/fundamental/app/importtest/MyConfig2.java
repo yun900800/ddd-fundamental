@@ -7,8 +7,9 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class MyConfig2 {
     @Bean
-    @ConditionalOnMissingBean
+    //@ConditionalOnMissingBean
     AppBean appBean() {
+        System.out.println("MyConfig2:appBean");
         return new AppBean("from config 2");
     }
 }
