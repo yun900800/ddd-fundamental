@@ -8,7 +8,6 @@ import org.ddd.fundamental.share.infrastructure.bus.event.DomainEventJsonDeseria
 import org.ddd.fundamental.share.infrastructure.bus.event.rabbitmq.RabbitMqDomainEventsConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.amqp.AmqpRejectAndDontRequeueException;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,12 +80,12 @@ public class UserEventListener {
         }
     }
 
-    @RabbitListener(queues = {"org.ddd.fundamental.app.user_event_rabbit_listener"})
+    @RabbitListener(queues = {"org.ddd.fundamental.app.listener.user_event_rabbit_listener"})
     public void consumeError(Message message) throws Exception {
         String      serializedMessage = new String(message.getBody());
         UserEvent domainEvent       = (UserEvent) deserializer.deserialize(serializedMessage);
-        LOGGER.info("UserEvent:{}",domainEvent);
-        //throw new RuntimeException("rabbit error handler");
+        LOGGER.info("UserEventListener UserEvent:{}",domainEvent);
+        throw new RuntimeException("rabbit error handler");
     }
 
     @RabbitListener(queues = "pizza-message-queue.dlq")

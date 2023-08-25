@@ -69,7 +69,7 @@ public class MySqlDomainEventsConsumer {
     private void executeSubscribers(
             String id, String aggregateId, String eventName, String body, String occurredOn
     ) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
-
+        System.out.println("9999999999999999999");
         Class<? extends DomainEvent> domainEventClass = domainEventsInformation.forName(eventName);
 
         DomainEvent nullInstance = domainEventClass.getConstructor().newInstance();

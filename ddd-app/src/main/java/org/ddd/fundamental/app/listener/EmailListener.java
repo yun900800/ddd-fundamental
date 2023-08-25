@@ -16,5 +16,4 @@ public class EmailListener {
         LOGGER.info("message:{}",msg);
     }
 
-
 }

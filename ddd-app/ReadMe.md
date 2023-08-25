@@ -85,4 +85,6 @@ done
 13. springboot获取httpRequest请求的时候,需要区分HttpServeletRequest和HttpRequest;遇到过在controller中设置HttpRequest
     导致请求返回409的bug
 
+14. SimpleMessageListenerContainer需要处理全局异常,否则它配置的监听器出现了异常会不断的循环。
+
 

@@ -5,6 +5,8 @@ import org.ddd.fundamental.share.domain.Utils;
 import org.ddd.fundamental.share.domain.bus.event.DomainEvent;
 import org.ddd.fundamental.share.infrastructure.bus.event.DomainEventJsonDeserializer;
 import org.ddd.fundamental.share.infrastructure.bus.event.DomainEventSubscribersInformation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageBuilder;
 import org.springframework.amqp.core.MessagePropertiesBuilder;
@@ -20,6 +22,8 @@ import java.util.Map;
 
 @Service
 public final class RabbitMqDomainEventsConsumer {
+
+    private static final Logger LOGGER  = LoggerFactory.getLogger(RabbitMqDomainEventsConsumer.class);
     private final static String                      CONSUMER_NAME          = "domain_events_consumer";
     private final static int                         MAX_RETRIES            = 2;
     private final DomainEventJsonDeserializer deserializer;
@@ -55,6 +59,7 @@ public final class RabbitMqDomainEventsConsumer {
 
     @RabbitListener(id = CONSUMER_NAME, autoStartup = "false")
     public void consumer(Message message) throws Exception {
+        LOGGER.info("start consume message:{}", message);
         String      serializedMessage = new String(message.getBody());
         DomainEvent domainEvent       = deserializer.deserialize(serializedMessage);
 
@@ -75,6 +80,7 @@ public final class RabbitMqDomainEventsConsumer {
                     domainEvent.eventName()
             ));
         } catch (Exception error) {
+            //如果消费出现了异常，会进行重试或者进入死信
             handleConsumptionError(message, queue);
         }
     }

@@ -3,6 +3,7 @@ package org.ddd.fundamental.share.infrastructure.bus.event;
 import org.apache.commons.collections4.CollectionUtils;
 import org.ddd.fundamental.share.domain.bus.event.DomainEvent;
 import org.ddd.fundamental.share.domain.bus.event.EmptyDomainEvent;
+import org.ddd.fundamental.share.domain.bus.event.UserDomainEvent;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,9 +39,15 @@ public class DomainEventSubscribersInformationTest {
         List<Class<? extends DomainEvent>> domainEventClassLists = new ArrayList<>();
         domainEventClassLists.add(EmptyDomainEvent.class);
         DomainEventSubscriberInformation information = new DomainEventSubscriberInformation(EmptyDomainEventSubscriber.class,
-                domainEventClassLists );
+                domainEventClassLists);
+        //第二个人数据
+        List<Class<? extends DomainEvent>> domainEventClassLists1 = new ArrayList<>();
+        domainEventClassLists1.add(UserDomainEvent.class);
+        DomainEventSubscriberInformation information1 = new DomainEventSubscriberInformation(UserDomainEventSubscriber.class,
+                domainEventClassLists1);
         Collection<DomainEventSubscriberInformation> informations = new ArrayList<>();
         informations.add(information);
+        informations.add(information1);
         boolean res = CollectionUtils.isEqualCollection(informations,domainEventSubscribersInformation.all());
         Assert.assertTrue(res);
 
@@ -48,6 +55,7 @@ public class DomainEventSubscribersInformationTest {
 
     @Test
     public void testRabbitMqFormattedNames() {
-        Assert.assertArrayEquals(new String[]{"ddd.fundamental.fundamental.share.empty_domain_event_subscriber"},domainEventSubscribersInformation.rabbitMqFormattedNames());
+        Assert.assertArrayEquals(new String[]{"org.ddd.fundamental.share.infrastructure.empty_domain_event_subscriber",
+        "org.ddd.fundamental.share.infrastructure.user_domain_event_subscriber"},domainEventSubscribersInformation.rabbitMqFormattedNames());
     }
 }

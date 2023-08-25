@@ -18,11 +18,11 @@ public class Publisher {
     @PostConstruct
     public void postMessages() {
         rabbitTemplate.convertAndSend(queue, "1 Pepperoni");
-        rabbitTemplate.convertAndSend(queue, "3 Margarita");
-        rabbitTemplate.convertAndSend(queue, "1 Ham and Pineapple (yuck)");
+//        rabbitTemplate.convertAndSend(queue, "3 Margarita");
+//        rabbitTemplate.convertAndSend(queue, "1 Ham and Pineapple (yuck)");
         rabbitTemplate.convertAndSend(queue+"1", "1 Pepperoni to queue1");
 
-        rabbitTemplate.convertAndSend(queue+"1", "3 Margarita to queue1");
+//        rabbitTemplate.convertAndSend(queue+"1", "3 Margarita to queue1");
         rabbitTemplate.convertAndSend(queue+"2", "1 Ham and Pineapple (yuck) to queue2");
 
         rabbitTemplate.convertAndSend(topic, "notification", "New Deal on T-Shirts: 95% off!");

@@ -20,6 +20,7 @@ public class SpringApplicationEventBus implements EventBus {
 
     @Override
     public void publish(@NotNull final List<DomainEvent> events) {
+        System.out.println(000000);
         events.forEach(this::publish);
     }
 

@@ -1,12 +1,16 @@
 package org.ddd.fundamental.share.infrastructure.bus.event;
 
-import org.ddd.fundamental.share.domain.Service;
 import org.ddd.fundamental.share.domain.Utils;
 import org.ddd.fundamental.share.domain.bus.event.DomainEvent;
 
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * 这个类的作用是封装监听器类和监听事件之间的关系,比如
+ * org.ddd.fundamental.share.infrastructure.bus.event--->[EmptyDomainEvent.class,XXX.class]
+ * 一个类对应多个事件
+ */
 //@Service
 public final class DomainEventSubscriberInformation {
     private final Class<?>                           subscriberClass;
@@ -27,13 +31,13 @@ public final class DomainEventSubscriberInformation {
     public String contextName() {
         String[] nameParts = subscriberClass.getName().split("\\.");
 
-        return nameParts[2];
+        return nameParts[3];
     }
 
     public String moduleName() {
         String[] nameParts = subscriberClass.getName().split("\\.");
 
-        return nameParts[3];
+        return nameParts[4];
     }
 
     public String className() {
@@ -47,7 +51,7 @@ public final class DomainEventSubscriberInformation {
     }
 
     public String formatRabbitMqQueueName() {
-        return String.format("org.ddd.%s.%s.%s", contextName(), moduleName(), Utils.toSnake(className()));
+        return String.format("org.ddd.fundamental.%s.%s.%s", contextName(), moduleName(), Utils.toSnake(className()));
     }
 
     @Override

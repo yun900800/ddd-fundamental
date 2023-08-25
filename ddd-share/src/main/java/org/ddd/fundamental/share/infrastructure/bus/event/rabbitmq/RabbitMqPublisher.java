@@ -18,7 +18,6 @@ public final class RabbitMqPublisher {
 
     public void publish(DomainEvent domainEvent, String exchangeName) throws AmqpException {
         String serializedDomainEvent = DomainEventJsonSerializer.serialize(domainEvent);
-
         Message message = new Message(
                 serializedDomainEvent.getBytes(),
                 MessagePropertiesBuilder.newInstance()
@@ -26,7 +25,6 @@ public final class RabbitMqPublisher {
                         .setContentType("application/json")
                         .build()
         );
-
         rabbitTemplate.send(exchangeName, domainEvent.eventName(), message);
     }
 

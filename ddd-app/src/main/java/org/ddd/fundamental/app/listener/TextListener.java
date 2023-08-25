@@ -1,6 +1,7 @@
 package org.ddd.fundamental.app.listener;
 
 import org.ddd.fundamental.app.config.ProducerConfig;
+import org.ddd.fundamental.share.domain.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Message;
@@ -13,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 
 import static org.ddd.fundamental.app.config.ProducerConfig.QUEUE_PARKING_LOT;
 
-@Configuration
+@Service
 public class TextListener {
 
     @Autowired
@@ -28,7 +29,6 @@ public class TextListener {
     public void consume(Message message) throws Exception{
         String msg = new String(message.getBody());
         LOGGER.info("message:{}",msg);
-
     }
     @RabbitListener(queues = "text-error-queue")
     public void consume1(Message message) throws Exception{

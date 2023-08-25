@@ -47,6 +47,8 @@ public class RabbitMqEventBusConfiguration {
 
     @Bean
     public Declarables declaration() {
+
+        //创建三个exchange
         String retryExchangeName      = RabbitMqExchangeNameFormatter.retry(exchangeName);
         String deadLetterExchangeName = RabbitMqExchangeNameFormatter.deadLetter(exchangeName);
 
@@ -77,6 +79,7 @@ public class RabbitMqEventBusConfiguration {
             TopicExchange deadLetterDomainEventsExchange
     ) {
         return domainEventSubscribersInformation.all().stream().map(information -> {
+            //每一个订阅类对应一个队列
             String queueName           = RabbitMqQueueNameFormatter.format(information);
             String retryQueueName      = RabbitMqQueueNameFormatter.formatRetry(information);
             String deadLetterQueueName = RabbitMqQueueNameFormatter.formatDeadLetter(information);

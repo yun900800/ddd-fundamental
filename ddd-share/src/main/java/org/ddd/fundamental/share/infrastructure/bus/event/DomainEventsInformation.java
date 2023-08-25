@@ -12,6 +12,10 @@ import java.util.Set;
 
 @Service
 public final class DomainEventsInformation {
+
+    /**
+     * 事件名称对应的事件类 eventName->EventClass
+     */
     HashMap<String, Class<? extends DomainEvent>> indexedDomainEvents;
 
     private static final String DEFAULT_DOMAIN_EVENT_PATH = "org.ddd.fundamental";

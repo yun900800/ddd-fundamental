@@ -34,6 +34,10 @@ public class ConsumerConfig {
                 QUEUE_MESSAGES_DLQ
         });
         container.setMessageListener(listenerAdapter);
+        container.setErrorHandler((err)->{
+            String message = err.getCause().getMessage();
+            System.out.println("listener in container is error:"+ message);
+        });
         return container;
     }
 

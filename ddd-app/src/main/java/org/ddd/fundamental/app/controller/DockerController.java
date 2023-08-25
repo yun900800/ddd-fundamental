@@ -6,6 +6,7 @@ import org.ddd.fundamental.app.exception.MyCustomException;
 import org.ddd.fundamental.app.service.beachmark.BeachMarkService;
 import org.ddd.fundamental.app.service.product.ProductService;
 import org.ddd.fundamental.app.service.user.UserService;
+import org.ddd.fundamental.share.infrastructure.bus.event.rabbitmq.RabbitMqDomainEventsConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,8 @@ public class DockerController {
 
     @Value("${server.port}")
     private String port;
+
+
 
     @RestController
     public class DockerMessageController {
@@ -161,5 +164,16 @@ public class DockerController {
             //throw new MyCustomException("error request");
         }
 
+    }
+
+    @RestController
+    public class RabbitMQManualConsumeController {
+
+        @Autowired
+        private RabbitMqDomainEventsConsumer consumer;
+        @GetMapping(value = "/rabbitmq/manualConsume")
+        public void manualConsume() {
+            consumer.consume();
+        }
     }
 }

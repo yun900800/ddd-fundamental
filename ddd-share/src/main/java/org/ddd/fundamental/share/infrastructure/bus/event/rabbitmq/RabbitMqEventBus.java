@@ -3,12 +3,15 @@ package org.ddd.fundamental.share.infrastructure.bus.event.rabbitmq;
 import org.ddd.fundamental.share.domain.bus.event.DomainEvent;
 import org.ddd.fundamental.share.domain.bus.event.EventBus;
 import org.ddd.fundamental.share.infrastructure.bus.event.mysql.MySqlEventBus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.amqp.AmqpException;
 
 import java.util.Collections;
 import java.util.List;
 
 public class RabbitMqEventBus implements EventBus {
+    private static final Logger LOGGER = LoggerFactory.getLogger(RabbitMqEventBus.class);
     private final RabbitMqPublisher publisher;
     private final MySqlEventBus failoverPublisher;
     private final String            exchangeName;
@@ -28,6 +31,7 @@ public class RabbitMqEventBus implements EventBus {
         try {
             this.publisher.publish(domainEvent, exchangeName);
         } catch (AmqpException error) {
+            LOGGER.error("rabbitMQ send message error:{}",error.getMessage());
             failoverPublisher.publish(Collections.singletonList(domainEvent));
         }
     }

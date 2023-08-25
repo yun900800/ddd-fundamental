@@ -51,14 +51,10 @@ public class DomainEventsInformationTest {
     }
 
     @Test
-    public void testEventSize() {
-        Assert.assertEquals(Optional.of(domainEventsInformation.eventSize()),Optional.of(2));
-    }
-
-    @Test
     public void testAppendScanDomainEventPah() {
-        domainEventsInformation.appendScanDomainEventPah("org.ddd.extra");
         Assert.assertEquals(Optional.of(domainEventsInformation.eventSize()),Optional.of(3));
+        domainEventsInformation.appendScanDomainEventPah("org.ddd.extra");
+        Assert.assertEquals(Optional.of(domainEventsInformation.eventSize()),Optional.of(4));
         Assert.assertEquals(domainEventsInformation.forName("ExtraDomainEvent"), ExtraDomainEvent.class);
     }
 }

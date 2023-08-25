@@ -3,7 +3,7 @@ package org.ddd.fundamental.app.listener;
 public class OrderConsumer {
     public void receiveOrder(String message) {
         System.out.printf("Order received: %s%n", message);
-        //throw new RuntimeException("error msg");
+        throw new RuntimeException("error msg:"+message);
     }
 
     public void receiveOrder1(String message) {

@@ -14,6 +14,6 @@ public class UserEventRabbitListener {
     private  static final Logger LOGGER = LoggerFactory.getLogger(UserEventRabbitListener.class);
     @EventListener
     public void on(UserEvent event){
-        LOGGER.info("UserEvent:{}",event);
+        LOGGER.info("UserEventRabbitListener UserEvent:{}",event);
     }
 }
