@@ -17,6 +17,8 @@
       <module>ddd-user</module>
       <module>ddd-user-gateway</module>
       <module>ddd-redis-starter</module>
+      <module>ddd-security</module>
+      <module>ddd-authentication</module>
   </modules>
   <packaging>pom</packaging>
   <parent>
@@ -48,6 +50,7 @@
       <artifactId>commons-lang3</artifactId>
       <version>3.10</version>
     </dependency>
+
   </dependencies>
   <dependencyManagement>
     <dependencies>

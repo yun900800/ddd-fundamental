@@ -1,13 +1,18 @@
 package org.ddd.fundamental.share.infrastructure.hibernate;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+import io.micrometer.core.instrument.Clock;
+import io.micrometer.core.instrument.logging.LoggingMeterRegistry;
+import io.micrometer.core.instrument.logging.LoggingRegistryConfig;
 import net.ttddyy.dsproxy.listener.ChainListener;
 import net.ttddyy.dsproxy.listener.DataSourceQueryCountListener;
 import net.ttddyy.dsproxy.listener.logging.SLF4JQueryLoggingListener;
 import net.ttddyy.dsproxy.support.ProxyDataSourceBuilder;
-import org.apache.commons.dbcp2.BasicDataSource;
 import org.ddd.fundamental.share.domain.Service;
 import org.ddd.fundamental.share.infrastructure.hibernate.logger.InlineQueryLogEntryCreator;
 import org.hibernate.cfg.AvailableSettings;
+import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.ResourcePatternResolver;
@@ -18,6 +23,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import javax.sql.DataSource;
 import java.io.File;
 import java.io.IOException;
+import java.time.Duration;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -72,36 +78,64 @@ public final class HibernateConfigurationFactory {
                 .build();
     }
 
+    private HikariDataSource createHikariDataSource(String url,String driverName,
+                                                    String userName,String password) {
+        HikariConfig hikariConfig = new HikariConfig();
+        hikariConfig.setDriverClassName(driverName);
+        hikariConfig.setJdbcUrl(url);
+        hikariConfig.setUsername(userName);
+        hikariConfig.setPassword(password);
+        hikariConfig.setMaximumPoolSize(10);
+        hikariConfig.setMinimumIdle(3);
+        HikariDataSource hikariDataSource = new HikariDataSource(hikariConfig);
+        LoggingMeterRegistry loggingMeterRegistry = new LoggingMeterRegistry(new LoggingRegistryConfig() {
+            @Override
+            public String get(String s) {
+                return null;
+            }
+
+            public Duration step(){
+                return Duration.ofSeconds(10);
+            }
+        }, Clock.SYSTEM);
+        hikariDataSource.setMetricRegistry(loggingMeterRegistry);
+        return hikariDataSource;
+    }
+
+    /**
+     *
+     * @param url
+     * @param driverClassName
+     * @param username
+     * @param password
+     * @return
+     */
+    private DataSource createCommonDataSource(String url,
+                                              String driverClassName,
+                                              String username,
+                                              String password) {
+        DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
+        dataSourceBuilder.driverClassName(driverClassName)
+                .url(url).username(username).password(password);
+        DataSource dataSource = dataSourceBuilder.build();
+        return dataSource;
+    }
+
     public DataSource dataSource(
             String host,
             Integer port,
             String databaseName,
             String username,
             String password
-    ) throws IOException {
-        BasicDataSource dataSource = new BasicDataSource();
-        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        //dataSource.setDriverClassName(HSQL_DRIVER);
-        dataSource.setUrl(
-                String.format(
-                        "jdbc:mysql://%s:%s/%s?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC",
-                        host,
-                        port,
-                        databaseName
-                )
-        );
-        //dataSource.setUrl(HSQL_URL);
-        dataSource.setUsername(username);
-        dataSource.setPassword(password);
-
-        Resource mysqlResource = resourceResolver.getResource(String.format(
-                "classpath:database/%s.sql",
+    ) {
+        String url = String.format(
+                "jdbc:mysql://%s:%s/%s?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC",
+                host,
+                port,
                 databaseName
-        ));
-        String mysqlSentences = new Scanner(mysqlResource.getInputStream(), "UTF-8").useDelimiter("\\A").next();
-
-        dataSource.setConnectionInitSqls(new ArrayList<>(Arrays.asList(mysqlSentences.split(";"))));
-        return dataSource;
+        );
+        String driverClassName = "com.mysql.cj.jdbc.Driver";
+        return createHikariDataSource(url,driverClassName,username,password);
     }
 
     private List<Resource> searchMappingFiles(String contextName) {

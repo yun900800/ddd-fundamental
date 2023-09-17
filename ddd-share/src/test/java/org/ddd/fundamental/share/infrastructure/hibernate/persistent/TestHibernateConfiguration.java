@@ -4,11 +4,11 @@ import net.ttddyy.dsproxy.listener.ChainListener;
 import net.ttddyy.dsproxy.listener.DataSourceQueryCountListener;
 import net.ttddyy.dsproxy.listener.logging.SLF4JQueryLoggingListener;
 import net.ttddyy.dsproxy.support.ProxyDataSourceBuilder;
-import org.apache.commons.dbcp2.BasicDataSource;
 import org.ddd.fundamental.share.infrastructure.config.ParameterNotExist;
 import org.ddd.fundamental.share.infrastructure.hibernate.HibernateConfigurationFactory;
 import org.ddd.fundamental.share.infrastructure.hibernate.logger.InlineQueryLogEntryCreator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.Resource;
@@ -50,19 +50,18 @@ public class TestHibernateConfiguration {
     @Bean("fundamental-data_source")
     public DataSource dataSource() throws IOException {
         System.out.println("init dataSource in test Environment");
-        BasicDataSource dataSource = new BasicDataSource();
-        dataSource.setDriverClassName(HSQL_DRIVER);
-        dataSource.setUrl(HSQL_URL);
-        dataSource.setUsername("sa");
-        dataSource.setPassword("");
+        DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
+        dataSourceBuilder.driverClassName(HSQL_DRIVER)
+                .url(HSQL_URL).username("sa").password("");
 
-        Resource mysqlResource = factory.getResourceResolver().getResource(String.format(
-                "classpath:database/%s.sql",
-                "devnote"
-        ));
-        String mysqlSentences = new Scanner(mysqlResource.getInputStream(), "UTF-8").useDelimiter("\\A").next();
 
-        dataSource.setConnectionInitSqls(new ArrayList<>(Arrays.asList(mysqlSentences.split(";"))));
-        return dataSource;
+//        Resource mysqlResource = factory.getResourceResolver().getResource(String.format(
+//                "classpath:database/%s.sql",
+//                "devnote"
+//        ));
+//        String mysqlSentences = new Scanner(mysqlResource.getInputStream(), "UTF-8").useDelimiter("\\A").next();
+//
+//        dataSource.setConnectionInitSqls(new ArrayList<>(Arrays.asList(mysqlSentences.split(";"))));
+        return dataSourceBuilder.build();
     }
 }
