@@ -19,6 +19,7 @@
       <module>ddd-redis-starter</module>
       <module>ddd-security</module>
       <module>ddd-authentication</module>
+      <module>ddd-conditional</module>
   </modules>
   <packaging>pom</packaging>
   <parent>
