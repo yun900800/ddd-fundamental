@@ -20,6 +20,7 @@
       <module>ddd-security</module>
       <module>ddd-authentication</module>
       <module>ddd-conditional</module>
+      <module>ddd-repository</module>
   </modules>
   <packaging>pom</packaging>
   <parent>

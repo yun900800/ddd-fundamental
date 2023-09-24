@@ -1,5 +1,8 @@
 package org.ddd.fundamental.validation.external;
 
+import org.ddd.fundamental.validation.exception.external.ValidationServiceBase;
+import org.ddd.fundamental.validation.exception.external.Validator;
+
 public class OrderValidationService extends ValidationServiceBase {
     /**
      * 构建验证器

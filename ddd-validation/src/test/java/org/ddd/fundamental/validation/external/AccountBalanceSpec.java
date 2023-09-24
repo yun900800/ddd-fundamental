@@ -1,8 +1,10 @@
 package org.ddd.fundamental.validation.external;
 
 import org.ddd.fundamental.validation.exception.OrderValidationException;
+import org.ddd.fundamental.validation.exception.external.ValidationContext;
+import org.ddd.fundamental.validation.exception.external.ValidationSpecificationBase;
 
-public class AccountBalanceSpec extends ValidationSpecificationBase{
+public class AccountBalanceSpec extends ValidationSpecificationBase {
     private Customer customer;
 
     public AccountBalanceSpec(Customer customer) {

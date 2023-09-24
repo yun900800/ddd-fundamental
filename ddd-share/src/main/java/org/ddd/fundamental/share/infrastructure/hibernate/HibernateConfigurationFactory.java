@@ -13,6 +13,8 @@ import org.ddd.fundamental.share.domain.Service;
 import org.ddd.fundamental.share.infrastructure.hibernate.logger.InlineQueryLogEntryCreator;
 import org.hibernate.cfg.AvailableSettings;
 import org.springframework.boot.jdbc.DataSourceBuilder;
+import org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy;
+import org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.ResourcePatternResolver;
@@ -56,9 +58,9 @@ public final class HibernateConfigurationFactory {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource);
         sessionFactory.setHibernateProperties(hibernateProperties());
-
         List<Resource> mappingFiles = searchMappingFiles(contextName);
-
+        sessionFactory.setImplicitNamingStrategy(new SpringImplicitNamingStrategy());
+        sessionFactory.setPhysicalNamingStrategy(new SpringPhysicalNamingStrategy());
         sessionFactory.setMappingLocations(mappingFiles.toArray(new Resource[mappingFiles.size()]));
         sessionFactory.setPackagesToScan("org.ddd.fundamental");
         return sessionFactory;
@@ -188,6 +190,8 @@ public final class HibernateConfigurationFactory {
 
         hibernateProperties.put(AvailableSettings.SHOW_SQL, "false");
         hibernateProperties.put(AvailableSettings.DIALECT, "org.hibernate.dialect.MySQLDialect");
+        hibernateProperties.put("hibernate.implicit_naming_strategy", SpringImplicitNamingStrategy.class.getName());
+        hibernateProperties.put("hibernate.physical_naming_strategy", SpringPhysicalNamingStrategy.class.getName());
 //        hibernateProperties.put(AvailableSettings.DIALECT, "org.hibernate.dialect.HSQLDialect");
 
 

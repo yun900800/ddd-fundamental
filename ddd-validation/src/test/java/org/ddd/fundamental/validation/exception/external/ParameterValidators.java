@@ -1,4 +1,4 @@
-package org.ddd.fundamental.validation.external;
+package org.ddd.fundamental.validation.exception.external;
 
 import org.apache.commons.lang3.StringUtils;
 import org.ddd.fundamental.validation.Validatable;

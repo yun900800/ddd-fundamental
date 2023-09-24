@@ -1,6 +1,8 @@
 package org.ddd.fundamental.validation.external;
 
-public class OrderValidationContext extends ValidationContext{
+import org.ddd.fundamental.validation.exception.external.ValidationContext;
+
+public class OrderValidationContext extends ValidationContext {
 
     private String accountId;
 

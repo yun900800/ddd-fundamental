@@ -3,7 +3,7 @@ package org.ddd.fundamental.validation.base;
 import org.ddd.fundamental.validation.Validatable;
 import org.ddd.fundamental.validation.rule.impl.RuleManager;
 
-public abstract class ValidatableBase implements Validatable {
+public abstract class ValidateBase implements Validatable {
 
     /**
      * 验证当前领域模型

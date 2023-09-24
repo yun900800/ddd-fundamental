@@ -1,4 +1,4 @@
-package org.ddd.fundamental.validation.external;
+package org.ddd.fundamental.validation.exception.external;
 
 import org.ddd.fundamental.validation.exception.ValidationException;
 

@@ -1,6 +1,8 @@
 package org.ddd.fundamental.validation.external;
 
-import org.ddd.fundamental.validation.exception.ValidationException;
+import org.ddd.fundamental.validation.exception.external.ValidationContext;
+import org.ddd.fundamental.validation.exception.external.ValidationSpecificationBase;
+import org.ddd.fundamental.validation.exception.external.Validator;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Answers;
