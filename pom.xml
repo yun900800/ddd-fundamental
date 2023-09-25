@@ -21,6 +21,7 @@
       <module>ddd-authentication</module>
       <module>ddd-conditional</module>
       <module>ddd-repository</module>
+      <module>ddd-core</module>
   </modules>
   <packaging>pom</packaging>
   <parent>
