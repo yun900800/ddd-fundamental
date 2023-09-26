@@ -87,4 +87,7 @@ done
 
 14. SimpleMessageListenerContainer需要处理全局异常,否则它配置的监听器出现了异常会不断的循环。
 
+15. swagger的基本使用方法:
+    <https://www.baeldung.com/spring-rest-openapi-documentation>
+
 
