@@ -65,3 +65,49 @@
 18. 链接分析解决的是什么问题?主要解决的问题是网页的重要性问题.
     PageRank算法的基本思路是什么?主要的参数包括页面的数量和页面的质量。什么是链接陷阱，如何解决这个问题?
     HITS算法的基本假设是什么?什么是Hub页面?什么是Authority页面
+
+19. es和关系数据库最大的区别是:es面向的是文档(它存储,索引,检索,排序,过滤文档),而关系数据库面向的行列数据;理解es中索引作为名词和动词的时候,
+    它们的意义有什么区别?倒排索引和B+树索引对于文档搜索和关系数据库搜索过滤有啥作用?
+
+20. GET检索和_search检索有什么区别?似乎GET出来的数据没有打分,而search出来的数据有一个分数的概念;
+    查询表达式和query-string的区别是什么,适应的场景又是什么?全文检索中,为什么需要相关性的概念.
+
+21. 什么是短语搜索?match_phrase的使用场景是什么?什么是高亮搜索?它的使用场景是什么?
+
+22. 为什么会出现聚合,其实是对文档数据进行分析.
+
+23. elastic-search 集群的一些基本概念:
+    - 什么是集群?什么是节点?什么是分片?什么是副本?
+    - es的扩容机制是什么?
+    - 如何处理硬件故障?
+    - 失效切换的基本原理是什么?
+    - 垂直扩容和水平扩容是什么意思?为什么垂直扩容的潜力是有限的?而水平扩容能降低负载压力?
+    - 下面用一个例子来串起这些概念,首先提出来两个问题?
+    新增节点的情况:我的群集具有黄色运行状况，因为它只有一个节点，因此副本保持未分配状态，我想要添加一个节点，该怎么弄？
+    删除节点的情况:假设集群中有5个节点，我必须在运行时删除2个节点。那么如何在不影响指数的情况下完成？
+    我有接近10 Gb/hour的连续数据流，这些数据正在连续写入并索引化。重新平衡会对此有所影响吗？
+    - 针对上面的情况,需要理解下面的知识点:
+    Master节点的职责:
+        - 确定将哪些分片分配给哪些节点,以及何时在节点之间移动分片以重新平衡集群
+        - 还有就是集群增加,删除索引或者增加,删除节点,不涉及文档级别的变更和搜索
+        - 任何节点都可以成为主节点,集群中每个节点都知道具体文档的位置
+    分片分配发生的时机:
+        - 分片分配是将分片分配给节点的过程;这可能发生在集群初始恢复,副本分配,重新平衡,添加或删除节点期间
+    控制分配/重新平衡分片操作的常见设置
+        - cluster.routing.allocation.enable
+        - cluster.routing.rebalance.enable
+        - cluster.routing.allocation.balance.shard
+        - cluster.routing.allocation.balance.index
+        - cluster.routing.allocation.balance.threshold
+    基于磁盘的分片分配
+        - cluster.routing.allocation.disk.watermark.low
+        - cluster.routing.allocation.disk.watermark.high
+        - cluster.routing.allocation.disk.watermark.flood_stage
+        - cluster.info.update.interval
+    索引/节点层面的分片分配(索引是指向一个或多个物理分片的逻辑命名空间,同时一个分片是一个Lucene实例)
+        - cluster.routing.allocation.include.{attribute}——至少包含
+        - cluster.routing.allocation.require.{attribute}——全部包含
+        - cluster.routing.allocation.exclude.{attribute}——非、排除操作
+    - 什么是主分片,什么是副本分片?为什么主分片的数量决定了索引的容量?一个主分片的最大容量是多大?
+    副本分片作为保护数据不丢失的冗余备份,同时为搜索提供读服务;需要注意的一点是索引建立的时候就要确定主分片的数目,
+    而副本分片的数目可以随时修改
