@@ -4,8 +4,6 @@ import org.ddd.fundamental.repository.core.exception.PersistenceException;
 import org.ddd.fundamental.repository.core.repository.impl.RepositoryBase;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository("orderRepository")
 public class OrderRepositoryImpl extends RepositoryBase<Long, Order>
         implements OrderRepository {

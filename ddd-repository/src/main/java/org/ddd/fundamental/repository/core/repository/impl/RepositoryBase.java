@@ -9,7 +9,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 
-public abstract  class RepositoryBase<TID extends Comparable<TID>, TEntity extends EntityModel<TID>>
+public abstract class RepositoryBase<TID extends Comparable<TID>, TEntity extends EntityModel<TID>>
         implements Repository<TID, TEntity>, UnitOfWorkRepository<TEntity> {
 
     //工作单元
@@ -78,10 +78,21 @@ public abstract  class RepositoryBase<TID extends Comparable<TID>, TEntity exten
         this.unitOfWork.set(unitOfWork);
     }
 
+    public void removeUnitOfWork() {
+        this.unitOfWork.remove();
+    }
+
+
     /**
      * 持久化新建的领域模型
      * @param entity 待持久化的领域模型
      */
     @Override
     public abstract void persistNewCreated(TEntity entity) throws PersistenceException;
+
+    @Override
+    public abstract void persistDeleted(TEntity entity) throws PersistenceException;
+
+    @Override
+    public abstract void persistChanged(TEntity entity) throws PersistenceException;
 }

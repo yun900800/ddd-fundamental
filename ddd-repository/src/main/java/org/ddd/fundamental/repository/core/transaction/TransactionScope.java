@@ -30,9 +30,14 @@ public final class TransactionScope {
 
     public CommitHandlingResult commit() throws CommitmentException {
         if (this.unitOfWork == null) {
-            throw new CommitmentException();
+            throw new CommitmentException("unitOfWork:{} is null");
         }
         CommitHandlingResult result = this.unitOfWork.commit();//(3)
+        if (unitOfWork != null && repositoryBases != null) {
+            for (RepositoryBase repositoryBase : repositoryBases) {
+                repositoryBase.removeUnitOfWork();//(4)
+            }
+        }
         return result;
     }
 }

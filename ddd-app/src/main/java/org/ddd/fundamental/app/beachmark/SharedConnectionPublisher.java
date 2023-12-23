@@ -54,7 +54,7 @@ public class SharedConnectionPublisher {
                 LongSummaryStatistics summary = results.stream()
                         .map(f -> safeGet(f))
                         .map(r -> r.elapsed)
-                        .collect(Collectors.summarizingLong((l) -> l));
+                        .collect(Collectors.summarizingLong(l -> l));
 
                 LOGGER.info("[I74] stats={}", summary);
                 LOGGER.info("[I79] result: workers={}, throughput={}",workerCount,throughput(workerCount,iterations,elapsed));

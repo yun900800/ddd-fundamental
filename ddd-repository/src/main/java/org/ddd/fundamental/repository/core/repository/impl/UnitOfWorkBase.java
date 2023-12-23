@@ -17,6 +17,9 @@ public abstract class UnitOfWorkBase implements UnitOfWork {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UnitOfWorkBase.class);
 
+    /**
+     * key存储新增的实体(聚合), value 存储将这些实体保存起来的工作单元repository
+     */
     private Map<EntityModel, UnitOfWorkRepository> createdEntities = new HashMap<>();
 
     private Map<EntityModel, UnitOfWorkRepository> changedEntities = new HashMap<>();
@@ -38,6 +41,12 @@ public abstract class UnitOfWorkBase implements UnitOfWork {
 
     @Override
     public void registerUpdated(EntityModel entity, UnitOfWorkRepository<? extends EntityModel> repository) {
+        if (entity == null || repository == null) {
+            return;
+        }
+        if(this.deletedEntities.containsKey(entity ) || this.createdEntities.containsKey(entity)){
+            return;
+        }
         if(!this.changedEntities.containsKey(entity)){
             this.changedEntities.put(entity, repository);
         }
@@ -45,6 +54,12 @@ public abstract class UnitOfWorkBase implements UnitOfWork {
 
     @Override
     public void registerDeleted(EntityModel entity, UnitOfWorkRepository<? extends EntityModel> repository) {
+        if (entity == null || repository == null) {
+            return;
+        }
+        if(this.changedEntities.containsKey(entity ) || this.createdEntities.containsKey(entity)){
+            return;
+        }
         if(!this.deletedEntities.containsKey(entity)){
             this.deletedEntities.put(entity, repository);
         }
@@ -102,6 +117,18 @@ public abstract class UnitOfWorkBase implements UnitOfWork {
             //实际上持久化修改的聚合根
             entry.getValue().persistNewCreated(entry.getKey());
         }
+    }
+
+    public Map<EntityModel, UnitOfWorkRepository> getCreatedEntities() {
+        return createdEntities;
+    }
+
+    public Map<EntityModel, UnitOfWorkRepository> getChangedEntities() {
+        return changedEntities;
+    }
+
+    public Map<EntityModel, UnitOfWorkRepository> getDeletedEntities() {
+        return deletedEntities;
     }
 
 }

@@ -3,6 +3,10 @@ package org.ddd.fundamental.repository.core.repository;
 import org.ddd.fundamental.repository.core.EntityModel;
 import org.ddd.fundamental.repository.core.exception.PersistenceException;
 
+/**
+ * 持久化一个聚合对应的三种操作(新增，更新,删除)
+ * @param <TEntity>
+ */
 public interface UnitOfWorkRepository<TEntity extends EntityModel> {
 
     /**

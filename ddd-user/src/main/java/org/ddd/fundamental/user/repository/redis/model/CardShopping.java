@@ -34,7 +34,7 @@ public class CardShopping {
         if (null == oldCount) {
             this.addItem(name,incrementCount);
         } else {
-            this.items.put(name,(oldCount+ incrementCount));
+            this.items.put(name,oldCount+ incrementCount);
         }
         return this;
     }
@@ -49,7 +49,7 @@ public class CardShopping {
         if (oldCount <= incrementCount) {
             this.items.remove(name);
         } else {
-            this.items.put(name,(oldCount - incrementCount));
+            this.items.put(name,oldCount - incrementCount);
         }
         return this;
     }

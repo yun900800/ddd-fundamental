@@ -22,6 +22,7 @@
       <module>ddd-conditional</module>
       <module>ddd-repository</module>
       <module>ddd-core</module>
+      <module>ddd-base</module>
   </modules>
   <packaging>pom</packaging>
   <parent>

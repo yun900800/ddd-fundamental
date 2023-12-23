@@ -4,42 +4,42 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c69dad5c-3b58-4406-8049-6b3f5bd54d8c" name="Changes" comment="test(ddd-share) 抽取出一个创建代理数据源的方法&#10;1. 抽取出一个使用内存数据库的测试配置类&#10;2. 配置了数据源需要@AutoConfigureTestDatabase(replace= AutoConfigureTestDatabase.Replace.NONE)">
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/jpa-buddy.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ddd-app/.env" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ddd-app/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ddd-app/.m2/copy_reference_file.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ddd-app/.m2/settings-docker.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ddd-app/Dockerfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ddd-app/ReadMe.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ddd-app/docker-compose.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ddd-app/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ddd-app/src/main/java/org/ddd/fundamental/app/AppApplication.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ddd-app/src/main/java/org/ddd/fundamental/app/api/client/OkHttpClientUtils.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ddd-app/src/main/java/org/ddd/fundamental/app/api/user/UserRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ddd-app/src/main/java/org/ddd/fundamental/app/config/ProducerConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ddd-app/src/main/java/org/ddd/fundamental/app/config/Publisher.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ddd-app/src/main/java/org/ddd/fundamental/app/controller/DockerController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ddd-app/src/main/java/org/ddd/fundamental/app/listener/ConsumerConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ddd-app/src/main/java/org/ddd/fundamental/app/listener/EmailListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ddd-app/src/main/java/org/ddd/fundamental/app/listener/OrderConsumer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ddd-app/src/main/java/org/ddd/fundamental/app/listener/TextListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ddd-app/src/main/java/org/ddd/fundamental/app/listener/UserEventListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ddd-app/src/main/java/org/ddd/fundamental/app/model/UserEvent.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ddd-app/src/main/java/org/ddd/fundamental/app/model/UserModel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ddd-app/src/main/java/org/ddd/fundamental/app/repository/user/UserRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ddd-app/src/main/java/org/ddd/fundamental/app/service/user/UserService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ddd-app/src/main/java/org/ddd/fundamental/share/config/AppHibernateConfiguration.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ddd-app/src/main/resources/.env" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ddd-app/src/main/resources/application.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ddd-app/src/main/resources/database/app_db.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ddd-app/src/test/java/org/ddd/fundamental/app/AppApplicationTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ddd-share/src/main/java/org/ddd/fundamental/share/infrastructure/hibernate/HibernateConfigurationFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/ddd-share/src/main/java/org/ddd/fundamental/share/infrastructure/hibernate/HibernateConfigurationFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ddd-validation/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ddd-validation/pom.xml" afterDir="false" />
+    <list default="true" id="c69dad5c-3b58-4406-8049-6b3f5bd54d8c" name="Changes" comment="feature(ddd-core) 增加一个工厂模式的抽象类">
+      <change afterPath="$PROJECT_DIR$/.idea/checkstyle-idea.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ddd-base/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ddd-base/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ddd-base/src/main/java/org/ddd/fundamental/App.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ddd-base/src/main/java/org/ddd/fundamental/base/loader/IUser.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ddd-base/src/main/java/org/ddd/fundamental/base/loader/SpiFactory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ddd-base/src/main/java/org/ddd/fundamental/base/loader/UserOne.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ddd-base/src/main/java/org/ddd/fundamental/base/loader/UserTwo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ddd-base/src/main/resources/META-INF/services/org.ddd.fundamental.base.loader.IUser" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ddd-base/src/test/java/org/ddd/fundamental/AppTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ddd-base/src/test/java/org/ddd/fundamental/base/loader/SpiFactoryTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ddd-conditional/src/main/java/org/ddd/fundamental/conditional/beanpostprocessor/metadatareader/MyAbstract.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ddd-conditional/src/main/java/org/ddd/fundamental/conditional/beanpostprocessor/metadatareader/MyAnnotation.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ddd-conditional/src/main/java/org/ddd/fundamental/conditional/beanpostprocessor/metadatareader/MyBean.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ddd-conditional/src/test/java/org/ddd/fundamental/conditional/beanpostprocessor/MetadataReaderTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ddd-core/readme.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ddd-repository/src/test/java/org/ddd/fundamental/repository/core/repository/impl/UnitOfWorkBaseTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ddd-app/src/main/java/org/ddd/fundamental/app/beachmark/SharedConnectionPublisher.java" beforeDir="false" afterPath="$PROJECT_DIR$/ddd-app/src/main/java/org/ddd/fundamental/app/beachmark/SharedConnectionPublisher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ddd-app/src/main/java/org/ddd/fundamental/app/service/beachmark/BeachMarkService.java" beforeDir="false" afterPath="$PROJECT_DIR$/ddd-app/src/main/java/org/ddd/fundamental/app/service/beachmark/BeachMarkService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ddd-conditional/src/main/java/org/ddd/fundamental/conditional/on/bean/SpringService.java" beforeDir="false" afterPath="$PROJECT_DIR$/ddd-conditional/src/main/java/org/ddd/fundamental/conditional/on/bean/SpringService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ddd-core/src/main/java/org/ddd/fundamental/core/domain/factory/EntityFactoryBase.java" beforeDir="false" afterPath="$PROJECT_DIR$/ddd-core/src/main/java/org/ddd/fundamental/core/domain/factory/EntityFactoryBase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ddd-repository/src/main/java/org/ddd/fundamental/repository/core/exception/CommitmentException.java" beforeDir="false" afterPath="$PROJECT_DIR$/ddd-repository/src/main/java/org/ddd/fundamental/repository/core/exception/CommitmentException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ddd-repository/src/main/java/org/ddd/fundamental/repository/core/exception/PersistenceException.java" beforeDir="false" afterPath="$PROJECT_DIR$/ddd-repository/src/main/java/org/ddd/fundamental/repository/core/exception/PersistenceException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ddd-repository/src/main/java/org/ddd/fundamental/repository/core/exception/ValidationException.java" beforeDir="false" afterPath="$PROJECT_DIR$/ddd-repository/src/main/java/org/ddd/fundamental/repository/core/exception/ValidationException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ddd-repository/src/main/java/org/ddd/fundamental/repository/core/repository/Repository.java" beforeDir="false" afterPath="$PROJECT_DIR$/ddd-repository/src/main/java/org/ddd/fundamental/repository/core/repository/Repository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ddd-repository/src/main/java/org/ddd/fundamental/repository/core/repository/UnitOfWork.java" beforeDir="false" afterPath="$PROJECT_DIR$/ddd-repository/src/main/java/org/ddd/fundamental/repository/core/repository/UnitOfWork.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ddd-repository/src/main/java/org/ddd/fundamental/repository/core/repository/UnitOfWorkRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/ddd-repository/src/main/java/org/ddd/fundamental/repository/core/repository/UnitOfWorkRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ddd-repository/src/main/java/org/ddd/fundamental/repository/core/repository/impl/RepositoryBase.java" beforeDir="false" afterPath="$PROJECT_DIR$/ddd-repository/src/main/java/org/ddd/fundamental/repository/core/repository/impl/RepositoryBase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ddd-repository/src/main/java/org/ddd/fundamental/repository/core/repository/impl/UnitOfWorkBase.java" beforeDir="false" afterPath="$PROJECT_DIR$/ddd-repository/src/main/java/org/ddd/fundamental/repository/core/repository/impl/UnitOfWorkBase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ddd-repository/src/main/java/org/ddd/fundamental/repository/core/transaction/TransactionScope.java" beforeDir="false" afterPath="$PROJECT_DIR$/ddd-repository/src/main/java/org/ddd/fundamental/repository/core/transaction/TransactionScope.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ddd-repository/src/main/java/org/ddd/fundamental/repository/order/OrderRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/ddd-repository/src/main/java/org/ddd/fundamental/repository/order/OrderRepositoryImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ddd-repository/src/test/java/org/ddd/fundamental/repository/AppTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/ddd-repository/src/test/java/org/ddd/fundamental/repository/AppTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ddd-user/src/main/java/org/ddd/fundamental/user/repository/redis/model/CardShopping.java" beforeDir="false" afterPath="$PROJECT_DIR$/ddd-user/src/main/java/org/ddd/fundamental/user/repository/redis/model/CardShopping.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -50,6 +50,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Enum" />
         <option value="AnnotationType" />
         <option value="Interface" />
         <option value="Class" />
@@ -66,6 +67,9 @@
     <setting file="file://$PROJECT_DIR$/ddd-app/docker-compose.yml" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ddd-app/pom.xml" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ddd-app/src/main/java/org/ddd/fundamental/app/AppApplication.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/ddd-core/src/main/java/org/ddd/fundamental/core/domain/factory/EntityFactoryBase.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/ddd-core/src/main/java/org/ddd/fundamental/core/vo/VOBase.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/ddd-core/src/test/java/org/ddd/fundamental/core/domain/factory/OrderFactory.java" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ddd-share/src/test/resources/.env" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="JpbToolWindowState">
@@ -87,6 +91,13 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="MavenImportPreferences">
+    <option name="enabledProfiles">
+      <list>
+        <option value="peer1" />
+      </list>
+    </option>
+  </component>
   <component name="MavenRunner">
     <option name="vmOptions" value="-DarchetypeCatalog=local" />
   </component>
@@ -106,12 +117,14 @@
     &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;ToolWindowRun.ShowToolbar&quot;: &quot;false&quot;,
     &quot;jdk.selected.JAVA_MODULE&quot;: &quot;11&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/86135/Desktop/我的demo/maven-multi-module-docker-cache&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/86135/Desktop/我的demo/ddd-fundamental/check-style.xml&quot;,
     &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;MavenSettings&quot;
+    &quot;settings.editor.selected.configurable&quot;: &quot;org.infernus.idea.checkstyle.CheckStyleConfigurable&quot;
   }
 }</component>
   <component name="RecentsManager">
@@ -119,12 +132,16 @@
       <recent name="C:\Users\86135\Desktop\我的demo\ddd-fundamental\ddd-app\src\main\resources" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\86135\Desktop\我的demo\ddd-fundamental\ddd-base\src\main\resources\META-INF" />
+      <recent name="C:\Users\86135\Desktop\我的demo\ddd-fundamental\ddd-base\src\main\resources" />
       <recent name="C:\Users\86135\Desktop\我的demo\ddd-fundamental\ddd-share\src\test\resources\database" />
     </key>
     <key name="ExtractSuperBase.RECENT_KEYS">
       <recent name="org.ddd.fundamental.share.infrastructure.hibernate" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="org.ddd.fundamental.base.loader" />
+      <recent name="org.ddd.fundamental.core.validation" />
       <recent name="org.ddd.fundamental.share.infrastructure.hibernate" />
       <recent name="org.ddd.fundamental.share.infrastructure.bus.event" />
     </key>
@@ -134,26 +151,6 @@
       <command value="mvn dependency:analyze" />
       <command value="mvn dependency:tree" />
     </option>
-  </component>
-  <component name="RunManager">
-    <configuration name="AppApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="org.ddd.fundamental.app.AppApplication" />
-      <module name="ddd-app" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="org.ddd.fundamental.app.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Application.AppApplication" />
-      </list>
-    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -325,7 +322,42 @@
       <option name="project" value="LOCAL" />
       <updated>1689937576986</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="feature(ddd-repository) 增加一个对聚合根进行存储的工具类,主要采用了workofunit设计模式来进行存储">
+      <created>1695564562511</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1695564562511</updated>
+    </task>
+    <task id="LOCAL-00025" summary="feature(ddd-repository) 对这个模块存在的问题进行了说明以及未来需要进行的改进;同时考虑将一个基础的类放置到一个核心模块当中">
+      <created>1695565136020</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1695565136020</updated>
+    </task>
+    <task id="LOCAL-00026" summary="feature(ddd-algorithms) 增加一个对stepBuilder模式的应用和分析需要注意的情况">
+      <created>1695631536313</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1695631536313</updated>
+    </task>
+    <task id="LOCAL-00027" summary="feature(ddd-algorithms) 增加一个swagger文档的配置说明">
+      <created>1695704967309</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1695704967309</updated>
+    </task>
+    <task id="LOCAL-00028" summary="feature(ddd-core) 增加一个工厂模式的抽象类">
+      <created>1695801663664</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1695801663664</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -360,7 +392,12 @@
     <MESSAGE value="test(ddd-share) 增加对infrastructure/hibernate HibernateRepository类的测试&#10;1. 使用@DataJpaTest对HibernateRepository进行测试&#10;2. 增加一个StringIdentifier类主键." />
     <MESSAGE value="test(ddd-share) 增加对infrastructure/bus/event/rabbitmq的测试&#10;1. 增加对rabbitmq部分类的测试&#10;2. 考虑引入testContainer进行测试" />
     <MESSAGE value="test(ddd-share) 抽取出一个创建代理数据源的方法&#10;1. 抽取出一个使用内存数据库的测试配置类&#10;2. 配置了数据源需要@AutoConfigureTestDatabase(replace= AutoConfigureTestDatabase.Replace.NONE)" />
-    <option name="LAST_COMMIT_MESSAGE" value="test(ddd-share) 抽取出一个创建代理数据源的方法&#10;1. 抽取出一个使用内存数据库的测试配置类&#10;2. 配置了数据源需要@AutoConfigureTestDatabase(replace= AutoConfigureTestDatabase.Replace.NONE)" />
+    <MESSAGE value="feature(ddd-repository) 增加一个对聚合根进行存储的工具类,主要采用了workofunit设计模式来进行存储" />
+    <MESSAGE value="feature(ddd-repository) 对这个模块存在的问题进行了说明以及未来需要进行的改进;同时考虑将一个基础的类放置到一个核心模块当中" />
+    <MESSAGE value="feature(ddd-algorithms) 增加一个对stepBuilder模式的应用和分析需要注意的情况" />
+    <MESSAGE value="feature(ddd-algorithms) 增加一个swagger文档的配置说明" />
+    <MESSAGE value="feature(ddd-core) 增加一个工厂模式的抽象类" />
+    <option name="LAST_COMMIT_MESSAGE" value="feature(ddd-core) 增加一个工厂模式的抽象类" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -440,8 +477,44 @@
           <line>51</line>
           <option name="timeStamp" value="51" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/ddd-conditional/src/main/java/org/ddd/fundamental/conditional/beanpostprocessor/GuavaEventBusBeanPostProcessor.java</url>
+          <line>54</line>
+          <option name="timeStamp" value="52" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/ddd-conditional/src/main/java/org/ddd/fundamental/conditional/beanpostprocessor/GuavaEventBusBeanPostProcessor.java</url>
+          <line>46</line>
+          <option name="timeStamp" value="53" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/ddd-base/src/test/java/org/ddd/fundamental/base/loader/SpiFactoryTest.java</url>
+          <line>9</line>
+          <option name="timeStamp" value="54" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/ddd-base/src/main/java/org/ddd/fundamental/base/loader/SpiFactory.java</url>
+          <line>33</line>
+          <option name="timeStamp" value="55" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/ddd-base/src/main/java/org/ddd/fundamental/base/loader/SpiFactory.java</url>
+          <line>43</line>
+          <option name="timeStamp" value="56" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/ddd-base/src/main/java/org/ddd/fundamental/base/loader/SpiFactory.java</url>
+          <line>36</line>
+          <option name="timeStamp" value="57" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+    <pin-to-top-manager>
+      <pinned-members>
+        <PinnedItemInfo parentTag="java.util.LinkedHashMap$Entry" memberName="value" />
+        <PinnedItemInfo parentTag="java.lang.String" memberName="value" />
+      </pinned-members>
+    </pin-to-top-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

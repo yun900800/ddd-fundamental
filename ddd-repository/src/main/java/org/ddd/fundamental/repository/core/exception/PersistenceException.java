@@ -1,7 +1,9 @@
 package org.ddd.fundamental.repository.core.exception;
 
-import java.beans.Expression;
 
+/**
+ * 持久层持久化异常
+ */
 public class PersistenceException extends RuntimeException{
 
     public PersistenceException(Exception e){

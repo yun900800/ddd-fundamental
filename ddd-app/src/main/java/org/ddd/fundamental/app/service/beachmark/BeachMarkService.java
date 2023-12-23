@@ -47,7 +47,7 @@ public class BeachMarkService {
         LongSummaryStatistics summary = IntStream.range(0, 9)
                 .mapToObj(idx -> new ConnectionPerChannelPublisher(factory, workerCount, iterations, payloadSize))
                 .map(p -> p.call())
-                .collect(Collectors.summarizingLong((l) -> l));
+                .collect(Collectors.summarizingLong(l -> l));
 
         LOGGER.info("[I66] workers={}, throughput={}", workerCount, (int)Math.floor(summary.getAverage()));
     }
@@ -63,7 +63,7 @@ public class BeachMarkService {
         LongSummaryStatistics summary = IntStream.range(0, 9)
                 .mapToObj(idx -> new SingleConnectionPublisher(connectionFactory.getRabbitConnectionFactory(), workerCount, iterations, payloadSize))
                 .map(p -> p.call())
-                .collect(Collectors.summarizingLong((l) -> l));
+                .collect(Collectors.summarizingLong(l -> l));
 
         LOGGER.info("[I66] workers={}, throughput={}", workerCount, (int)Math.floor(summary.getAverage()));
     }
@@ -73,7 +73,7 @@ public class BeachMarkService {
         LongSummaryStatistics summary = IntStream.range(0, 9)
                 .mapToObj(idx -> new SingleConnectionPublisherNio(connectionFactory.getRabbitConnectionFactory(), workerCount, iterations, payloadSize))
                 .map(p -> p.call())
-                .collect(Collectors.summarizingLong((l) -> l));
+                .collect(Collectors.summarizingLong(l -> l));
 
         LOGGER.info("[I66] workers={}, throughput={}", workerCount, (int)Math.floor(summary.getAverage()));
     }

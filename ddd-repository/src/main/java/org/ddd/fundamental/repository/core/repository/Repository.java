@@ -4,6 +4,11 @@ import org.ddd.fundamental.repository.core.EntityModel;
 
 import java.util.List;
 
+/**
+ * 持久化聚合的常用操作(包括新增，批量新增，更新，批量更新，移除,批量移除,根据id查找)
+ * @param <TID>
+ * @param <TEntity>
+ */
 public interface Repository<TID extends Comparable<TID>, TEntity extends EntityModel<TID>> {
 
     TEntity findBy(TID id) throws RuntimeException;

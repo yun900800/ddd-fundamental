@@ -6,7 +6,7 @@ import org.ddd.fundamental.core.vo.VOBase;
 
 public abstract class EntityFactoryBase<TEntity extends EntityModel,TParameter extends VOBase> {
 
-    public abstract TEntity create(TParameter voInfo) throws OrderCreationException;
+    protected abstract TEntity create(TParameter voInfo) throws OrderCreationException;
 
-    public abstract TEntity load(TParameter voInfo) throws OrderCreationException;
+    protected abstract TEntity load(TParameter voInfo) throws OrderCreationException;
 }
