@@ -45,5 +45,6 @@
     </dependencies>
     <modules>
         <module>ddd-spring-resource</module>
+        <module>ddd-spring-env</module>
     </modules>
 </project>
