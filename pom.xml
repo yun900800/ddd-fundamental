@@ -23,6 +23,7 @@
       <module>ddd-repository</module>
       <module>ddd-core</module>
       <module>ddd-base</module>
+      <module>ddd-spring</module>
   </modules>
   <packaging>pom</packaging>
   <parent>
