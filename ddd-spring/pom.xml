@@ -46,5 +46,6 @@
     <modules>
         <module>ddd-spring-resource</module>
         <module>ddd-spring-env</module>
+        <module>ddd-spring-metadata</module>
     </modules>
 </project>
