@@ -106,7 +106,7 @@ public abstract class UnitOfWorkBase implements UnitOfWork {
         while (iterator.hasNext()) {
             Map.Entry<EntityModel,UnitOfWorkRepository> entry = iterator.next();
             //实际上持久化删除的聚合根
-            entry.getValue().persistNewCreated(entry.getKey());
+            entry.getValue().persistDeleted(entry.getKey());
         }
     }
 
@@ -115,7 +115,7 @@ public abstract class UnitOfWorkBase implements UnitOfWork {
         while (iterator.hasNext()) {
             Map.Entry<EntityModel,UnitOfWorkRepository> entry = iterator.next();
             //实际上持久化修改的聚合根
-            entry.getValue().persistNewCreated(entry.getKey());
+            entry.getValue().persistChanged(entry.getKey());
         }
     }
 

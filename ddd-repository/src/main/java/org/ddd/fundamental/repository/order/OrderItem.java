@@ -51,6 +51,11 @@ public class OrderItem extends EntityModel<Long> {
         super(id);
     }
 
+    public OrderItem changeQuantity(int quantity) {
+        this.quantity = quantity;
+        return this;
+    }
+
     public String getName() {
         return name;
     }

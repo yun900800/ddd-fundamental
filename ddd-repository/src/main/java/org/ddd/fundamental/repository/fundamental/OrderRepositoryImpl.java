@@ -61,6 +61,8 @@ public class OrderRepositoryImpl extends RepositoryBase<Long, Order>
     private List<OrderItemModel> ofOrderItemModel(Order order) {
         List<OrderItemModel> orderItemModels = order.getOrderItems().stream().map(v->{
             OrderItemModel orderItemModel = new OrderItemModel();
+            orderItemModel.setOrderId(order.getId());
+            orderItemModel.setId(v.getId());
             BeanUtils.copyProperties(v, orderItemModel);
             return orderItemModel;
         }).collect(Collectors.toList());
@@ -88,6 +90,14 @@ public class OrderRepositoryImpl extends RepositoryBase<Long, Order>
 
     @Override
     public void persistChanged(Order order) throws PersistenceException {
+        if (order == null) {
+            throw new PersistenceException();
+        }
+        OrderModel orderModel = this.ofOrderModel(order);
+        orderModel.setId(order.getId());
+        orderFundamentalRepository.save(orderModel);
+        List<OrderItemModel> orderItemModels = this.ofOrderItemModel(order);
+        orderItemFundamentalRepository.saveAll(orderItemModels);
 
     }
 

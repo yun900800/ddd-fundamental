@@ -1,5 +1,6 @@
 package org.ddd.fundamental.repository.order;
 
+import org.aspectj.weaver.ast.Or;
 import org.ddd.fundamental.repository.core.EntityModel;
 
 import java.math.BigDecimal;
@@ -59,6 +60,13 @@ public class Order extends EntityModel<Long> {
         return this;
     }
 
+    public Order clear() {
+        this.orderAmount = BigDecimal.ZERO;
+        this.orderItems = new ArrayList<>();
+        return this;
+    }
+
+
     public Order addOrderItems(List<OrderItem> orderItems) {
         for (OrderItem orderItem: orderItems) {
             addOrderItem(orderItem);
@@ -75,6 +83,10 @@ public class Order extends EntityModel<Long> {
     }
 
 
+    public Order changeName(String name) {
+        this.name = name;
+        return this;
+    }
 
 
 
