@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    username: hsqldb
+    password: hsqldb
+    url: jdbc:hsqldb:mem:test;shutdown=true
+    driver-class-name: org.hsqldb.jdbcDriver
+    initialization-mode: always
+    continue-on-error: true
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true

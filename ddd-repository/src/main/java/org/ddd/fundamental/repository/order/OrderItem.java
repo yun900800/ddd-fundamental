@@ -47,7 +47,7 @@ public class OrderItem extends EntityModel<Long> {
         return new OrderItem(name,itemAmount, quantity, description);
     }
 
-    OrderItem(Long id) {
+    public OrderItem(Long id) {
         super(id);
     }
 

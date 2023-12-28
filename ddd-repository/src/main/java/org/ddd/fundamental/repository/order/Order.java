@@ -59,6 +59,14 @@ public class Order extends EntityModel<Long> {
         return this;
     }
 
+    public Order addOrderItems(List<OrderItem> orderItems) {
+        for (OrderItem orderItem: orderItems) {
+            addOrderItem(orderItem);
+        }
+        return this;
+    }
+
+
     public Order removeOrderItem(OrderItem orderItem) {
         this.orderItems.remove(orderItem);
         this.orderAmount = this.orderAmount.subtract(orderItem.getItemAmount()

@@ -24,7 +24,7 @@ public abstract class RepositoryBase<TID extends Comparable<TID>, TEntity extend
         if (entity == null) {
             return;
         }
-
+        this.unitOfWork.get().registerNewCreated(entity,this);
     }
 
     @Override

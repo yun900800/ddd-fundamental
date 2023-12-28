@@ -11,4 +11,8 @@ public abstract class EntityModel<Id extends Comparable<Id>> {
     public Id getId() {
         return id;
     }
+
+    public void setId(Id id) {
+        this.id = id;
+    }
 }
