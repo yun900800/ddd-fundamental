@@ -83,6 +83,7 @@ public class Order extends EntityModel<Long> {
         this.orderAmount = this.orderAmount.add(orderItem.getItemAmount()
                 .multiply(BigDecimal.valueOf(orderItem.getQuantity())));
         this.deliveryFee = deliveryStrategy.generateDeliveryFee(orderAmount);
+        this.updateDirty();
         return this;
     }
 
@@ -112,11 +113,13 @@ public class Order extends EntityModel<Long> {
 
     public Order changeName(String name) {
         this.name = name;
+        this.updateDirty();
         return this;
     }
 
     public Order cancel() {
         this.orderStatus = OrderStatus.CANCEL;
+        this.updateDirty();
         return this;
     }
 

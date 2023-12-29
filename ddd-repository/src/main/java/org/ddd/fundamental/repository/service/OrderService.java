@@ -21,7 +21,6 @@ public class OrderService {
     public void cancel(Long orderId) {
         Order order = this.loadOrder(orderId);
         order.cancel();
-        order.updateDirty();
         TransactionScope transactionScope = TransactionScope.create((RepositoryBase) orderRepository);//(2)
         this.orderRepository.update(order); //(1)
         transactionScope.commit();
@@ -40,7 +39,6 @@ public class OrderService {
     @Transactional
     public void changeOrderName(String name, Long orderId) {
         Order order = this.loadOrder(orderId);
-        order.updateDirty();
         order.changeName(name);
         TransactionScope transactionScope = TransactionScope.create((RepositoryBase) orderRepository);//(2)
         this.orderRepository.update(order);
@@ -54,13 +52,10 @@ public class OrderService {
             if (v.getName().equals(name)) {
                 v.changeQuantity(qty);
                 v.updateDirty();
-                return v;
-            } else {
-                return v;
             }
+            return v;
         }).collect(Collectors.toList());
         order.clear().addOrderItems(orderItemList);
-        order.updateDirty();
         TransactionScope transactionScope = TransactionScope.create((RepositoryBase) orderRepository);//(2)
         this.orderRepository.update(order);
         transactionScope.commit();
@@ -72,13 +67,10 @@ public class OrderService {
         List<OrderItem> orderItemList = order.getOrderItems().stream().map(v->{
             if (v.getName().equals(name)) {
                 v.deleteDirty();
-                return v;
-            } else {
-                return v;
             }
+            return v;
         }).collect(Collectors.toList());
         order.clear().addOrderItems(orderItemList);
-        order.updateDirty();
         TransactionScope transactionScope = TransactionScope.create((RepositoryBase) orderRepository);//(2)
         this.orderRepository.update(order);
         transactionScope.commit();
