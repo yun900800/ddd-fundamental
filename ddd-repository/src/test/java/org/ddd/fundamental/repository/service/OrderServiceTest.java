@@ -71,5 +71,12 @@ public class OrderServiceTest {
         Assert.assertEquals(order.getDeliveryFee(),BigDecimal.valueOf(5));
     }
 
+    @Test
+    public void testDeleteOrderItemByName() {
+        orderService.deleteOrder(orderId);
+        Order order = orderService.loadOrder(orderId);
+        Assert.assertNull(order);
+    }
+
 
 }

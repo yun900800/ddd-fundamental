@@ -56,6 +56,9 @@ public class OrderRepositoryImpl extends RepositoryBase<Long, Order>
         OrderModel orderModel = new OrderModel();
         BeanUtils.copyProperties(order, orderModel);
         orderModel.setOrderStatus(order.getOrderStatus().getStatus());
+        if (null!= order.getId() && order.getId() > 0) {
+            orderModel.setId(order.getId());
+        }
         return orderModel;
     }
 
@@ -70,7 +73,7 @@ public class OrderRepositoryImpl extends RepositoryBase<Long, Order>
         return orderItemModels;
     }
     private List<OrderItemModel> ofOrderItemDirtyModel(Order order) {
-        List<OrderItemModel> orderItemModels = order.getOrderItems().stream().filter(v->v.isDirty()).map(v->{
+        List<OrderItemModel> orderItemModels = order.getOrderItems().stream().filter(v->v.isUpdateDirty()).map(v->{
             OrderItemModel orderItemModel = new OrderItemModel();
             orderItemModel.setOrderId(order.getId());
             orderItemModel.setId(v.getId());
@@ -86,10 +89,10 @@ public class OrderRepositoryImpl extends RepositoryBase<Long, Order>
             throw new PersistenceException();
         }
         try {
-//            OrderDataEntity orderDataEntity = this.ofOrderData(oder);
-//            List<OrderEntryDataEntity> orderEntryDataEntities = this.ofOrderEntryData(oder);
-//            this.orderMapper.delete(orderDataEntity);
-//            this.orderEntryMapper.delete(orderEntryDataEntities);
+            OrderModel orderModel = this.ofOrderModel(order);
+            orderFundamentalRepository.delete(orderModel);
+            List<OrderItemModel> orderItemModels = this.ofOrderItemModel(order);
+            orderItemFundamentalRepository.deleteAll(orderItemModels);
         } catch (Exception e) {
             throw new PersistenceException();
         }
@@ -100,7 +103,7 @@ public class OrderRepositoryImpl extends RepositoryBase<Long, Order>
         if (order == null) {
             throw new PersistenceException();
         }
-        if (order.isDirty()) {
+        if (order.isUpdateDirty()) {
             OrderModel orderModel = this.ofOrderModel(order);
             orderModel.setId(order.getId());
             orderFundamentalRepository.save(orderModel);

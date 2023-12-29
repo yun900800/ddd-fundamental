@@ -4,19 +4,30 @@ public abstract class EntityModel<Id extends Comparable<Id>> {
 
     private Id id;
 
-    private boolean isDirty = false;
+    private boolean isUpdateDirty;
+
+    private boolean isDeleteDirty;
 
     public EntityModel(Id id) {
         this.id = id;
-        this.isDirty = false;
+        this.isUpdateDirty = false;
+        this.isDeleteDirty = false;
     }
 
-    public boolean isDirty() {
-        return isDirty;
+    public boolean isUpdateDirty() {
+        return isUpdateDirty;
     }
 
-    public void dirty() {
-        this.isDirty = true;
+    public void updateDirty() {
+        this.isUpdateDirty = true;
+    }
+
+    public boolean isDeleteDirty() {
+        return isDeleteDirty;
+    }
+
+    public void deleteDirty() {
+        this.isDeleteDirty = true;
     }
 
     public Id getId() {
