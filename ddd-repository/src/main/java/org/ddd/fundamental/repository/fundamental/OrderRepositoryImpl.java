@@ -68,10 +68,16 @@ public class OrderRepositoryImpl extends RepositoryBase<Long, Order>
         }).collect(Collectors.toList());
         return orderItemModels;
     }
-
-
-
-
+    private List<OrderItemModel> ofOrderItemDirtyModel(Order order) {
+        List<OrderItemModel> orderItemModels = order.getOrderItems().stream().filter(v->v.isDirty()).map(v->{
+            OrderItemModel orderItemModel = new OrderItemModel();
+            orderItemModel.setOrderId(order.getId());
+            orderItemModel.setId(v.getId());
+            BeanUtils.copyProperties(v, orderItemModel);
+            return orderItemModel;
+        }).collect(Collectors.toList());
+        return orderItemModels;
+    }
 
     @Override
     public void persistDeleted(Order order) throws PersistenceException {
@@ -93,12 +99,13 @@ public class OrderRepositoryImpl extends RepositoryBase<Long, Order>
         if (order == null) {
             throw new PersistenceException();
         }
-        OrderModel orderModel = this.ofOrderModel(order);
-        orderModel.setId(order.getId());
-        orderFundamentalRepository.save(orderModel);
-        List<OrderItemModel> orderItemModels = this.ofOrderItemModel(order);
+        if (order.isDirty()) {
+            OrderModel orderModel = this.ofOrderModel(order);
+            orderModel.setId(order.getId());
+            orderFundamentalRepository.save(orderModel);
+        }
+        List<OrderItemModel> orderItemModels = this.ofOrderItemDirtyModel(order);
         orderItemFundamentalRepository.saveAll(orderItemModels);
-
     }
 
     @Override

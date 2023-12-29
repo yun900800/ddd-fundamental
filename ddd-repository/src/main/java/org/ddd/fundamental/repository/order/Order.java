@@ -1,6 +1,4 @@
 package org.ddd.fundamental.repository.order;
-
-import org.aspectj.weaver.ast.Or;
 import org.ddd.fundamental.repository.core.EntityModel;
 
 import java.math.BigDecimal;
