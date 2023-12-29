@@ -67,6 +67,24 @@ public class OrderService {
     }
 
     @Transactional
+    public void deleteOrderItemByName(String name, Long orderId) {
+        Order order = this.loadOrder(orderId);
+        List<OrderItem> orderItemList = order.getOrderItems().stream().map(v->{
+            if (v.getName().equals(name)) {
+                v.deleteDirty();
+                return v;
+            } else {
+                return v;
+            }
+        }).collect(Collectors.toList());
+        order.clear().addOrderItems(orderItemList);
+        order.updateDirty();
+        TransactionScope transactionScope = TransactionScope.create((RepositoryBase) orderRepository);//(2)
+        this.orderRepository.update(order);
+        transactionScope.commit();
+    }
+
+    @Transactional
     public void deleteOrder(Long orderId) {
         Order order = this.loadOrder(orderId);
         TransactionScope transactionScope = TransactionScope.create((RepositoryBase) orderRepository);//(2)

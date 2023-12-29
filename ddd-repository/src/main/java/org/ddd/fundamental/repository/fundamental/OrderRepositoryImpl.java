@@ -72,8 +72,19 @@ public class OrderRepositoryImpl extends RepositoryBase<Long, Order>
         }).collect(Collectors.toList());
         return orderItemModels;
     }
-    private List<OrderItemModel> ofOrderItemDirtyModel(Order order) {
+    private List<OrderItemModel> ofOrderItemUpdateDirtyModel(Order order) {
         List<OrderItemModel> orderItemModels = order.getOrderItems().stream().filter(v->v.isUpdateDirty()).map(v->{
+            OrderItemModel orderItemModel = new OrderItemModel();
+            orderItemModel.setOrderId(order.getId());
+            orderItemModel.setId(v.getId());
+            BeanUtils.copyProperties(v, orderItemModel);
+            return orderItemModel;
+        }).collect(Collectors.toList());
+        return orderItemModels;
+    }
+
+    private List<OrderItemModel> ofOrderItemDeleteDirtyModel(Order order){
+        List<OrderItemModel> orderItemModels = order.getOrderItems().stream().filter(v->v.isDeleteDirty()).map(v->{
             OrderItemModel orderItemModel = new OrderItemModel();
             orderItemModel.setOrderId(order.getId());
             orderItemModel.setId(v.getId());
@@ -108,8 +119,11 @@ public class OrderRepositoryImpl extends RepositoryBase<Long, Order>
             orderModel.setId(order.getId());
             orderFundamentalRepository.save(orderModel);
         }
-        List<OrderItemModel> orderItemModels = this.ofOrderItemDirtyModel(order);
-        orderItemFundamentalRepository.saveAll(orderItemModels);
+        List<OrderItemModel> orderItemUpdateModels = this.ofOrderItemUpdateDirtyModel(order);
+        orderItemFundamentalRepository.saveAll(orderItemUpdateModels);
+        List<OrderItemModel> orderItemDeleteModels = this.ofOrderItemDeleteDirtyModel(order);
+        orderItemFundamentalRepository.deleteAll(orderItemDeleteModels);
+
     }
 
     @Override

@@ -73,6 +73,13 @@ public class OrderServiceTest {
 
     @Test
     public void testDeleteOrderItemByName() {
+        orderService.deleteOrderItemByName("橘子",orderId);
+        Order order = orderService.loadOrder(orderId);
+        Assert.assertEquals(order.getDeliveryFee(),BigDecimal.valueOf(10));
+    }
+
+    @Test
+    public void testDeleteOrder() {
         orderService.deleteOrder(orderId);
         Order order = orderService.loadOrder(orderId);
         Assert.assertNull(order);
