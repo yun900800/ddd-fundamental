@@ -22,6 +22,19 @@ public class OrderModel{
      */
     private BigDecimal orderAmount;
 
+    public BigDecimal getDeliveryFee() {
+        return deliveryFee;
+    }
+
+    public void setDeliveryFee(BigDecimal deliveryFee) {
+        this.deliveryFee = deliveryFee;
+    }
+
+    /**
+     * 配送费
+     */
+    private BigDecimal deliveryFee;
+
     /**
      * 订单描述
      */

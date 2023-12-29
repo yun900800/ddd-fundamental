@@ -58,6 +58,8 @@ public class OrderServiceTest {
     @Test
     public void testChangeOrderItemQty() {
         orderService.changeOrderItemQty("橘子",10,orderId);
+        Order order = orderService.loadOrder(orderId);
+        Assert.assertEquals(order.getDeliveryFee(),BigDecimal.valueOf(5));
     }
 
     @Test
@@ -65,6 +67,8 @@ public class OrderServiceTest {
         orderService.cancel(orderId);
         Order order = orderService.loadOrder(orderId);
         Assert.assertEquals(OrderStatus.CANCEL,order.getOrderStatus());
+        Assert.assertEquals(order.getOrderAmount(),BigDecimal.valueOf(25.75));
+        Assert.assertEquals(order.getDeliveryFee(),BigDecimal.valueOf(5));
     }
 
 

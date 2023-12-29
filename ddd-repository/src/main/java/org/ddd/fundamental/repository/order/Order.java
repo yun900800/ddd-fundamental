@@ -1,11 +1,15 @@
 package org.ddd.fundamental.repository.order;
 import org.ddd.fundamental.repository.core.EntityModel;
+import org.ddd.fundamental.repository.order.delivery.DefaultDeliveryStrategy;
+import org.ddd.fundamental.repository.order.delivery.DeliveryStrategy;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Order extends EntityModel<Long> {
+
+    private static final BigDecimal defaultDeliveryFee = BigDecimal.TEN;
 
     /**
      * 订单名称
@@ -18,6 +22,11 @@ public class Order extends EntityModel<Long> {
     private BigDecimal orderAmount;
 
     /**
+     * 配送费
+     */
+    private BigDecimal deliveryFee;
+
+    /**
      * 订单描述
      */
     private String description;
@@ -26,6 +35,8 @@ public class Order extends EntityModel<Long> {
      * 订单状态
      */
     private OrderStatus orderStatus;
+
+    private DeliveryStrategy deliveryStrategy = new DefaultDeliveryStrategy();
 
     public String getName() {
         return name;
@@ -51,6 +62,7 @@ public class Order extends EntityModel<Long> {
         this.description = description;
         this.orderAmount = BigDecimal.ZERO;
         this.orderStatus = OrderStatus.NEW;
+        this.deliveryFee = defaultDeliveryFee;
     }
 
     private Order(String name, String description,String orderStatus) {
@@ -70,6 +82,7 @@ public class Order extends EntityModel<Long> {
         this.orderItems.add(orderItem);
         this.orderAmount = this.orderAmount.add(orderItem.getItemAmount()
                 .multiply(BigDecimal.valueOf(orderItem.getQuantity())));
+        this.deliveryFee = deliveryStrategy.generateDeliveryFee(orderAmount);
         return this;
     }
 
@@ -92,6 +105,7 @@ public class Order extends EntityModel<Long> {
         this.orderItems.remove(orderItem);
         this.orderAmount = this.orderAmount.subtract(orderItem.getItemAmount()
                 .multiply(BigDecimal.valueOf(orderItem.getQuantity())));
+        this.deliveryFee = deliveryStrategy.generateDeliveryFee(orderAmount);
         return this;
     }
 
@@ -104,6 +118,19 @@ public class Order extends EntityModel<Long> {
     public Order cancel() {
         this.orderStatus = OrderStatus.CANCEL;
         return this;
+    }
+
+    /**
+     * 改变计费策略
+     * @param strategy
+     * @return
+     */
+    public Order changeDeliveryStrategy(DeliveryStrategy strategy) {
+        this.deliveryStrategy = strategy;
+        return this;
+    }
+    public BigDecimal getDeliveryFee() {
+        return deliveryFee;
     }
 
     public OrderStatus getOrderStatus() {
