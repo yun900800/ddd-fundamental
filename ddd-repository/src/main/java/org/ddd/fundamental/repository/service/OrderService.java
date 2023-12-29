@@ -19,11 +19,11 @@ public class OrderService {
     private OrderRepository orderRepository;
 
     public void cancel(Long orderId) {
-        Order order = this.orderRepository.findBy(orderId);
-        //order.cancel();
-        this.orderRepository.update(order); //(1)
-
+        Order order = this.loadOrder(orderId);
+        order.cancel();
+        order.dirty();
         TransactionScope transactionScope = TransactionScope.create((RepositoryBase) orderRepository);//(2)
+        this.orderRepository.update(order); //(1)
         transactionScope.commit();
     }
 

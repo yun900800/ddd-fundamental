@@ -3,6 +3,7 @@ package org.ddd.fundamental.repository.service;
 import org.ddd.fundamental.repository.App;
 import org.ddd.fundamental.repository.order.Order;
 import org.ddd.fundamental.repository.order.OrderItem;
+import org.ddd.fundamental.repository.order.OrderStatus;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -58,5 +59,13 @@ public class OrderServiceTest {
     public void testChangeOrderItemQty() {
         orderService.changeOrderItemQty("橘子",10,orderId);
     }
+
+    @Test
+    public void testCancelOrder() {
+        orderService.cancel(orderId);
+        Order order = orderService.loadOrder(orderId);
+        Assert.assertEquals(OrderStatus.CANCEL,order.getOrderStatus());
+    }
+
 
 }

@@ -22,6 +22,11 @@ public class Order extends EntityModel<Long> {
      */
     private String description;
 
+    /**
+     * 订单状态
+     */
+    private OrderStatus orderStatus;
+
     public String getName() {
         return name;
     }
@@ -45,10 +50,20 @@ public class Order extends EntityModel<Long> {
         this.name = name;
         this.description = description;
         this.orderAmount = BigDecimal.ZERO;
+        this.orderStatus = OrderStatus.NEW;
+    }
+
+    private Order(String name, String description,String orderStatus) {
+        this(name,description);
+        this.orderStatus = OrderStatus.fromStatus(orderStatus);
     }
 
     public static Order create(String name, String description) {
         return new Order(name,description);
+    }
+
+    public static Order load(String name, String description,String orderStatus) {
+        return new Order(name,description,orderStatus);
     }
 
     public Order addOrderItem(OrderItem orderItem) {
@@ -86,7 +101,14 @@ public class Order extends EntityModel<Long> {
         return this;
     }
 
+    public Order cancel() {
+        this.orderStatus = OrderStatus.CANCEL;
+        return this;
+    }
 
+    public OrderStatus getOrderStatus() {
+        return orderStatus;
+    }
 
     public Order(Long aLong) {
         super(aLong);

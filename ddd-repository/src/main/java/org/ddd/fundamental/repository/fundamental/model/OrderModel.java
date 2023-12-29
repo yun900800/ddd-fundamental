@@ -27,6 +27,19 @@ public class OrderModel{
      */
     private String description;
 
+    public String getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(String orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+
+    /**
+     * 订单状态
+     */
+    private String orderStatus;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

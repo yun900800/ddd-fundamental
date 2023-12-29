@@ -55,6 +55,7 @@ public class OrderRepositoryImpl extends RepositoryBase<Long, Order>
     private OrderModel ofOrderModel(Order order) {
         OrderModel orderModel = new OrderModel();
         BeanUtils.copyProperties(order, orderModel);
+        orderModel.setOrderStatus(order.getOrderStatus().getStatus());
         return orderModel;
     }
 
@@ -116,8 +117,8 @@ public class OrderRepositoryImpl extends RepositoryBase<Long, Order>
         }
         List<OrderItemModel> orderItemModels = findByOrderId(id);
         OrderModel orderModel = optionalOrderModel.get();
-        Order order = Order.create(orderModel.getName(),
-                orderModel.getDescription());
+        Order order = Order.load(orderModel.getName(),
+                orderModel.getDescription(), orderModel.getOrderStatus());
         List<OrderItem> orderItems = orderItemModels.stream().map(v->{
             OrderItem orderItem = OrderItem.create(v.getName(),v.getItemAmount(),v.getQuantity(),v.getDescription());
             orderItem.setId(v.getId());
