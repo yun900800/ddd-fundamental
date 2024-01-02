@@ -153,6 +153,9 @@ public final class ReflectionUtils {
     public static <T> T getFieldValueOrNull(Object target, String fieldName) {
         try {
             Field field = getField(target.getClass(), fieldName);
+            if (null == field) {
+                return null;
+            }
             @SuppressWarnings("unchecked")
             T returnValue = (T) field.get(target);
             return returnValue;
