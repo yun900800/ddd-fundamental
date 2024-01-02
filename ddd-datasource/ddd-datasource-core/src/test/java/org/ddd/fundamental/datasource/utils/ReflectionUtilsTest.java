@@ -1,6 +1,5 @@
 package org.ddd.fundamental.datasource.utils;
 
-import org.checkerframework.checker.units.qual.C;
 import org.ddd.fundamental.datasource.beans.MyBean;
 import org.ddd.fundamental.datasource.beans.MyChildBean;
 import org.ddd.fundamental.datasource.core.DataSourceProvider;
@@ -106,6 +105,42 @@ public class ReflectionUtilsTest {
         printInfo.setAccessible(true);
         String result = (String)printInfo.invoke(myChildBean,null);
         Assert.assertEquals(result,"name:null;age:20");
+    }
+
+    @Test
+    public void testHasMethod() {
+        boolean result = ReflectionUtils.hasMethod(MyChildBean.class,
+                "changeAge", new Class[]{Integer.class});
+        Assert.assertTrue(result);
+    }
+
+    @Test
+    public void testGetSetter() throws InvocationTargetException, IllegalAccessException {
+        MyBean myBean = new MyBean("this is setter test");
+        Assert.assertEquals("this is setter test",myBean.getName());
+        Method setterName = ReflectionUtils.getSetter(myBean,"name",String.class);
+        setterName.invoke(myBean,"this is setter test changed");
+        Assert.assertEquals("this is setter test changed",myBean.getName());
+    }
+
+    @Test
+    public void testGetSetterOrNull() throws InvocationTargetException, IllegalAccessException {
+        MyBean myBean = new MyBean("this is setter test");
+        Assert.assertEquals("this is setter test",myBean.getName());
+        Method setterName = ReflectionUtils.getSetterOrNull(myBean,"name",String.class);
+        setterName.invoke(myBean,"this is setter test changed");
+        Assert.assertEquals("this is setter test changed",myBean.getName());
+        Method setterAge = ReflectionUtils.getSetterOrNull(myBean,"age",String.class);
+        Assert.assertNull(setterAge);
+    }
+
+    @Test
+    public void testGetGetter() throws InvocationTargetException, IllegalAccessException {
+        MyBean myBean = new MyBean("this is setter test");
+        Assert.assertEquals("this is setter test",myBean.getName());
+        Method getterName = ReflectionUtils.getGetter(myBean,"name");
+        String result = (String)getterName.invoke(myBean, null);
+        Assert.assertEquals(result,"this is setter test");
     }
 
 }

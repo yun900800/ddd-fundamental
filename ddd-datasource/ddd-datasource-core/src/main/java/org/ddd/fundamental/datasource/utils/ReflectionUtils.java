@@ -4,6 +4,17 @@ import java.lang.reflect.*;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+
+/**
+ * 一个反射工具类,主要提供一下功能
+ * 1、实例化一个无参对象
+ * 2、实例化一个含参对象
+ * 3、获取指定名称的属性
+ * 4、获取指定名称的属性的值
+ * 5、获取指定名称和参数的方法
+ * 6、判断是否包含指定名称和参数的方法
+ * 7、获取一个对象是的setXXX method
+ */
 public final class ReflectionUtils {
 
     private static final String GETTER_PREFIX = "get";
@@ -227,6 +238,7 @@ public final class ReflectionUtils {
             try {
                 return targetClass.getMethod(methodName, parameterTypes);
             } catch (NoSuchMethodException ignore) {
+
             }
 
             if (!targetClass.getSuperclass().equals(Object.class)) {
