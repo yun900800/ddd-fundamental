@@ -24,6 +24,7 @@
       <module>ddd-core</module>
       <module>ddd-base</module>
       <module>ddd-spring</module>
+      <module>ddd-datasource</module>
   </modules>
   <packaging>pom</packaging>
   <parent>
