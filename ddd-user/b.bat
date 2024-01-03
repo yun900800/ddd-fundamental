@@ -1,0 +1,1 @@
+java -jar ./target/ddd-user-1.0-SNAPSHOT.jar --server.port=16001

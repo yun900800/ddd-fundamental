@@ -1,0 +1,16 @@
+#server:
+#  port: 7000
+eureka:
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+#    service-url:
+#      defaultZone: http://localhost:7000/eureka
+  renewalPercentThreshold: 0.85
+
+
+##以上注释掉的部分是单机配置属性
+
+spring:
+  profiles:
+    active: peer1
