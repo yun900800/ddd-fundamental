@@ -24,6 +24,16 @@
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
             <artifactId>spring-aspects</artifactId>
             <version>${spring.version}</version>
         </dependency>
@@ -48,5 +58,6 @@
         <module>ddd-spring-env</module>
         <module>ddd-spring-metadata</module>
         <module>ddd-spring-beans</module>
+        <module>ddd-spring-core</module>
     </modules>
 </project>
