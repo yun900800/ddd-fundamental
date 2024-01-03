@@ -214,6 +214,7 @@ public class ReflectionUtilsTest {
     @Test
     public void testGetGenericTypes() {
         GenericStringInteger genericClass = new GenericStringInteger<String,Integer>();
+        System.out.println(genericClass.getClass().getGenericSuperclass());
         ParameterizedType genericSuperclass = (ParameterizedType)genericClass.getClass().getGenericSuperclass();
         Set<Class> classSet = ReflectionUtils.getGenericTypes(genericSuperclass);
         Assert.assertEquals(2,classSet.size());
