@@ -14,6 +14,9 @@ import java.util.Set;
  * 5、获取指定名称和参数的方法
  * 6、判断是否包含指定名称和参数的方法
  * 7、获取一个对象是的setXXX method
+ * 8、获取一个对象是的getXXX method
+ * 9、调用对象的某个方法
+ *
  */
 public final class ReflectionUtils {
 

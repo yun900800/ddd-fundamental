@@ -8,9 +8,7 @@ import org.ddd.fundamental.datasource.provider.HSQLDBDataSourceProvider;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.lang.reflect.*;
 
 public class ReflectionUtilsTest {
 
@@ -141,6 +139,74 @@ public class ReflectionUtilsTest {
         Method getterName = ReflectionUtils.getGetter(myBean,"name");
         String result = (String)getterName.invoke(myBean, null);
         Assert.assertEquals(result,"this is setter test");
+    }
+
+    @Test
+    public void testInvokeMethod() {
+        MyBean myBean = new MyBean("this is a invoking a method test");
+        Assert.assertEquals("this is a invoking a method test",myBean.getName());
+        Method changeAge = ReflectionUtils.getDeclaredMethodOrNull(MyBean.class,
+                "changeAge", new Class[]{Integer.class});
+        ReflectionUtils.invokeMethod(myBean,changeAge,
+                50);
+        Assert.assertEquals(50,myBean.getAge(),0);
+
+
+        ReflectionUtils.invokeMethod(myBean,"changeAge",60);
+        Assert.assertEquals(60,myBean.getAge(),0);
+
+        //invokeGetter
+        String name = ReflectionUtils.invokeGetter(myBean,"name");
+        Assert.assertEquals("this is a invoking a method test",name);
+
+        //invokeSetter
+        ReflectionUtils.invokeSetter(myBean,"name",
+                "this is another invoking a method test");
+        Assert.assertEquals("this is another invoking a method test",myBean.getName());
+
+        //invokeStaticMethod
+        Method staticMethod = ReflectionUtils.getMethod(MyBean.class,"printClassName",new Class[]{});
+        String result = ReflectionUtils.invokeStaticMethod(staticMethod,null);
+        Assert.assertEquals(result,"org.ddd.fundamental.datasource.beans.MyBean");
+    }
+
+    @Test
+    public void testGetClass() {
+        Class<MyBean> clazz = ReflectionUtils.getClass("org.ddd.fundamental.datasource.beans.MyBean");
+        Assert.assertEquals(MyBean.class,clazz);
+
+        clazz = ReflectionUtils.getClassOrNull("MyBean");
+        Assert.assertNull(clazz);
+    }
+
+    @Test
+    public void testGetWrapperClass() {
+        Class<?> clazz = ReflectionUtils.getWrapperClass(Integer.TYPE);
+        Assert.assertEquals(Integer.class,clazz);
+    }
+
+    @Test
+    public void testGetFirstSuperClassFromPackage() {
+        Class<?> clazz = ReflectionUtils.getFirstSuperClassFromPackage(MyChildBean.class,
+                "org.ddd.fundamental.datasource.beans");
+        Assert.assertEquals(MyChildBean.class,clazz);
+
+        //getClassPackageName
+        String packageName = ReflectionUtils.getClassPackageName("org.ddd.fundamental.datasource.beans.MyBean");
+        Assert.assertEquals("org.ddd.fundamental.datasource.beans",packageName);
+    }
+
+    @Test
+    public void testGetMemberOrNull() {
+        //MyBean myBean = new MyBean("this is a invoking a method test");
+        Member member = ReflectionUtils.getMemberOrNull(MyBean.class,"name");
+        Assert.assertNotNull(member);
+
+        Type type = ReflectionUtils.getMemberGenericTypeOrNull(MyBean.class,"name");
+        Assert.assertEquals(String.class,type);
+
+        member = ReflectionUtils.getMemberOrNull(MyBean.class,"nickName");
+        Assert.assertNull(member);
     }
 
 }

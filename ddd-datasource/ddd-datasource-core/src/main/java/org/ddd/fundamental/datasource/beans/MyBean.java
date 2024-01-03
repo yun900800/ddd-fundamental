@@ -30,4 +30,8 @@ public class MyBean {
     public Integer getAge() {
         return age;
     }
+
+    public static String printClassName() {
+        return MyBean.class.getName();
+    }
 }
