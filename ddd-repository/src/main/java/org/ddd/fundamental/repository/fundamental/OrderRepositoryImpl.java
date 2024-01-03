@@ -1,6 +1,5 @@
 package org.ddd.fundamental.repository.fundamental;
 
-import org.aspectj.weaver.ast.Or;
 import org.ddd.fundamental.repository.core.exception.PersistenceException;
 import org.ddd.fundamental.repository.core.repository.impl.RepositoryBase;
 import org.ddd.fundamental.repository.fundamental.model.OrderItemModel;
@@ -12,7 +11,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
@@ -137,7 +135,7 @@ public class OrderRepositoryImpl extends RepositoryBase<Long, Order>
         Order order = Order.load(orderModel.getName(),
                 orderModel.getDescription(), orderModel.getOrderStatus());
         List<OrderItem> orderItems = orderItemModels.stream().map(v->{
-            OrderItem orderItem = OrderItem.create(v.getName(),v.getItemAmount(),v.getQuantity(),v.getDescription());
+            OrderItem orderItem = OrderItem.create(v.getProductName(),v.getItemAmount(),v.getQuantity(),v.getDescription());
             orderItem.setId(v.getId());
             return orderItem;
         }).collect(Collectors.toList());

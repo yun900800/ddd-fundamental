@@ -13,9 +13,22 @@ public class OrderItemModel {
     private Long id;
 
     /**
-     * 订单项名称
+     * 订单项产品名称
      */
-    private String name;
+    private String productName;
+
+    public Long getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Long productId) {
+        this.productId = productId;
+    }
+
+    /**
+     * 订单项产品id
+     */
+    private Long productId;
 
     /**
      * 单项的金额
@@ -50,12 +63,12 @@ public class OrderItemModel {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getProductName() {
+        return productName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
     public BigDecimal getItemAmount() {
@@ -87,11 +100,11 @@ public class OrderItemModel {
         if (this == o) return true;
         if (!(o instanceof OrderItemModel)) return false;
         OrderItemModel that = (OrderItemModel) o;
-        return quantity == that.quantity && Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(itemAmount, that.itemAmount) && Objects.equals(description, that.description);
+        return quantity == that.quantity && Objects.equals(id, that.id) && Objects.equals(productName, that.productName) && Objects.equals(itemAmount, that.itemAmount) && Objects.equals(description, that.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, itemAmount, quantity, description);
+        return Objects.hash(id, productName, itemAmount, quantity, description);
     }
 }

@@ -49,7 +49,7 @@ public class OrderService {
     public void changeOrderItemQty(String name, int qty, Long orderId) {
         Order order = this.loadOrder(orderId);
         List<OrderItem> orderItemList = order.getOrderItems().stream().map(v->{
-            if (v.getName().equals(name)) {
+            if (v.getProductName().equals(name)) {
                 v.changeQuantity(qty);
                 v.updateDirty();
             }
@@ -65,7 +65,7 @@ public class OrderService {
     public void deleteOrderItemByName(String name, Long orderId) {
         Order order = this.loadOrder(orderId);
         List<OrderItem> orderItemList = order.getOrderItems().stream().map(v->{
-            if (v.getName().equals(name)) {
+            if (v.getProductName().equals(name)) {
                 v.deleteDirty();
             }
             return v;
