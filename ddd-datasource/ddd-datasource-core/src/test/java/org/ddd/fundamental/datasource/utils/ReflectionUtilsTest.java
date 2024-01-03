@@ -1,5 +1,6 @@
 package org.ddd.fundamental.datasource.utils;
 
+import org.ddd.fundamental.datasource.beans.GenericStringInteger;
 import org.ddd.fundamental.datasource.beans.MyBean;
 import org.ddd.fundamental.datasource.beans.MyChildBean;
 import org.ddd.fundamental.datasource.core.DataSourceProvider;
@@ -9,6 +10,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.lang.reflect.*;
+import java.util.Set;
 
 public class ReflectionUtilsTest {
 
@@ -207,6 +209,22 @@ public class ReflectionUtilsTest {
 
         member = ReflectionUtils.getMemberOrNull(MyBean.class,"nickName");
         Assert.assertNull(member);
+    }
+
+    @Test
+    public void testGetGenericTypes() {
+        GenericStringInteger genericClass = new GenericStringInteger<String,Integer>();
+        ParameterizedType genericSuperclass = (ParameterizedType)genericClass.getClass().getGenericSuperclass();
+        Set<Class> classSet = ReflectionUtils.getGenericTypes(genericSuperclass);
+        Assert.assertEquals(2,classSet.size());
+        for (Class clazz: classSet) {
+            if (clazz == String.class) {
+                Assert.assertEquals(String.class,clazz);
+            }
+            if (clazz == Integer.class) {
+                Assert.assertEquals(Integer.class,clazz);
+            }
+        }
     }
 
 }
