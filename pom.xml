@@ -25,6 +25,7 @@
       <module>ddd-base</module>
       <module>ddd-spring</module>
       <module>ddd-datasource</module>
+      <module>ddd-message-mq</module>
   </modules>
   <packaging>pom</packaging>
   <parent>
