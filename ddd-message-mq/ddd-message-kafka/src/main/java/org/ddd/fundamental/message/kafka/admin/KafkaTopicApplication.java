@@ -19,6 +19,8 @@ public class KafkaTopicApplication {
     }
 
     public void createTopic(String topicName){
+        Properties props = new Properties();
+        props.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
         try (Admin admin = Admin.create(properties)) {
             int partitions = 1;
             short replicationFactor = 1;

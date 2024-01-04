@@ -23,8 +23,10 @@ public class KafkaTopicApplicationTest {
 
     @BeforeEach
     void setup() {
-        //启动容器
+
+        //先启动容器,再暴露端口
         KAFKA_CONTAINER.start();
+        KAFKA_CONTAINER.addExposedPort(9092);
         //创建客户端
         Properties properties = new Properties();
         String bootstrap = KAFKA_CONTAINER.getBootstrapServers();
