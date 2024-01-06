@@ -1,6 +1,8 @@
 package org.ddd.fundamental.repository.core;
 
-public abstract class EntityModel<Id extends Comparable<Id>> {
+import java.io.Serializable;
+
+public abstract class EntityModel<Id extends Comparable<Id>> implements Serializable {
 
     private Id id;
 

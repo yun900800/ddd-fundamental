@@ -2,6 +2,7 @@ package org.ddd.fundamental.repository.order;
 import org.ddd.fundamental.repository.core.EntityModel;
 import org.ddd.fundamental.repository.order.delivery.DefaultDeliveryStrategy;
 import org.ddd.fundamental.repository.order.delivery.DeliveryStrategy;
+import org.ddd.fundamental.repository.utils.BeanHelperUtils;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -51,7 +52,7 @@ public class Order extends EntityModel<Long> {
     }
 
     public List<OrderItem> getOrderItems() {
-        return orderItems;
+        return BeanHelperUtils.deepCopy(orderItems) ;
     }
 
     private List<OrderItem> orderItems = new ArrayList<>();
