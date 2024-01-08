@@ -73,6 +73,7 @@ public class KafkaExactlyOnceTest {
 
     @Test
     public void testKafkaExactlyOnce() throws InterruptedException {
+        //消费者先读数据,然后生产者再4s以后发送数据
         new Thread(()->{
             try {
                 TimeUnit.SECONDS.sleep(4);
