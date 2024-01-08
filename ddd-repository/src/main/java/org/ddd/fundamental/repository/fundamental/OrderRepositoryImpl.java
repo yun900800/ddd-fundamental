@@ -135,7 +135,7 @@ public class OrderRepositoryImpl extends RepositoryBase<Long, Order>
         Order order = Order.load(orderModel.getName(),
                 orderModel.getDescription(), orderModel.getOrderStatus());
         List<OrderItem> orderItems = orderItemModels.stream().map(v->{
-            OrderItem orderItem = OrderItem.create(v.getProductName(),v.getItemAmount(),v.getQuantity(),v.getDescription());
+            OrderItem orderItem = OrderItem.create(v.getProductName(),v.getQuantity(),v.getDescription());
             orderItem.setId(v.getId());
             return orderItem;
         }).collect(Collectors.toList());

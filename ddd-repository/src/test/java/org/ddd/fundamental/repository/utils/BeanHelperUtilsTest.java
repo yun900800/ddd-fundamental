@@ -12,10 +12,8 @@ public class BeanHelperUtilsTest {
 
     @Test
     public void testDeepCopy() {
-        OrderItem orderItem = OrderItem.create("香蕉",
-                BigDecimal.ONE);
-        OrderItem orderItem1 = OrderItem.create("橘子",
-                BigDecimal.TEN);
+        OrderItem orderItem = OrderItem.create("香蕉");
+        OrderItem orderItem1 = OrderItem.create("橘子");
         List<OrderItem> list = new ArrayList<>();
         list.add(orderItem);
         list.add(orderItem1);
@@ -23,7 +21,7 @@ public class BeanHelperUtilsTest {
         Assert.assertEquals(2,desc.size());
         OrderItem orderItem0 = desc.get(0);
         Assert.assertEquals("香蕉",orderItem0.getProductName());
-        Assert.assertEquals(BigDecimal.ONE,orderItem0.getItemAmount());
+        Assert.assertEquals(BigDecimal.valueOf(4.5),orderItem0.getItemAmount());
         Assert.assertEquals(1.0,orderItem0.getProductId(),0);
     }
 }

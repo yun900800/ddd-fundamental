@@ -17,20 +17,11 @@ public class OrderItem extends EntityModel<Long> {
         products = Map.of(1L,"香蕉",2L,"橘子",
                 3L,"苹果", 4L,"库尔勒香梨");
         reversedProducts = MapUtils.reverseMap(products);
+        ProductInfo.loadProductInfo();
     }
 
     private static final String DEFAULT_DESC = "这是好吃点为您推荐的优质商品";
     private static final int DEFAULT_QUANTITY = 1;
-
-    /**
-     * 订单项产品名称
-     */
-    private String productName;
-
-    /**
-     * 单项的金额
-     */
-    private BigDecimal itemAmount;
 
     /**
      * 订单项目的数量
@@ -42,43 +33,55 @@ public class OrderItem extends EntityModel<Long> {
      */
     private String description;
 
-    /**
-     * 订单项对应的产品Id
-     */
-    private Long productId;
 
-    private OrderItem(String productName, BigDecimal itemAmount, int quantity, String description) {
+    /**
+     * 产品信息
+     */
+    private ProductInfo productInfo;
+
+    private OrderItem(String productName, int quantity, String description) {
         this(-1L);
         this.description = description;
-        this.productName = productName;
-        this.productId = reversedProducts.get(this.productName);
-        this.itemAmount = itemAmount;
         this.quantity = quantity;
+        this.productInfo = ProductInfo.getProductId(reversedProducts.get(productName));
     }
 
-    public static OrderItem create(String productName, BigDecimal itemAmount) {
-        return new OrderItem(productName,itemAmount, DEFAULT_QUANTITY, DEFAULT_DESC);
+    public static OrderItem create(String productName) {
+        return new OrderItem(productName, DEFAULT_QUANTITY, DEFAULT_DESC);
     }
 
-    public static OrderItem create(String productName, BigDecimal itemAmount, int quantity, String description) {
-        return new OrderItem(productName,itemAmount, quantity, description);
+    public static OrderItem create(String productName, int quantity, String description) {
+        return new OrderItem(productName,quantity, description);
     }
 
     public OrderItem(Long id) {
         super(id);
     }
 
+    /**
+     * 修改订单项的数量
+     * @param quantity
+     * @return
+     */
     public OrderItem changeQuantity(int quantity) {
         this.quantity = quantity;
         return this;
     }
 
+    /**
+     * 获取产品的总价, 单价乘以数量
+     * @return
+     */
+    public BigDecimal itemPrice() {
+        return getItemAmount().multiply(BigDecimal.valueOf(getQuantity()));
+    }
+
     public String getProductName() {
-        return productName;
+        return productInfo.getProductName();
     }
 
     public BigDecimal getItemAmount() {
-        return itemAmount;
+        return productInfo.getPrice();
     }
 
     public int getQuantity() {
@@ -90,7 +93,7 @@ public class OrderItem extends EntityModel<Long> {
     }
 
     public Long getProductId() {
-        return productId;
+        return productInfo.getId();
     }
 
     @Override
@@ -98,12 +101,12 @@ public class OrderItem extends EntityModel<Long> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         OrderItem orderItem = (OrderItem) o;
-        return Objects.equals(productName,orderItem.productName)
-                && Objects.equals(productId, orderItem.productId);
+        return Objects.equals(productInfo.getProductName(),orderItem.productInfo.getProductName())
+                && Objects.equals(productInfo.getId(), orderItem.productInfo.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(productName, productId);
+        return Objects.hash(productInfo.getProductName(), productInfo.getId());
     }
 }

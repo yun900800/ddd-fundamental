@@ -81,8 +81,7 @@ public class Order extends EntityModel<Long> {
 
     public Order addOrderItem(OrderItem orderItem) {
         this.orderItems.add(orderItem);
-        this.orderAmount = this.orderAmount.add(orderItem.getItemAmount()
-                .multiply(BigDecimal.valueOf(orderItem.getQuantity())));
+        this.orderAmount = this.orderAmount.add(orderItem.itemPrice());
         this.deliveryFee = deliveryStrategy.generateDeliveryFee(orderAmount);
         this.updateDirty();
         return this;
@@ -105,8 +104,7 @@ public class Order extends EntityModel<Long> {
 
     public Order removeOrderItem(OrderItem orderItem) {
         this.orderItems.remove(orderItem);
-        this.orderAmount = this.orderAmount.subtract(orderItem.getItemAmount()
-                .multiply(BigDecimal.valueOf(orderItem.getQuantity())));
+        this.orderAmount = this.orderAmount.subtract(orderItem.itemPrice());
         this.deliveryFee = deliveryStrategy.generateDeliveryFee(orderAmount);
         return this;
     }
