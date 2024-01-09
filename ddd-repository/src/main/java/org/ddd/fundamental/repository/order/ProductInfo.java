@@ -1,5 +1,6 @@
 package org.ddd.fundamental.repository.order;
 
+import org.ddd.fundamental.repository.Exception.ProductInfoNotExistException;
 import org.ddd.fundamental.repository.core.EntityModel;
 
 import java.math.BigDecimal;
@@ -35,6 +36,10 @@ public class ProductInfo extends EntityModel<Long> {
     }
 
     public static ProductInfo getProductId(Long productId) {
+        if (!products.containsKey(productId)) {
+            String message = String.format("产品信息id:%s对应的产品不存在",productId);
+            throw new ProductInfoNotExistException(message);
+        }
         return products.get(productId);
     }
 
@@ -57,4 +62,11 @@ public class ProductInfo extends EntityModel<Long> {
     public BigDecimal getPrice() {
         return price;
     }
+
+    public static Map<Long,ProductInfo> products(){
+        Map<Long,ProductInfo> copyProducts = new HashMap<>();
+        copyProducts.putAll(products);
+        return copyProducts;
+    }
+
 }
