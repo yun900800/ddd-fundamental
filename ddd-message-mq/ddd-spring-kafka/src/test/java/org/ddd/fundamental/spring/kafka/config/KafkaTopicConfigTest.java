@@ -65,7 +65,7 @@ public class KafkaTopicConfigTest {
     @Test
     public void givenEmbeddedKafkaBroker_whenSendingWithDefaultTemplate_thenMessageReceived() throws Exception {
         String data = "Sending with default template";
-
+        consumer.resetLatch();
         template.send(topic, data);
 
         boolean messageConsumed = consumer.getLatch()
@@ -77,7 +77,7 @@ public class KafkaTopicConfigTest {
     @Test
     public void givenEmbeddedKafkaBroker_whenSendingWithSimpleProducer_thenMessageReceived() throws Exception {
         String data = "Sending with our own simple KafkaProducer";
-
+        consumer.resetLatch();
         producer.send(topic, data);
 
         boolean messageConsumed = consumer.getLatch()
