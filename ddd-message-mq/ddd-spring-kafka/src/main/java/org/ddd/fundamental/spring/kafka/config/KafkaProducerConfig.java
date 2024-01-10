@@ -14,12 +14,20 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 配置不同类型的生产者对象
+ */
 @Configuration
 public class KafkaProducerConfig {
 
     @Value(value = "${spring.kafka.bootstrap-servers}")
     private String bootstrapAddress;
 
+
+    /**
+     * 默认的生产者bean,发送的消息key和value都是string
+     * @return producerFactory
+     */
     @Bean
     public ProducerFactory<String, String> producerFactory() {
         Map<String, Object> configProps = new HashMap<>();
@@ -36,6 +44,10 @@ public class KafkaProducerConfig {
         return new KafkaTemplate<>(producerFactory());
     }
 
+    /**
+     * 专门发送Greeting的生产者bean,发送的消息key是string,value是Greeting对象
+     * @return producerFactory
+     */
     @Bean
     public ProducerFactory<String, Greeting> greetingProducerFactory() {
         Map<String, Object> configProps = new HashMap<>();
@@ -45,11 +57,19 @@ public class KafkaProducerConfig {
         return new DefaultKafkaProducerFactory<>(configProps);
     }
 
+    /**
+     * 用于发送Greeting对象的Template
+     * @return
+     */
     @Bean
     public KafkaTemplate<String, Greeting> greetingKafkaTemplate() {
         return new KafkaTemplate<>(greetingProducerFactory());
     }
 
+    /**
+     * 可以发送多个对象的生产者
+     * @return
+     */
     @Bean
     public ProducerFactory<String, Object> multiTypeProducerFactory() {
         Map<String, Object> configProps = new HashMap<>();
