@@ -37,6 +37,7 @@
     - 8、Kafka Streams 使用分区和任务的概念作为与主题分区紧密相关的逻辑单元。
 3. 什么是kafka的流表二元性?
     - 1、Kafka Streams 支持流，但也支持可双向转换的表。这就是所谓的流表二元性。
+      https://www.baeldung.com/apache-kafka-data-modeling#event-basics
     - ![img.png](img.png)
       表格是一组不断变化的事实。每个新事件都会覆盖旧事件，而流是不可变事实的集合。
       流处理来自主题的完整数据流。表通过聚合来自流的信息来存储状态。
@@ -47,4 +48,5 @@
 4. 什么是kafka的DSL?
    - 1、Kafka Streams DSL 是一种声明式和函数式编程风格。
    - 2、无状态的转化和有状态的转换怎么理解
-   - 3、
+   - 3、如何连接两个topic的数据以及如何从存储中进行查询
+   - 4、如何控制某些操作只执行一次

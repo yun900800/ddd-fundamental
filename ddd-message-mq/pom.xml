@@ -11,6 +11,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>ddd-message-kafka</module>
+        <module>ddd-spring-kafka</module>
     </modules>
     <artifactId>ddd-message-mq</artifactId>
 
