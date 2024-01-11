@@ -11,6 +11,7 @@ import org.mockito.Mockito;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.HashMap;
 
 import static org.mockito.Mockito.verify;
@@ -22,7 +23,7 @@ public class UtilsTest {
 
     @Test
     public void testDateToString() {
-        LocalDateTime dateTime = LocalDateTime.now();
+        LocalDateTime dateTime = LocalDateTime.of(2023, Month.JULY,13,0,0);
         String format = Utils.dateToString(dateTime);
         Assert.assertEquals("2023-07-13",format);
 

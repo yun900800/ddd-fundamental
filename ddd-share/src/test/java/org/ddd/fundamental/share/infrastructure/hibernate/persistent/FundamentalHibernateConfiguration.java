@@ -1,13 +1,9 @@
 package org.ddd.fundamental.share.infrastructure.hibernate.persistent;
 
-import net.ttddyy.dsproxy.listener.ChainListener;
-import net.ttddyy.dsproxy.listener.DataSourceQueryCountListener;
-import net.ttddyy.dsproxy.listener.logging.SLF4JQueryLoggingListener;
-import net.ttddyy.dsproxy.support.ProxyDataSourceBuilder;
+
 import org.ddd.fundamental.share.infrastructure.config.Parameter;
 import org.ddd.fundamental.share.infrastructure.config.ParameterNotExist;
 import org.ddd.fundamental.share.infrastructure.hibernate.HibernateConfigurationFactory;
-import org.ddd.fundamental.share.infrastructure.hibernate.logger.InlineQueryLogEntryCreator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,8 +13,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 import java.io.IOException;
-
-import static net.ttddyy.dsproxy.listener.logging.CommonsLogLevel.INFO;
 
 @Configuration
 @EnableTransactionManagement
