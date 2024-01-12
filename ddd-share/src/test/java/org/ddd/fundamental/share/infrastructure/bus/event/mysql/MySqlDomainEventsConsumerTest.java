@@ -6,6 +6,8 @@ import org.ddd.fundamental.share.infrastructure.bus.event.DomainEventsInformatio
 import org.ddd.fundamental.share.infrastructure.bus.event.rabbitmq.RabbitMqDomainEventsConsumer;
 import org.ddd.fundamental.share.infrastructure.bus.event.rabbitmq.RabbitMqPublisher;
 import org.ddd.fundamental.share.infrastructure.bus.event.spring.SpringApplicationEventBus;
+import org.ddd.fundamental.share.infrastructure.hibernate.persistent.MySqlEventBusTestConfiguration;
+import org.ddd.fundamental.share.infrastructure.hibernate.persistent.TestHibernateConfiguration;
 import org.hibernate.SessionFactory;
 import org.junit.After;
 import org.junit.Assert;
@@ -15,8 +17,10 @@ import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
@@ -28,6 +32,8 @@ import static org.mockito.Mockito.verify;
 
 @DataJpaTest
 @RunWith(SpringRunner.class)
+@AutoConfigureTestDatabase(replace= AutoConfigureTestDatabase.Replace.NONE)
+@Import(MySqlEventBusTestConfiguration.class)
 public class MySqlDomainEventsConsumerTest {
     @MockBean
     private RabbitMqDomainEventsConsumer rabbitMqDomainEventsConsumer;

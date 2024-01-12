@@ -53,6 +53,9 @@ public class DomainEventSubscribersInformationTest {
 
     }
 
+    /**
+     * 测试数组比较的时候一定要注意顺序
+     */
     @Test
     public void testRabbitMqFormattedNames() {
         Assert.assertArrayEquals(new String[]{"org.ddd.fundamental.share.infrastructure.empty_domain_event_subscriber",

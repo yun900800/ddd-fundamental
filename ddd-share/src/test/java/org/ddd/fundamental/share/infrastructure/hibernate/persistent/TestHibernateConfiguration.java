@@ -1,25 +1,17 @@
 package org.ddd.fundamental.share.infrastructure.hibernate.persistent;
 
-import net.ttddyy.dsproxy.listener.ChainListener;
-import net.ttddyy.dsproxy.listener.DataSourceQueryCountListener;
-import net.ttddyy.dsproxy.listener.logging.SLF4JQueryLoggingListener;
-import net.ttddyy.dsproxy.support.ProxyDataSourceBuilder;
+
 import org.ddd.fundamental.share.infrastructure.config.ParameterNotExist;
 import org.ddd.fundamental.share.infrastructure.hibernate.HibernateConfigurationFactory;
-import org.ddd.fundamental.share.infrastructure.hibernate.logger.InlineQueryLogEntryCreator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.core.io.Resource;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Scanner;
 
 
 @TestConfiguration

@@ -5,6 +5,10 @@ import org.ddd.fundamental.share.domain.bus.event.DomainEvent;
 import org.ddd.fundamental.share.domain.bus.event.EmptyDomainEvent;
 import org.ddd.fundamental.share.infrastructure.bus.event.rabbitmq.RabbitMqDomainEventsConsumer;
 import org.ddd.fundamental.share.infrastructure.bus.event.rabbitmq.RabbitMqPublisher;
+import org.ddd.fundamental.share.infrastructure.config.ParameterNotExist;
+import org.ddd.fundamental.share.infrastructure.hibernate.HibernateConfigurationFactory;
+import org.ddd.fundamental.share.infrastructure.hibernate.persistent.MySqlEventBusTestConfiguration;
+import org.ddd.fundamental.share.infrastructure.hibernate.persistent.TestHibernateConfiguration;
 import org.hibernate.SessionFactory;
 import org.junit.After;
 import org.junit.Assert;
@@ -12,15 +16,26 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
+import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.PlatformTransactionManager;
 
+import javax.sql.DataSource;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 @DataJpaTest
 @RunWith(SpringRunner.class)
+@AutoConfigureTestDatabase(replace= AutoConfigureTestDatabase.Replace.NONE)
+@Import(MySqlEventBusTestConfiguration.class)
 public class MySqlEventBusTest {
 
     @MockBean
