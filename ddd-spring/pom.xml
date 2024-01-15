@@ -59,5 +59,6 @@
         <module>ddd-spring-metadata</module>
         <module>ddd-spring-beans</module>
         <module>ddd-spring-core</module>
+        <module>ddd-spring-factory</module>
     </modules>
 </project>
