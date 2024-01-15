@@ -47,7 +47,7 @@ public class TestHibernateConfiguration {
                 .url(HSQL_URL).username("sa").password("");
 
 
-//        Resource mysqlResource = factory.getResourceResolver().getResource(String.format(
+//        Resource mysqlResource = autowirefactory.getResourceResolver().getResource(String.format(
 //                "classpath:database/%s.sql",
 //                "devnote"
 //        ));

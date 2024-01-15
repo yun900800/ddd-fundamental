@@ -35,7 +35,7 @@ public class KafkaApplication
              * and bar with containerFactory fooKafkaListenerContainerFactory
              * and barKafkaListenerContainerFactory respectively.
              * It will also be received by the listener with
-             * headersKafkaListenerContainerFactory as container factory.
+             * headersKafkaListenerContainerFactory as container autowirefactory.
              */
             producer.sendMessage("Hello, World!");
             listener.latch.await(10, TimeUnit.SECONDS);
