@@ -1,6 +1,8 @@
 package org.ddd.fundamental.core.domain.entity;
 
-public class Identity<TID extends Comparable<TID>> extends ValueModel {
+import java.util.Objects;
+
+public class Identity<TID extends Comparable<TID>> extends ValueObject {
     private TID id;
 
     public Identity(TID id){
@@ -10,16 +12,18 @@ public class Identity<TID extends Comparable<TID>> extends ValueModel {
 
     @Override
     public boolean equals(Object obj) {
-        if(obj == null){
-            return false;
-        }
-        if(!(obj instanceof Identity)){
+        if(obj == null || !(obj instanceof Identity)){
             return false;
         }
         if(obj == this){
             return true;
         }
         return this.id.compareTo((TID)((Identity)obj).getId()) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(this.id);
     }
 
     public TID getId() {

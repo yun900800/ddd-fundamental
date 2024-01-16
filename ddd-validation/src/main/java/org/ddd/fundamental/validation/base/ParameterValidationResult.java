@@ -2,7 +2,7 @@ package org.ddd.fundamental.validation.base;
 
 public class ParameterValidationResult {
 
-    private boolean success = false;
+    private boolean success;
 
     private String message;
 
