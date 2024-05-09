@@ -1,6 +1,7 @@
 package org.ddd.fundamental.domain.impl;
 
 import org.ddd.fundamental.constants.ItemType;
+import org.ddd.fundamental.domain.ICustomer;
 import org.ddd.fundamental.domain.IItem;
 import org.ddd.fundamental.domain.IOrder;
 import org.junit.Assert;
@@ -113,5 +114,22 @@ public class PurchaseOrderTest {
                 Assert.assertEquals(3.0, item.quantity(),0.0);
             }
         }
+    }
+
+    @Test
+    public void testSetCustomer() {
+        IOrder<String> order = createOrder();
+        IOrder<String> order1 = createOrder();
+        ICustomer<String> customer = new Customer("这是一个优质客户");
+        order.setCustomer(customer);
+        order1.setCustomer(customer);
+        Assert.assertEquals(customer.friendOrders().size(),2);
+        Assert.assertEquals(order.getCustomer(),order1.getCustomer());
+
+        ICustomer<String> customer1 = new Customer("这是另外一个优质客户");
+        order.setCustomer(customer1);
+        Assert.assertEquals(customer.friendOrders().size(),1);
+        Assert.assertNotEquals(order.getCustomer(),order1.getCustomer());
+        Assert.assertEquals(customer1.friendOrders().size(),1);
     }
 }

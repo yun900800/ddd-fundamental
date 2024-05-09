@@ -12,6 +12,8 @@ public interface IOrder<K> {
      */
     String name();
 
+    K key();
+
     IOrder<K> nextStatus();
 
     List<IItem<K>> items();
@@ -33,5 +35,10 @@ public interface IOrder<K> {
     List<K> itemKeys();
 
     boolean contains(K key);
+
+    void setCustomer(ICustomer<K> arg);
+
+    ICustomer<K> getCustomer();
+
 
 }

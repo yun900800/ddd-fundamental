@@ -1,24 +1,54 @@
 package org.ddd.fundamental.domain.impl;
 
 import org.ddd.fundamental.constants.ItemType;
+import org.ddd.fundamental.domain.ICustomer;
 import org.ddd.fundamental.domain.IItem;
 import org.ddd.fundamental.domain.IOrder;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class PurchaseOrder implements IOrder<String> {
 
     private String name;
 
+    private String key;
+
     private List<IItem<String>> items = new ArrayList<>();
 
     public PurchaseOrder(String name){
         this.name = name;
+        this.key = UUID.randomUUID().toString();
     }
 
+    private ICustomer<String> customer;
+
+    @Override
+    public ICustomer<String> getCustomer() {
+        return customer;
+    }
+
+    @Override
+    public void setCustomer(ICustomer<String> arg) {
+        if (null != customer) {
+            customer.friendOrders().remove(this);
+        }
+        this.customer = arg;
+        if (null != customer) {
+            customer.friendOrders().add(this);
+        }
+    }
+
+
+    @Override
+    public String key() {
+        if (!StringUtils.hasLength(this.key)) {
+            this.key = UUID.randomUUID().toString();
+        }
+        return key;
+    }
 
     @Override
     public String name() {
