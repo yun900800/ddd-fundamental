@@ -1,11 +1,11 @@
-package org.ddd.fundamental.model.impl;
+package org.ddd.fundamental.domain.impl;
 
 import org.ddd.fundamental.constants.ItemType;
 
 public class FinishedProduct extends Item{
 
-    public FinishedProduct(String name) {
-        super(name);
+    public FinishedProduct(String name, double quantity) {
+        super(name, quantity);
     }
 
     @Override

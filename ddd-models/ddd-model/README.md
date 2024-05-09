@@ -15,3 +15,8 @@
    过去的我曾有一个思维误区，就是感觉有挑战的问题必定有精妙复杂的解，靠苦思冥想和灵光一现可以找到。导致经常会深陷在问题的各种细节中。看了SICP的前两章，开始意识到将复杂的东西抽象、简化才是人类理解事物的『大杀器』。
    遇见一个复杂的事物无法理解，不必感到沮丧，可以尝试从自己可以理解的简单角度理解。最简单的，输入不同的信息，观察其会有怎样的输入。这是一种基于实用主义的理解。
    甚至更夸张的，不去理解这些复杂事物，看能否直接绕过。有些问题不去面对，可能问题本身就消失了。
+
+6. 如何确定使用引用还是使用值对象？https://softwareengineering.stackexchange.com/questions/435671/better-to-store-references-to-an-object-or-to-store-its-id-and-retrieve-it-with
+   - 这里牵涉到一些模式,比如identity map, repository pattern, even recommended between aggregates in DDD
+7. 如何理解递归，这是一篇不错的文章,主要讲述了递归的基本概念,递归需要注意的事项,以及递归通常用在哪些场景？
+   https://techsauce.medium.com/learning-recursion-a-deep-dive-into-an-essential-computer-science-concept-7f88c07d6427

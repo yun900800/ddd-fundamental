@@ -1,12 +1,12 @@
-package org.ddd.fundamental.model.impl;
+package org.ddd.fundamental.domain.impl;
 
 import org.ddd.fundamental.constants.ItemType;
 
 public class WorkInProgress extends Item {
 
 
-    public WorkInProgress(String name) {
-        super(name);
+    public WorkInProgress(String name, double quantity) {
+        super(name,quantity);
     }
 
     @Override

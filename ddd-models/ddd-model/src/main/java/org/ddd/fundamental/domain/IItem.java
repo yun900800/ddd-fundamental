@@ -1,4 +1,4 @@
-package org.ddd.fundamental.model;
+package org.ddd.fundamental.domain;
 
 import org.ddd.fundamental.constants.ItemType;
 
@@ -9,4 +9,6 @@ public interface IItem<K> {
     String name();
 
     ItemType type();
+
+    double quantity();
 }

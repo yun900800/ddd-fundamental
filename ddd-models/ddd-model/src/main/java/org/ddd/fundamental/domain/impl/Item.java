@@ -1,7 +1,6 @@
-package org.ddd.fundamental.model.impl;
+package org.ddd.fundamental.domain.impl;
 
-import org.ddd.fundamental.constants.ItemType;
-import org.ddd.fundamental.model.IItem;
+import org.ddd.fundamental.domain.IItem;
 import org.springframework.util.StringUtils;
 
 import java.util.UUID;
@@ -10,10 +9,13 @@ public abstract class Item implements IItem<String> {
 
     private String name;
 
+    private double quantity;
+
     private String key;
 
-    public Item(String name){
+    public Item(String name,double quantity){
         this.name = name;
+        this.quantity = quantity;
     }
 
 
@@ -31,5 +33,10 @@ public abstract class Item implements IItem<String> {
     }
 
     abstract String typeName();
+
+    @Override
+    public double quantity() {
+        return this.quantity;
+    }
 
 }

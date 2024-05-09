@@ -1,11 +1,11 @@
-package org.ddd.fundamental.model.impl;
+package org.ddd.fundamental.domain.impl;
 
 import org.ddd.fundamental.constants.ItemType;
 
 public class RawMaterial extends Item {
 
-    public RawMaterial(String name) {
-        super(name);
+    public RawMaterial(String name, double quantity) {
+        super(name,quantity);
     }
 
     @Override
