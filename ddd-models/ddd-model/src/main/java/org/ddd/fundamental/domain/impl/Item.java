@@ -1,5 +1,6 @@
 package org.ddd.fundamental.domain.impl;
 
+import org.ddd.fundamental.constants.ItemType;
 import org.ddd.fundamental.domain.IItem;
 import org.springframework.util.StringUtils;
 
@@ -18,6 +19,25 @@ public abstract class Item implements IItem<String> {
         this.quantity = quantity;
     }
 
+    public void setKey(String key){
+        this.key = key;
+    }
+
+    public static Item copy(IItem<String> item){
+        Item copyItem = new Item(item.name(),item.quantity()) {
+            @Override
+            String typeName() {
+                return item.type().getName();
+            }
+
+            @Override
+            public ItemType type() {
+                return item.type();
+            }
+        };
+        copyItem.setKey(item.key());
+        return copyItem;
+    }
 
     @Override
     public String key() {
@@ -37,6 +57,11 @@ public abstract class Item implements IItem<String> {
     @Override
     public double quantity() {
         return this.quantity;
+    }
+
+    public Item changeQuantity(double quantity){
+        this.quantity = quantity;
+        return this;
     }
 
 }

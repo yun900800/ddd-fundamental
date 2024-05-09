@@ -71,19 +71,7 @@ public class PurchaseOrder implements IOrder<String> {
         for (IItem<String> item: materialItems) {
             sumQuantity+=item.quantity();
         }
-        return createItemByKey(key,item0,sumQuantity);
-    }
-
-    private static IItem<String> createItemByKey(String key,IItem<String> item, double quantity){
-        IItem<String> itemNew = null;
-        if (ItemType.RAW_MATERIAL == item.type()) {
-            itemNew = new RawMaterial(item.name(),quantity);
-        } else if (ItemType.WORK_IN_PROGRESS == item.type()) {
-            itemNew = new WorkInProgress(item.name(),quantity);
-        } else if (ItemType.FINISHED_PRODUCT == item.type()) {
-            itemNew = new FinishedProduct(item.name(),quantity);
-        }
-        return itemNew;
+        return Item.copy(item0).changeQuantity(sumQuantity);
     }
 
     private static IItem<String> createItem(ItemType type,IItem<String> item, double quantity){
