@@ -1,7 +1,7 @@
-package org.ddd.fundamental.domain.impl;
+package org.ddd.fundamental.domain.order.impl;
 
 import org.ddd.fundamental.constants.ItemType;
-import org.ddd.fundamental.domain.IItem;
+import org.ddd.fundamental.domain.order.IItem;
 import org.springframework.util.StringUtils;
 
 import java.util.UUID;
@@ -26,7 +26,7 @@ public abstract class Item implements IItem<String> {
     public static Item copy(IItem<String> item){
         Item copyItem = new Item(item.name(),item.quantity()) {
             @Override
-            String typeName() {
+            protected String typeName() {
                 return item.type().getName();
             }
 
@@ -52,7 +52,7 @@ public abstract class Item implements IItem<String> {
         return name;
     }
 
-    abstract String typeName();
+    protected abstract String typeName();
 
     @Override
     public double quantity() {

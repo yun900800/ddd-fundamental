@@ -1,12 +1,9 @@
-package org.ddd.fundamental.domain;
+package org.ddd.fundamental.domain.order;
 
 import org.ddd.fundamental.constants.ItemType;
+import org.ddd.fundamental.domain.IKey;
 
-public interface IItem<K> {
-
-    K key();
-
-    void setKey(K key);
+public interface IItem<K>  extends IKey<K> {
 
     String name();
 

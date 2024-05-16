@@ -1,6 +1,6 @@
-package org.ddd.fundamental.domain.impl;
+package org.ddd.fundamental.domain.order.impl;
 
-import org.ddd.fundamental.domain.IItem;
+import org.ddd.fundamental.domain.order.IItem;
 import org.junit.Assert;
 import org.junit.Test;
 

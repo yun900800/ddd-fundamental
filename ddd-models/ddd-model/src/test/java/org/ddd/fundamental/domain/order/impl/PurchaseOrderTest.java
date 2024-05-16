@@ -1,9 +1,10 @@
-package org.ddd.fundamental.domain.impl;
+package org.ddd.fundamental.domain.order.impl;
 
 import org.ddd.fundamental.constants.ItemType;
-import org.ddd.fundamental.domain.ICustomer;
-import org.ddd.fundamental.domain.IItem;
-import org.ddd.fundamental.domain.IOrder;
+import org.ddd.fundamental.domain.order.ICustomer;
+import org.ddd.fundamental.domain.order.IItem;
+import org.ddd.fundamental.domain.order.IOrder;
+import org.ddd.fundamental.domain.order.impl.*;
 import org.junit.Assert;
 import org.junit.Test;
 

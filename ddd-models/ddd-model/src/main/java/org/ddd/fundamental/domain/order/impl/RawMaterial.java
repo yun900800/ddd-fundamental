@@ -1,4 +1,4 @@
-package org.ddd.fundamental.domain.impl;
+package org.ddd.fundamental.domain.order.impl;
 
 import org.ddd.fundamental.constants.ItemType;
 

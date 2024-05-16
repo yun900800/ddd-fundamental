@@ -1,18 +1,18 @@
-package org.ddd.fundamental.domain;
+package org.ddd.fundamental.domain.order;
+
+import org.ddd.fundamental.domain.IKey;
 
 import java.util.List;
 
 /**
  * 定义一个单据的接口
  */
-public interface IOrder<K> {
+public interface IOrder<K> extends IKey<K> {
     /**
      * 单据名字
      * @return
      */
     String name();
-
-    K key();
 
     IOrder<K> nextStatus();
 

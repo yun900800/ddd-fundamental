@@ -1,9 +1,9 @@
-package org.ddd.fundamental.domain.impl;
+package org.ddd.fundamental.domain.order.impl;
 
 import org.ddd.fundamental.constants.ItemType;
-import org.ddd.fundamental.domain.ICustomer;
-import org.ddd.fundamental.domain.IItem;
-import org.ddd.fundamental.domain.IOrder;
+import org.ddd.fundamental.domain.order.ICustomer;
+import org.ddd.fundamental.domain.order.IItem;
+import org.ddd.fundamental.domain.order.IOrder;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
@@ -48,6 +48,11 @@ public class PurchaseOrder implements IOrder<String> {
             this.key = UUID.randomUUID().toString();
         }
         return key;
+    }
+
+    @Override
+    public void setKey(String key) {
+
     }
 
     @Override

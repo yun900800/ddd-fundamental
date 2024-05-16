@@ -1,4 +1,4 @@
-package org.ddd.fundamental.domain.impl;
+package org.ddd.fundamental.domain.order.impl;
 
 import org.ddd.fundamental.constants.ItemType;
 
@@ -9,7 +9,7 @@ public class FinishedProduct extends Item{
     }
 
     @Override
-    String typeName() {
+    protected String typeName() {
         return ItemType.FINISHED_PRODUCT.getName();
     }
 

@@ -1,7 +1,7 @@
-package org.ddd.fundamental.domain.impl;
+package org.ddd.fundamental.domain.order.impl;
 
-import org.ddd.fundamental.domain.ICustomer;
-import org.ddd.fundamental.domain.IOrder;
+import org.ddd.fundamental.domain.order.ICustomer;
+import org.ddd.fundamental.domain.order.IOrder;
 import org.springframework.util.StringUtils;
 
 import java.util.HashSet;
@@ -35,6 +35,11 @@ public class Customer implements ICustomer<String> {
             this.key = UUID.randomUUID().toString();
         }
         return key;
+    }
+
+    @Override
+    public void setKey(String key) {
+
     }
 
     @Override

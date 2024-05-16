@@ -1,4 +1,4 @@
-package org.ddd.fundamental.domain.impl;
+package org.ddd.fundamental.domain.order.impl;
 
 import org.ddd.fundamental.constants.ItemType;
 
@@ -10,7 +10,7 @@ public class WorkInProgress extends Item {
     }
 
     @Override
-    String typeName() {
+    protected String typeName() {
         return ItemType.WORK_IN_PROGRESS.getName();
     }
 
