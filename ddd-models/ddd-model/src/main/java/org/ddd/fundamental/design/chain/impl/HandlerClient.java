@@ -1,5 +1,6 @@
-package org.ddd.fundamental.design.chain;
+package org.ddd.fundamental.design.chain.impl;
 
+import org.ddd.fundamental.design.chain.impl.AbstractCheckHandler;
 import org.ddd.fundamental.design.model.ProductVO;
 import org.ddd.fundamental.design.model.Result;
 

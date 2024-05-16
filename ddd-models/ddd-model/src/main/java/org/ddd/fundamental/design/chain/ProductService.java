@@ -2,6 +2,8 @@ package org.ddd.fundamental.design.chain;
 
 import com.alibaba.fastjson.JSON;
 import org.apache.commons.lang3.StringUtils;
+import org.ddd.fundamental.design.chain.impl.AbstractCheckHandler;
+import org.ddd.fundamental.design.chain.impl.HandlerClient;
 import org.ddd.fundamental.design.model.ProductVO;
 import org.ddd.fundamental.design.model.Result;
 import org.springframework.stereotype.Component;
