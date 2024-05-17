@@ -1,13 +1,10 @@
 package org.ddd.fundamental.domain.inventory.impl;
 
-import org.ddd.fundamental.constants.ItemType;
 import org.ddd.fundamental.domain.inventory.IInventoryItem;
 import org.ddd.fundamental.domain.order.impl.Item;
 
 
 public abstract class InventoryItem extends Item implements IInventoryItem<String> {
-
-    private String key;
 
     private String materialNumber;
 

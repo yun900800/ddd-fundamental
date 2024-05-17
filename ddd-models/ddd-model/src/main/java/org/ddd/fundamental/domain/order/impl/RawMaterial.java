@@ -13,7 +13,7 @@ public class RawMaterial extends Item {
         return ItemType.RAW_MATERIAL;
     }
 
-    public String typeName() {
+    protected String typeName() {
         return  ItemType.RAW_MATERIAL.getName();
     }
 
