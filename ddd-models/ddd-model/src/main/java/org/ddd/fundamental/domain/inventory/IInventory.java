@@ -2,9 +2,10 @@ package org.ddd.fundamental.domain.inventory;
 
 import org.ddd.fundamental.domain.IKey;
 
-public interface IInventory<K> extends IKey<K> {
+import java.util.Set;
 
+public interface IInventory<K,U> extends IKey<K> {
+    Set<IInventoryItem<U>> inventoryItems();
     K itemKey();
-
     double quantity();
 }
