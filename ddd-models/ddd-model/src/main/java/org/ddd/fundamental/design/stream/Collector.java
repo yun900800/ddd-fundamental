@@ -16,5 +16,5 @@ public interface Collector<T, A, R> {
     /**
      * 收集完成之后的收尾操作
      * */
-    Function<A, R> finisher();
+    Function<R, A> finisher();
 }
