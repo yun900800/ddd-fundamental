@@ -62,7 +62,7 @@ public class UserService {
         UserModel model = new UserModel(name, password);
         model.setId(uuidGenerator.generate());
 //        UserOldModel oldModel =new UserOldModel(name,password);
-//        oldModel.setId(model.getId());
+//        oldModel.setId(domain.getId());
 //        userOldRepository.save(oldModel);
 
         rabbitMqPublisher.publish(new UserEvent(name,password,model.getId()),"domain_events");
