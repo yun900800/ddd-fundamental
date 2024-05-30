@@ -6,6 +6,7 @@ import org.ddd.fundamental.design.chain.impl.AbstractCheckHandler;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -20,6 +21,9 @@ public class ApplicationContextHelperTest {
     @Resource
     private Map<String, AbstractCheckHandler> handlerMap;
 
+    @Autowired
+    private Map<String, AbstractCheckHandler> handlerMap1;
+
     @Test
     public void testApplicationContextIsNull() {
         Assert.assertNotNull(ApplicationContextHelper.getApplicationContext());
@@ -30,5 +34,7 @@ public class ApplicationContextHelperTest {
         ProductService service = ApplicationContextHelper.getBean(ProductService.class);
         Assert.assertNotNull(service);
         Assert.assertEquals(handlerMap.size(),3,0);
+
+        Assert.assertEquals(handlerMap1.size(),3,0);
     }
 }
