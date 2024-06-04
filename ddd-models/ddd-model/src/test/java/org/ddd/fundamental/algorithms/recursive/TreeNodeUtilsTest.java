@@ -25,4 +25,9 @@ public class TreeNodeUtilsTest {
     public void testPreOrderTailTraversal() {
         TreeNodeUtils.preOrderTailTraversal(createTree(),x->System.out.println(x));
     }
+
+    @Test
+    public void testPreOrderTailOptTraversal() {
+        TreeNodeUtils.preOrderTailOptTraversal(createTree(),x->System.out.println(x));
+    }
 }

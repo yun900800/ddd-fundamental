@@ -27,4 +27,13 @@ public class TreeNodeUtils {
             consumer.accept(right);
         }));
     }
+
+    public static void preOrderTailOptTraversal(TreeNode root, Consumer<TreeNode> consumer){
+        if (null == root) {
+            consumer.accept(root);
+            return;
+        }
+        System.out.println(root.getVal());
+        preOrderTailOptTraversal(root.getLeft(), left -> preOrderTailOptTraversal(root.getRight(), consumer));
+    }
 }
