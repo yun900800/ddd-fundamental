@@ -76,6 +76,12 @@ public class NodeUtilsTest {
     }
 
     @Test
+    public void testFactorialContinuationWithOne() {
+        int fac1 = NodeUtils.factorialContinuation(1,x->x);
+        Assert.assertEquals(fac1,1);
+    }
+
+    @Test
     public void testFibonacciContinuation(){
         int fib10 = NodeUtils.fibonacciContinuation(10,x->x);
         Assert.assertEquals(fib10,89);
