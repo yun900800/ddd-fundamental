@@ -20,3 +20,4 @@
    - 这里牵涉到一些模式,比如identity map, repository pattern, even recommended between aggregates in DDD
 7. 如何理解递归，这是一篇不错的文章,主要讲述了递归的基本概念,递归需要注意的事项,以及递归通常用在哪些场景？
    https://techsauce.medium.com/learning-recursion-a-deep-dive-into-an-essential-computer-science-concept-7f88c07d6427
+8. [CPS在java中的应用](https://javatechonline.com/continuation-passing-style-cps-in-java/)
