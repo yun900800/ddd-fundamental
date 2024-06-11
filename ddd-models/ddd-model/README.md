@@ -21,3 +21,18 @@
 7. 如何理解递归，这是一篇不错的文章,主要讲述了递归的基本概念,递归需要注意的事项,以及递归通常用在哪些场景？
    https://techsauce.medium.com/learning-recursion-a-deep-dive-into-an-essential-computer-science-concept-7f88c07d6427
 8. [CPS在java中的应用](https://javatechonline.com/continuation-passing-style-cps-in-java/)
+
+9. recursive five steps:
+   - fundamental problem : 对前n个自然数求和
+   - challenging problem : 对于一个n*m的方格，从左上到右下的唯一路劲的数目,每次向右或者下移动一个单元格
+      1. 这个问题的base case是 grid_path(n,1) = 1 grid_path(1,m) = 1;
+      2. grid_path(n,m) = grid_path(n,m-1) + grid(n-1,m)
+   - hardest problem : n个物体分组，每组最多m个物体,m>=0 m<=n ,有多少中分组方式
+      1. count_partitions(n,m) = 1 if n == 0 ; count_partitions(n,m) = 0 if m == 0
+      2. count_partitions(n,m) = count_partitions(n,m-1) + count_partitions(n-m,m)
+   - step blew
+      1. What's the simplest possible input?(base case)
+      2. Play around with examples and visualize?
+      3. Relate hard cases to simpler cases.
+      4. Generalize the pattern.
+      5. Write code by combining recursive pattern with the base case.
