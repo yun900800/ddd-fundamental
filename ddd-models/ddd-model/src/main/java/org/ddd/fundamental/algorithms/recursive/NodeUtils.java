@@ -110,4 +110,38 @@ public class NodeUtils {
                 );
     }
 
+    public static int chargeCount(int amount, int k, Function<Integer, Integer> continuation) {
+        if (amount == 0) {
+            return continuation.apply(1);
+        }
+        if (amount < 0 || k == 0) {
+            return continuation.apply(0);
+        }
+        return chargeCount(amount, k-1,
+                r1->chargeCount(amount-numberToAmount(k), k,
+                        r2-> continuation.apply(r1+r2)
+                )
+        );
+    }
+
+    public static int numberToAmount(int n){
+        if (n == 5) {
+            return 50;
+        }
+        if (n == 4) {
+            return 25;
+        }
+        if (n == 3) {
+            return 10;
+        }
+        if (n == 2) {
+            return 5;
+        }
+        if (n == 1) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
 }

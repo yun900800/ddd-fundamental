@@ -87,4 +87,10 @@ public class NodeUtilsTest {
         Assert.assertEquals(fib10,89);
     }
 
+    @Test
+    public void testChargeCount(){
+        int fib10 = NodeUtils.chargeCount(100,5,x->x);
+        Assert.assertEquals(fib10,293);
+    }
+
 }
