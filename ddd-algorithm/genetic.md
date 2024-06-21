@@ -23,18 +23,20 @@
       首先,可以通过class.isInstance()方法来进行判断;第二个问题的解决方案是使用工厂方法;第三个问题
       的解决方案是this.array = (T[])Array.newInstance(clazz,size);有一点需要记住的是泛型信息
       不是完全擦除,而是记录到类的字段元数据中,通过反射可以拿到
-2. 理解什么是PECS,其实就是生产数据的时候用extend,消费数据的时候用super
+2. [理解什么是PECS](https://www.baeldung.com/java-generics-pecs),其实就是生产数据的时候用extend,消费数据的时候用super
    ```
    ListIterator<? super T> di=dest.listIterator();
    ListIterator<? extends T> si=src.listIterator();
    ```
    以上两段代码是从src复制数据到dest;可以看出生产数据方式从src来,从这里来的数据一定是T的子类,
    而dest的数据的下界是T,因此src的数据一定可以放到dest中
-3. 什么是自限定类型
+3. [什么是自限定类型](https://blog.csdn.net/anlian523/article/details/102511783)
    ```java
    class SelfBounded<T extends SelfBounded<T>> { 
    }
    ```
+   - 理解自限定类型是怎么推理出上面的代码类型的   
+
    它的作用:定义一个基类,这个基类可以使用子类作为参数,返回类型，作用域
    - 它的本质是基类用子类代替其参数,这意味着泛型基类变成了一种其所有子类的公共功能模版，
    但是在所产生的类中将使用确切类型而不是基类型。
