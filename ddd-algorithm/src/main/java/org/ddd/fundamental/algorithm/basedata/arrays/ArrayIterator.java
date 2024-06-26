@@ -96,7 +96,7 @@ public class ArrayIterator {
 
     public static int[] fastSearch(int[] arrays, int begin, int end) {
         if (begin<end) {
-            int index = partitionFromBegin(arrays,begin,end );
+            int index = partitionFromBegin(arrays,begin,end);
             fastSearch(arrays, begin, index-1);
             fastSearch(arrays, index+1, end);
         }
@@ -108,6 +108,7 @@ public class ArrayIterator {
         int pivot = arrays[end];
         int i = begin-1;
         for (int k = begin; k < end; k++) {
+            //先移动指针，然后让指针出元素与第k个比较的元素交换
             if (arrays[k] < pivot) {
                 i++;
                 int temp = arrays[i];
@@ -115,6 +116,7 @@ public class ArrayIterator {
                 arrays[k] = temp;
             }
         }
+        //将第i+1个元素与选择元素进行交换
         int temp = arrays[i+1];
         arrays[i+1] = arrays[end];
         arrays[end] = temp;
@@ -124,7 +126,7 @@ public class ArrayIterator {
     public static int partitionFromBegin(int[] arrays, int begin, int end) {
         int pivot = arrays[begin];
         int i = begin-1;
-        int pivotIndex = 0;
+        int pivotIndex = begin;
         for (int k = begin+1; k <= end; k++) {
             if (arrays[k] < pivot) {
                 i++;
@@ -149,5 +151,9 @@ public class ArrayIterator {
         int[] arrays1 = new int[]{8,9,5,1,2,15,4};
         System.out.println(partitionFromBegin(arrays1,0,6));
         System.out.println(Arrays.toString(arrays1));
+
+        int[] arrays2 = new int[]{16,9,5,1,2,15,4};
+        System.out.println(partitionFromBegin(arrays2,0,6));
+        System.out.println(Arrays.toString(arrays2));
     }
 }

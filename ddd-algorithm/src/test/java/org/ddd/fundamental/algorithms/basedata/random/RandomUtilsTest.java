@@ -22,4 +22,15 @@ public class RandomUtilsTest {
         Procedure fn = () ->RandomUtils.generateRandom(NUMBER_COUNT);
         RandomUtils.fnExecCostTime(fn);
     }
+
+    @Test
+    public void testSetToArrayInt(){
+        Set<Integer> integerSet = RandomUtils.generateRandom(NUMBER_COUNT);
+        Procedure fn = () ->{
+            int[] data = RandomUtils.setToArrayInt(NUMBER_COUNT,integerSet);
+            Assert.assertEquals(data.length,NUMBER_COUNT);
+        };
+        RandomUtils.fnExecCostTime(fn);
+
+    }
 }

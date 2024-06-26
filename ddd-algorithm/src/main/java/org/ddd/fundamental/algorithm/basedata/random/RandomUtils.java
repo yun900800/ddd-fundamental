@@ -29,6 +29,15 @@ public final class RandomUtils {
         System.out.println((end-start)/(1000*1000)+"ms");
     }
 
+    public static int[] setToArrayInt(int n,Set<Integer> sets){
+        int[] arrays = new int[n];
+        int index = 0;
+        for(Integer temp: sets){
+            arrays[index++] = temp;
+        }
+        return arrays;
+    }
+
 }
 
 
