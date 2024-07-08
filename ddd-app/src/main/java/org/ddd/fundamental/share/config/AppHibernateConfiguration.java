@@ -18,7 +18,7 @@ import java.io.IOException;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
-        basePackages={"org.ddd.fundamental.app.model","org.ddd.fundamental.app.repository"},
+        basePackages={"org.ddd.fundamental.app.domain","org.ddd.fundamental.app.repository"},
         entityManagerFactoryRef = "entityManagerFactory",
         transactionManagerRef = "transactionManager"
 )

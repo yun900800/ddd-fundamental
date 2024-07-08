@@ -123,6 +123,15 @@ public class ArrayIterator {
         return i+1;
     }
 
+    /**
+     * 从开始选择元素，存在一个备选元素被替换的的可能,因此需要记录替换后备选元素的索引，最后和i+1替换
+     * 选择最后一个元素就没有备选元素被替换的可能，因此最简单
+     *
+     * @param arrays
+     * @param begin
+     * @param end
+     * @return
+     */
     public static int partitionFromBegin(int[] arrays, int begin, int end) {
         int pivot = arrays[begin];
         int i = begin-1;
@@ -133,10 +142,9 @@ public class ArrayIterator {
                 int temp = arrays[i];
                 arrays[i] = arrays[k];
                 arrays[k] = temp;
-                if (pivotIndex == i) {//刚好是替换的pivot
+                if (pivotIndex == i) {//刚好是替换的pivot,记录下pivot替换后的索引
                     pivotIndex = k;
                 }
-
             }
         }
         int temp = arrays[i+1];

@@ -62,15 +62,15 @@
   </dependencies>
   <dependencyManagement>
     <dependencies>
-      <!-- dependency spring-cloud-alibaba -->
-<!--      <dependency>-->
-<!--        <groupId>com.alibaba.cloud</groupId>-->
-<!--        <artifactId>spring-cloud-alibaba-dependencies</artifactId>-->
-<!--        <version>2.2.0.RELEASE</version>-->
-<!--        <type>pom</type>-->
-<!--        <scope>import</scope>-->
-<!--      </dependency>-->
-      <!-- dependency spring-cloud -->
+<!--       dependency spring-cloud-alibaba-->
+      <dependency>
+        <groupId>com.alibaba.cloud</groupId>
+        <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+        <version>2.2.0.RELEASE</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+<!--       dependency spring-cloud -->
       <dependency>
         <groupId>org.springframework.cloud</groupId>
         <artifactId>spring-cloud-dependencies</artifactId>
