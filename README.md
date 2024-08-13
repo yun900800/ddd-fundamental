@@ -8,3 +8,6 @@
    logstash  -f  logstash.conf --config.reload.automatic
    ```
    注意logstash.conf文件放置在home目录下而不是bin目录下
+
+
+4. 增加对spring-boot的说明,请参考[这篇文章](https://medium.com/@phamtuanchip/a-deep-dive-into-spring-boot-7135aa8dce88)
