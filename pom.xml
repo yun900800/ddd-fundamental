@@ -31,6 +31,10 @@
   <packaging>pom</packaging>
   <parent>
     <groupId>org.springframework.boot</groupId>
+<!--    这个依赖pom包含springboot相关的一些基本配置,只是定义好了模块，需要在子模块中引用-->
+<!--    最基本的三个包是 spring-boot-starter spring-boot-starter-web spring-boot-starter-test-->
+<!--    spring-cloud-dependencies 这个pom是spring-cloud依赖模块的定义-->
+<!--    spring-cloud-alibaba-dependencies 是阿里云对spring-cloud做的扩展-->
     <artifactId>spring-boot-starter-parent</artifactId>
     <version>2.2.5.RELEASE</version>
   </parent>

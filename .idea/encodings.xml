@@ -1,11 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/ddd-algorithm/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ddd-app/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ddd-authentication/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ddd-base/ddd-model/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ddd-base/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ddd-base/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ddd-conditional/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ddd-core/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ddd-core/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ddd-datasource/ddd-datasource-core/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ddd-datasource/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ddd-datasource/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ddd-eureka-server/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ddd-message-mq/ddd-message-kafka/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ddd-message-mq/ddd-spring-kafka/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ddd-message-mq/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ddd-message-mq/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ddd-models/ddd-model/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ddd-models/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ddd-models/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ddd-redis-starter/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ddd-repository/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ddd-ribbon/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ddd-security/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ddd-share/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ddd-share/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ddd-spring/ddd-spring-beans/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ddd-spring/ddd-spring-core/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ddd-spring/ddd-spring-env/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ddd-spring/ddd-spring-factory/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ddd-spring/ddd-spring-metadata/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ddd-spring/ddd-spring-resource/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ddd-spring/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ddd-spring/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ddd-user-gateway/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ddd-user/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ddd-validation/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ddd-validation/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
