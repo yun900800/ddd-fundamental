@@ -23,24 +23,6 @@ public class Customer {
     }
 
     private double amountFor(Rental aRental){
-//        double result = 0;
-//        switch (aRental.getMovie().getPriceCode()){
-//            case Movie.REGULAR:
-//                result +=2;
-//                if (aRental.getDaysRented() > 2)
-//                    result += (aRental.getDaysRented()-2)*1.5;
-//
-//                break;
-//            case Movie.NEW_RELEASE:
-//                result +=aRental.getDaysRented()*3;
-//                break;
-//            case Movie.CHILDRENS:
-//                result+=1.5;
-//                if (aRental.getDaysRented() >1)
-//                    result += (aRental.getDaysRented()-3)*1.5;
-//                break;
-//        }
-//        return result;
         return aRental.getCharge();
     }
 
@@ -50,26 +32,7 @@ public class Customer {
         int frequentRenterPoints = 0;
         String result = "Rental Record for "+ getName() +"\n";
         for (Rental rental: rentals) {
-//            double thisAmount = rental.getCharge();
-//            switch (rental.getMovie().getPriceCode()){
-//                case Movie.REGULAR:
-//                    thisAmount +=2;
-//                    if (rental.getDaysRented() > 2)
-//                        thisAmount += (rental.getDaysRented()-2)*1.5;
-//
-//                    break;
-//                    case Movie.NEW_RELEASE:
-//                        thisAmount +=rental.getDaysRented()*3;
-//                        break;
-//                        case Movie.CHILDRENS:
-//                            thisAmount+=1.5;
-//                            if (rental.getDaysRented() >1)
-//                                thisAmount += (rental.getDaysRented()-3)*1.5;
-//                            break;
-//            }
-            frequentRenterPoints++;
-            if ((rental.getMovie().getPriceCode() == Movie.NEW_RELEASE ) && rental.getDaysRented() >1)
-                frequentRenterPoints++;
+            frequentRenterPoints = rental.getFrequentRenterPoints();
             result+= "\t" + rental.getMovie().getTitle() +"\t" + String.valueOf(rental.getCharge())+"\n";
             totalAmount+=rental.getCharge();
         }
