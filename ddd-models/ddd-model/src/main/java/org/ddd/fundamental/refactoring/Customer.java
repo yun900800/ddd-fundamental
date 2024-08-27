@@ -50,7 +50,7 @@ public class Customer {
         int frequentRenterPoints = 0;
         String result = "Rental Record for "+ getName() +"\n";
         for (Rental rental: rentals) {
-            double thisAmount = rental.getCharge();
+//            double thisAmount = rental.getCharge();
 //            switch (rental.getMovie().getPriceCode()){
 //                case Movie.REGULAR:
 //                    thisAmount +=2;
@@ -70,8 +70,8 @@ public class Customer {
             frequentRenterPoints++;
             if ((rental.getMovie().getPriceCode() == Movie.NEW_RELEASE ) && rental.getDaysRented() >1)
                 frequentRenterPoints++;
-            result+= "\t" + rental.getMovie().getTitle() +"\t" + String.valueOf(thisAmount)+"\n";
-            totalAmount+=thisAmount;
+            result+= "\t" + rental.getMovie().getTitle() +"\t" + String.valueOf(rental.getCharge())+"\n";
+            totalAmount+=rental.getCharge();
         }
         result +="Amount owned is " +String.valueOf(totalAmount)+"\n";
         result += "You earned "+String.valueOf(frequentRenterPoints) + " frequent renter points" ;
