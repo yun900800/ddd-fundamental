@@ -11,3 +11,5 @@
 
 
 4. 增加对spring-boot的说明,请参考[这篇文章](https://medium.com/@phamtuanchip/a-deep-dive-into-spring-boot-7135aa8dce88)
+
+5. [springboot打包模块供其他工程调用](https://www.cnblogs.com/alice-cj/p/15291404.html)
