@@ -12,6 +12,7 @@ public class CustomerTest {
         Customer customer = new Customer("hekai");
         customer.addRental(rental0).addRental(rental1).addRental(rental2);
         System.out.println(customer.statement());
+        System.out.println(customer.htmlStatement());
     }
 
 }
