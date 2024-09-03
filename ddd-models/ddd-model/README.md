@@ -36,3 +36,10 @@
       3. Relate hard cases to simpler cases.
       4. Generalize the pattern.
       5. Write code by combining recursive pattern with the base case.
+10. 增加一个例子说明在一个微服务内部各个领域之间如何交互从而实现一个具体的申请VISA和检查各种资质的具体例子;[文章链接](https://medium.com/@ygnhmt/a-soft-introduction-to-domain-driven-design-from-theory-to-java-code-implementation-part-2-5aa7e1cfef65),主要说明如下:
+    - 这里主要关注领域模型和事件的设计
+    - 接口的设计一定要简介并且不要污染领域模型
+    - 这里有一个问题就是securityCheck这个聚合根注入了visaApplication这个聚合根,是否合理的问题
+    - 关于jps和jms的实现问题没有关注细节
+    - 这里的交互其实涉及到四个领域VisaApplication,SecurityCheck,Security Microservice,VisaIssue domain;这里一定要理解清除它们之间的关系
+    - 注意这里将领域事件分成了两个层次，一个是同一个微服务内部不同领域模型之间的事件,另一个就是不同微服务之间的事件
