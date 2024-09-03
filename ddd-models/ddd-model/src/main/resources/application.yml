@@ -1,2 +1,19 @@
 server:
   port: 9000
+
+jms:
+  url: tcp://localhost:61616
+  queue:
+    securityCheck:
+      request:
+        source1: securityCheck.request.source1
+        source2: securityCheck.request.source2
+        source3: securityCheck.request.source3
+      response:
+        source1: securityCheck.response.source1
+        source2: securityCheck.response.source2
+        source3: securityCheck.response.source3
+db:
+  url: jdbc:mysql://localhost:3306/visa
+  username: visa
+  passport: visa
