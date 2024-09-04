@@ -21,7 +21,7 @@ import java.util.Map;
 @EnableJpaRepositories(
         entityManagerFactoryRef = "DataSourceConfiguration",
         transactionManagerRef = "transactionManager",
-        basePackages = {"com.krakozhia.visa"}
+        basePackages = {"org.ddd.fundamental.visa"}
 )
 public class DataSourceConfiguration {
 
@@ -59,7 +59,7 @@ public class DataSourceConfiguration {
     ) {
         return entityManagerFactoryBuilder
                 .dataSource(postgresDataSource)
-                .packages("com.krakozhia.visa")
+                .packages("org.ddd.fundamental.visa")
                 .persistenceUnit("mysql")
                 .properties(jpaProperties())
                 .jta(true)
