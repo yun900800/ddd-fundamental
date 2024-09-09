@@ -28,6 +28,8 @@ public class JMSConfiguration {
         ActiveMQXAConnectionFactory activeMQXAConnectionFactory = new
                 ActiveMQXAConnectionFactory();
         activeMQXAConnectionFactory.setBrokerURL(jmsUrl);
+        activeMQXAConnectionFactory.setUser("admin");
+        activeMQXAConnectionFactory.setPassword("admin");
         AtomikosConnectionFactoryBean atomikosConnectionFactoryBean = new AtomikosConnectionFactoryBean();
         atomikosConnectionFactoryBean.setUniqueResourceName("xamq");
         atomikosConnectionFactoryBean.setLocalTransactionMode(false);

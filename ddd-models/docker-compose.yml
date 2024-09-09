@@ -1,0 +1,18 @@
+version: '2'
+
+services:
+  artemis:
+    image: quay.io/artemiscloud/activemq-artemis-broker
+    ports:
+      - "5672:5672"
+      - "61616:61616"
+      - "8161:8161"
+    volumes:
+      - ./broker/broker.xml:/opt/amq/conf/broker.xml
+    environment:
+      AMQ_USER: "admin"
+      AMQ_PASSWORD: "admin"
+#     增加下面三行以后能够解决控制台为空的问题
+      AMQ_HOST: "0.0.0.0"
+      AMQ_HTTP_HOST: "0.0.0.0"
+      AMQ_EXTRA_ARGS: "--relax-jolokia"
