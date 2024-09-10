@@ -65,17 +65,23 @@ public class DataSourceConfiguration {
                 .jta(true)
                 .build();
     }
+    // 这个bean的配置对应的是
+    //spring:
+    //  datasource:
+    //    url: ...
+    //    username: ...
+    //    password: ...
+    //    driverClassname: ...
+//    @Bean("dataSourceProperties")
+//    @Primary
+//    public DataSourceProperties dataSourceProperties() {
+//        return new DataSourceProperties();
+//    }
 
-    @Bean("dataSourceProperties")
-    @Primary
-    public DataSourceProperties dataSourceProperties() {
-        return new DataSourceProperties();
-    }
-
-
+    //因此这里的配置可以去掉,通过装饰模式设置的AtomikosDataSourceBean剧透分布式事务
     @Bean("dataSource")
     @Primary
-    public DataSource dataSource(@Qualifier("dataSourceProperties") DataSourceProperties dataSourceProperties) {
+    public DataSource dataSource() {
         MysqlXADataSource mysqlXaDataSource = new MysqlXADataSource();
         mysqlXaDataSource.setUrl(dbUrl);
         mysqlXaDataSource.setUser(username);

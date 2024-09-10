@@ -13,21 +13,22 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-public abstract class UnitOfWorkBase implements UnitOfWork {
+public abstract class UnitOfWorkBase<TEntity extends EntityModel<TID>, TID extends Comparable<TID>>
+        implements UnitOfWork<TEntity,TID> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UnitOfWorkBase.class);
 
     /**
      * key存储新增的实体(聚合), value 存储将这些实体保存起来的工作单元repository
      */
-    private Map<EntityModel, UnitOfWorkRepository> createdEntities = new HashMap<>();
+    private Map<TEntity, UnitOfWorkRepository<TEntity>> createdEntities = new HashMap<>();
 
-    private Map<EntityModel, UnitOfWorkRepository> changedEntities = new HashMap<>();
+    private Map<TEntity, UnitOfWorkRepository<TEntity>> changedEntities = new HashMap<>();
 
-    private Map<EntityModel, UnitOfWorkRepository> deletedEntities = new HashMap<>();
+    private Map<TEntity, UnitOfWorkRepository<TEntity>> deletedEntities = new HashMap<>();
 
     @Override
-    public void registerNewCreated(EntityModel entity, UnitOfWorkRepository<? extends EntityModel> repository) {
+    public void registerNewCreated(TEntity entity, UnitOfWorkRepository<TEntity> repository) {
         if (entity == null || repository == null) {
             return;
         }
@@ -40,7 +41,7 @@ public abstract class UnitOfWorkBase implements UnitOfWork {
     }
 
     @Override
-    public void registerUpdated(EntityModel entity, UnitOfWorkRepository<? extends EntityModel> repository) {
+    public void registerUpdated(TEntity entity, UnitOfWorkRepository<TEntity> repository) {
         if (entity == null || repository == null) {
             return;
         }
@@ -53,7 +54,7 @@ public abstract class UnitOfWorkBase implements UnitOfWork {
     }
 
     @Override
-    public void registerDeleted(EntityModel entity, UnitOfWorkRepository<? extends EntityModel> repository) {
+    public void registerDeleted(TEntity entity, UnitOfWorkRepository<TEntity> repository) {
         if (entity == null || repository == null) {
             return;
         }
@@ -93,41 +94,41 @@ public abstract class UnitOfWorkBase implements UnitOfWork {
 
     //持久化新建的对象
     protected void persistNewCreated() throws PersistenceException {
-        Iterator<Map.Entry<EntityModel, UnitOfWorkRepository>> iterator  = this.createdEntities.entrySet().iterator();
+        Iterator<Map.Entry<TEntity, UnitOfWorkRepository<TEntity>>> iterator  = this.createdEntities.entrySet().iterator();
         while (iterator.hasNext()) {
-            Map.Entry<EntityModel,UnitOfWorkRepository> entry = iterator.next();
+            Map.Entry<TEntity,UnitOfWorkRepository<TEntity>> entry = iterator.next();
             //实际上持久化新增的聚合根
             entry.getValue().persistNewCreated(entry.getKey());
         }
     }
 
     protected void persistDeleted() throws PersistenceException {
-        Iterator<Map.Entry<EntityModel, UnitOfWorkRepository>> iterator  = this.deletedEntities.entrySet().iterator();
+        Iterator<Map.Entry<TEntity, UnitOfWorkRepository<TEntity>>> iterator  = this.deletedEntities.entrySet().iterator();
         while (iterator.hasNext()) {
-            Map.Entry<EntityModel,UnitOfWorkRepository> entry = iterator.next();
+            Map.Entry<TEntity,UnitOfWorkRepository<TEntity>> entry = iterator.next();
             //实际上持久化删除的聚合根
             entry.getValue().persistDeleted(entry.getKey());
         }
     }
 
     protected void persistChanged() throws PersistenceException {
-        Iterator<Map.Entry<EntityModel, UnitOfWorkRepository>> iterator  = this.changedEntities.entrySet().iterator();
+        Iterator<Map.Entry<TEntity, UnitOfWorkRepository<TEntity>>> iterator  = this.changedEntities.entrySet().iterator();
         while (iterator.hasNext()) {
-            Map.Entry<EntityModel,UnitOfWorkRepository> entry = iterator.next();
+            Map.Entry<TEntity,UnitOfWorkRepository<TEntity>> entry = iterator.next();
             //实际上持久化修改的聚合根
             entry.getValue().persistChanged(entry.getKey());
         }
     }
 
-    public Map<EntityModel, UnitOfWorkRepository> getCreatedEntities() {
+    public Map<TEntity, UnitOfWorkRepository<TEntity>> getCreatedEntities() {
         return createdEntities;
     }
 
-    public Map<EntityModel, UnitOfWorkRepository> getChangedEntities() {
+    public Map<TEntity, UnitOfWorkRepository<TEntity>> getChangedEntities() {
         return changedEntities;
     }
 
-    public Map<EntityModel, UnitOfWorkRepository> getDeletedEntities() {
+    public Map<TEntity, UnitOfWorkRepository<TEntity>> getDeletedEntities() {
         return deletedEntities;
     }
 
