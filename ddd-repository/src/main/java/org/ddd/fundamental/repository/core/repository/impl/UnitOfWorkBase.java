@@ -90,6 +90,15 @@ public abstract class UnitOfWorkBase<TEntity extends EntityModel<TID>, TID exten
         this.deletedEntities.clear();
     }
 
+    /**
+     * 这里是聚合根的持久化方法,实际上是调用三个方法
+     * persistNewCreated
+     * persistDeleted
+     * persistChanged
+     * 而以上三个方法代理到聚合根对应的Repository的具体实现
+     * 在实现类中使用数据持久层的框架来存储数据
+     * @throws PersistenceException
+     */
     abstract void persist() throws PersistenceException;
 
     //持久化新建的对象

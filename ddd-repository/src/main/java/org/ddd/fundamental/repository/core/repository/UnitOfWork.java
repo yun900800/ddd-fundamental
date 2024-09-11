@@ -10,6 +10,11 @@ import org.ddd.fundamental.repository.core.repository.vo.CommitHandlingResult;
  */
 public interface UnitOfWork<TEntity extends EntityModel<TID>, TID extends Comparable<TID>> {
 
+    /**
+     * 注册需要新增的聚合根和对应存储对应的Repository
+     * @param entity
+     * @param repository
+     */
     void registerNewCreated(TEntity entity, UnitOfWorkRepository<TEntity> repository);
 
     void registerUpdated(TEntity entity, UnitOfWorkRepository<TEntity> repository);

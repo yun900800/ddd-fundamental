@@ -2,6 +2,7 @@ package org.ddd.fundamental.repository.core.repository.impl;
 
 import org.ddd.fundamental.repository.core.EntityModel;
 import org.ddd.fundamental.repository.core.exception.PersistenceException;
+import org.ddd.fundamental.repository.core.exception.SubPersistenceException;
 import org.ddd.fundamental.repository.core.repository.UnitOfWorkRepository;
 import org.junit.Assert;
 import org.junit.Test;
@@ -15,17 +16,17 @@ public class UnitOfWorkBaseTest {
 
     private UnitOfWorkRepository unitOfWorkRepository = new UnitOfWorkRepository<EmptyEntityModel>() {
         @Override
-        public void persistNewCreated(EmptyEntityModel entityModel) throws PersistenceException {
+        public void persistNewCreated(EmptyEntityModel entityModel) throws SubPersistenceException {
 
         }
 
         @Override
-        public void persistDeleted(EmptyEntityModel entityModel) throws PersistenceException {
+        public void persistDeleted(EmptyEntityModel entityModel) throws SubPersistenceException {
 
         }
 
         @Override
-        public void persistChanged(EmptyEntityModel entityModel) throws PersistenceException {
+        public void persistChanged(EmptyEntityModel entityModel) throws SubPersistenceException {
 
         }
     };
