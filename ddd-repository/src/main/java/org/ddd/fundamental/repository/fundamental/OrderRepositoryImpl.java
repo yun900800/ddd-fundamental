@@ -121,7 +121,6 @@ public class OrderRepositoryImpl extends RepositoryBase<Long, Order>
         orderItemFundamentalRepository.saveAll(orderItemUpdateModels);
         List<OrderItemModel> orderItemDeleteModels = this.ofOrderItemDeleteDirtyModel(order);
         orderItemFundamentalRepository.deleteAll(orderItemDeleteModels);
-
     }
 
     @Override

@@ -7,6 +7,8 @@ import org.ddd.fundamental.repository.utils.BeanHelperUtils;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class Order extends EntityModel<Long> {
 
@@ -121,6 +123,43 @@ public class Order extends EntityModel<Long> {
         this.updateDirty();
         return this;
     }
+
+    public Order deleteOrderItemByName(String name){
+        List<OrderItem> orderItemList = markDeleteDirtyOrderItemsByName(name);
+        clear().addOrderItems(orderItemList);
+        return this;
+    }
+
+    private List<OrderItem> markDirtyByFunc(Function<OrderItem,OrderItem> markDirtyFunc){
+        return getOrderItems().stream().map(markDirtyFunc).collect(Collectors.toList());
+    }
+
+    private List<OrderItem> markDeleteDirtyOrderItemsByName(String name){
+        Function<OrderItem,OrderItem> markDirtyFunc = v->{
+            if (v.getProductName().equals(name)) {
+                v.deleteDirty();
+            }
+            return v;
+        };
+        return markDirtyByFunc(markDirtyFunc);
+    }
+
+    public Order changeOrderItemQty(String name, int qty){
+        List<OrderItem> orderItemList = markUpdateDirtyOrderItemsFromQtyByName(name,qty);
+        clear().addOrderItems(orderItemList);
+        return this;
+    }
+    private List<OrderItem> markUpdateDirtyOrderItemsFromQtyByName(String name,int qty){
+        Function<OrderItem,OrderItem> markDirtyFunc = v -> {
+            if (v.getProductName().equals(name)) {
+                v.changeQuantity(qty);
+                v.updateDirty();
+            }
+            return v;
+        };
+        return markDirtyByFunc(markDirtyFunc);
+    }
+
 
     /**
      * 改变计费策略

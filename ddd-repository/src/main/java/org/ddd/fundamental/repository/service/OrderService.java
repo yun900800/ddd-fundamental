@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -48,14 +49,7 @@ public class OrderService {
     @Transactional
     public void changeOrderItemQty(String name, int qty, Long orderId) {
         Order order = this.loadOrder(orderId);
-        List<OrderItem> orderItemList = order.getOrderItems().stream().map(v->{
-            if (v.getProductName().equals(name)) {
-                v.changeQuantity(qty);
-                v.updateDirty();
-            }
-            return v;
-        }).collect(Collectors.toList());
-        order.clear().addOrderItems(orderItemList);
+        order.changeOrderItemQty(name,qty);
         TransactionScope transactionScope = TransactionScope.create((RepositoryBase) orderRepository);//(2)
         this.orderRepository.update(order);
         transactionScope.commit();
@@ -64,13 +58,7 @@ public class OrderService {
     @Transactional
     public void deleteOrderItemByName(String name, Long orderId) {
         Order order = this.loadOrder(orderId);
-        List<OrderItem> orderItemList = order.getOrderItems().stream().map(v->{
-            if (v.getProductName().equals(name)) {
-                v.deleteDirty();
-            }
-            return v;
-        }).collect(Collectors.toList());
-        order.clear().addOrderItems(orderItemList);
+        order.deleteOrderItemByName(name);
         TransactionScope transactionScope = TransactionScope.create((RepositoryBase) orderRepository);//(2)
         this.orderRepository.update(order);
         transactionScope.commit();
