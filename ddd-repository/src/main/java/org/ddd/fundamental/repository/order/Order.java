@@ -125,7 +125,7 @@ public class Order extends EntityModel<Long> {
     }
 
     public Order deleteOrderItemByName(String name){
-        List<OrderItem> orderItemList = markDeleteDirtyOrderItemsByName(name);
+        List<OrderItem> orderItemList = markDeleteDirtyByDeleteOrderItem(name);
         clear().addOrderItems(orderItemList);
         return this;
     }
@@ -134,7 +134,7 @@ public class Order extends EntityModel<Long> {
         return getOrderItems().stream().map(markDirtyFunc).collect(Collectors.toList());
     }
 
-    private List<OrderItem> markDeleteDirtyOrderItemsByName(String name){
+    private List<OrderItem> markDeleteDirtyByDeleteOrderItem(String name){
         Function<OrderItem,OrderItem> markDirtyFunc = v->{
             if (v.getProductName().equals(name)) {
                 v.deleteDirty();
@@ -145,11 +145,11 @@ public class Order extends EntityModel<Long> {
     }
 
     public Order changeOrderItemQty(String name, int qty){
-        List<OrderItem> orderItemList = markUpdateDirtyOrderItemsFromQtyByName(name,qty);
+        List<OrderItem> orderItemList = markUpdateDirtyByChangeOrderItemQty(name,qty);
         clear().addOrderItems(orderItemList);
         return this;
     }
-    private List<OrderItem> markUpdateDirtyOrderItemsFromQtyByName(String name,int qty){
+    private List<OrderItem> markUpdateDirtyByChangeOrderItemQty(String name,int qty){
         Function<OrderItem,OrderItem> markDirtyFunc = v -> {
             if (v.getProductName().equals(name)) {
                 v.changeQuantity(qty);
