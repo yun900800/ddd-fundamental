@@ -140,6 +140,7 @@ public class OrderRepositoryImpl extends RepositoryBase<Long, Order>
         }).collect(Collectors.toList());
         order.addOrderItems(orderItems);
         order.setId(id);
+        //order.updateDirty(false);
         return order;
     }
 

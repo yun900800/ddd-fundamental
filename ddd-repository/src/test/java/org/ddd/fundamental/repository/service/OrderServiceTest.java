@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(
@@ -60,6 +61,8 @@ public class OrderServiceTest {
         orderService.changeOrderItemQty("橘子",10,orderId);
         Order order = orderService.loadOrder(orderId);
         Assert.assertEquals(order.getDeliveryFee(),BigDecimal.valueOf(5));
+        List<OrderItem> dataLists = order.markUpdateDirty("橘子");
+
     }
 
     @Test

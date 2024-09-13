@@ -1,6 +1,8 @@
 package org.ddd.fundamental.repository.core;
 
 import java.io.Serializable;
+import java.util.function.Function;
+
 
 public abstract class EntityModel<Id extends Comparable<Id>> implements Serializable {
 
@@ -21,7 +23,11 @@ public abstract class EntityModel<Id extends Comparable<Id>> implements Serializ
     }
 
     public void updateDirty() {
-        this.isUpdateDirty = true;
+        this.updateDirty(true);
+    }
+
+    public void updateDirty(boolean isUpdateDirty){
+        this.isUpdateDirty = isUpdateDirty;
     }
 
     public boolean isDeleteDirty() {
@@ -29,7 +35,11 @@ public abstract class EntityModel<Id extends Comparable<Id>> implements Serializ
     }
 
     public void deleteDirty() {
-        this.isDeleteDirty = true;
+        this.deleteDirty(true);
+    }
+
+    public void deleteDirty(boolean isDeleteDirty){
+        this.isDeleteDirty = isDeleteDirty;
     }
 
     public Id getId() {
@@ -38,5 +48,29 @@ public abstract class EntityModel<Id extends Comparable<Id>> implements Serializ
 
     public void setId(Id id) {
         this.id = id;
+    }
+
+    public String dirtyKey(){
+        return id.toString();
+    }
+
+    /**
+     * 构造标注dirty数据的函数
+     * @param id
+     * @param type
+     * @return
+     */
+    public Function<EntityModel<?>,EntityModel<?>> markDirty(Id id,String type){
+        Function<EntityModel<?>,EntityModel<?>> markDirtyFunc = v ->{
+            if (v.getId().equals(id)) {
+                if (type.equals("update")){
+                    v.updateDirty();
+                } else {
+                    v.deleteDirty();
+                }
+            }
+            return v;
+        };
+        return markDirtyFunc;
     }
 }

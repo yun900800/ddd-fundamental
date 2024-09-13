@@ -95,6 +95,10 @@ public class OrderItem extends EntityModel<Long> {
         return productInfo.getId();
     }
 
+    public String dirtyKey(){
+        return productInfo.getProductName();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

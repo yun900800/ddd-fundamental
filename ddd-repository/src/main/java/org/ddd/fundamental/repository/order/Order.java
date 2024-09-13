@@ -3,6 +3,7 @@ import org.ddd.fundamental.repository.core.EntityModel;
 import org.ddd.fundamental.repository.order.delivery.DefaultDeliveryStrategy;
 import org.ddd.fundamental.repository.order.delivery.DeliveryStrategy;
 import org.ddd.fundamental.repository.utils.BeanHelperUtils;
+import org.ddd.fundamental.repository.utils.EntityModelUtils;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -92,6 +93,7 @@ public class Order extends EntityModel<Long> {
     public Order clear() {
         this.orderAmount = BigDecimal.ZERO;
         this.orderItems = new ArrayList<>();
+        this.deliveryFee = BigDecimal.ZERO;
         return this;
     }
 
@@ -125,7 +127,7 @@ public class Order extends EntityModel<Long> {
     }
 
     public Order deleteOrderItemByName(String name){
-        List<OrderItem> orderItemList = markDeleteDirtyByDeleteOrderItem(name);
+        List<OrderItem> orderItemList = markDeleteDirty(name);
         clear().addOrderItems(orderItemList);
         return this;
     }
@@ -134,30 +136,29 @@ public class Order extends EntityModel<Long> {
         return getOrderItems().stream().map(markDirtyFunc).collect(Collectors.toList());
     }
 
-    private List<OrderItem> markDeleteDirtyByDeleteOrderItem(String name){
-        Function<OrderItem,OrderItem> markDirtyFunc = v->{
-            if (v.getProductName().equals(name)) {
-                v.deleteDirty();
+    public Order changeOrderItemQty(String name, int qty){
+        this.orderItems = markUpdateDirty(name);
+        List<OrderItem> orderItemList = changeOrderItemQty(qty,name);
+        clear().addOrderItems(orderItemList);
+        return this;
+    }
+
+    private List<OrderItem> changeOrderItemQty(int qty,String productName){
+        Function<OrderItem,OrderItem> markDirtyFunc = v -> {
+            if (v.getProductName().equals(productName)) {
+                v.changeQuantity(qty);
             }
             return v;
         };
         return markDirtyByFunc(markDirtyFunc);
     }
 
-    public Order changeOrderItemQty(String name, int qty){
-        List<OrderItem> orderItemList = markUpdateDirtyByChangeOrderItemQty(name,qty);
-        clear().addOrderItems(orderItemList);
-        return this;
+    public List<OrderItem> markUpdateDirty(String name){
+        return (List<OrderItem>) EntityModelUtils.markUpdateDirtyLists(orderItems, name);
     }
-    private List<OrderItem> markUpdateDirtyByChangeOrderItemQty(String name,int qty){
-        Function<OrderItem,OrderItem> markDirtyFunc = v -> {
-            if (v.getProductName().equals(name)) {
-                v.changeQuantity(qty);
-                v.updateDirty();
-            }
-            return v;
-        };
-        return markDirtyByFunc(markDirtyFunc);
+
+    public List<OrderItem> markDeleteDirty(String name){
+        return (List<OrderItem>) EntityModelUtils.markDeleteDirtyLists(orderItems, name);
     }
 
 
