@@ -154,11 +154,11 @@ public class Order extends EntityModel<Long> {
     }
 
     public List<OrderItem> markUpdateDirty(String name){
-        return (List<OrderItem>) EntityModelUtils.markUpdateDirtyLists(orderItems, name);
+        return EntityModelUtils.markUpdateDirtyLists(orderItems, name);
     }
 
     public List<OrderItem> markDeleteDirty(String name){
-        return (List<OrderItem>) EntityModelUtils.markDeleteDirtyLists(orderItems, name);
+        return EntityModelUtils.markDeleteDirtyLists(orderItems, name);
     }
 
 
