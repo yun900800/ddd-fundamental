@@ -3,6 +3,7 @@ package org.ddd.fundamental.repository.utils;
 import org.ddd.fundamental.repository.core.EntityModel;
 
 import java.util.List;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -73,6 +74,32 @@ public final class EntityModelUtils {
 
     public static <T extends EntityModel<Id>, Id extends Comparable<Id>> List<T> markDeleteDirtyListsById(List<T> dataLists, Id id){
         return dataLists.stream().map(markDeleteDirtyById(id)).collect(Collectors.toList());
+    }
+
+    public static <T extends EntityModel<Id>, Id extends Comparable<Id>> List<T> markUpdateDirtyListsByIds(List<T> dataLists, Set<Id> ids){
+        return markDirtyByIds(dataLists, ids, "update");
+    }
+
+    private static <T extends EntityModel<Id>, Id extends Comparable<Id>> List<T> handleList(Function<List<T>, List<T>> func, List<T> dataLists){
+        return func.apply(dataLists);
+    }
+
+    public static <T extends EntityModel<Id>, Id extends Comparable<Id>> List<T> markDeleteDirtyListsByIds(List<T> dataLists, Set<Id> ids){
+        return markDirtyByIds(dataLists, ids, "delete");
+    }
+
+    private static <T extends EntityModel<Id>, Id extends Comparable<Id>> List<T> markDirtyByIds(List<T> dataLists, Set<Id> ids, String type){
+        for (T entity: dataLists) {
+            Id entityId = entity.getId();
+            if (ids.contains(entityId)){
+                if (type.equals("update")){
+                    entity.updateDirty();
+                } else {
+                    entity.deleteDirty();
+                }
+            }
+        }
+        return dataLists;
     }
 
 }
