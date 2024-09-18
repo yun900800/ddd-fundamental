@@ -28,7 +28,7 @@ public class ProductService {
     public Result createProduct(ProductVO param) {
 
         //参数校验，使用责任链模式
-        Result paramCheckResult = this.paramCheckChain(param);
+        Result paramCheckResult = this.paramCheckByChain(param);
         if (!paramCheckResult.isSuccess()) {
             return paramCheckResult;
         }
@@ -42,13 +42,13 @@ public class ProductService {
      * @param param
      * @return
      */
-    private Result paramCheckChain(ProductVO param) {
+    private Result paramCheckByChain(ProductVO param) {
 
         //构建处理器配置：通常配置使用统一配置中心存储，支持动态变更
-        ProductCheckHandlerConfig handlerConfig = this.buildHandlerConfigFile();
+        ProductCheckHandlerConfig handlerConfig = buildHandlerConfigFile();
 
         //构建处理器
-        AbstractCheckHandler handler = this.buildHandlers(handlerConfig);
+        AbstractCheckHandler handler = buildHandlers(handlerConfig,handlerMap);
 
         //责任链：执行处理器链路
         Result executeChainResult = HandlerExecutor.executeChain(handler, param);
@@ -65,7 +65,7 @@ public class ProductService {
      * 获取处理器配置：通常配置使用统一配置中心存储，支持动态变更
      * @return
      */
-    private ProductCheckHandlerConfig buildHandlerConfigFile() {
+    private static ProductCheckHandlerConfig buildHandlerConfigFile() {
         //配置中心存储的配置
         String configJson = "{\"handler\":\"nullValueCheckHandler\",\"down\":false,\"next\":{\"handler\":\"priceCheckHandler\",\"next\":{\"handler\":\"stockCheckHandler\",\"next\":null}}}";
         //转成Config对象
@@ -73,7 +73,7 @@ public class ProductService {
         return handlerConfig;
     }
 
-    private boolean isBuildHandlersFinished(ProductCheckHandlerConfig config) {
+    private static boolean isBuildHandlersFinished(ProductCheckHandlerConfig config, Map<String, AbstractCheckHandler> handlerMap) {
         if (Objects.isNull(config) || StringUtils.isBlank(config.getHandler()) ||
                 Objects.isNull(handlerMap.get(config.getHandler()))) {
             return true;
@@ -86,8 +86,8 @@ public class ProductService {
      * @param config
      * @return
      */
-    private AbstractCheckHandler buildHandlers(ProductCheckHandlerConfig config) {
-        if (isBuildHandlersFinished(config)) {
+    private static AbstractCheckHandler buildHandlers(ProductCheckHandlerConfig config, Map<String, AbstractCheckHandler> handlerMap) {
+        if (isBuildHandlersFinished(config,handlerMap)) {
             return null;
         }
         AbstractCheckHandler abstractCheckHandler = handlerMap.get(config.getHandler());
@@ -95,7 +95,7 @@ public class ProductService {
         abstractCheckHandler.setConfig(config);
 
         //递归设置链路处理器
-        abstractCheckHandler.setNextHandler(this.buildHandlers(config.getNext()));
+        abstractCheckHandler.setNextHandler(buildHandlers(config.getNext(),handlerMap));
 
         return abstractCheckHandler;
     }
