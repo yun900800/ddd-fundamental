@@ -22,4 +22,12 @@ public class Result {
     public static Result failure(String code){
         return new Result(code,"failure");
     }
+
+    @Override
+    public String toString() {
+        return "Result{" +
+                "code='" + code + '\'' +
+                ", message='" + message + '\'' +
+                '}';
+    }
 }
