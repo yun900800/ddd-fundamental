@@ -3,7 +3,7 @@ package org.ddd.fundamental.design.chain.impl;
 import org.ddd.fundamental.design.model.ProductVO;
 import org.ddd.fundamental.design.model.Result;
 
-public class HandlerClient {
+public class HandlerExecutor {
 
     public static Result executeChain(AbstractCheckHandler handler, ProductVO param) {
         //执行处理器

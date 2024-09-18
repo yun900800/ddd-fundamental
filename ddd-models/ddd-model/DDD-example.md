@@ -29,3 +29,8 @@
    数据多的时候就在外部服务中检查;
     - 同理更新某个具体Tamagotchi的时候可以先查出聚合根中指定的主表和一个具体明细表来更新,这种方法就要配合
    外部服务的重名检查;数据少的话可以直接拿全部数据,然后再更新
+
+4. 学习值对象的知识总结:
+   - Value object has to be immutable.
+   - Value object should be comparable (i.e. implements equals/hashCode).
+   - Value object guarantees that it always holds the correct value.

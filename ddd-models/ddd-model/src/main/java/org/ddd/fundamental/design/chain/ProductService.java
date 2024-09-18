@@ -3,7 +3,7 @@ package org.ddd.fundamental.design.chain;
 import com.alibaba.fastjson.JSON;
 import org.apache.commons.lang3.StringUtils;
 import org.ddd.fundamental.design.chain.impl.AbstractCheckHandler;
-import org.ddd.fundamental.design.chain.impl.HandlerClient;
+import org.ddd.fundamental.design.chain.impl.HandlerExecutor;
 import org.ddd.fundamental.design.model.ProductVO;
 import org.ddd.fundamental.design.model.Result;
 import org.springframework.stereotype.Component;
@@ -44,14 +44,14 @@ public class ProductService {
      */
     private Result paramCheckChain(ProductVO param) {
 
-        //获取处理器配置：通常配置使用统一配置中心存储，支持动态变更
-        ProductCheckHandlerConfig handlerConfig = this.getHandlerConfigFile();
+        //构建处理器配置：通常配置使用统一配置中心存储，支持动态变更
+        ProductCheckHandlerConfig handlerConfig = this.buildHandlerConfigFile();
 
-        //获取处理器
-        AbstractCheckHandler handler = this.getHandler(handlerConfig);
+        //构建处理器
+        AbstractCheckHandler handler = this.buildHandlers(handlerConfig);
 
         //责任链：执行处理器链路
-        Result executeChainResult = HandlerClient.executeChain(handler, param);
+        Result executeChainResult = HandlerExecutor.executeChain(handler, param);
         if (!executeChainResult.isSuccess()) {
             System.out.println("创建商品 失败...");
             return executeChainResult;
@@ -65,7 +65,7 @@ public class ProductService {
      * 获取处理器配置：通常配置使用统一配置中心存储，支持动态变更
      * @return
      */
-    private ProductCheckHandlerConfig getHandlerConfigFile() {
+    private ProductCheckHandlerConfig buildHandlerConfigFile() {
         //配置中心存储的配置
         String configJson = "{\"handler\":\"nullValueCheckHandler\",\"down\":false,\"next\":{\"handler\":\"priceCheckHandler\",\"next\":{\"handler\":\"stockCheckHandler\",\"next\":null}}}";
         //转成Config对象
@@ -73,32 +73,29 @@ public class ProductService {
         return handlerConfig;
     }
 
+    private boolean isBuildHandlersFinished(ProductCheckHandlerConfig config) {
+        if (Objects.isNull(config) || StringUtils.isBlank(config.getHandler()) ||
+                Objects.isNull(handlerMap.get(config.getHandler()))) {
+            return true;
+        }
+        return false;
+    }
+
     /**
      * 获取处理器
      * @param config
      * @return
      */
-    private AbstractCheckHandler getHandler (ProductCheckHandlerConfig config) {
-        //配置检查：没有配置处理器链路，则不执行校验逻辑
-        if (Objects.isNull(config)) {
+    private AbstractCheckHandler buildHandlers(ProductCheckHandlerConfig config) {
+        if (isBuildHandlersFinished(config)) {
             return null;
         }
-        //配置错误
-        String handler = config.getHandler();
-        if (StringUtils.isBlank(handler)) {
-            return null;
-        }
-        //配置了不存在的处理器
         AbstractCheckHandler abstractCheckHandler = handlerMap.get(config.getHandler());
-        if (Objects.isNull(abstractCheckHandler)) {
-            return null;
-        }
-
         //处理器设置配置Config
         abstractCheckHandler.setConfig(config);
 
         //递归设置链路处理器
-        abstractCheckHandler.setNextHandler(this.getHandler(config.getNext()));
+        abstractCheckHandler.setNextHandler(this.buildHandlers(config.getNext()));
 
         return abstractCheckHandler;
     }
