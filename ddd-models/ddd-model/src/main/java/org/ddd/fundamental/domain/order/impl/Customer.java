@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-public class Customer implements ICustomer<String> {
+public class Customer implements ICustomer<String,IOrder<String>> {
 
     private String name;
 

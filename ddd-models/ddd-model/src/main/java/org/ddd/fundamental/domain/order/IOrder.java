@@ -39,9 +39,9 @@ public interface IOrder<K> extends IKey<K> {
 
     boolean contains(K key);
 
-    void setCustomer(ICustomer<K> arg);
+    void  setCustomer(ICustomer<K,IOrder<K>> arg);
 
-    ICustomer<K> getCustomer();
+    ICustomer<K,IOrder<K>> getCustomer();
 
 
 }

@@ -4,13 +4,12 @@ import org.ddd.fundamental.domain.IKey;
 
 import java.util.Set;
 
-public interface ICustomer<K>  extends IKey<K> {
+public interface ICustomer<K,O extends IOrder<K>>  extends IKey<K> {
 
     String name();
 
-    Set<IOrder<K>> friendOrders();
+    Set<O> friendOrders();
 
-    void addOrder(IOrder<K> order);
-
+    void addOrder(O order);
 
 }

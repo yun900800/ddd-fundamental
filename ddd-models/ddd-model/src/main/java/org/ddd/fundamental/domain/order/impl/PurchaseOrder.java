@@ -23,15 +23,15 @@ public class PurchaseOrder implements IOrder<String> {
         this.key = UUID.randomUUID().toString();
     }
 
-    private ICustomer<String> customer;
+    private ICustomer<String, IOrder<String>> customer;
 
     @Override
-    public ICustomer<String> getCustomer() {
+    public ICustomer<String, IOrder<String>> getCustomer() {
         return customer;
     }
 
     @Override
-    public void setCustomer(ICustomer<String> arg) {
+    public void setCustomer(ICustomer<String, IOrder<String>> arg) {
         if (null != customer) {
             customer.friendOrders().remove(this);
         }

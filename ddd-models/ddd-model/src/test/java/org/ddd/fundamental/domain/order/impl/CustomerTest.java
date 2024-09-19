@@ -18,7 +18,7 @@ public class CustomerTest {
 
     @Test
     public void testCreateCustomer() {
-        ICustomer<String> customer = new Customer("这是一个优质客户");
+        ICustomer<String,IOrder<String>> customer = new Customer("这是一个优质客户");
         IOrder<String> order = createOrder();
         customer.addOrder(order);
         IOrder<String> order1 = createOrder();
