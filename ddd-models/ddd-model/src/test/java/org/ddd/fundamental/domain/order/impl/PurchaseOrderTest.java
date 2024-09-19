@@ -32,9 +32,13 @@ public class PurchaseOrderTest {
         IItem<String> rawMaterial1 = new RawMaterial("这是原材料",80);
         order.addItem(rawMaterial1);
 
-        order.addItem(Item.copy(rawMaterial).changeQuantity(50));
-        order.addItem(Item.copy(workInProgress).changeQuantity(15));
-        order.addItem(Item.copy(finishedProduct).changeQuantity(2));
+//        order.addItem(IOrder.copy(rawMaterial).changeQuantity(50));
+//        order.addItem(Item.copy(workInProgress).changeQuantity(15));
+//        order.addItem(Item.copy(finishedProduct).changeQuantity(2));
+
+        order.addItem(IOrder.copyItem(rawMaterial,50));
+        order.addItem(IOrder.copyItem(workInProgress,15));
+        order.addItem(IOrder.copyItem(finishedProduct,2));
         return order;
     }
 

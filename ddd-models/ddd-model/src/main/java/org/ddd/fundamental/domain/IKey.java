@@ -1,6 +1,8 @@
 package org.ddd.fundamental.domain;
 
-public interface IKey<K> {
+import java.io.Serializable;
+
+public interface IKey<K> extends Serializable {
 
     K key();
 

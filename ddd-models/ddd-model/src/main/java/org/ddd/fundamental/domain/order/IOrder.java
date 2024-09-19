@@ -1,8 +1,15 @@
 package org.ddd.fundamental.domain.order;
 
+import org.ddd.fundamental.constants.ItemType;
 import org.ddd.fundamental.domain.IKey;
+import org.ddd.fundamental.helper.DeepCopyUtil;
+import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * 定义一个单据的接口
@@ -42,6 +49,66 @@ public interface IOrder<K, I extends IItem<K>> extends IKey<K> {
     void  setCustomer(ICustomer<K,IOrder<K,IItem<K>>> arg);
 
     ICustomer<K,IOrder<K,IItem<K>>> getCustomer();
+
+    static <K> List<IItem<K>> mergeItems(List<IItem<K>> items){
+        List<IItem<K>> mergeItems = new ArrayList<>();
+        Map<ItemType,List<IItem<K>>> itemMap = items.stream()
+                .collect(Collectors.groupingBy(IItem::type));
+        mergeItems.add(mergeListToItem(itemMap,ItemType.RAW_MATERIAL));
+        mergeItems.add(mergeListToItem(itemMap,ItemType.WORK_IN_PROGRESS));
+        mergeItems.add(mergeListToItem(itemMap,ItemType.FINISHED_PRODUCT));
+        return mergeItems;
+    }
+
+    static <K> List<IItem<K>> mergeItemsByKey(List<IItem<K>> items, Set<K> keys){
+        List<IItem<K>> mergeItems = new ArrayList<>();
+        Map<K,List<IItem<K>>> itemMap = items.stream()
+                .collect(Collectors.groupingBy(IItem::key));
+        for (K key: keys){
+            mergeItems.add(mergeListToItemByKey(itemMap,key));
+        }
+        return mergeItems;
+    }
+
+    private static <K> IItem<K> mergeListToItemByKey(Map<K,List<IItem<K>>> itemMap,K key) {
+        List<IItem<K>> materialItems = itemMap.get(key);
+        if (CollectionUtils.isEmpty(materialItems)) {
+            return null;
+        }
+        IItem<K> item0 = materialItems.get(0);
+        double sumQuantity = 0.0;
+        for (IItem<K> item: materialItems) {
+            sumQuantity+=item.quantity();
+        }
+        item0.changeQuantity(sumQuantity);
+        return item0;
+    }
+
+
+
+    private static <K> IItem<K> mergeListToItem(Map<ItemType,List<IItem<K>>> itemMap,ItemType type) {
+        List<IItem<K>> materialItems = itemMap.get(type);
+        if (CollectionUtils.isEmpty(materialItems)) {
+            return null;
+        }
+        IItem<K> item0 = materialItems.get(0);
+        double sumQuantity = 0.0;
+        for (IItem<K> item: materialItems) {
+            sumQuantity+=item.quantity();
+        }
+        return copyItem(item0,sumQuantity);
+    }
+
+    static <K> IItem<K> copyItem(IItem<K> item, double quantity){
+        IItem<K> itemNew = copy(item);
+        itemNew.setKey(item.key());
+        itemNew.changeQuantity(quantity);
+        return itemNew;
+    }
+
+    static <K> IItem<K> copy(IItem<K> item){
+        return DeepCopyUtil.deepCopy(item);
+    }
 
 
 }

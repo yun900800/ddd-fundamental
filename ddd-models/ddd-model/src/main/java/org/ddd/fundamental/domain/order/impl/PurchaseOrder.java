@@ -76,12 +76,12 @@ public class PurchaseOrder implements IOrder<String,IItem<String>> {
      */
     @Override
     public List<IItem<String>> mergeItems() {
-        return Item.mergeItems(items);
+        return IOrder.mergeItems(items);
     }
 
     @Override
     public List<IItem<String>> mergeItemsByKey() {
-        return Item.mergeItemsByKey(items, keys());
+        return IOrder.mergeItemsByKey(items, keys());
     }
 
 
