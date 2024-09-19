@@ -12,16 +12,16 @@ import java.util.List;
 
 public class PurchaseOrderTest {
 
-    private IOrder<String> createOrder() {
-        IOrder<String> order = new PurchaseOrder("原材料采购订单");
+    private IOrder<String,IItem<String>> createOrder() {
+        IOrder<String,IItem<String>> order = new PurchaseOrder("原材料采购订单");
         order.addItem(new RawMaterial("这是原材料",100));
         order.addItem(new WorkInProgress("这是半成品",20));
         order.addItem(new FinishedProduct("这是成品",1));
         return order;
     }
 
-    private IOrder<String> createMultipleOrder() {
-        IOrder<String> order = new PurchaseOrder("原材料采购订单");
+    private IOrder<String,IItem<String>> createMultipleOrder() {
+        IOrder<String,IItem<String>> order = new PurchaseOrder("原材料采购订单");
         IItem<String> rawMaterial = new RawMaterial("这是原材料",100);
         IItem<String> workInProgress = new WorkInProgress("这是半成品",20);
         IItem<String> finishedProduct = new FinishedProduct("这是成品",1);
@@ -38,35 +38,35 @@ public class PurchaseOrderTest {
         return order;
     }
 
-    private IOrder<String> createEmptyOrder(){
-        IOrder<String> order = new PurchaseOrder("原材料采购订单");
+    private IOrder<String,IItem<String>> createEmptyOrder(){
+        IOrder<String,IItem<String>> order = new PurchaseOrder("原材料采购订单");
         return order;
     }
 
     @Test
     public void testCreateOrder() {
 
-        IOrder<String> order = new PurchaseOrder("原材料采购订单");
+        IOrder<String,IItem<String>> order = new PurchaseOrder("原材料采购订单");
         Assert.assertFalse(order.validOrder());
     }
 
     @Test
     public void testAddItemToOrder() {
-        IOrder<String> emptyOrder = createEmptyOrder();
+        IOrder<String,IItem<String>> emptyOrder = createEmptyOrder();
         Assert.assertFalse(emptyOrder.validOrder());
-        IOrder<String> order = createOrder();
+        IOrder<String,IItem<String>> order = createOrder();
         Assert.assertTrue(order.validOrder());
     }
 
     @Test
     public void testItemKeys() {
-        IOrder<String> order = createOrder();
+        IOrder<String,IItem<String>> order = createOrder();
         Assert.assertEquals(order.itemKeys().size(),3);
     }
 
     @Test
     public void testContains() {
-        IOrder<String> order = createOrder();
+        IOrder<String,IItem<String>> order = createOrder();
         String key1 = order.itemKeys().get(0);
         String key2 = "not-found";
         Assert.assertTrue(order.contains(key1));
@@ -75,7 +75,7 @@ public class PurchaseOrderTest {
 
     @Test
     public void testRemoveItem() {
-        IOrder<String> order = createOrder();
+        IOrder<String,IItem<String>> order = createOrder();
         String key1 = order.itemKeys().get(0);
         order.removeItem(key1);
         Assert.assertFalse(order.contains(key1));
@@ -83,7 +83,7 @@ public class PurchaseOrderTest {
 
     @Test
     public void testMergeItems() {
-        IOrder<String> order = createMultipleOrder();
+        IOrder<String,IItem<String>> order = createMultipleOrder();
         List<IItem<String>> itemList = order.mergeItems();
         Assert.assertEquals(3,itemList.size());
         for (IItem<String> item: itemList) {
@@ -101,7 +101,7 @@ public class PurchaseOrderTest {
 
     @Test
     public void testMergeItemsByKey() {
-        IOrder<String> order = createMultipleOrder();
+        IOrder<String,IItem<String>> order = createMultipleOrder();
         List<IItem<String>> itemList = order.mergeItemsByKey();
         Assert.assertEquals(4,itemList.size());
         for (IItem<String> item: itemList) {
@@ -119,15 +119,15 @@ public class PurchaseOrderTest {
 
     @Test
     public void testSetCustomer() {
-        IOrder<String> order = createOrder();
-        IOrder<String> order1 = createOrder();
-        ICustomer<String,IOrder<String>> customer = new Customer("这是一个优质客户");
+        IOrder<String,IItem<String>> order = createOrder();
+        IOrder<String,IItem<String>> order1 = createOrder();
+        ICustomer<String,IOrder<String,IItem<String>>> customer = new Customer("这是一个优质客户");
         order.setCustomer(customer);
         order1.setCustomer(customer);
         Assert.assertEquals(customer.friendOrders().size(),2);
         Assert.assertEquals(order.getCustomer(),order1.getCustomer());
 
-        ICustomer<String,IOrder<String>> customer1 = new Customer("这是另外一个优质客户");
+        ICustomer<String,IOrder<String,IItem<String>>> customer1 = new Customer("这是另外一个优质客户");
         order.setCustomer(customer1);
         Assert.assertEquals(customer.friendOrders().size(),1);
         Assert.assertNotEquals(order.getCustomer(),order1.getCustomer());

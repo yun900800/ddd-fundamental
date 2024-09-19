@@ -10,7 +10,7 @@ import org.springframework.util.StringUtils;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class PurchaseOrder implements IOrder<String> {
+public class PurchaseOrder implements IOrder<String,IItem<String>> {
 
     private String name;
 
@@ -23,15 +23,15 @@ public class PurchaseOrder implements IOrder<String> {
         this.key = UUID.randomUUID().toString();
     }
 
-    private ICustomer<String, IOrder<String>> customer;
+    private ICustomer<String, IOrder<String,IItem<String>>> customer;
 
     @Override
-    public ICustomer<String, IOrder<String>> getCustomer() {
+    public ICustomer<String, IOrder<String,IItem<String>>> getCustomer() {
         return customer;
     }
 
     @Override
-    public void setCustomer(ICustomer<String, IOrder<String>> arg) {
+    public void setCustomer(ICustomer<String, IOrder<String,IItem<String>>> arg) {
         if (null != customer) {
             customer.friendOrders().remove(this);
         }
@@ -61,7 +61,7 @@ public class PurchaseOrder implements IOrder<String> {
     }
 
     @Override
-    public IOrder<String> nextStatus() {
+    public IOrder<String,IItem<String>> nextStatus() {
         return null;
     }
 
@@ -140,13 +140,13 @@ public class PurchaseOrder implements IOrder<String> {
     }
 
     @Override
-    public IOrder<String> addItem(IItem<String> item) {
+    public IOrder<String,IItem<String>> addItem(IItem<String> item) {
         items.add(item);
         return this;
     }
 
     @Override
-    public IOrder<String> removeItem(String key){
+    public IOrder<String,IItem<String>> removeItem(String key){
         items = items.stream().filter(
                 item->key != item.key())
                 .collect(Collectors.toList());

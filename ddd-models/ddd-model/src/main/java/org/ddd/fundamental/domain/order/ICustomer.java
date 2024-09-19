@@ -4,7 +4,7 @@ import org.ddd.fundamental.domain.IKey;
 
 import java.util.Set;
 
-public interface ICustomer<K,O extends IOrder<K>>  extends IKey<K> {
+public interface ICustomer<K,O extends IOrder<K,IItem<K>>>  extends IKey<K> {
 
     String name();
 
