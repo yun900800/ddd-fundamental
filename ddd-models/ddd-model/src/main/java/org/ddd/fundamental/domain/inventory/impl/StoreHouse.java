@@ -12,14 +12,18 @@ public class StoreHouse implements IStoreHouse<String> {
 
     private String key;
 
-    private String name;
+    private final String name;
 
-    private ItemType storeType;
+    private final ItemType storeType;
 
-    public StoreHouse(String name, ItemType storeType){
+    private StoreHouse(String name, ItemType storeType){
         this.key = UUID.randomUUID().toString();
         this.name = name;
         this.storeType = storeType;
+    }
+
+    public static StoreHouse createStoreHouse(String name, ItemType storeType){
+        return new StoreHouse(name, storeType);
     }
 
     @Override

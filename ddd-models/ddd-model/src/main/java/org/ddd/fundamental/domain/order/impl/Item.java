@@ -23,8 +23,8 @@ public abstract class Item implements IItem<String> {
         this.key = key;
     }
 
-    public static Item copy(IItem<String> item){
-        Item copyItem = new Item(item.name(),item.quantity()) {
+    public static IItem<String> copy(IItem<String> item){
+        IItem<String> copyItem = new Item(item.name(),item.quantity()) {
             @Override
             protected String typeName() {
                 return item.type().getName();

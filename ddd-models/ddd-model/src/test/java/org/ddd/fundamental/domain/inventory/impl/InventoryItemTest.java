@@ -13,7 +13,7 @@ public class InventoryItemTest {
     @Test
     public void testCreateMaterialInventoryItem() {
         String storeHouseKey = UUID.randomUUID().toString();
-        IStoreHouse<String> storeHouse = new StoreHouse("这是原材料仓库",
+        IStoreHouse<String> storeHouse = StoreHouse.createStoreHouse("这是原材料仓库",
                 ItemType.RAW_MATERIAL);
         storeHouse.setKey(storeHouseKey);
 
@@ -34,7 +34,7 @@ public class InventoryItemTest {
     @Test
     public void testCreateWorkInInventoryItem() {
         String storeHouseKey = UUID.randomUUID().toString();
-        IStoreHouse<String> storeHouse = new StoreHouse("这是半成品仓库",
+        IStoreHouse<String> storeHouse = StoreHouse.createStoreHouse("这是半成品仓库",
                 ItemType.WORK_IN_PROGRESS);
         storeHouse.setKey(storeHouseKey);
 
@@ -55,7 +55,7 @@ public class InventoryItemTest {
     @Test
     public void testCreateProductInventoryItem() {
         String storeHouseKey = UUID.randomUUID().toString();
-        IStoreHouse<String> storeHouse = new StoreHouse("这是成品仓库",
+        IStoreHouse<String> storeHouse = StoreHouse.createStoreHouse("这是成品仓库",
                 ItemType.FINISHED_PRODUCT);
         storeHouse.setKey(storeHouseKey);
 
