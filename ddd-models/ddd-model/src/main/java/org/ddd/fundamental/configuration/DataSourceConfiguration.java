@@ -3,7 +3,6 @@ package org.ddd.fundamental.configuration;
 import com.mysql.cj.jdbc.MysqlXADataSource;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.jta.atomikos.AtomikosDataSourceBean;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
@@ -21,7 +20,7 @@ import java.util.Map;
 @EnableJpaRepositories(
         entityManagerFactoryRef = "DataSourceConfiguration",
         transactionManagerRef = "transactionManager",
-        basePackages = {"org.ddd.fundamental.visa"}
+        basePackages = {"org.ddd.fundamental.visa","org.ddd.fundamental.tamagotchi.repository"}
 )
 public class DataSourceConfiguration {
 
@@ -36,7 +35,7 @@ public class DataSourceConfiguration {
 
     public Map<String, String> jpaProperties() {
         Map<String, String> jpaProperties = new HashMap<>();
-        jpaProperties.put("hibernate.hbm2ddl.auto", "none");
+        jpaProperties.put("hibernate.hbm2ddl.auto", "update");
         jpaProperties.put("hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect");
         jpaProperties.put("hibernate.show_sql", "true");
         jpaProperties.put("hibernate.temp.use_jdbc_metadata_defaults", "false");
@@ -57,9 +56,10 @@ public class DataSourceConfiguration {
             @Qualifier("entityManagerFactoryBuilder") EntityManagerFactoryBuilder entityManagerFactoryBuilder,
             @Qualifier("dataSource") DataSource postgresDataSource
     ) {
+        String[] packages = {"org.ddd.fundamental.visa","org.ddd.fundamental.tamagotchi.domain"};
         return entityManagerFactoryBuilder
                 .dataSource(postgresDataSource)
-                .packages("org.ddd.fundamental.visa")
+                .packages(packages)
                 .persistenceUnit("mysql")
                 .properties(jpaProperties())
                 .jta(true)
