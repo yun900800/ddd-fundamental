@@ -3,9 +3,12 @@ package org.ddd.fundamental.tamagotchi.domain;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.ddd.fundamental.tamagotchi.domain.converter.PhoneNumberConverter;
+import org.ddd.fundamental.tamagotchi.domain.value.PhoneNumber;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 import java.util.UUID;
 
@@ -33,12 +36,18 @@ public class DeletedTamagotchi {
     @Enumerated(STRING)
     private Status status;
 
+    @Column(name = "phone_number")
+    @Convert(converter = PhoneNumberConverter.class)
+    @NotNull
+    private PhoneNumber phoneNumber;
+
     public static DeletedTamagotchi newDeletedTamagotchi(Tamagotchi tamagotchi) {
         DeletedTamagotchi deletedTamagotchi = new DeletedTamagotchi();
         deletedTamagotchi.setId(UUID.randomUUID());
         deletedTamagotchi.setName(tamagotchi.getName());
         deletedTamagotchi.setPocket(tamagotchi.getPocket());
         deletedTamagotchi.setStatus(tamagotchi.getStatus());
+        deletedTamagotchi.setPhoneNumber(tamagotchi.getPhoneNumber());
         return deletedTamagotchi;
     }
 }

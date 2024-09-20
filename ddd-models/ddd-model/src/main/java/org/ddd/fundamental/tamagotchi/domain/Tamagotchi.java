@@ -3,12 +3,15 @@ package org.ddd.fundamental.tamagotchi.domain;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.ddd.fundamental.tamagotchi.domain.converter.PhoneNumberConverter;
 import org.ddd.fundamental.tamagotchi.domain.exception.TamagotchiNameInvalidException;
 import org.ddd.fundamental.tamagotchi.domain.exception.TamagotchiStatusException;
+import org.ddd.fundamental.tamagotchi.domain.value.PhoneNumber;
 import org.ddd.fundamental.tamagotchi.dto.TamagotchiDto;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 import java.util.UUID;
 
@@ -29,6 +32,11 @@ class Tamagotchi {
     private UUID id;
 
     private String name;
+
+    @Column(name = "phone_number")
+    @Convert(converter = PhoneNumberConverter.class)
+    @NotNull
+    private PhoneNumber phoneNumber;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "pocket_id")
@@ -52,7 +60,7 @@ class Tamagotchi {
     }
 
     public TamagotchiDto toDto() {
-        return new TamagotchiDto(id, name, status);
+        return new  TamagotchiDto(id, name, status,phoneNumber);
     }
 
     private static boolean nameIsValid(String name) {
@@ -65,6 +73,7 @@ class Tamagotchi {
         tamagotchi.setName(name);
         tamagotchi.setPocket(pocket);
         tamagotchi.setStatus(status);
+        tamagotchi.setPhoneNumber(new PhoneNumber("+8613570863933"));
         return tamagotchi;
     }
 }
