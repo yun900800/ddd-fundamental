@@ -14,6 +14,6 @@ jms:
         source2: securityCheck.response.source2
         source3: securityCheck.response.source3
 db:
-  url: jdbc:mysql://localhost:3306/visa?useSSL=false&pinGlobalTxToPhysicalConnection=true
+  url: jdbc:mysql://localhost:3306/visa?useSSL=false&pinGlobalTxToPhysicalConnection=true&allowPublicKeyRetrieval=true
   username: root
   passport: rootpassword

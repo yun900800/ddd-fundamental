@@ -17,17 +17,24 @@ import java.util.UUID;
 
 import static javax.persistence.EnumType.STRING;
 import static javax.persistence.FetchType.LAZY;
-import static lombok.AccessLevel.PRIVATE;
-import static lombok.AccessLevel.PROTECTED;
+import static lombok.AccessLevel.*;
 
+
+/**
+ * 类设计原则:
+ * 1、定义出这个类的访问范围
+ * 2、定义出属性和方法的访问范围
+ * 3、定义出类需要的API
+ * 4、将修改和查询的方法一定要分开
+ * 5、方法设计中哪些使用值？哪些使用引用
+ */
 @Entity
 @Table
 @NoArgsConstructor(access = PROTECTED)
 @Setter(PRIVATE)
-@Getter
-class Tamagotchi {
+@Getter(PROTECTED)
+public class Tamagotchi {
     @Id
-    @Getter
     @Type(type ="uuid-char")
     private UUID id;
 

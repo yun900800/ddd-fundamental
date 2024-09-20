@@ -25,7 +25,7 @@ public class PocketService {
     }
 
     @Transactional
-    public UUID createTamagotchi(UUID pocketId, TamagotchiCreateRequest request) {
+    public UUID createTamagotchi(Pocket.ID pocketId, TamagotchiCreateRequest request) {
         Pocket pocket = em.find(Pocket.class, pocketId);
         return pocket.createTamagotchi(request);
     }
@@ -37,7 +37,7 @@ public class PocketService {
                             SELECT COUNT(t) > 0 FROM Tamagotchi t
                             WHERE t.id <> :tamagotchiId AND t.name = :newName
                             """,
-                        boolean.class
+                        Boolean.class
                 ).setParameter("tamagotchiId", tamagotchiId)
                 .setParameter("newName", request.name())
                 .getSingleResult();
@@ -46,14 +46,41 @@ public class PocketService {
             throw new TamagotchiNameInvalidException("Tamagotchi name is not unique: " + request.name());
         }
 
-        UUID pocketId = em.createQuery(
+        Pocket.ID pocketId = em.createQuery(
                         "SELECT t.pocket.id AS id FROM Tamagotchi t WHERE t.id = :tamagotchiId",
-                        UUID.class
+                        Pocket.ID.class
                 )
                 .setParameter("tamagotchiId", tamagotchiId)
                 .getSingleResult();
 
         Pocket pocket = em.find(Pocket.class, pocketId);
+        pocket.updateTamagotchi(tamagotchiId, request);
+    }
+
+    @Transactional
+    public void updateTamagotchiPerformance(UUID tamagotchiId, TamagotchiUpdateRequest request) {
+        boolean nameIsNotUnique = em.createQuery(
+                        """
+                            SELECT COUNT(t) > 0 FROM Tamagotchi t
+                            WHERE t.id <> :tamagotchiId AND t.name = :newName
+                            """,
+                        Boolean.class
+                ).setParameter("tamagotchiId", tamagotchiId)
+                .setParameter("newName", request.name())
+                .getSingleResult();
+
+        if (nameIsNotUnique) {
+            throw new TamagotchiNameInvalidException("Tamagotchi name is not unique: " + request.name());
+        }
+        Pocket pocket = em.createQuery(
+                        """
+                            SELECT p FROM Pocket p
+                            LEFT JOIN FETCH p.tamagotchis t
+                            WHERE t.id = :tamagotchiId
+                            """,
+                        Pocket.class
+                ).setParameter("tamagotchiId", tamagotchiId)
+                .getSingleResult();
         pocket.updateTamagotchi(tamagotchiId, request);
     }
 }
