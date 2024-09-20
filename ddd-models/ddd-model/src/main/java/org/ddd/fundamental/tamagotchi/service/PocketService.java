@@ -18,7 +18,7 @@ public class PocketService {
     private final EntityManager em;
 
     @Transactional
-    public UUID createPocket(String name) {
+    public Pocket.ID createPocket(String name) {
         Pocket pocket = Pocket.newPocket(name);
         em.persist(pocket);
         return pocket.getId();

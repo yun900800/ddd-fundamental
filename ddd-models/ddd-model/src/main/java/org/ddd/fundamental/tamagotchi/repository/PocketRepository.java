@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface PocketRepository extends JpaRepository<Pocket, UUID> {
+public interface PocketRepository extends JpaRepository<Pocket, Pocket.ID> {
 
     @Query("SELECT p FROM Pocket p LEFT JOIN p.tamagotchis t WHERE t.id = :tamagotchiId")
     Optional<Pocket> findByTamagotchiId(UUID tamagotchiId);

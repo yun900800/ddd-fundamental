@@ -45,7 +45,7 @@ public class PocketRepositoryTest {
     public void testSavePocket() {
         Pocket pocket = Pocket.newPocket("myCat");
         pocketRepository.save(pocket);
-        UUID id = pocket.getId();
+        Pocket.ID id = pocket.getId();
         Pocket pocket1 = entityManager.find(Pocket.class,id);
         PocketDto pocketDto = pocket1.toDto();
         Assert.assertEquals(pocketDto.getName(),"myCat");

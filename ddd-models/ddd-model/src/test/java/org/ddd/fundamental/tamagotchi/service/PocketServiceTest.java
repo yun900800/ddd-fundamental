@@ -34,7 +34,7 @@ public class PocketServiceTest {
 
     @Test
     public void shouldCreateNewPocket() {
-        UUID pocketId = pocketService.createPocket("New pocket");
+        Pocket.ID pocketId = pocketService.createPocket("New pocket");
         PocketDto pocketDto = transactionTemplate.execute(
                 s -> em.find(Pocket.class, pocketId).toDto()
         );

@@ -60,7 +60,7 @@ class Tamagotchi {
     }
 
     public TamagotchiDto toDto() {
-        return new  TamagotchiDto(id, name, status,phoneNumber);
+        return new TamagotchiDto(id, name, status,phoneNumber);
     }
 
     private static boolean nameIsValid(String name) {

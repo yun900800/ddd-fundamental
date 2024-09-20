@@ -1,8 +1,6 @@
 package org.ddd.fundamental.tamagotchi.domain;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.ddd.fundamental.tamagotchi.domain.command.TamagotchiCreateRequest;
 import org.ddd.fundamental.tamagotchi.domain.command.TamagotchiUpdateRequest;
 import org.ddd.fundamental.tamagotchi.domain.exception.TamagotchiDeleteException;
@@ -11,6 +9,8 @@ import org.ddd.fundamental.tamagotchi.dto.PocketDto;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -20,16 +20,23 @@ import static lombok.AccessLevel.PROTECTED;
 import static org.ddd.fundamental.tamagotchi.domain.DeletedTamagotchi.newDeletedTamagotchi;
 import static org.ddd.fundamental.tamagotchi.domain.Status.CREATED;
 
+
+/**
+ * 注意,在这里，因为Tamagotchi的作用域是包级别的
+ * 所以这个类的ID不能定义为Tamagotchi.ID, 因为外部的service不能访问这个类,所以尽管能用类型来区别参数
+ * 但是似乎用命名更加方便;所以这里存在取舍的问题
+ * 但是聚合根是一定可以使用这个方法的; 使用主类.ID的设计的原因如下:
+ * https://dev.to/kirekov/spring-boot-power-of-value-objects-1oah
+ */
 @Entity
 @Table
 @NoArgsConstructor(access = PROTECTED)
 @Setter(PRIVATE)
 public class Pocket {
 
-    @Id
+    @EmbeddedId
     @Getter
-    @Type(type ="uuid-char")
-    private UUID id;
+    private Pocket.ID id;
 
     private String name;
 
@@ -121,9 +128,21 @@ public class Pocket {
 
     public static Pocket newPocket(String name) {
         Pocket pocket = new Pocket();
-        pocket.setId(UUID.randomUUID());
+        pocket.setId(new ID(UUID.randomUUID()));
         pocket.setName(name);
         pocket.createTamagotchi(new TamagotchiCreateRequest("Default", CREATED));
         return pocket;
+    }
+
+    @Data
+    @Setter(PRIVATE)
+    @Embeddable
+    @AllArgsConstructor
+    @NoArgsConstructor(access = PROTECTED)
+    public static class ID implements Serializable{
+        @Column(updatable = false)
+        @NotNull
+        @Type(type ="uuid-char")
+        private UUID id;
     }
 }
