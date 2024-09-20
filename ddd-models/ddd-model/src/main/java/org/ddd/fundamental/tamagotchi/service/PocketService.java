@@ -32,19 +32,7 @@ public class PocketService {
 
     @Transactional
     public void updateTamagotchi(UUID tamagotchiId, TamagotchiUpdateRequest request) {
-        boolean nameIsNotUnique = em.createQuery(
-                        """
-                            SELECT COUNT(t) > 0 FROM Tamagotchi t
-                            WHERE t.id <> :tamagotchiId AND t.name = :newName
-                            """,
-                        Boolean.class
-                ).setParameter("tamagotchiId", tamagotchiId)
-                .setParameter("newName", request.name())
-                .getSingleResult();
-
-        if (nameIsNotUnique) {
-            throw new TamagotchiNameInvalidException("Tamagotchi name is not unique: " + request.name());
-        }
+        validateNameUnique(tamagotchiId,request);
 
         Pocket.ID pocketId = em.createQuery(
                         "SELECT t.pocket.id AS id FROM Tamagotchi t WHERE t.id = :tamagotchiId",
@@ -57,8 +45,7 @@ public class PocketService {
         pocket.updateTamagotchi(tamagotchiId, request);
     }
 
-    @Transactional
-    public void updateTamagotchiPerformance(UUID tamagotchiId, TamagotchiUpdateRequest request) {
+    private void validateNameUnique(UUID tamagotchiId, TamagotchiUpdateRequest request){
         boolean nameIsNotUnique = em.createQuery(
                         """
                             SELECT COUNT(t) > 0 FROM Tamagotchi t
@@ -72,6 +59,11 @@ public class PocketService {
         if (nameIsNotUnique) {
             throw new TamagotchiNameInvalidException("Tamagotchi name is not unique: " + request.name());
         }
+    }
+
+    @Transactional
+    public void updateTamagotchiPerformance(UUID tamagotchiId, TamagotchiUpdateRequest request) {
+        validateNameUnique(tamagotchiId,request);
         Pocket pocket = em.createQuery(
                         """
                             SELECT p FROM Pocket p

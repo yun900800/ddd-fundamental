@@ -134,4 +134,29 @@ public class PocketServiceTest {
         );
     }
 
+    @Test
+    public void shouldUpdateTamagotchiPerformance() {
+        Pocket.ID pocketId = pocketService.createPocket("New pocket5");
+        UUID tamagotchiId = pocketService.createTamagotchi(
+                pocketId,
+                new TamagotchiCreateRequest("my tamagotchi1", CREATED)
+        );
+        System.out.println("SQL----");
+        pocketService.updateTamagotchiPerformance(
+                tamagotchiId,
+                new TamagotchiUpdateRequest("another tamagotchi1", PENDING)
+        );
+        System.out.println("SQL----");
+
+        PocketDto dto = transactionTemplate.execute(
+                s -> em.find(Pocket.class, pocketId).toDto()
+        );
+        assertThat(dto.getTamagotchis())
+                .anyMatch(t ->
+                        t.getName().equals("another tamagotchi1")
+                                && t.getStatus().equals(PENDING)
+                                && t.getId().equals(tamagotchiId)
+                );
+    }
+
 }
