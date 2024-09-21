@@ -34,3 +34,6 @@
    - Value object has to be immutable.
    - Value object should be comparable (i.e. implements equals/hashCode).
    - Value object guarantees that it always holds the correct value.
+5. 一个关于DDD的分享[技术会议](https://speakerdeck.com/robertbraeutigam/object-oriented-domain-driven-design?slide=40)
+   另外一篇关于DDD中Repository如何设计的文章？看[这篇文章](https://softwareengineering.stackexchange.com/questions/386901/ddd-meets-oop-how-to-implement-an-object-oriented-repository)
+   Repository相比于DAO的一个优势是查询的时候可以传递一个规约接口Specification,如果不使用这个接口就会写很多接口方法和实现。
