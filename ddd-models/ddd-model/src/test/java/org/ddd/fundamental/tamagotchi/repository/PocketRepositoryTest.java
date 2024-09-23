@@ -19,18 +19,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 
-import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.AUTO_CONFIGURED;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.NONE;
 
 
 @DataJpaTest(
         properties = {
-                "spring.datasource.url=jdbc:h2:mem:testdb",
+                "spring.datasource.url=jdbc:h2:mem:test5;MODE=Oracle;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE",
                 "spring.jpa.hibernate.ddl-auto=create-drop"
-        },
-        includeFilters = @ComponentScan.Filter(
-                type = FilterType.ASSIGNABLE_TYPE,
-                classes = PocketRepository.class)
+        }
 )
 @AutoConfigureTestDatabase(replace = NONE)
 @RunWith(SpringRunner.class)
