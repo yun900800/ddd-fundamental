@@ -6,6 +6,8 @@ import org.ddd.fundamental.tamagotchi.domain.command.TamagotchiUpdateRequest;
 import org.ddd.fundamental.tamagotchi.domain.exception.TamagotchiDeleteException;
 import org.ddd.fundamental.tamagotchi.domain.exception.TamagotchiNameInvalidException;
 import org.ddd.fundamental.tamagotchi.dto.PocketDto;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -14,6 +16,7 @@ import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.CascadeType.PERSIST;
 import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
@@ -40,10 +43,11 @@ public class Pocket {
 
     private String name;
 
-    @OneToMany(mappedBy = "pocket", cascade = PERSIST, orphanRemoval = true)
+    @OneToMany(mappedBy = "pocket", cascade = ALL, targetEntity = Tamagotchi.class, orphanRemoval = true)
+    @NotFound(action=NotFoundAction.IGNORE)
     private List<Tamagotchi> tamagotchis = new ArrayList<>();
 
-    @OneToMany(mappedBy = "pocket", cascade = PERSIST, orphanRemoval = true)
+    @OneToMany(mappedBy = "pocket", cascade = ALL, orphanRemoval = true)
     private List<DeletedTamagotchi> deletedTamagotchis = new ArrayList<>();
 
     public PocketDto toDto() {

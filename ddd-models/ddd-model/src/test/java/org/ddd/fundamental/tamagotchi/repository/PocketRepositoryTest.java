@@ -9,14 +9,18 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+
 import javax.persistence.EntityManager;
 
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.AUTO_CONFIGURED;
+import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.NONE;
 
 
 @DataJpaTest(
@@ -28,8 +32,9 @@ import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTest
                 type = FilterType.ASSIGNABLE_TYPE,
                 classes = PocketRepository.class)
 )
-@AutoConfigureTestDatabase(replace = AUTO_CONFIGURED)
+@AutoConfigureTestDatabase(replace = NONE)
 @RunWith(SpringRunner.class)
+@Transactional
 public class PocketRepositoryTest {
 
     @Autowired
@@ -39,12 +44,16 @@ public class PocketRepositoryTest {
     private EntityManager entityManager;
 
     @Test
-    @Transactional
     public void testSavePocket() {
         Pocket pocket = Pocket.newPocket("myCat");
+        System.out.println("pocket id:"+pocket.toDto().getId().getId());
+        System.out.println("Tamagotchi id:"+pocket.toDto().getTamagotchis().get(0).getId());
+        //这里因为存在外键,所以查询子表的时候会报实体不存在，因此需要在主表中增加一个忽略异常的注解
         pocketRepository.save(pocket);
+        System.out.println("save success");
         Pocket.ID id = pocket.getId();
-        Pocket pocket1 = entityManager.find(Pocket.class,id);
+        //这里查询出来的类表会有一个bag的数据是因为Pocket包的cascade = PERSIST, 修改成ALL以后就好了
+        Pocket pocket1 = pocketRepository.findById(id).get();
         PocketDto pocketDto = pocket1.toDto();
         Assert.assertEquals(pocketDto.getName(),"myCat");
     }

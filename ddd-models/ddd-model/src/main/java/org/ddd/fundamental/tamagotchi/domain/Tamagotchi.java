@@ -8,6 +8,8 @@ import org.ddd.fundamental.tamagotchi.domain.exception.TamagotchiNameInvalidExce
 import org.ddd.fundamental.tamagotchi.domain.exception.TamagotchiStatusException;
 import org.ddd.fundamental.tamagotchi.domain.value.PhoneNumber;
 import org.ddd.fundamental.tamagotchi.dto.TamagotchiDto;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -46,7 +48,8 @@ public class Tamagotchi {
     private PhoneNumber phoneNumber;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "pocket_id")
+    @JoinColumn(name = "pocket_id",foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    @NotFound(action = NotFoundAction.IGNORE)
     private Pocket pocket;
 
     @Enumerated(STRING)
