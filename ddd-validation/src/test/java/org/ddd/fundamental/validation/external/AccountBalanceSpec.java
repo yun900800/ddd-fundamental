@@ -14,7 +14,7 @@ public class AccountBalanceSpec extends ValidationSpecificationBase {
     @Override
     public void validate(ValidationContext validationContext) throws OrderValidationException {
         if (this.customer.getBalance() <= 0) {
-            throw new OrderValidationException();
+            throw new OrderValidationException("order is valid");
         }
     }
 

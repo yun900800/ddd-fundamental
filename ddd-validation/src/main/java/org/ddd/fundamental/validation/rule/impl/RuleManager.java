@@ -9,10 +9,16 @@ import org.ddd.fundamental.validation.rule.Rule;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RuleManager implements Validatable {
+/**
+ * 这个类可以认为是一个聚合
+ * 它聚合了各种验证规则和验证对象,然后在validate方法中进行验证
+ * 这里的规则其实使用了specification模式
+ * @param <T>
+ */
+public class RuleManager<T> implements Validatable {
 
     //规则拥有者
-    private DomainModel owner;
+    private DomainModel<T> owner;
 
     //规则列表
     private List<Rule> rules = new ArrayList<>();
@@ -28,7 +34,7 @@ public class RuleManager implements Validatable {
         }
     }
 
-    public RuleManager(DomainModel owner){
+    public RuleManager(DomainModel<T> owner){
         this.owner = owner;
     }
 
@@ -58,7 +64,7 @@ public class RuleManager implements Validatable {
         return result;
     }
 
-    public DomainModel getOwner() {
+    public DomainModel<T> getOwner() {
         return owner;
     }
 
