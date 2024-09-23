@@ -9,10 +9,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.FilterType;
+import org.springframework.test.annotation.Commit;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,13 +19,17 @@ import javax.persistence.EntityManager;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.NONE;
 
 
+/**
+ * 这个注解只会加载Repository和Entity注解的类
+ * 可能还会加载实体管理器和事务管理器？这个暂时不确定
+ */
 @DataJpaTest(
         properties = {
                 "spring.datasource.url=jdbc:h2:mem:test5;MODE=Oracle;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE",
                 "spring.jpa.hibernate.ddl-auto=create-drop"
         }
 )
-@AutoConfigureTestDatabase(replace = NONE)
+//@AutoConfigureTestDatabase(replace = NONE)
 @RunWith(SpringRunner.class)
 @Transactional
 public class PocketRepositoryTest {
@@ -39,6 +40,8 @@ public class PocketRepositoryTest {
     @Autowired
     private EntityManager entityManager;
 
+    //这个注解在测试环境中才会生成insert或者update语句,否则事务会回滚
+    //@Commit
     @Test
     public void testSavePocket() {
         Pocket pocket = Pocket.newPocket("myCat");
