@@ -34,6 +34,18 @@
    - Value object has to be immutable.
    - Value object should be comparable (i.e. implements equals/hashCode).
    - Value object guarantees that it always holds the correct value.
+   - 值对象的好处:1、见类型知意义;2、包含具体的领域逻辑;3、通过检查保证值的合法性
 5. 一个关于DDD的分享[技术会议](https://speakerdeck.com/robertbraeutigam/object-oriented-domain-driven-design?slide=40)
    另外一篇关于DDD中Repository如何设计的文章？看[这篇文章](https://softwareengineering.stackexchange.com/questions/386901/ddd-meets-oop-how-to-implement-an-object-oriented-repository)
    Repository相比于DAO的一个优势是查询的时候可以传递一个规约接口Specification,如果不使用这个接口就会写很多接口方法和实现。
+
+6. 这篇文章中的[newBuilder模式](https://javajazzle.wordpress.com/2011/06/13/the-new-builder-pattern/)增加了一个验证的参数,避免对对象的修改
+
+7. 怎么确定一个实体是聚合根还是本地实体？注意，并不一定在父子关系中父实体就是聚合根,子实体就是本地实体。
+   How is the entity going to be accessed in the application?
+   If the entity will be looked up by ID or through some kind of search it is probably an aggregate root.
+   Will other aggregates need to reference it?
+   If the entity will be referenced from within other aggregates it is definitely an aggregate root.
+   How is the entity going to be modified in the application?
+   If it can be modified independently it is probably an aggregate root.
+   If it cannot be modified without making changes to another entity it is probably a local entity.
