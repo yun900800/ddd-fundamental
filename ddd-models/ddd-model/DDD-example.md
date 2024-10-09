@@ -49,3 +49,5 @@
    How is the entity going to be modified in the application?
    If it can be modified independently it is probably an aggregate root.
    If it cannot be modified without making changes to another entity it is probably a local entity.
+
+8. 实体的[继承与表关系](https://medium.com/@yassir.acaf/deep-dive-in-jpa-inheritance-mapping-strategies-371de6db6c5e)的例子

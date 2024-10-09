@@ -20,7 +20,8 @@ import java.util.Map;
 @EnableJpaRepositories(
         entityManagerFactoryRef = "DataSourceConfiguration",
         transactionManagerRef = "transactionManager",
-        basePackages = {"org.ddd.fundamental.visa","org.ddd.fundamental.tamagotchi.repository"}
+        basePackages = {"org.ddd.fundamental.visa","org.ddd.fundamental.tamagotchi.repository"
+                ,"org.ddd.fundamental.invoice"}
 )
 public class DataSourceConfiguration {
 
@@ -56,7 +57,7 @@ public class DataSourceConfiguration {
             @Qualifier("entityManagerFactoryBuilder") EntityManagerFactoryBuilder entityManagerFactoryBuilder,
             @Qualifier("dataSource") DataSource postgresDataSource
     ) {
-        String[] packages = {"org.ddd.fundamental.visa","org.ddd.fundamental.tamagotchi.domain"};
+        String[] packages = {"org.ddd.fundamental.visa","org.ddd.fundamental.tamagotchi.domain","org.ddd.fundamental.invoice"};
         return entityManagerFactoryBuilder
                 .dataSource(postgresDataSource)
                 .packages(packages)
