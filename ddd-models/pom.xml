@@ -11,6 +11,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>ddd-model</module>
+        <module>ddd-shared</module>
     </modules>
     <artifactId>ddd-models</artifactId>
     <name>ddd-models</name>
