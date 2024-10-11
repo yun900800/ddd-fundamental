@@ -1,4 +1,4 @@
-package org.ddd.fundamental.generics.varargs;
+package org.ddd.fundamental.generics.methods.varargs;
 
 import java.util.ArrayList;
 import java.util.List;
