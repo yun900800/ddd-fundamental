@@ -70,7 +70,7 @@ public class Wildcards {
         unboundedArg(qualified, lng);
         unboundedArg(unbounded, lng);
         unboundedArg(bounded, lng);
-        // Object r1 = exact1(raw); // Warnings:
+        Object r1 = exact1(raw); // Warnings:
         // Unchecked conversion from Holder to Holder<T>
         // Unchecked method invocation: exact1(Holder<T>)
         // is applied to (Holder)
@@ -78,7 +78,7 @@ public class Wildcards {
         Object r3 = exact1(unbounded); // Must return Object
         Long r4 = exact1(bounded);
 
-        // Long r5 = exact2(raw, lng); // Warnings:
+        Long r5 = exact2(raw, lng); // Warnings:
         // Unchecked conversion from Holder to Holder<Long>
         // Unchecked method invocation: exact2(Holder<T>,T)
         // is applied to (Holder,Long)
@@ -90,7 +90,7 @@ public class Wildcards {
         // exact2(Holder<T>,T) cannot be applied
         // to (Holder<capture of ? extends Long>,Long)
 
-        // Long r9 = wildSubtype(raw, lng); // Warnings:
+        Long r9 = wildSubtype(raw, lng); // Warnings:
         // Unchecked conversion from Holder
         // to Holder<? extends Long>
         // Unchecked method invocation:
@@ -101,7 +101,7 @@ public class Wildcards {
         Object r11 = wildSubtype(unbounded, lng);
         Long r12 = wildSubtype(bounded, lng);
 
-        // wildSupertype(raw, lng); // Warnings:
+        wildSupertype(raw, lng); // Warnings:
         // Unchecked conversion from Holder
         // to Holder<? super Long>
         // Unchecked method invocation:

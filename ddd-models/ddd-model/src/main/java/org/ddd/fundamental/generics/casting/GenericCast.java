@@ -6,6 +6,7 @@ class FixedSizeStack<T> {
     public FixedSizeStack(int size) {
         storage = new Object[size];
     }
+    int getIndex() { return index; }
     public void push(T item) { storage[index++] = item; }
     @SuppressWarnings("unchecked")
     public T pop() { return (T)storage[--index]; }
