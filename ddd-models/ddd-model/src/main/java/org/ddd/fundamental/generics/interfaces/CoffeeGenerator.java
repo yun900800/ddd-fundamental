@@ -19,7 +19,7 @@ public class CoffeeGenerator implements Generator<Coffee>
     public Coffee next() {
         try {
             return (Coffee)
-                    types[rand.nextInt(types.length)].newInstance();
+                    types[rand.nextInt(types.length)].getConstructor().newInstance();
         // Report programmer errors at run time:
         } catch(Exception e) {
             throw new RuntimeException(e);

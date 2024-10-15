@@ -30,6 +30,8 @@ public class New {
     static void
     f(Map<Person, List<? extends Pet>> petPeople) {
         System.out.println(petPeople.getClass().getName());
+        petPeople.put(new Person(),List.of(new Pet()));
+        System.out.println(petPeople);
     }
 }
 
