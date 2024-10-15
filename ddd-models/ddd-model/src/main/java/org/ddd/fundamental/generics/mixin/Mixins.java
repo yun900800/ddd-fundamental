@@ -26,14 +26,29 @@ class BasicImp implements Basic {
     public String get() { return value; }
 }
 
+interface Color { String getColor();  }
+
+class Colored implements Color {
+    private String color = "blue";
+    public void setColor(String col) { color = col; }
+    public String getColor() { return color; }
+}
+
 class Mixin extends BasicImp
-        implements TimeStamped, SerialNumbered {
+        implements TimeStamped, SerialNumbered, Color  {
     private TimeStamped timeStamp = new TimeStampedImp();
     private SerialNumbered serialNumber =
             new SerialNumberedImp();
+
+    private Colored color = new Colored();
     public long getStamp() { return timeStamp.getStamp(); }
     public long getSerialNumber() {
         return serialNumber.getSerialNumber();
+    }
+
+    @Override
+    public String getColor() {
+        return color.getColor();
     }
 }
 public class Mixins {
@@ -42,8 +57,10 @@ public class Mixins {
         mixin1.set("test string 1");
         mixin2.set("test string 2");
         System.out.println(mixin1.get() + " " +
-                mixin1.getStamp() + " " + mixin1.getSerialNumber());
+                mixin1.getStamp() + " " + mixin1.getSerialNumber()+ " " +
+                mixin1.getColor());
         System.out.println(mixin2.get() + " " +
-                mixin2.getStamp() + " " + mixin2.getSerialNumber());
+                mixin2.getStamp() + " " + mixin2.getSerialNumber() + " " +
+                mixin2.getColor());
     }
 }
