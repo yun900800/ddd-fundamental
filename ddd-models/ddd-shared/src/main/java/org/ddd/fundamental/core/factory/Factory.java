@@ -1,4 +1,4 @@
-package org.ddd.fundamental.factory;
+package org.ddd.fundamental.core.factory;
 
 public interface Factory<T,S> {
     T create(S s);
