@@ -1,6 +1,7 @@
 package org.ddd.fundamental.generics.arrays;
 
 import java.lang.reflect.Array;
+import java.util.Arrays;
 
 public class GenericArrayWithTypeToken<T> {
     private T[] array;
@@ -20,5 +21,8 @@ public class GenericArrayWithTypeToken<T> {
                         Integer.class, 10);
         // This now works:
         Integer[] ia = gai.rep();
+        gai.put(0,5);
+        gai.put(1,6);
+        System.out.println(Arrays.toString(ia));
     }
 }
