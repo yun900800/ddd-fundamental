@@ -21,6 +21,8 @@ public class BasicGeneratorWithSourceTest {
         );
         CoffeeWithParam coffee1 = generator1.next(new Object[]{"name","blue"});
         Assert.assertEquals("CoffeeWithParam name",coffee1.toString());
+        coffee1 = generator1.next("nice","yellow");
+        Assert.assertEquals("CoffeeWithParam nice",coffee1.toString());
     }
 
     @Test
