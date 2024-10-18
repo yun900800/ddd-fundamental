@@ -46,6 +46,10 @@ public abstract class AbstractEntity<ID extends DomainObjectId> implements Ident
         return id;
     }
 
+    public void changeId(ID id){
+        this.id = id;
+    }
+
     @SuppressWarnings("EqualsWhichDoesntCheckParameterClass") // We do this with a Spring function
     @Override
     public boolean equals(Object obj) {
