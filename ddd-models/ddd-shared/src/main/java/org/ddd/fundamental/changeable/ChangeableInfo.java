@@ -2,16 +2,22 @@ package org.ddd.fundamental.changeable;
 
 import org.ddd.fundamental.core.ValueObject;
 
+import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
+@Embeddable
 public class ChangeableInfo implements ValueObject {
-    private final String name;
+    private String name;
 
-    private final String desc;
+    private String desc;
 
-    private final boolean isUse;
+    private boolean isUse;
 
+    @SuppressWarnings("unused")
+    ChangeableInfo(){
+
+    }
     public ChangeableInfo(String name,String desc,boolean isUse){
         this.name = name;
         this.desc = desc;
@@ -46,13 +52,16 @@ public class ChangeableInfo implements ValueObject {
         return new ChangeableInfo(name,desc);
     }
 
-    @Override
-    public @NotNull String toString() { // <4>
-        return "ChangeableInfo{" +
-                "name=" + name +
-                ", desc=" + desc +
-                ", isUse=" + isUse +
-                '}';
+    public String getName() {
+        return name;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public boolean isUse() {
+        return isUse;
     }
 
     @Override
@@ -68,6 +77,17 @@ public class ChangeableInfo implements ValueObject {
     @Override
     public int hashCode() { // <6>
         return Objects.hash(name,desc,isUse);
+    }
+
+    @Override
+    public @NotNull String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(name);
+        sb.append(", ");
+        sb.append(desc);
+        sb.append(", ");
+        sb.append(isUse);
+        return sb.toString();
     }
 
 }
