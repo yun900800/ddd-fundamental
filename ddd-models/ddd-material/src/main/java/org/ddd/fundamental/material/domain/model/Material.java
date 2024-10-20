@@ -4,6 +4,7 @@ import org.ddd.fundamental.changeable.ChangeableInfo;
 import org.ddd.fundamental.core.AbstractAggregateRoot;
 import org.ddd.fundamental.core.DomainObjectId;
 import org.ddd.fundamental.material.MaterialMaster;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 
@@ -19,6 +20,7 @@ public class Material extends AbstractAggregateRoot<MaterialId> {
     })
     private MaterialMaster materialMaster;
 
+
     @SuppressWarnings("unused")
     private Material(){
     }
@@ -33,6 +35,7 @@ public class Material extends AbstractAggregateRoot<MaterialId> {
         this.changeableInfo = changeableInfo.changeName(name);
         return this;
     }
+
 
     public String name(){
         return changeableInfo.getName();

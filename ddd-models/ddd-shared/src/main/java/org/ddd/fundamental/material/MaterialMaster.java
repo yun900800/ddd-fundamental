@@ -32,7 +32,7 @@ public class MaterialMaster implements ValueObject {
     private String unit;
 
     @SuppressWarnings("unused")
-    MaterialMaster() { // <3>
+    MaterialMaster() {
     }
 
     public MaterialMaster(@NotNull String code, @NotNull String name

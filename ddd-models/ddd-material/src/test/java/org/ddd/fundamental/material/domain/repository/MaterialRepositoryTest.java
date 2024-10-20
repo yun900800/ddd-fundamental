@@ -22,6 +22,7 @@ public class MaterialRepositoryTest extends MaterialTest {
         MaterialMaster materialMaster = new MaterialMaster("XG-code","锡膏",
                 "XG-spec-001","瓶");
         Material material = new Material(info,materialMaster);
+        //material.changeContent("{name:kafka}");
         materialRepository.save(material);
         MaterialId id = material.id();
         Material queryData = materialRepository.getById(id);
