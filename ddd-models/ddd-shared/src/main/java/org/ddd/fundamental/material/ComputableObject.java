@@ -12,7 +12,7 @@ import java.util.Objects;
 
 @Embeddable
 @MappedSuperclass
-public class ComputableObject<U> implements ValueObject {
+public class ComputableObject implements ValueObject {
 
     private String unit;
 
@@ -30,23 +30,37 @@ public class ComputableObject<U> implements ValueObject {
         this.qrCode = qrCode;
     }
 
-    public static <T extends ComputableObject<T>> List<T> split(T computableObject){
-        if (computableObject.getQty() == 1) {
-            throw new NotSplitException("qty is one,can't split");
-        }
-        System.out.println(computableObject.getClass().getName());
-        SplitStrategy<T> strategy = new DividedTwoStrategyByClass(computableObject.getClass());
+    public static <T extends ComputableObject> List<T> split(T computableObject){
+        notSplitCheck(computableObject);
+        SplitStrategy<T> strategy = new DividedTwoStrategyByClass(computableObject.getClass(),
+                new Class[]{computableObject.getClass()});
         return strategy.split(computableObject);
     }
 
     public static <T extends ComputableObject> List<T> split1(T computableObject){
-        if (computableObject.getQty() == 1) {
-            throw new NotSplitException("qty is one,can't split");
-        }
-        System.out.println(computableObject.getClass().getName());
+        notSplitCheck(computableObject);
         SplitStrategy<T> strategy = new DividedTwoStrategy();
         return strategy.split(computableObject);
     }
+
+    private static <T extends ComputableObject> void notSplitCheck(T computableObject){
+        if (computableObject.getQty() == 1) {
+            throw new NotSplitException("qty is one,can't split");
+        }
+    }
+
+
+    public <T extends ComputableObject> List<T> split2(T computableObject,
+                                                       SplitStrategy<T> strategy){
+        notSplitCheck(computableObject);
+        return strategy.split(computableObject);
+    }
+
+    public ComputableObject changeQty(double qty){
+        this.qty = qty;
+        return this;
+    }
+
 
 
     public @NotNull String getUnit() {

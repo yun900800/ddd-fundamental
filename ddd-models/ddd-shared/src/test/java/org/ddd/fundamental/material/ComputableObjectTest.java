@@ -36,5 +36,19 @@ public class ComputableObjectTest {
         Assert.assertFalse(splits.get(0).getQrCode().equals(splits.get(1).getQrCode()));
     }
 
+    @Test
+    public void testSplitComputableObjectByParameter(){
+        MaterialRecord materialRecord = new MaterialRecord("颗",10.0);
+        SplitStrategy<MaterialRecord> strategy = new DividedTwoStrategyByRaw();
+        List<MaterialRecord> splits = materialRecord.split2(materialRecord,strategy);
+        Assert.assertTrue(splits.size()==2);
+        Assert.assertEquals(splits.get(0).getQty(),5,0);
+        Assert.assertEquals(splits.get(0).getUnit(),"颗");
+
+        Assert.assertFalse(splits.get(0).getQrCode().equals(splits.get(1).getQrCode()));
+
+    }
+
+
 }
 
