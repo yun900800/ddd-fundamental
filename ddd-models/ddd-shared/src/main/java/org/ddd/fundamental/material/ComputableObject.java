@@ -14,11 +14,11 @@ import java.util.Objects;
 @MappedSuperclass
 public class ComputableObject implements ValueObject {
 
-    private String unit;
+    protected String unit;
 
-    private double qty;
+    protected double qty;
 
-    private String qrCode;
+    protected String qrCode;
 
     @SuppressWarnings("unused")
     ComputableObject() {
