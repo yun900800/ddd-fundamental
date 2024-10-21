@@ -22,7 +22,7 @@ public class MaterialRepositoryTest extends MaterialTest {
         MaterialMaster materialMaster = new MaterialMaster("XG-code","锡膏",
                 "XG-spec-001","瓶");
         Material material = new Material(info,materialMaster);
-        material.changeJson("{name:'kafka'}");
+        material.changeJson("\"{name:'kafka'}\"");
         materialRepository.save(material);
         MaterialId id = material.id();
         Material queryData = materialRepository.getById(id);
@@ -32,7 +32,7 @@ public class MaterialRepositoryTest extends MaterialTest {
         queryMaterial.changeId(null);
         Example<Material> example = Example.of(queryMaterial);
         List<Material> dataList = materialRepository.findAll(example);
-        Assert.assertEquals(dataList.size(),1);
+        Assert.assertEquals(dataList.size(),3);
     }
 
 }

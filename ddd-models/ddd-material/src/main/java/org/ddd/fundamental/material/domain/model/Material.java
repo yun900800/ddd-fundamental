@@ -12,16 +12,21 @@ import javax.persistence.*;
 @Table(name = "material")
 public class Material extends AbstractAggregateRoot<MaterialId> {
     @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "name", column = @Column(name = "material_name", nullable = false)),
+            @AttributeOverride(name = "desc", column = @Column(name = "material_desc", nullable = false))
+    })
     private ChangeableInfo changeableInfo;
 
     @Embedded
     @AttributeOverrides({
             @AttributeOverride(name = "name", column = @Column(name = "master_name", nullable = false)),
+            @AttributeOverride(name = "code", column = @Column(name = "master_code", nullable = false)),
     })
     private MaterialMaster materialMaster;
 
     @Type(type = "json")
-    @Column(columnDefinition = "json")
+    @Column(columnDefinition = "json", name = "material_json")
     private String json;
 
 
