@@ -20,6 +20,10 @@ public class Material extends AbstractAggregateRoot<MaterialId> {
     })
     private MaterialMaster materialMaster;
 
+    @Type(type = "json")
+    @Column(columnDefinition = "json")
+    private String json;
+
 
     @SuppressWarnings("unused")
     private Material(){
@@ -33,6 +37,11 @@ public class Material extends AbstractAggregateRoot<MaterialId> {
 
     public Material changeName(String name){
         this.changeableInfo = changeableInfo.changeName(name);
+        return this;
+    }
+
+    public Material changeJson(String json){
+        this.json = json;
         return this;
     }
 
