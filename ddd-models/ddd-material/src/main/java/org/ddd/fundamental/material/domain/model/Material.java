@@ -7,6 +7,8 @@ import org.ddd.fundamental.material.MaterialMaster;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.util.HashMap;
+import java.util.Map;
 
 @Entity
 @Table(name = "material")
@@ -29,6 +31,11 @@ public class Material extends AbstractAggregateRoot<MaterialId> {
     @Column(columnDefinition = "json", name = "material_json")
     private String json;
 
+    // MYSQL 执行json查询 SELECT * FROM material s WHERE s.material_props->'$.usage'='生产电路板' AND s.material_json->'$.name'='kafka';
+    @Type(type = "json")
+    @Column(columnDefinition = "json" , name = "material_props")
+    private Map<String, String> materialProps = new HashMap<>();
+
 
     @SuppressWarnings("unused")
     private Material(){
@@ -47,6 +54,30 @@ public class Material extends AbstractAggregateRoot<MaterialId> {
 
     public Material changeJson(String json){
         this.json = json;
+        return this;
+    }
+
+    public Material putMaterialProps(String key,String value){
+        this.materialProps.put(key,value);
+        return this;
+    }
+
+    public Map<String, String> getMaterialProps() {
+        return new HashMap<>(materialProps);
+    }
+
+    public Material removeMaterialProps(String key){
+        this.materialProps.remove(key);
+        return this;
+    }
+
+    public Material resetMaterialJson(){
+        this.json = null;
+        return this;
+    }
+
+    public Material resetMaterialProps(){
+        this.materialProps = null;
         return this;
     }
 
