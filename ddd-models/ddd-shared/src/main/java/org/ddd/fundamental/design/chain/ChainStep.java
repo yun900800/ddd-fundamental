@@ -7,5 +7,4 @@ public interface ChainStep<C>  extends ChainElement<ChainStep<C>>{
 
     <ID extends DomainObjectId> ID id();
     C handle(C context);
-
 }
