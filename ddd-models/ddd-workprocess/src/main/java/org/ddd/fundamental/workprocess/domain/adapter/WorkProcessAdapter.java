@@ -3,6 +3,7 @@ package org.ddd.fundamental.workprocess.domain.adapter;
 import org.ddd.fundamental.design.chain.AbstractChainStep;
 import org.ddd.fundamental.design.chain.ChainStep;
 import org.ddd.fundamental.workprocess.domain.model.WorkProcess;
+import org.ddd.fundamental.workprocess.domain.model.WorkProcessId;
 
 import java.util.Optional;
 
@@ -37,5 +38,10 @@ public class WorkProcessAdapter extends AbstractChainStep<Context> {
             return workProcess.acceptPre(next);
         }
         return true;
+    }
+
+    @Override
+    public WorkProcessId id() {
+        return workProcess.id();
     }
 }

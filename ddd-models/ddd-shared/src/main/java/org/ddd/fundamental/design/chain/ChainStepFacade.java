@@ -1,6 +1,7 @@
 package org.ddd.fundamental.design.chain;
 
 import lombok.extern.slf4j.Slf4j;
+import org.ddd.fundamental.core.DomainObjectId;
 
 import java.util.List;
 
@@ -13,5 +14,13 @@ public class ChainStepFacade<C> {
     }
     public C handle(C context) {
         return chainHead.handle(context);
+    }
+
+    public <ID extends DomainObjectId> ChainStep<C> findById(ID id){
+        ChainStep<C> current = chainHead;
+        while (!current.id().equals(id)){
+            current = current.getNext();
+        }
+        return current;
     }
 }

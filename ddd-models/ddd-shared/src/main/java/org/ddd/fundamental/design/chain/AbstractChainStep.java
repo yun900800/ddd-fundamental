@@ -15,6 +15,11 @@ public abstract class AbstractChainStep<C> implements ChainStep<C> {
     }
 
     @Override
+    public ChainStep<C> getNext(){
+        return this.next;
+    }
+
+    @Override
     public C handle(C context) {
         try {
             return enrichAndApplyNext(context)

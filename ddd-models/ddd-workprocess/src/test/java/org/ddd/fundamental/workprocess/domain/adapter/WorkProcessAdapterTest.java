@@ -3,6 +3,8 @@ package org.ddd.fundamental.workprocess.domain.adapter;
 import org.ddd.fundamental.design.chain.ChainStepFacade;
 import org.ddd.fundamental.design.chain.NoOpChainStep;
 import org.ddd.fundamental.workprocess.domain.model.WorkProcess;
+import org.ddd.fundamental.workprocess.domain.model.WorkProcessId;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -27,5 +29,8 @@ public class WorkProcessAdapterTest {
                 workProcessAdapter1,workProcessAdapter2,workProcessAdapter3
         ));
         chainStepFacade.handle(new Context());
+        WorkProcessId secondId = workProcessAdapter2.id();
+        WorkProcessAdapter workProcessAdapter = (WorkProcessAdapter)chainStepFacade.findById(secondId);
+        Assert.assertEquals(workProcessAdapter,workProcessAdapter2);
     }
 }

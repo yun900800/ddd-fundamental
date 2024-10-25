@@ -4,6 +4,8 @@ import java.util.List;
 
 public interface ChainElement<T>{
     void setNext(T element);
+
+    T getNext();
     boolean acceptNext(T element);
     boolean acceptPre(T element);
     static <T extends ChainElement<T>> T buildChain(List<T> elements, T lastElement) {
