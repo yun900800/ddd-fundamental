@@ -18,7 +18,12 @@ public class WorkProcessAdapter extends AbstractChainStep<Context> {
     @Override
     protected Optional<Context> enrichAndApplyNext(Context context) {
         Context.increment();
-        System.out.println("workProcessId:"+workProcess.id()+"、workProcessName "+workProcess.getProcessName()+" handle something, Context.count="+Context.count);
+        String msg = "";
+        if (context instanceof Product) {
+            msg += "产品id为"+ ((Product)context).getId() + ",名称为"+ ((Product)context).getProductName();
+        }
+        msg += "进入到了工序id：" + workProcess.id()+ "、工序名称为："+ workProcess.getProcessName()+"的工序";
+        System.out.println(msg);
         return Optional.ofNullable(context);
     }
 

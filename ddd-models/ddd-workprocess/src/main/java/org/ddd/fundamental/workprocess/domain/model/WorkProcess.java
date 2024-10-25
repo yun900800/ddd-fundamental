@@ -27,6 +27,44 @@ public class WorkProcess extends AbstractAggregateRoot<WorkProcessId> {
     @Column(columnDefinition = "json" , name = "work_process_next")
     private Set<WorkProcess> nextProcesses = new HashSet<>();
 
+    /**
+     * 工序目标数量
+     */
+    private int targetQuantity;
+
+    /**
+     * 工序不合格数量
+     */
+    private int unQualifiedQuantity;
+
+    /**
+     * 设置工序目标数量
+     * @param targetQuantity
+     * @return
+     */
+    public WorkProcess setTargetQuantity(int targetQuantity) {
+        this.targetQuantity = targetQuantity;
+        return this;
+    }
+
+    /**
+     * 设置工序不合格数量
+     * @param unQualifiedQuantity
+     * @return
+     */
+    public WorkProcess setUnQualifiedQuantity(int unQualifiedQuantity) {
+        this.unQualifiedQuantity = unQualifiedQuantity;
+        return this;
+    }
+
+    public int targetQuantity(){
+        return this.targetQuantity;
+    }
+
+    public int unQualifiedQuantity(){
+        return this.unQualifiedQuantity;
+    }
+
     @SuppressWarnings("unused")
     private WorkProcess(){
     }
