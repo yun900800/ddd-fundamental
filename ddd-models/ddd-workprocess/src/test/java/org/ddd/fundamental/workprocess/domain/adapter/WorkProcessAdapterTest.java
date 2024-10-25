@@ -7,7 +7,9 @@ import org.ddd.fundamental.workprocess.domain.model.WorkProcessId;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class WorkProcessAdapterTest {
 
@@ -24,7 +26,6 @@ public class WorkProcessAdapterTest {
         workProcess2.addNext(workProcess3);
         WorkProcessAdapter workProcessAdapter3 = new WorkProcessAdapter(workProcess3);
 
-        //NoOpChainStep<Context> opChainStep = new NoOpChainStep();
         ChainStepFacade<Context> chainStepFacade = new ChainStepFacade<>(Arrays.asList(
                 workProcessAdapter1,workProcessAdapter2,workProcessAdapter3
         ));

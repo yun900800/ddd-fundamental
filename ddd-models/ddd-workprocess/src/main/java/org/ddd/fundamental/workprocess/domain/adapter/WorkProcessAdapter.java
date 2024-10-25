@@ -18,7 +18,7 @@ public class WorkProcessAdapter extends AbstractChainStep<Context> {
     @Override
     protected Optional<Context> enrichAndApplyNext(Context context) {
         Context.increment();
-        System.out.println("workProcessId:"+workProcess.id()+" handle something, Context.count="+Context.count);
+        System.out.println("workProcessId:"+workProcess.id()+"、workProcessName "+workProcess.getProcessName()+" handle something, Context.count="+Context.count);
         return Optional.ofNullable(context);
     }
 

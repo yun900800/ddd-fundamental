@@ -1,5 +1,7 @@
 package org.ddd.fundamental.design.chain;
 
+import org.ddd.fundamental.exception.ChainException;
+
 import java.util.List;
 
 public interface ChainElement<T>{
@@ -18,7 +20,7 @@ public interface ChainElement<T>{
             if (current.acceptNext(next) && next.acceptPre(current)) {
                 current.setNext(next);
             } else {
-                throw new RuntimeException("构建责任链失败");
+                throw new ChainException("构建责任链失败");
             }
         }
         return elements.get(0);

@@ -23,11 +23,11 @@ public abstract class AbstractChainStep<C> implements ChainStep<C> {
     public C handle(C context) {
         try {
             return enrichAndApplyNext(context)
-                    .map(enrichedMessage -> next.handle(enrichedMessage))
+                    .map(ctx -> next.handle(ctx))
                     .orElseGet(() -> next.handle(context));
         }
         catch (Exception e) {
-            log.error("Unexpected error during enrichment for msg {}", context, e);
+            log.error("Unexpected error during handling for msg {}", context, e);
             return next.handle(context);
         }
     }

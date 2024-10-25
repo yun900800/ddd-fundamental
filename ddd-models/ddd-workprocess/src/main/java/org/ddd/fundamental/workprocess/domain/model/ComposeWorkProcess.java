@@ -17,7 +17,19 @@ public class ComposeWorkProcess {
 
     public ComposeWorkProcess(String processName, List<WorkProcess> processList){
         this(processName);
+        validate(processList);
         this.processList = processList;
+    }
+
+    private static void validate(List<WorkProcess> processList){
+        int size = processList.size();
+        for (int i = 1 ; i < size-1; i++) {
+            WorkProcess pre = processList.get(i-1);
+            WorkProcess cur = processList.get(i);
+            if (!pre.acceptNext(cur) || !cur.acceptPre(pre)) {
+                throw new RuntimeException("工序不正确");
+            }
+        }
     }
 
     public Set<WorkProcess> getPreProcesses() {
