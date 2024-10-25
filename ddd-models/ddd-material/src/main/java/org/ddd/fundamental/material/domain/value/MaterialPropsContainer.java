@@ -1,9 +1,6 @@
 package org.ddd.fundamental.material.domain.value;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class MaterialPropsContainer {
 
@@ -41,6 +38,27 @@ public class MaterialPropsContainer {
         return this;
     }
 
+    /**
+     * 添加一个容器到物料属性容器
+     * @param data
+     * @return
+     */
+    public MaterialPropsContainer addMap(Map<String,String> data) {
+        for (Map.Entry<String,String> entry: data.entrySet()) {
+            this.addProperty(entry.getKey(),entry.getValue());
+        }
+        validate();
+        return this;
+    }
+
+    private void validate(){
+        for (String requiredKey: requiredSet) {
+            if (!requiredMap.containsKey(requiredKey)) {
+                throw new RuntimeException("必填属性:"+requiredKey+"不存在");
+            }
+        }
+    }
+
     public Map<String, String> getRequiredMap() {
         return new HashMap<>(requiredMap);
     }
@@ -60,5 +78,18 @@ public class MaterialPropsContainer {
                 ", optionalMap=" + optionalMap +
                 ", requiredSet=" + requiredSet +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof MaterialPropsContainer)) return false;
+        MaterialPropsContainer container = (MaterialPropsContainer) o;
+        return requiredSet.equals(container.requiredSet);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(requiredSet);
     }
 }

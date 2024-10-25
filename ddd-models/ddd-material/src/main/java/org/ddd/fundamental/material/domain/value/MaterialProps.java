@@ -1,6 +1,7 @@
 package org.ddd.fundamental.material.domain.value;
 
 
+import com.alibaba.fastjson.JSON;
 import org.ddd.fundamental.core.ValueObject;
 
 import java.util.HashMap;
@@ -28,10 +29,19 @@ public class MaterialProps implements ValueObject {
     }
 
     public Map<String,String> toMap() {
-        Map<String,String> data =  new HashMap<>();
-        data.put("purpose",this.purpose);
-        data.put("storageCondition",storageCondition);
-        data.put("purchaseCycle",purchaseCycle);
-        return data;
+        String jsonString = JSON.toJSONString(this);
+        return JSON.parseObject(jsonString,Map.class);
+    }
+
+    public String getPurpose() {
+        return purpose;
+    }
+
+    public String getStorageCondition() {
+        return storageCondition;
+    }
+
+    public String getPurchaseCycle() {
+        return purchaseCycle;
     }
 }

@@ -13,6 +13,7 @@
         <module>ddd-model</module>
         <module>ddd-shared</module>
         <module>ddd-material</module>
+        <module>ddd-workprocess</module>
     </modules>
     <artifactId>ddd-models</artifactId>
     <name>ddd-models</name>
