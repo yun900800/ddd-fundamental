@@ -14,6 +14,7 @@
         <module>ddd-shared</module>
         <module>ddd-material</module>
         <module>ddd-workprocess</module>
+        <module>ddd-equipment</module>
     </modules>
     <artifactId>ddd-models</artifactId>
     <name>ddd-models</name>

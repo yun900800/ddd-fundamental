@@ -8,9 +8,9 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>ddd-workprocess</artifactId>
+    <artifactId>ddd-equipment</artifactId>
 
-    <name>ddd-workprocess</name>
+    <name>ddd-equipment</name>
     <!-- FIXME change it to the project's website -->
     <url>http://www.example.com</url>
 
