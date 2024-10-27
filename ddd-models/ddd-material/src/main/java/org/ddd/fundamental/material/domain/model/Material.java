@@ -4,6 +4,7 @@ import org.ddd.fundamental.changeable.ChangeableInfo;
 import org.ddd.fundamental.core.AbstractAggregateRoot;
 import org.ddd.fundamental.core.DomainObjectId;
 import org.ddd.fundamental.material.MaterialMaster;
+import org.ddd.fundamental.material.domain.value.MaterialPropsContainer;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -32,19 +33,58 @@ public class Material extends AbstractAggregateRoot<MaterialId> {
     private String json;
 
     // MYSQL 执行json查询 SELECT * FROM material s WHERE s.material_props->'$.usage'='生产电路板' AND s.material_json->'$.name'='kafka';
+    /**
+     * 物料必选属性
+     */
     @Type(type = "json")
-    @Column(columnDefinition = "json" , name = "material_props")
-    private Map<String, String> materialProps = new HashMap<>();
+    @Column(columnDefinition = "json" , name = "m_required_props")
+    private Map<String, String> materialRequiredProps = new HashMap<>();
+
+    /**
+     * 物料可选属性
+     */
+    @Type(type = "json")
+    @Column(columnDefinition = "json" , name = "m_optional_props")
+    private Map<String, String> materialOptionalProps = new HashMap<>();
+
+    /**
+     * 物料必选特性
+     */
+    @Type(type = "json")
+    @Column(columnDefinition = "json" , name = "m_required_characteristics")
+    private Map<String,String> materialRequiredCharacteristics = new HashMap<>();
+
+    /**
+     * 物料可选特性
+     */
+    @Type(type = "json")
+    @Column(columnDefinition = "json" , name = "m_optional_characteristics")
+    private Map<String,String> materialOptionalCharacteristics = new HashMap<>();
 
 
     @SuppressWarnings("unused")
     private Material(){
     }
 
-    public Material(ChangeableInfo changeableInfo, MaterialMaster materialMaster){
+    public Material(ChangeableInfo changeableInfo, MaterialMaster materialMaster,
+                    MaterialPropsContainer propsContainer,
+                    MaterialPropsContainer characterContainer){
         super(DomainObjectId.randomId(MaterialId.class));
         this.changeableInfo = changeableInfo;
         this.materialMaster = materialMaster;
+        if (null != propsContainer){
+            this.materialRequiredProps = propsContainer.getRequiredMap();
+            this.materialOptionalProps = propsContainer.getOptionalMap();
+        }
+        if (null != characterContainer) {
+            this.materialRequiredCharacteristics = characterContainer.getRequiredMap();
+            this.materialOptionalCharacteristics = characterContainer.getOptionalMap();
+        }
+
+    }
+
+    public Material(ChangeableInfo changeableInfo, MaterialMaster materialMaster){
+        this(changeableInfo,materialMaster, null, null);
     }
 
     public Material changeName(String name){
@@ -57,18 +97,19 @@ public class Material extends AbstractAggregateRoot<MaterialId> {
         return this;
     }
 
-    public Material putMaterialProps(String key,String value){
-        this.materialProps.put(key,value);
+
+    public Material addOptionalProps(String key, String value) {
+        this.materialOptionalProps.put(key,value);
         return this;
     }
 
-    public Map<String, String> getMaterialProps() {
-        return new HashMap<>(materialProps);
+    public Material addOptionalCharacter(String key, String value){
+        this.materialOptionalCharacteristics.put(key,value);
+        return this;
     }
 
-    public Material removeMaterialProps(String key){
-        this.materialProps.remove(key);
-        return this;
+    public Map<String, String> getMaterialRequiredProps() {
+        return new HashMap<>(materialRequiredProps);
     }
 
     public Material resetMaterialJson(){
@@ -76,15 +117,52 @@ public class Material extends AbstractAggregateRoot<MaterialId> {
         return this;
     }
 
-    public Material resetMaterialProps(){
-        this.materialProps = null;
+    public Material resetRequiredProps(){
+        this.materialRequiredProps = null;
         return this;
     }
 
+    public Material resetOptionalProps(){
+        this.materialOptionalProps = null;
+        return this;
+    }
+
+    public Material resetRequiredCharacter(){
+        this.materialRequiredCharacteristics = null;
+        return this;
+    }
+
+    public Material resetOptionalCharacter(){
+        this.materialOptionalCharacteristics = null;
+        return this;
+    }
+
+    public Map<String, String> getMaterialOptionalProps() {
+        return new HashMap<>(materialOptionalProps);
+    }
+
+    public Map<String, String> getMaterialRequiredCharacteristics() {
+        return new HashMap<>(materialRequiredCharacteristics);
+    }
+
+    public Map<String, String> getMaterialOptionalCharacteristics() {
+        return new HashMap<>(materialOptionalCharacteristics);
+    }
 
     public String name(){
         return changeableInfo.getName();
     }
 
-
+    @Override
+    public String toString() {
+        return "Material{" +
+                "changeableInfo=" + changeableInfo +
+                ", materialMaster=" + materialMaster +
+                ", json='" + json + '\'' +
+                ", materialRequiredProps=" + materialRequiredProps +
+                ", materialOptionalProps=" + materialOptionalProps +
+                ", materialRequiredCharacteristics=" + materialRequiredCharacteristics +
+                ", materialOptionalCharacteristics=" + materialOptionalCharacteristics +
+                '}';
+    }
 }

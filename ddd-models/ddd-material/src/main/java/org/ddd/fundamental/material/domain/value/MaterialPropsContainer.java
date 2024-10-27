@@ -1,7 +1,10 @@
 package org.ddd.fundamental.material.domain.value;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.*;
 
+@Slf4j
 public class MaterialPropsContainer {
 
     /**
@@ -16,17 +19,61 @@ public class MaterialPropsContainer {
 
     private final Set<String> requiredSet;
 
-    public MaterialPropsContainer(Set<String> requiredSet){
+    public MaterialPropsContainer(Set<String> requiredSet,Map<String,String> requiredMap,
+                                  Map<String,String> optionalMap){
         this.requiredSet = requiredSet;
+        this.requiredMap = requiredMap;
+        this.optionalMap = optionalMap;
     }
 
-    public MaterialPropsContainer addProperty(String key,String value){
-        if (this.requiredSet.contains(key)) {
-            this.requiredMap.put(key,value);
-        } else {
-            this.optionalMap.put(key,value);
+    public static class Builder {
+
+        private final Set<String> requiredSet;
+
+        private Map<String,String> requiredMap = new HashMap<>();
+
+        /**
+         * 可选的字段容器,只是用于显示
+         */
+        private Map<String,String> optionalMap = new HashMap<>();
+
+        public Builder(Set<String> requiredSet){
+            this.requiredSet = requiredSet;
         }
-        return this;
+
+        public Builder addProperty(String key,String value){
+            if (this.requiredSet.contains(key)) {
+                this.requiredMap.put(key,value);
+            } else {
+                this.optionalMap.put(key,value);
+            }
+            return this;
+        }
+
+        public Builder addMap(Map<String,String> data) {
+            for (Map.Entry<String,String> entry: data.entrySet()) {
+                this.addProperty(entry.getKey(),entry.getValue());
+            }
+            return this;
+        }
+
+        private boolean validateRequiredProps() {
+            for (String key: requiredSet) {
+                if (!requiredMap.containsKey(key)) {
+                    log.error("props:{}不存在",key);
+                    return false;
+                }
+            }
+            return true;
+        }
+        public MaterialPropsContainer build() {
+            if (!validateRequiredProps()){
+                throw new RuntimeException("必选的属性不存在.");
+            }
+            return new MaterialPropsContainer(
+                    requiredSet,requiredMap,
+                    optionalMap);
+        }
     }
 
     public MaterialPropsContainer removeProperty(String key){
@@ -38,26 +85,6 @@ public class MaterialPropsContainer {
         return this;
     }
 
-    /**
-     * 添加一个容器到物料属性容器
-     * @param data
-     * @return
-     */
-    public MaterialPropsContainer addMap(Map<String,String> data) {
-        for (Map.Entry<String,String> entry: data.entrySet()) {
-            this.addProperty(entry.getKey(),entry.getValue());
-        }
-        validate();
-        return this;
-    }
-
-    private void validate(){
-        for (String requiredKey: requiredSet) {
-            if (!requiredMap.containsKey(requiredKey)) {
-                throw new RuntimeException("必填属性:"+requiredKey+"不存在");
-            }
-        }
-    }
 
     public Map<String, String> getRequiredMap() {
         return new HashMap<>(requiredMap);

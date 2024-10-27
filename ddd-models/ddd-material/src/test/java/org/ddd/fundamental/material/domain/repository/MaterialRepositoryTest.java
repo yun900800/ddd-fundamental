@@ -35,7 +35,7 @@ public class MaterialRepositoryTest extends MaterialTest {
 
         Material queryMaterial = new Material(info,null);
         queryMaterial.changeId(null);
-        queryMaterial.resetMaterialProps();
+        queryMaterial.resetRequiredProps();
         queryMaterial.resetMaterialJson();
         Example<Material> example = Example.of(queryMaterial);
         List<Material> dataList = materialRepository.findAll(example);
