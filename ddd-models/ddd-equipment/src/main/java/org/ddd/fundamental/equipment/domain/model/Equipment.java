@@ -3,8 +3,7 @@ package org.ddd.fundamental.equipment.domain.model;
 import org.ddd.fundamental.changeable.ChangeableInfo;
 import org.ddd.fundamental.core.AbstractAggregateRoot;
 import org.ddd.fundamental.core.DomainObjectId;
-import org.ddd.fundamental.date.DayType;
-import org.ddd.fundamental.date.YearModel;
+import org.ddd.fundamental.day.YearModel;
 
 import javax.persistence.*;
 
