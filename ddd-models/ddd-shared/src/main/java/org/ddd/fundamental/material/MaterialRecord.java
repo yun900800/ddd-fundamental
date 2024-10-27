@@ -9,7 +9,7 @@ public class MaterialRecord extends ComputableObject {
         this.materialRecordId = MaterialRecordId.randomId(MaterialRecordId.class);
     }
 
-    public MaterialRecord(MaterialRecord record){
+    public MaterialRecord(MaterialRecord record) {
         super(record.getUnit(),record.getQty(),QRCode.randomId(QRCode.class).toUUID());
         this.materialRecordId = MaterialRecordId.randomId(MaterialRecordId.class);
     }

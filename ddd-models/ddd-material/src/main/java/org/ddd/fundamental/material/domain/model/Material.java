@@ -3,6 +3,7 @@ package org.ddd.fundamental.material.domain.model;
 import org.ddd.fundamental.changeable.ChangeableInfo;
 import org.ddd.fundamental.core.AbstractAggregateRoot;
 import org.ddd.fundamental.core.DomainObjectId;
+import org.ddd.fundamental.material.ComposeMaterialRecord1;
 import org.ddd.fundamental.material.MaterialMaster;
 import org.ddd.fundamental.material.domain.value.MaterialPropsContainer;
 import org.hibernate.annotations.Type;
@@ -53,6 +54,9 @@ public class Material extends AbstractAggregateRoot<MaterialId> {
     @Type(type = "json")
     @Column(columnDefinition = "json" , name = "m_required_characteristics")
     private Map<String,String> materialRequiredCharacteristics = new HashMap<>();
+
+//    @Embedded
+//    private ComposeMaterialRecord1 record1;
 
     /**
      * 物料可选特性
