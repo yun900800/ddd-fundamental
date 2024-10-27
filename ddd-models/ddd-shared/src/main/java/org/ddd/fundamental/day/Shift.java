@@ -1,9 +1,10 @@
-package org.ddd.fundamental.date;
+package org.ddd.fundamental.day;
 
 import org.ddd.fundamental.core.ValueObject;
 
 import javax.persistence.Embeddable;
 import javax.persistence.MappedSuperclass;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
@@ -34,8 +35,18 @@ public class Shift implements ValueObject {
         return start;
     }
 
+    public String formatStart() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
+        return simpleDateFormat.format(start);
+    }
+
     public Date getEnd() {
         return end;
+    }
+
+    public String formatEnd(){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
+        return simpleDateFormat.format(end);
     }
 
     public String getShiftName() {
@@ -47,12 +58,12 @@ public class Shift implements ValueObject {
         if (this == o) return true;
         if (!(o instanceof Shift)) return false;
         Shift shift = (Shift) o;
-        return Objects.equals(start, shift.start) && Objects.equals(end, shift.end) && Objects.equals(shiftName, shift.shiftName);
+        return Objects.equals(formatStart(), shift.formatStart()) && Objects.equals(formatEnd(), shift.formatEnd()) && Objects.equals(shiftName, shift.shiftName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(start, end, shiftName);
+        return Objects.hash(formatStart(), formatEnd(), shiftName);
     }
 
     @Override

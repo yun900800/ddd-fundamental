@@ -1,12 +1,11 @@
-package org.ddd.fundamental.date;
+package org.ddd.fundamental.day;
 
-import io.hypersistence.utils.hibernate.type.json.JsonType;
 import org.ddd.fundamental.core.ValueObject;
-import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 import javax.persistence.MappedSuperclass;
+import java.util.Objects;
 
 @MappedSuperclass
 @Embeddable
@@ -32,5 +31,18 @@ public class YearModel implements ValueObject {
 
     public DayOff getDayOff() {
         return dayOff;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof YearModel)) return false;
+        YearModel yearModel = (YearModel) o;
+        return Objects.equals(dayType, yearModel.dayType) && Objects.equals(dayOff, yearModel.dayOff);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(dayType, dayOff);
     }
 }

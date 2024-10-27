@@ -1,4 +1,4 @@
-package org.ddd.fundamental.date;
+package org.ddd.fundamental.day;
 
 
 import io.hypersistence.utils.hibernate.type.json.JsonType;
