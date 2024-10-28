@@ -3,9 +3,8 @@ package org.ddd.fundamental.material.domain.model;
 import org.ddd.fundamental.changeable.ChangeableInfo;
 import org.ddd.fundamental.core.AbstractAggregateRoot;
 import org.ddd.fundamental.core.DomainObjectId;
-import org.ddd.fundamental.material.ComposeMaterialRecord1;
 import org.ddd.fundamental.material.MaterialMaster;
-import org.ddd.fundamental.material.domain.value.MaterialPropsContainer;
+import org.ddd.fundamental.material.value.PropsContainer;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -55,8 +54,9 @@ public class Material extends AbstractAggregateRoot<MaterialId> {
     @Column(columnDefinition = "json" , name = "m_required_characteristics")
     private Map<String,String> materialRequiredCharacteristics = new HashMap<>();
 
+    //这里的容易中的json字段不支持重载,为了减少实体的负担,可以将这四个map属性放置到一个容器中
 //    @Embedded
-//    private ComposeMaterialRecord1 record1;
+//    private PropsContainer materialProps;
 
     /**
      * 物料可选特性
@@ -71,8 +71,8 @@ public class Material extends AbstractAggregateRoot<MaterialId> {
     }
 
     public Material(ChangeableInfo changeableInfo, MaterialMaster materialMaster,
-                    MaterialPropsContainer propsContainer,
-                    MaterialPropsContainer characterContainer){
+                    PropsContainer propsContainer,
+                    PropsContainer characterContainer){
         super(DomainObjectId.randomId(MaterialId.class));
         this.changeableInfo = changeableInfo;
         this.materialMaster = materialMaster;

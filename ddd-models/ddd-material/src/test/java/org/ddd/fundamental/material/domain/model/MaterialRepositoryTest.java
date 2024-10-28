@@ -3,7 +3,7 @@ package org.ddd.fundamental.material.domain.model;
 import org.ddd.fundamental.changeable.ChangeableInfo;
 import org.ddd.fundamental.material.MaterialMaster;
 import org.ddd.fundamental.material.MaterialTest;
-import org.ddd.fundamental.material.domain.value.MaterialPropsContainer;
+import org.ddd.fundamental.material.value.PropsContainer;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +42,7 @@ public class MaterialRepositoryTest extends MaterialTest {
         ChangeableInfo info = ChangeableInfo.create("螺纹钢混合1","这是一种高级的钢材1");
         MaterialMaster materialMaster = new MaterialMaster("XG-code","锡膏",
                 "XG-spec-002","瓶");
-        MaterialPropsContainer props = new MaterialPropsContainer.Builder(Set.of("usage","storageCondition","purchaseCycle"))
+        PropsContainer props = new PropsContainer.Builder(Set.of("usage","storageCondition","purchaseCycle"))
                 .addProperty("usage","生产电路板1")
                 .addProperty("storageCondition","干燥")
                 .addProperty("purchaseCycle","三个月")

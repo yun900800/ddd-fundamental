@@ -2,7 +2,7 @@ package org.ddd.fundamental.material.domain.model;
 
 import org.ddd.fundamental.changeable.ChangeableInfo;
 import org.ddd.fundamental.material.MaterialMaster;
-import org.ddd.fundamental.material.domain.value.MaterialPropsContainer;
+import org.ddd.fundamental.material.value.PropsContainer;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -11,7 +11,7 @@ import java.util.Set;
 public class MaterialTest {
     @Test
     public void testCreateMaterialWithRequiredProps(){
-        MaterialPropsContainer requiredPropsContainer = new MaterialPropsContainer.Builder(Set.of("materialType","unit"))
+        PropsContainer requiredPropsContainer = new PropsContainer.Builder(Set.of("materialType","unit"))
                 .addProperty("materialType","rawMaterial")
                 .addProperty("unit","个")
                 .addProperty("code","test")

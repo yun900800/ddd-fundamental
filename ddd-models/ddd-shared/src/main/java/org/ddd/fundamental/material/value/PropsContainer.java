@@ -1,26 +1,43 @@
-package org.ddd.fundamental.material.domain.value;
+package org.ddd.fundamental.material.value;
 
 import lombok.extern.slf4j.Slf4j;
+import org.ddd.fundamental.core.ValueObject;
+import org.hibernate.annotations.Type;
 
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 import java.util.*;
 
 @Slf4j
-public class MaterialPropsContainer {
-
+@MappedSuperclass
+@Embeddable
+public class PropsContainer implements ValueObject {
     /**
      * 必填的字段容器,并且需要查询
      */
+    @Type(type = "json")
+    @Column(columnDefinition = "json")
     private Map<String,String> requiredMap = new HashMap<>();
 
     /**
      * 可选的字段容器,只是用于显示
      */
+    @Type(type = "json")
+    @Column(columnDefinition = "json")
     private Map<String,String> optionalMap = new HashMap<>();
 
+    @Transient
     private final Set<String> requiredSet;
 
-    public MaterialPropsContainer(Set<String> requiredSet,Map<String,String> requiredMap,
-                                  Map<String,String> optionalMap){
+    @SuppressWarnings("unused")
+    PropsContainer(){
+        this.requiredSet = new HashSet<>();
+    }
+
+    private PropsContainer(Set<String> requiredSet,Map<String,String> requiredMap,
+                                   Map<String,String> optionalMap){
         this.requiredSet = requiredSet;
         this.requiredMap = requiredMap;
         this.optionalMap = optionalMap;
@@ -66,21 +83,22 @@ public class MaterialPropsContainer {
             }
             return true;
         }
-        public MaterialPropsContainer build() {
+        public PropsContainer build() {
             if (!validateRequiredProps()){
                 throw new RuntimeException("必选的属性不存在.");
             }
-            return new MaterialPropsContainer(
+            return new PropsContainer(
                     requiredSet,requiredMap,
                     optionalMap);
         }
     }
 
-    public MaterialPropsContainer removeProperty(String key){
-        if (this.requiredSet.contains(key)) {
-            throw new RuntimeException("必选属性不能移出");
-        }
-        this.requiredMap.remove(key);
+    public PropsContainer addOptionalProps(String key,String value) {
+        this.optionalMap.put(key,value);
+        return this;
+    }
+
+    public PropsContainer removeOptionalProps(String key){
         this.optionalMap.remove(key);
         return this;
     }
@@ -110,8 +128,8 @@ public class MaterialPropsContainer {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof MaterialPropsContainer)) return false;
-        MaterialPropsContainer container = (MaterialPropsContainer) o;
+        if (!(o instanceof PropsContainer)) return false;
+        PropsContainer container = (PropsContainer) o;
         return requiredSet.equals(container.requiredSet);
     }
 
