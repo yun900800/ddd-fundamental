@@ -3,6 +3,7 @@ package org.ddd.fundamental.material.domain.model;
 import org.ddd.fundamental.changeable.ChangeableInfo;
 import org.ddd.fundamental.core.AbstractAggregateRoot;
 import org.ddd.fundamental.core.DomainObjectId;
+import org.ddd.fundamental.material.value.MaterialId;
 import org.ddd.fundamental.material.MaterialMaster;
 import org.ddd.fundamental.material.value.PropsContainer;
 import org.hibernate.annotations.Type;

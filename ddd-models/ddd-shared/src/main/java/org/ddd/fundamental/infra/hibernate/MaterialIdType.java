@@ -1,8 +1,6 @@
-package org.ddd.fundamental.material.infra.hibernate;
+package org.ddd.fundamental.infra.hibernate;
 
-import org.ddd.fundamental.infra.hibernate.DomainObjectIdCustomType;
-import org.ddd.fundamental.infra.hibernate.DomainObjectIdTypeDescriptor;
-import org.ddd.fundamental.material.domain.model.MaterialId;
+import org.ddd.fundamental.material.value.MaterialId;
 
 public class MaterialIdType extends DomainObjectIdCustomType<MaterialId> {
 

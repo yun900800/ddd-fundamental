@@ -1,7 +1,7 @@
 package org.ddd.fundamental.material.domain.model;
 
 import org.ddd.fundamental.core.AbstractAggregateRoot;
-import org.ddd.fundamental.material.MaterialRecordId;
+import org.ddd.fundamental.material.value.MaterialRecordId;
 import org.ddd.fundamental.material.MaterialRecordValueObject;
 
 import javax.persistence.Embedded;

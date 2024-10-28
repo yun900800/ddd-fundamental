@@ -2,10 +2,10 @@ package org.ddd.fundamental.material.domain.repository;
 
 import com.alibaba.fastjson.JSON;
 import org.ddd.fundamental.changeable.ChangeableInfo;
+import org.ddd.fundamental.material.value.MaterialId;
 import org.ddd.fundamental.material.MaterialMaster;
 import org.ddd.fundamental.material.MaterialTest;
 import org.ddd.fundamental.material.domain.model.Material;
-import org.ddd.fundamental.material.domain.model.MaterialId;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

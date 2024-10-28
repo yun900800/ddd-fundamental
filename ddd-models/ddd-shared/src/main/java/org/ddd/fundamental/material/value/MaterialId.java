@@ -1,4 +1,4 @@
-package org.ddd.fundamental.material.domain.model;
+package org.ddd.fundamental.material.value;
 
 import org.ddd.fundamental.core.DomainObjectId;
 
