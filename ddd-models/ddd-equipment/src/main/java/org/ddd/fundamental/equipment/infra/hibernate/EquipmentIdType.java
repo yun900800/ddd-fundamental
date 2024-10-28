@@ -1,6 +1,6 @@
 package org.ddd.fundamental.equipment.infra.hibernate;
 
-import org.ddd.fundamental.equipment.domain.model.EquipmentId;
+import org.ddd.fundamental.factory.EquipmentId;
 import org.ddd.fundamental.infra.hibernate.DomainObjectIdCustomType;
 import org.ddd.fundamental.infra.hibernate.DomainObjectIdTypeDescriptor;
 

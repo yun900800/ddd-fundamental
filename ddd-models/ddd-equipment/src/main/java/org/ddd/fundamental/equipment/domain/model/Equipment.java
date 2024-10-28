@@ -4,6 +4,7 @@ import org.ddd.fundamental.changeable.ChangeableInfo;
 import org.ddd.fundamental.core.AbstractAggregateRoot;
 import org.ddd.fundamental.core.DomainObjectId;
 import org.ddd.fundamental.day.YearModel;
+import org.ddd.fundamental.factory.EquipmentId;
 
 import javax.persistence.*;
 
