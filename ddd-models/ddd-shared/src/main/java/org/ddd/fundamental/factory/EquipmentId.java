@@ -1,4 +1,4 @@
-package org.ddd.fundamental.equipment.domain.model;
+package org.ddd.fundamental.factory;
 
 import org.ddd.fundamental.core.DomainObjectId;
 
