@@ -81,7 +81,7 @@ public class EquipmentMaster implements ValueObject, ProductResources {
     interface PersonInfoStep {
         QualityInfoStep personInfo(PersonInfo info);
 
-        BuildStep noPersonInfo();
+        QualityInfoStep noPersonInfoWithQuality();
     }
 
     interface QualityInfoStep {
@@ -178,9 +178,10 @@ public class EquipmentMaster implements ValueObject, ProductResources {
         }
 
         @Override
-        public BuildStep noPersonInfo() {
+        public QualityInfoStep noPersonInfoWithQuality() {
             return this;
         }
+
 
         @Override
         public BuildStep qualityInfo(QualityInfo info) {
