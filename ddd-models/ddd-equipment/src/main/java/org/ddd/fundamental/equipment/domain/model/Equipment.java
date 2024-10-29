@@ -3,7 +3,7 @@ package org.ddd.fundamental.equipment.domain.model;
 import org.ddd.fundamental.changeable.ChangeableInfo;
 import org.ddd.fundamental.core.AbstractAggregateRoot;
 import org.ddd.fundamental.core.DomainObjectId;
-import org.ddd.fundamental.day.YearModel;
+import org.ddd.fundamental.day.YearModelValueObject;
 import org.ddd.fundamental.factory.EquipmentId;
 
 import javax.persistence.*;
@@ -22,7 +22,7 @@ public class Equipment extends AbstractAggregateRoot<EquipmentId> {
     private EquipmentType equipmentType;
 
     @Embedded
-    private YearModel model;
+    private YearModelValueObject model;
 
     /**
      * 设备需要人员数量

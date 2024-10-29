@@ -19,6 +19,15 @@ public class ShiftTest {
         return null;
     }
 
+    @Test
+    public void testShiftToString(){
+        Date start = strToDate("2024-10-27 08:00:00","yyyy-MM-dd HH:mm:ss");
+        Date end = strToDate("2024-10-27 14:00:00","yyyy-MM-dd HH:mm:ss");
+        Shift shift = new Shift(start,end,"第一班次早班");
+        Assert.assertEquals("Shift{第一班次早班 = 08:00 - 14:00}",shift.toString());
+    }
+
+
 
     @Test
     public void testCreateShift() {

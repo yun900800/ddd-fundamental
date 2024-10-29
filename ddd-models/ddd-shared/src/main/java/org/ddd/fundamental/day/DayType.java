@@ -10,6 +10,7 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.MappedSuperclass;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -25,7 +26,6 @@ public class DayType implements ValueObject {
     @Column(columnDefinition = "json" , name = "shift_list")
     private List<Shift> shiftList;
 
-    private int shiftCount;
 
     private String dayTypeName;
 
@@ -34,17 +34,30 @@ public class DayType implements ValueObject {
 
     public DayType(List<Shift> shiftList,String dayTypeName){
         this.shiftList = shiftList;
-        this.shiftCount = shiftList.size();
         this.dayTypeName = dayTypeName;
     }
+
+    public static DayType create(String dayTypeName,Shift... shifts){
+        return new DayType(Arrays.asList(shifts),dayTypeName);
+    }
+
+    public static DayType createTwoShiftDateType(String dayTypeName) {
+        return new DayType(Shift.createTwoShift(),dayTypeName);
+    }
+
+    public static DayType createThreeShiftDateType(String dayTypeName) {
+        return new DayType(Shift.createThreeShift(),dayTypeName);
+    }
+
+    public static DayType create(List<Shift> shiftList,String dayTypeName){
+        return new DayType(shiftList,dayTypeName);
+    }
+
 
     public List<Shift> getShiftList() {
         return new ArrayList<>(shiftList);
     }
 
-    public int getShiftCount() {
-        return shiftCount;
-    }
 
     public String getDayTypeName() {
         return dayTypeName;
@@ -55,11 +68,19 @@ public class DayType implements ValueObject {
         if (this == o) return true;
         if (!(o instanceof DayType)) return false;
         DayType dayType = (DayType) o;
-        return shiftCount == dayType.shiftCount && Objects.equals(shiftList, dayType.shiftList);
+        return Objects.equals(shiftList, dayType.shiftList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(shiftList, shiftCount);
+        return Objects.hash(shiftList);
+    }
+
+    @Override
+    public String toString() {
+        return "DayType{" +
+                "dayTypeName=" + dayTypeName +
+                ", shiftList=" + shiftList  +
+                "}";
     }
 }
