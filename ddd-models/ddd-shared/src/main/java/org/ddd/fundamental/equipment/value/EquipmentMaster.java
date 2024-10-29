@@ -1,14 +1,17 @@
 package org.ddd.fundamental.equipment.value;
 
+import org.ddd.fundamental.changeable.ChangeableInfo;
 import org.ddd.fundamental.core.ValueObject;
 import org.ddd.fundamental.equipment.ProductInput;
 import org.ddd.fundamental.equipment.ProductOutput;
 import org.ddd.fundamental.equipment.ProductResources;
 
-import javax.persistence.Embeddable;
-import javax.persistence.Embedded;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 
+
+/**
+ * 这个值对象可以进行重构
+ */
 @Embeddable
 @MappedSuperclass
 public class EquipmentMaster implements ValueObject, ProductResources {
@@ -19,9 +22,14 @@ public class EquipmentMaster implements ValueObject, ProductResources {
     private String assetNo;
 
     /**
-     * 设备名称
+     * 设备名称和描述
      */
-    private String equipmentName;
+    @AttributeOverrides({
+            @AttributeOverride(name  = "name", column = @Column(name = "equipment_name", nullable = false)),
+            @AttributeOverride(name  = "desc", column = @Column(name = "equipment_desc", nullable = false))
+    })
+    @Embedded
+    private ChangeableInfo info;
 
     /**
      * 尺寸
@@ -56,11 +64,11 @@ public class EquipmentMaster implements ValueObject, ProductResources {
     }
 
     interface AssetNoStep {
-        EquipmentNameStep assetNo(String assetNo);
+        EquipmentInfoStep assetNo(String assetNo);
     }
 
-    interface EquipmentNameStep{
-        SizeStep name(String equipmentName);
+    interface EquipmentInfoStep {
+        SizeStep info(ChangeableInfo info);
     }
 
     interface SizeStep{
@@ -94,7 +102,7 @@ public class EquipmentMaster implements ValueObject, ProductResources {
         EquipmentMaster build();
     }
 
-    private static class Builder implements AssetNoStep,EquipmentNameStep,
+    private static class Builder implements AssetNoStep, EquipmentInfoStep,
             SizeStep, MaintainStandardStep, PersonInfoStep,QualityInfoStep,
             BuildStep {
 
@@ -106,7 +114,12 @@ public class EquipmentMaster implements ValueObject, ProductResources {
         /**
          * 设备名称
          */
-        private String equipmentName;
+        @AttributeOverrides({
+                @AttributeOverride(name  = "name", column = @Column(name = "equipment_name", nullable = false)),
+                @AttributeOverride(name  = "desc", column = @Column(name = "equipment_desc", nullable = false))
+        })
+        @Embedded
+        private ChangeableInfo info;
 
         /**
          * 尺寸
@@ -133,14 +146,14 @@ public class EquipmentMaster implements ValueObject, ProductResources {
         private QualityInfo qualityInfo;
 
         @Override
-        public EquipmentNameStep assetNo(String assetNo) {
+        public EquipmentInfoStep assetNo(String assetNo) {
             this.assetNo = assetNo;
             return this;
         }
 
         @Override
-        public SizeStep name(String equipmentName) {
-            this.equipmentName = equipmentName;
+        public SizeStep info(ChangeableInfo info) {
+            this.info = info;
             return this;
         }
 
@@ -198,7 +211,7 @@ public class EquipmentMaster implements ValueObject, ProductResources {
         public EquipmentMaster build() {
             EquipmentMaster equipmentMaster = new EquipmentMaster();
             equipmentMaster.assetNo = assetNo;
-            equipmentMaster.equipmentName = equipmentName;
+            equipmentMaster.info = info;
             equipmentMaster.size = size;
             if (standard != null) {
                 equipmentMaster.standard = standard;
@@ -225,7 +238,7 @@ public class EquipmentMaster implements ValueObject, ProductResources {
 
     @Override
     public String resourceName() {
-        return equipmentName;
+        return info.getName();
     }
 
     public String getAssetNo() {
@@ -261,7 +274,7 @@ public class EquipmentMaster implements ValueObject, ProductResources {
     public String toString() {
         return "EquipmentMaster{" +
                 "assetNo='" + assetNo + '\'' +
-                ", equipmentName='" + equipmentName + '\'' +
+                ", info='" + info + '\'' +
                 ", size=" + size +
                 ", standard=" + standard +
                 ", personInfo=" + personInfo +

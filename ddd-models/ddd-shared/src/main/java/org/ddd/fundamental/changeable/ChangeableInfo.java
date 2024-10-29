@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 @Embeddable
-public class ChangeableInfo implements ValueObject {
+public class ChangeableInfo implements ValueObject,Cloneable {
     private String name;
 
     private String desc;
@@ -90,4 +90,14 @@ public class ChangeableInfo implements ValueObject {
         return sb.toString();
     }
 
+    @Override
+    public ChangeableInfo clone() {
+        try {
+            ChangeableInfo clone = (ChangeableInfo) super.clone();
+            // TODO: copy mutable state here, so the clone can't change the internals of the original
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
+    }
 }
