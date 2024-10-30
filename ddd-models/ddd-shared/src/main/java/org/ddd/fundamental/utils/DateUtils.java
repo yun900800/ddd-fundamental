@@ -2,6 +2,10 @@ package org.ddd.fundamental.utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.Date;
 
 public final class DateUtils {
@@ -18,6 +22,16 @@ public final class DateUtils {
     public static String dateToStr(Date date,String strFormat){
         SimpleDateFormat format = new SimpleDateFormat(strFormat);
         return format.format(date);
+    }
+
+    public static LocalDate dataToLocalDate(Date date) {
+        Instant instant = date.toInstant();
+        return instant.atZone(ZoneId.systemDefault()).toLocalDate();
+    }
+
+    public static LocalTime dataToLocalTime(Date date) {
+        Instant instant = date.toInstant();
+        return instant.atZone(ZoneId.systemDefault()).toLocalTime();
     }
 }
 
