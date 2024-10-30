@@ -26,7 +26,6 @@ public class DayType implements ValueObject {
     @Column(columnDefinition = "json" , name = "shift_list")
     private List<Shift> shiftList;
 
-
     private String dayTypeName;
 
     @SuppressWarnings("unused")

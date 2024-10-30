@@ -5,6 +5,8 @@ import org.ddd.fundamental.utils.DateUtils;
 
 import javax.persistence.Embeddable;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
@@ -18,8 +20,10 @@ import java.util.Objects;
 @MappedSuperclass
 @Embeddable
 public class Shift implements ValueObject {
+    @Temporal(TemporalType.TIMESTAMP)
     private Date start;
 
+    @Temporal(TemporalType.TIMESTAMP)
     private Date end;
 
     private String shiftName;
