@@ -8,7 +8,7 @@ import java.util.Objects;
 
 @Embeddable
 @MappedSuperclass
-public class MachineShopValueObject implements ValueObject {
+public class MachineShopValueObject implements ValueObject, Cloneable {
 
 
     @AttributeOverrides({
@@ -65,5 +65,17 @@ public class MachineShopValueObject implements ValueObject {
         return "MachineShopValueObject{" +
                 "machineShop=" + machineShop +
                 '}';
+    }
+
+
+    @Override
+    public MachineShopValueObject clone() {
+        try {
+            MachineShopValueObject clone = (MachineShopValueObject) super.clone();
+            // TODO: copy mutable state here, so the clone can't change the internals of the original
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 }
