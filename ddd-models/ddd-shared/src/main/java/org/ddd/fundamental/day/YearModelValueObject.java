@@ -9,7 +9,7 @@ import java.util.Objects;
 
 @MappedSuperclass
 @Embeddable
-public class YearModelValueObject implements ValueObject {
+public class YearModelValueObject implements ValueObject, CalculateTime {
 
     private String modelName;
 
@@ -55,6 +55,16 @@ public class YearModelValueObject implements ValueObject {
                 DayOff.createDayOff(),modelName);
     }
 
+    public static YearModelValueObject createTwoShift(String modelName, boolean hasWeekend){
+        return new YearModelValueObject(DayType.createTwoShiftDateType("两班制"),
+                DayOff.createDayOff(),modelName,hasWeekend);
+    }
+
+    public static YearModelValueObject createThreeShift(String modelName, boolean hasWeekend){
+        return new YearModelValueObject(DayType.createThreeShiftDateType("三班制"),
+                DayOff.createDayOff(),modelName,hasWeekend);
+    }
+
     public DayType getDayType() {
         return dayType;
     }
@@ -84,5 +94,16 @@ public class YearModelValueObject implements ValueObject {
                 ", dayType=" + dayType +
                 ", dayOff=" + dayOff +
                 '}';
+    }
+
+    @Override
+    public long minutes() {
+        long total = 365;
+        long vocation = dayOff.getDays();
+        long weekend = 0;
+        if (hasWeekend) {
+            weekend = 52 * 2;
+        }
+        return (total - vocation - weekend ) * dayType.minutes() ;
     }
 }

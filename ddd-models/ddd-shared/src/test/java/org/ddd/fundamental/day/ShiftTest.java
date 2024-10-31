@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalTime;
 import java.util.Date;
 
 public class ShiftTest {
@@ -21,8 +22,8 @@ public class ShiftTest {
 
     @Test
     public void testShiftToString(){
-        Date start = strToDate("2024-10-27 08:00:00","yyyy-MM-dd HH:mm:ss");
-        Date end = strToDate("2024-10-27 14:00:00","yyyy-MM-dd HH:mm:ss");
+        LocalTime start = LocalTime.parse("08:00:00");
+        LocalTime end = LocalTime.parse("14:00:00");
         Shift shift = new Shift(start,end,"第一班次早班");
         Assert.assertEquals("Shift{第一班次早班 = 08:00 - 14:00}",shift.toString());
     }
@@ -32,30 +33,38 @@ public class ShiftTest {
     @Test
     public void testCreateShift() {
 
-        Date start = strToDate("2024-10-27 08:00:00","yyyy-MM-dd HH:mm:ss");
-        Date end = strToDate("2024-10-27 14:00:00","yyyy-MM-dd HH:mm:ss");
+        LocalTime start = LocalTime.parse("08:00:00");
+        LocalTime end = LocalTime.parse("14:00:00");
         Shift shift = new Shift(start,end,"第一班次早班");
 
-        Date start1 = strToDate("2024-10-27 14:00:00","yyyy-MM-dd HH:mm:ss");
-        Date end1 = strToDate("2024-10-27 20:00:00","yyyy-MM-dd HH:mm:ss");
+        LocalTime start1 = LocalTime.parse("14:00:00");
+        LocalTime end1 = LocalTime.parse("20:00:00");
         Shift shift1 = new Shift(start1,end1,"第二班次晚班");
         Assert.assertNotEquals(shift,shift1);
     }
 
     @Test
     public void testShiftEqual(){
-        Date start = strToDate("2024-10-27 08:00:00","yyyy-MM-dd HH:mm:ss");
-        Date end = strToDate("2024-10-27 14:00:00","yyyy-MM-dd HH:mm:ss");
+        LocalTime start = LocalTime.parse("08:00:00");
+        LocalTime end = LocalTime.parse("14:00:00");
         Shift shift = new Shift(start,end,"第一班次早班");
 
-        Date start1 = strToDate("2024-10-26 08:00:00","yyyy-MM-dd HH:mm:ss");
-        Date end1 = strToDate("2024-10-26 14:00:00","yyyy-MM-dd HH:mm:ss");
+        LocalTime start1 = LocalTime.parse("08:00:00");
+        LocalTime end1 = LocalTime.parse("14:00:00");
         Shift shift1 = new Shift(start1,end1,"第一班次早班");
         Assert.assertEquals(shift,shift1);
 
-        Date start2 = strToDate("2024-10-27 08:00:00","yyyy-MM-dd HH:mm:ss");
-        Date end2 = strToDate("2024-10-27 14:00:00","yyyy-MM-dd HH:mm:ss");
+        LocalTime start2 = LocalTime.parse("08:00:00");
+        LocalTime end2 = LocalTime.parse("14:00:00");
         Shift shift2 = new Shift(start2,end2,"第一班次早班");
         Assert.assertEquals(shift,shift2);
+    }
+
+    @Test
+    public void testCalculateMinutes(){
+        LocalTime start = LocalTime.parse("08:00:00");
+        LocalTime end = LocalTime.parse("14:00:00");
+        Shift shift = new Shift(start,end,"第一班次早班");
+        Assert.assertEquals(shift.minutes(),360);
     }
 }

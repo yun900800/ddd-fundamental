@@ -8,6 +8,9 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -19,12 +22,12 @@ import java.util.Objects;
  */
 @MappedSuperclass
 @Embeddable
-public class Shift implements ValueObject {
+public class Shift implements ValueObject , CalculateTime{
     @Temporal(TemporalType.TIMESTAMP)
-    private Date start;
+    private LocalTime start;
 
     @Temporal(TemporalType.TIMESTAMP)
-    private Date end;
+    private LocalTime end;
 
     private String shiftName;
 
@@ -32,54 +35,55 @@ public class Shift implements ValueObject {
     Shift(){
     }
 
-    public Shift(Date start, Date end,String shiftName){
+    public Shift(LocalTime start, LocalTime end,String shiftName){
         this.shiftName = shiftName;
         this.start = start;
         this.end = end;
     }
 
-    public static List<Shift> createTwoShift() {
-        Date start = DateUtils.strToDate("2024-10-27 08:00:00","yyyy-MM-dd HH:mm:ss");
-        Date end = DateUtils.strToDate("2024-10-27 14:00:00","yyyy-MM-dd HH:mm:ss");
+    public static List<CalculateTime> createTwoShift() {
+        LocalTime start = LocalTime.parse("08:00:00");
+
+        LocalTime end = LocalTime.parse("14:00:00");
         Shift shift = new Shift(start,end,"第一班次早班");
 
-        Date start1 = DateUtils.strToDate("2024-10-27 14:00:00","yyyy-MM-dd HH:mm:ss");
-        Date end1 = DateUtils.strToDate("2024-10-27 20:00:00","yyyy-MM-dd HH:mm:ss");
+        LocalTime start1 = LocalTime.parse("14:00:00");
+        LocalTime end1 = LocalTime.parse("20:00:00");
         Shift shift1 = new Shift(start1,end1,"第二班次晚班");
         return Arrays.asList(shift,shift1);
     }
 
-    public static List<Shift> createThreeShift() {
-        Date start = DateUtils.strToDate("2024-10-27 06:00:00","yyyy-MM-dd HH:mm:ss");
-        Date end = DateUtils.strToDate("2024-10-27 12:00:00","yyyy-MM-dd HH:mm:ss");
+    public static List<CalculateTime> createThreeShift() {
+        LocalTime start = LocalTime.parse("06:00:00");
+        LocalTime end = LocalTime.parse("12:00:00");
         Shift shift = new Shift(start,end,"第一班次早班");
 
-        Date start1 = DateUtils.strToDate("2024-10-27 12:00:00","yyyy-MM-dd HH:mm:ss");
-        Date end1 = DateUtils.strToDate("2024-10-27 18:00:00","yyyy-MM-dd HH:mm:ss");
+        LocalTime start1 = LocalTime.parse("12:00:00");
+        LocalTime end1 = LocalTime.parse("18:00:00");
         Shift shift1 = new Shift(start1,end1,"第二班次中班");
 
-        Date start2 = DateUtils.strToDate("2024-10-27 18:00:00","yyyy-MM-dd HH:mm:ss");
-        Date end2 = DateUtils.strToDate("2024-10-27 24:00:00","yyyy-MM-dd HH:mm:ss");
+        LocalTime start2 = LocalTime.parse("18:00:00");
+        LocalTime end2 = LocalTime.parse("23:59:59");
         Shift shift2 = new Shift(start2,end2,"第三班次晚班");
         return Arrays.asList(shift,shift1,shift2);
     }
 
-    public Date getStart() {
+    public LocalTime getStart() {
         return start;
     }
 
     public String formatStart() {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
-        return simpleDateFormat.format(start);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        return start.format(formatter);
     }
 
-    public Date getEnd() {
+    public LocalTime getEnd() {
         return end;
     }
 
     public String formatEnd(){
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
-        return simpleDateFormat.format(end);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        return end.format(formatter);
     }
 
     public String getShiftName() {
@@ -106,4 +110,11 @@ public class Shift implements ValueObject {
                 " - " + formatEnd() +
                 "}";
     }
+
+    @Override
+    public long minutes() {
+        Duration duration = Duration.between(start,end);
+        return duration.toMinutes();
+    }
+
 }

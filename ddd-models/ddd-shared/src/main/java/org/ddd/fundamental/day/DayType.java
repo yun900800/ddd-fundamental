@@ -20,18 +20,18 @@ import java.util.Objects;
         name = "json",
         typeClass = JsonType.class
 )
-public class DayType implements ValueObject {
+public class DayType implements ValueObject, CalculateTime {
 
     @Type(type = "json")
     @Column(columnDefinition = "json" , name = "shift_list")
-    private List<Shift> shiftList;
+    private List<CalculateTime> shiftList;
 
     private String dayTypeName;
 
     @SuppressWarnings("unused")
     DayType(){}
 
-    public DayType(List<Shift> shiftList,String dayTypeName){
+    public DayType(List<CalculateTime> shiftList,String dayTypeName){
         this.shiftList = shiftList;
         this.dayTypeName = dayTypeName;
     }
@@ -48,12 +48,12 @@ public class DayType implements ValueObject {
         return new DayType(Shift.createThreeShift(),dayTypeName);
     }
 
-    public static DayType create(List<Shift> shiftList,String dayTypeName){
+    public static DayType create(List<CalculateTime> shiftList,String dayTypeName){
         return new DayType(shiftList,dayTypeName);
     }
 
 
-    public List<Shift> getShiftList() {
+    public List<CalculateTime> getShiftList() {
         return new ArrayList<>(shiftList);
     }
 
@@ -81,5 +81,17 @@ public class DayType implements ValueObject {
                 "dayTypeName=" + dayTypeName +
                 ", shiftList=" + shiftList  +
                 "}";
+    }
+
+    @Override
+    public long minutes() {
+        if (shiftList == null || shiftList.size() ==0){
+            return 0;
+        }
+        long sum = 0 ;
+        for (CalculateTime time: shiftList) {
+            sum+= time.minutes();
+        }
+        return sum;
     }
 }
