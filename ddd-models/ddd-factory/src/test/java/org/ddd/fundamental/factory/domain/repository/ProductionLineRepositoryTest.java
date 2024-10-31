@@ -1,6 +1,7 @@
 package org.ddd.fundamental.factory.domain.repository;
 
 import org.ddd.fundamental.changeable.ChangeableInfo;
+import org.ddd.fundamental.factory.EquipmentId;
 import org.ddd.fundamental.factory.FactoryAppTest;
 import org.ddd.fundamental.factory.ProductionLineId;
 import org.ddd.fundamental.factory.domain.model.ProductionLine;
@@ -198,6 +199,14 @@ public class ProductionLineRepositoryTest extends FactoryAppTest {
         Assert.assertEquals(line.getLine().desc(),"这是一个生产电路板的产线");
 
         Assert.assertEquals(line.getWorkStations().size(),4);
+    }
 
+    @Test
+    public void testAddEquipmentIds(){
+        ProductionLineId id = new ProductionLineId("2e82f7bd-8fbf-481b-ab1f-7318ffd9e4ba");
+        ProductionLine line = repository.findById(id).get();
+        line.addEquipment(EquipmentId.randomId(EquipmentId.class));
+        line.addEquipment(EquipmentId.randomId(EquipmentId.class));
+        repository.save(line);
     }
 }
