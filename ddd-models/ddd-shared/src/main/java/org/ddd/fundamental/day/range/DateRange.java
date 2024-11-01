@@ -25,11 +25,13 @@ import java.util.Objects;
 @Slf4j
 public class DateRange implements ValueObject, Cloneable, CalculateTime {
 
-    @Column(name = "description")
+    @Column(name = "description" , nullable = false)
     private String desc;
 
+    @Column(nullable = false)
     private Date start;
 
+    @Column(nullable = false)
     private Date end;
 
     @Transient

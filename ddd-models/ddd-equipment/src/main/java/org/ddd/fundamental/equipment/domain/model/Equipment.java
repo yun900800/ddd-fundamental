@@ -1,5 +1,6 @@
 package org.ddd.fundamental.equipment.domain.model;
 
+import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.core.AbstractAggregateRoot;
 import org.ddd.fundamental.core.DomainObjectId;
 import org.ddd.fundamental.day.YearModelValueObject;
@@ -16,6 +17,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "equipment")
+@Slf4j
 public class Equipment extends AbstractAggregateRoot<EquipmentId> {
 
     private EquipmentType equipmentType;
@@ -32,6 +34,24 @@ public class Equipment extends AbstractAggregateRoot<EquipmentId> {
             name="equipment_dates",
             joinColumns=@JoinColumn(name="equipment_id")
     )
+    //@OrderColumn(name = "index_id")
+    // 注意这里的集合如果使用ArrayList
+//    create table equipment_dates (
+//            equipment_id varchar(255) not null,
+//    description varchar(255) not null,
+//    end datetime not null,
+//    start datetime not null
+//            )
+    //如果修改成HashSet
+//    create table equipment_dates (
+//            equipment_id varchar(255) not null,
+//    description varchar(255) not null,
+//    end datetime not null,
+//    start datetime not null,
+//    primary key (equipment_id, description, end, start)
+//    )
+    //如果是用List需要配合@OrderColumn(name = "index_id")注解 https://vladmihalcea.com/how-to-optimize-unidirectional-collections-with-jpa-and-hibernate/
+    //否则使用HashSet
     private Set<DateRange> dateRanges = new HashSet<>();
 
     @SuppressWarnings("unused")
@@ -49,6 +69,7 @@ public class Equipment extends AbstractAggregateRoot<EquipmentId> {
 
     private void defaultDateRanges(){
         if (null == this.dateRanges){
+            log.info("重构集合对象");
             this.dateRanges = new HashSet<>();
         }
     }
