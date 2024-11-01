@@ -14,7 +14,7 @@ import javax.persistence.*;
  */
 @Embeddable
 @MappedSuperclass
-public class EquipmentMaster implements ValueObject, ProductResources {
+public class EquipmentMaster implements ValueObject, ProductResources, Cloneable {
 
     /**
      * 资产编号
@@ -63,20 +63,31 @@ public class EquipmentMaster implements ValueObject, ProductResources {
         return new Builder();
     }
 
-    interface AssetNoStep {
+    @Override
+    public EquipmentMaster clone() {
+        try {
+            EquipmentMaster clone = (EquipmentMaster) super.clone();
+            // TODO: copy mutable state here, so the clone can't change the internals of the original
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
+    }
+
+    public interface AssetNoStep {
         EquipmentInfoStep assetNo(String assetNo);
     }
 
-    interface EquipmentInfoStep {
+    public interface EquipmentInfoStep {
         SizeStep info(ChangeableInfo info);
     }
 
-    interface SizeStep{
+    public interface SizeStep{
         MaintainStandardStep size(EquipmentSize size);
 
     }
 
-    interface MaintainStandardStep {
+    public interface MaintainStandardStep {
         PersonInfoStep standard(MaintainStandard standard);
 
         BuildStep noStandard();
@@ -86,19 +97,19 @@ public class EquipmentMaster implements ValueObject, ProductResources {
         QualityInfoStep noStandardWithQuality();
     }
 
-    interface PersonInfoStep {
+    public interface PersonInfoStep {
         QualityInfoStep personInfo(PersonInfo info);
 
         QualityInfoStep noPersonInfoWithQuality();
     }
 
-    interface QualityInfoStep {
+    public interface QualityInfoStep {
         BuildStep qualityInfo(QualityInfo info);
 
         BuildStep noQualityInfo();
     }
 
-    interface BuildStep {
+    public interface BuildStep {
         EquipmentMaster build();
     }
 
@@ -281,4 +292,6 @@ public class EquipmentMaster implements ValueObject, ProductResources {
                 ", qualityInfo=" + qualityInfo +
                 '}';
     }
+
+
 }

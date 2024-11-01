@@ -41,7 +41,7 @@ public class Shift implements ValueObject , CalculateTime{
         this.end = end;
     }
 
-    public static List<CalculateTime> createTwoShift() {
+    public static List<Shift> createTwoShift() {
         LocalTime start = LocalTime.parse("08:00:00");
 
         LocalTime end = LocalTime.parse("14:00:00");
@@ -53,7 +53,7 @@ public class Shift implements ValueObject , CalculateTime{
         return Arrays.asList(shift,shift1);
     }
 
-    public static List<CalculateTime> createThreeShift() {
+    public static List<Shift> createThreeShift() {
         LocalTime start = LocalTime.parse("06:00:00");
         LocalTime end = LocalTime.parse("12:00:00");
         Shift shift = new Shift(start,end,"第一班次早班");

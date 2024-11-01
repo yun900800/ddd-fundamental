@@ -9,7 +9,7 @@ import java.util.Objects;
 
 @MappedSuperclass
 @Embeddable
-public class YearModelValueObject implements ValueObject, CalculateTime {
+public class YearModelValueObject implements ValueObject, CalculateTime,Cloneable {
 
     private String modelName;
 
@@ -105,5 +105,17 @@ public class YearModelValueObject implements ValueObject, CalculateTime {
             weekend = 52 * 2;
         }
         return (total - vocation - weekend ) * dayType.minutes() ;
+    }
+
+
+    @Override
+    public YearModelValueObject clone() {
+        try {
+            YearModelValueObject clone = (YearModelValueObject) super.clone();
+            // TODO: copy mutable state here, so the clone can't change the internals of the original
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 }

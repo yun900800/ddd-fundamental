@@ -1,5 +1,7 @@
 package org.ddd.fundamental.day.range;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.ddd.fundamental.tuple.TwoTuple;
 import org.ddd.fundamental.utils.DateUtils;
 import org.junit.Assert;
@@ -16,13 +18,27 @@ public class DateRangeTest {
         Assert.assertEquals(result.first,0,0);
         Assert.assertEquals(result.second,230,0);
 
+        Assert.assertEquals(range.minutes(),230);
+
         DateRange range1 = new DateRange(
                 DateUtils.strToDate("2024-09-29 12:58:12","yyyy-MM-dd HH:mm:ss"),
                 DateUtils.strToDate("2024-10-01 11:48:12","yyyy-MM-dd HH:mm:ss"),"工单排班不合理");
         TwoTuple<Integer,Long> result1 = range1.range();
         Assert.assertEquals(result1.first,2,0);
         Assert.assertEquals(result1.second,-70,0);
-        TwoTuple<Integer,Long> result2 = range1.range();
+        range1.range();
+        Assert.assertEquals(range1.minutes(),2810);
     }
+
+    @Test
+    public void testDateRangeJson() throws JsonProcessingException {
+        DateRange range = new DateRange(
+                DateUtils.strToDate("2024-10-01 12:58:12","yyyy-MM-dd HH:mm:ss"),
+                DateUtils.strToDate("2024-10-01 16:48:12","yyyy-MM-dd HH:mm:ss"),"机器维修");
+        ObjectMapper mapper = new ObjectMapper();
+        String result = mapper.writeValueAsString(range);
+        System.out.println(result);
+    }
+
 
 }

@@ -12,7 +12,7 @@ import static org.ddd.fundamental.day.ShiftTest.strToDate;
 
 public class DayTypeTest {
 
-    private static List<CalculateTime> createShiftList() {
+    private static List<Shift> createShiftList() {
         LocalTime start = LocalTime.parse("08:00:00");
         LocalTime end = LocalTime.parse("14:00:00");
         Shift shift = new Shift(start,end,"第一班次早班");
@@ -23,7 +23,7 @@ public class DayTypeTest {
         return Arrays.asList(shift,shift1);
     }
 
-    private static List<CalculateTime> createShiftList1() {
+    private static List<Shift> createShiftList1() {
         LocalTime start = LocalTime.parse("08:00:00");
         LocalTime end = LocalTime.parse("14:00:00");
         Shift shift = new Shift(start,end,"第一班次早班");

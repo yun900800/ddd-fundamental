@@ -24,14 +24,14 @@ public class DayType implements ValueObject, CalculateTime {
 
     @Type(type = "json")
     @Column(columnDefinition = "json" , name = "shift_list")
-    private List<CalculateTime> shiftList;
+    private List<Shift> shiftList;
 
     private String dayTypeName;
 
     @SuppressWarnings("unused")
     DayType(){}
 
-    public DayType(List<CalculateTime> shiftList,String dayTypeName){
+    public DayType(List<Shift> shiftList,String dayTypeName){
         this.shiftList = shiftList;
         this.dayTypeName = dayTypeName;
     }
@@ -48,7 +48,7 @@ public class DayType implements ValueObject, CalculateTime {
         return new DayType(Shift.createThreeShift(),dayTypeName);
     }
 
-    public static DayType create(List<CalculateTime> shiftList,String dayTypeName){
+    public static DayType create(List<Shift> shiftList,String dayTypeName){
         return new DayType(shiftList,dayTypeName);
     }
 
