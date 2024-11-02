@@ -1,0 +1,25 @@
+package org.ddd.fundamental.equipment.domain.value;
+
+public enum EquipmentStatusEvent {
+
+    ENABLED_TO_LOCKED_EVENT,
+
+    LOCKED_TO_ENABLED_EVENT,
+
+    ENABLED_TO_USED_EVENT,
+
+    USED_TO_ENABLED_EVENT,
+
+    LOCKED_TO_MAINTAINED_EVENT,
+
+    USED_TO_MAINTAINED_EVENT,
+
+    MAINTAINED_TO_USED_EVENT,
+
+    USED_TO_FAULT_EVENT,
+
+    FAULT_TO_REPAIR_EVENT,
+
+    REPAIR_TO_USED_EVENT
+
+}

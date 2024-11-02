@@ -25,4 +25,9 @@ public class MaterialRecord extends AbstractAggregateRoot<MaterialRecordId> {
     public MaterialRecordValueObject getRecord() {
         return record;
     }
+
+    @Override
+    public long created() {
+        return 0;
+    }
 }

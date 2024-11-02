@@ -7,7 +7,9 @@ import org.ddd.fundamental.day.YearModelValueObject;
 import org.ddd.fundamental.day.range.DateRange;
 import org.ddd.fundamental.equipment.value.EquipmentMaster;
 import org.ddd.fundamental.factory.EquipmentId;
+import org.ddd.fundamental.factory.ToolingEquipmentId;
 import org.ddd.fundamental.tuple.TwoTuple;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -25,9 +27,12 @@ public class Equipment extends AbstractAggregateRoot<EquipmentId> {
     @Embedded
     private YearModelValueObject model;
 
-
     @Embedded
     private EquipmentMaster master;
+
+    @Type(type = "json")
+    @Column(columnDefinition = "json", name = "tooling_equipment_ids")
+    private Set<ToolingEquipmentId> toolingEquipmentIds = new HashSet<>();
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(
@@ -92,6 +97,30 @@ public class Equipment extends AbstractAggregateRoot<EquipmentId> {
         return this;
     }
 
+    private void defaultToolingIds(){
+        if (null == this.toolingEquipmentIds){
+            this.toolingEquipmentIds = new HashSet<>();
+        }
+    }
+
+    public Equipment addToolingId(ToolingEquipmentId id){
+        defaultToolingIds();
+        this.toolingEquipmentIds.add(id);
+        return this;
+    }
+
+    public Equipment removeToolingId(ToolingEquipmentId id){
+        defaultToolingIds();
+        this.toolingEquipmentIds.remove(id);
+        return this;
+    }
+
+    public Equipment clearToolingIds(){
+        defaultToolingIds();
+        this.toolingEquipmentIds.clear();
+        return this;
+    }
+
     /**
      * 班次之间的时间计算
      * @return
@@ -149,5 +178,10 @@ public class Equipment extends AbstractAggregateRoot<EquipmentId> {
                 ", master=" + master +
                 ", dateRanges=" + dateRanges +
                 '}';
+    }
+
+    @Override
+    public long created() {
+        return 0;
     }
 }

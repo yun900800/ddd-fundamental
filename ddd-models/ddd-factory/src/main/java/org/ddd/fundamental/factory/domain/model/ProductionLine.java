@@ -120,4 +120,9 @@ public class ProductionLine extends AbstractAggregateRoot<ProductionLineId> {
                 ", workStations=" + workStations +
                 '}';
     }
+
+    @Override
+    public long created() {
+        return 0;
+    }
 }

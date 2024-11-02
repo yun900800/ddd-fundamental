@@ -6,19 +6,25 @@ import org.ddd.fundamental.day.range.DateRange;
 import org.ddd.fundamental.equipment.EquipmentAppTest;
 import org.ddd.fundamental.equipment.domain.model.Equipment;
 import org.ddd.fundamental.equipment.domain.model.EquipmentType;
+import org.ddd.fundamental.equipment.domain.model.ToolingEquipment;
 import org.ddd.fundamental.equipment.value.*;
 import org.ddd.fundamental.factory.EquipmentId;
+import org.ddd.fundamental.utils.CollectionUtils;
 import org.ddd.fundamental.utils.DateUtils;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 
 public class EquipmentRepositoryTest extends EquipmentAppTest {
 
     @Autowired
     private EquipmentRepository equipmentRepository;
+
+    @Autowired
+    private ToolingEquipmentRepository toolingRepository;
 
     @Test
     public void testCreateEquipment(){
@@ -38,7 +44,9 @@ public class EquipmentRepositoryTest extends EquipmentAppTest {
     @Test
     //@Transactional// 避免延迟加载出错
     public void testAddDateRange() {
-        EquipmentId id = new EquipmentId("664304ca-0aa5-4d2c-af4a-b12f1c4da02f");
+        List<Equipment> equipmentList = equipmentRepository.findAll();
+        Equipment randomEquipment = CollectionUtils.random(equipmentList);
+        EquipmentId id = randomEquipment.id();
         Equipment equipment = equipmentRepository.findById(id).get();
         DateRange range = new DateRange(
                 DateUtils.strToDate("2024-10-01 12:58:12","yyyy-MM-dd HH:mm:ss"),
@@ -61,13 +69,32 @@ public class EquipmentRepositoryTest extends EquipmentAppTest {
 
     @Test
     public void testRemoveDateRange(){
-        EquipmentId id = new EquipmentId("664304ca-0aa5-4d2c-af4a-b12f1c4da02f");
+        List<Equipment> equipmentList = equipmentRepository.findAll();
+        Equipment randomEquipment = CollectionUtils.random(equipmentList);
+        EquipmentId id = randomEquipment.id();
         Equipment equipment = equipmentRepository.findById(id).get();
         DateRange range = new DateRange(
                 DateUtils.strToDate("2024-10-01 12:58:12","yyyy-MM-dd HH:mm:ss"),
                 DateUtils.strToDate("2024-10-01 16:48:12","yyyy-MM-dd HH:mm:ss"),"机器维修");
         equipment.removeDateRange(range);
         equipmentRepository.save(equipment);
+    }
+
+    @Test
+    public void testAddToolingToEquipment(){
+        List<ToolingEquipment> toolingEquipments = toolingRepository.findAll();
+        List<Equipment> equipments = equipmentRepository.findAll();
+        Equipment randomEquipment = CollectionUtils.random(equipments);
+
+        ToolingEquipment tooling1 = CollectionUtils.random(toolingEquipments);
+        ToolingEquipment tooling2 = CollectionUtils.random(toolingEquipments);
+        randomEquipment.addToolingId(tooling1.id()).addToolingId(tooling2.id());
+        equipmentRepository.save(randomEquipment);
+        tooling1.enableUse();
+        toolingRepository.save(tooling1);
+        tooling2.enableUse();
+        toolingRepository.save(tooling2);
+
     }
 
 }

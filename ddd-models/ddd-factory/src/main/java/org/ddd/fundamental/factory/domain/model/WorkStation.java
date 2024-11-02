@@ -50,4 +50,9 @@ public class WorkStation extends AbstractEntity<WorkStationId> {
                 "workStation=" + workStation +
                 '}';
     }
+
+    @Override
+    public long created() {
+        return 0;
+    }
 }

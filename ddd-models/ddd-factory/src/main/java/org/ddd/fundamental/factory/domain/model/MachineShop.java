@@ -59,4 +59,8 @@ public class MachineShop extends AbstractAggregateRoot<MachineShopId> {
         return this;
     }
 
+    @Override
+    public long created() {
+        return 0;
+    }
 }

@@ -1,5 +1,4 @@
 @TypeDefs({
-        @TypeDef(defaultForType = EquipmentId.class, typeClass = EquipmentIdType.class),
         @TypeDef(
                 name = "json",
                 typeClass = JsonType.class

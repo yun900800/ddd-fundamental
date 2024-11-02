@@ -25,6 +25,11 @@ class RawMaterial extends AbstractEntity<RawMaterialId>{
     public String getName() {
         return name;
     }
+
+    @Override
+    public long created() {
+        return 0;
+    }
 }
 class RawMaterialId extends DomainObjectId{
 

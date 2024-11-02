@@ -31,4 +31,9 @@ public class YearModel extends AbstractAggregateRoot<YearModelId> {
                 "yearModel=" + yearModel +
                 '}';
     }
+
+    @Override
+    public long created() {
+        return 0;
+    }
 }

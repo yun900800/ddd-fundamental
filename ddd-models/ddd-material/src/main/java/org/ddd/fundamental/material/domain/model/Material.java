@@ -170,4 +170,9 @@ public class Material extends AbstractAggregateRoot<MaterialId> {
                 ", materialOptionalCharacteristics=" + materialOptionalCharacteristics +
                 '}';
     }
+
+    @Override
+    public long created() {
+        return 0;
+    }
 }

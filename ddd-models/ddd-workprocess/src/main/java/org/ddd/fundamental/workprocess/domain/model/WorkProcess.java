@@ -172,4 +172,9 @@ public class WorkProcess extends AbstractAggregateRoot<WorkProcessId> {
                 ", id = " + id() +
                 '}';
     }
+
+    @Override
+    public long created() {
+        return 0;
+    }
 }
