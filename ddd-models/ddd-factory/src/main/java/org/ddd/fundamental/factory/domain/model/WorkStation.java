@@ -1,7 +1,6 @@
 package org.ddd.fundamental.factory.domain.model;
 
 import org.ddd.fundamental.core.AbstractEntity;
-import org.ddd.fundamental.factory.ProductionLineId;
 import org.ddd.fundamental.factory.WorkStationId;
 import org.ddd.fundamental.factory.value.WorkStationValueObject;
 

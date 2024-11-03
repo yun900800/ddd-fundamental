@@ -6,7 +6,7 @@ import org.ddd.fundamental.factory.FactoryAppTest;
 import org.ddd.fundamental.factory.ProductionLineId;
 import org.ddd.fundamental.factory.domain.model.ProductionLine;
 import org.ddd.fundamental.factory.domain.model.WorkStation;
-import org.ddd.fundamental.factory.value.ProductionLineValueObject;
+import org.ddd.fundamental.factory.value.ProductionLineValue;
 import org.ddd.fundamental.factory.value.WorkStationValueObject;
 import org.junit.Assert;
 import org.junit.Test;
@@ -143,7 +143,7 @@ public class ProductionLineRepositoryTest extends FactoryAppTest {
     // 这里提出一个例子, 使用批量数据来测试一下高效与低效之间的差别
     @Test
     public void createProductLine(){
-        ProductionLine productionLine = new ProductionLine(new ProductionLineValueObject(
+        ProductionLine productionLine = new ProductionLine(new ProductionLineValue(
                 ChangeableInfo.create("电路板产线1", "这是一个生产电路板的产线")
         ));
 

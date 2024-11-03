@@ -8,7 +8,7 @@ import java.util.Objects;
 
 @Embeddable
 @MappedSuperclass
-public class ProductionLineValueObject implements ValueObject,Cloneable {
+public class ProductionLineValue implements ValueObject,Cloneable {
 
     @AttributeOverrides({
             @AttributeOverride(name = "name" , column =@Column( name = "product_line_name", nullable = false)),
@@ -17,18 +17,18 @@ public class ProductionLineValueObject implements ValueObject,Cloneable {
     })
     private ChangeableInfo productLine;
     @SuppressWarnings("unused")
-    private ProductionLineValueObject(){}
+    private ProductionLineValue(){}
 
-    public ProductionLineValueObject(ChangeableInfo info){
+    public ProductionLineValue(ChangeableInfo info){
         this.productLine = info;
     }
 
-    public ProductionLineValueObject changeName(String name) {
+    public ProductionLineValue changeName(String name) {
         this.productLine = this.productLine.changeName(name);
         return this;
     }
 
-    public ProductionLineValueObject changeDesc(String desc) {
+    public ProductionLineValue changeDesc(String desc) {
         this.productLine = this.productLine.changeDesc(desc);
         return this;
     }
@@ -48,8 +48,8 @@ public class ProductionLineValueObject implements ValueObject,Cloneable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof ProductionLineValueObject)) return false;
-        ProductionLineValueObject that = (ProductionLineValueObject) o;
+        if (!(o instanceof ProductionLineValue)) return false;
+        ProductionLineValue that = (ProductionLineValue) o;
         return Objects.equals(productLine, that.productLine);
     }
 
@@ -66,9 +66,9 @@ public class ProductionLineValueObject implements ValueObject,Cloneable {
     }
 
     @Override
-    public ProductionLineValueObject clone() {
+    public ProductionLineValue clone() {
         try {
-            ProductionLineValueObject clone = (ProductionLineValueObject) super.clone();
+            ProductionLineValue clone = (ProductionLineValue) super.clone();
             // TODO: copy mutable state here, so the clone can't change the internals of the original
             return clone;
         } catch (CloneNotSupportedException e) {

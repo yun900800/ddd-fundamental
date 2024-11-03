@@ -3,7 +3,7 @@ package org.ddd.fundamental.factory.domain.model;
 import org.ddd.fundamental.core.AbstractAggregateRoot;
 import org.ddd.fundamental.factory.EquipmentId;
 import org.ddd.fundamental.factory.ProductionLineId;
-import org.ddd.fundamental.factory.value.ProductionLineValueObject;
+import org.ddd.fundamental.factory.value.ProductionLineValue;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -16,7 +16,7 @@ import java.util.Objects;
 public class ProductionLine extends AbstractAggregateRoot<ProductionLineId> {
 
     @Embedded
-    private ProductionLineValueObject line;
+    private ProductionLineValue line;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "line_id", nullable = false)
@@ -30,13 +30,13 @@ public class ProductionLine extends AbstractAggregateRoot<ProductionLineId> {
     @SuppressWarnings("unused")
     private ProductionLine(){}
 
-    public ProductionLine(ProductionLineValueObject line){
+    public ProductionLine(ProductionLineValue line){
         super(ProductionLineId.randomId(ProductionLineId.class));
         this.line = line;
         this.equipmentIds = new ArrayList<>();
     }
 
-    public ProductionLineValueObject getLine() {
+    public ProductionLineValue getLine() {
         return line.clone();
     }
 

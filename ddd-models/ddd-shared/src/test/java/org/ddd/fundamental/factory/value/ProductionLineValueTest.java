@@ -4,11 +4,11 @@ import org.ddd.fundamental.changeable.ChangeableInfo;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class ProductionLineValueObjectTest {
+public class ProductionLineValueTest {
 
     @Test
     public void testCreateAndChange(){
-        ProductionLineValueObject line = new ProductionLineValueObject(ChangeableInfo.create(
+        ProductionLineValue line = new ProductionLineValue(ChangeableInfo.create(
                 "这是车间一对应的产线5","这是一条专业的生产CPU的产线"
         ));
 
