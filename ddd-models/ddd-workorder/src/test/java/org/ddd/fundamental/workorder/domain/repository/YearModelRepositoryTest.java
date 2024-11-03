@@ -1,6 +1,6 @@
 package org.ddd.fundamental.workorder.domain.repository;
 
-import org.ddd.fundamental.day.YearModelValueObject;
+import org.ddd.fundamental.day.YearModelValue;
 import org.ddd.fundamental.workorder.WorkOrderAppTest;
 import org.ddd.fundamental.workorder.domain.model.YearModel;
 import org.junit.Test;
@@ -16,10 +16,10 @@ public class YearModelRepositoryTest extends WorkOrderAppTest {
     @Test
     public void testCreateYearModel(){
         YearModel yearModel = new YearModel(
-                YearModelValueObject.createTwoShift("两班制有周末"));
+                YearModelValue.createTwoShift("两班制有周末"));
         repository.save(yearModel);
         YearModel yearModel1 = new YearModel(
-                YearModelValueObject.createThreeShift("三班制有周末"));
+                YearModelValue.createThreeShift("三班制有周末"));
         repository.save(yearModel1);
     }
 

@@ -17,28 +17,28 @@ public class ComputableTest {
 
     @Test
     public void testSplit(){
-        MaterialRecordValueObject materialRecord = new MaterialRecordValueObject(createMaterialMaster(),10.0);
-        SplitStrategy<MaterialRecordValueObject> strategy = new DividedTwoStrategyByRaw1();
-        List<MaterialRecordValueObject> splits = materialRecord.split(materialRecord,strategy);
+        MaterialRecordValue materialRecord = new MaterialRecordValue(createMaterialMaster(),10.0);
+        SplitStrategy<MaterialRecordValue> strategy = new DividedTwoStrategyByRaw1();
+        List<MaterialRecordValue> splits = materialRecord.split(materialRecord,strategy);
         Assert.assertEquals(splits.size(),2);
         Assert.assertEquals(splits.get(0).getQty(),5,0);
     }
 
     @Test
     public void testSplitByClass() {
-        MaterialRecordValueObject materialRecord = new MaterialRecordValueObject(createMaterialMaster(),10.0);
-        List<MaterialRecordValueObject> splits = materialRecord.split(materialRecord);
+        MaterialRecordValue materialRecord = new MaterialRecordValue(createMaterialMaster(),10.0);
+        List<MaterialRecordValue> splits = materialRecord.split(materialRecord);
         Assert.assertEquals(splits.size(),2);
         Assert.assertEquals(splits.get(0).getQty(),5,0);
     }
 }
 
-class DividedTwoStrategyByRaw1 implements SplitStrategy<MaterialRecordValueObject>{
+class DividedTwoStrategyByRaw1 implements SplitStrategy<MaterialRecordValue>{
     @Override
-    public List<MaterialRecordValueObject> split(MaterialRecordValueObject object) {
-        List<MaterialRecordValueObject> result = new ArrayList<>();
+    public List<MaterialRecordValue> split(MaterialRecordValue object) {
+        List<MaterialRecordValue> result = new ArrayList<>();
         int n = 2;
-        Generators.fill(result, () ->  new MaterialRecordValueObject(object.getMaterialMaster(),
+        Generators.fill(result, () ->  new MaterialRecordValue(object.getMaterialMaster(),
                 object.getQty()/n),n);
         return result;
     }

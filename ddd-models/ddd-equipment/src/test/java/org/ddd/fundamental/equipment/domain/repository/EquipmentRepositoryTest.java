@@ -1,7 +1,7 @@
 package org.ddd.fundamental.equipment.domain.repository;
 
 import org.ddd.fundamental.changeable.ChangeableInfo;
-import org.ddd.fundamental.day.YearModelValueObject;
+import org.ddd.fundamental.day.YearModelValue;
 import org.ddd.fundamental.day.range.DateRange;
 import org.ddd.fundamental.equipment.EquipmentAppTest;
 import org.ddd.fundamental.equipment.domain.model.Equipment;
@@ -13,7 +13,6 @@ import org.ddd.fundamental.utils.CollectionUtils;
 import org.ddd.fundamental.utils.DateUtils;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -29,7 +28,7 @@ public class EquipmentRepositoryTest extends EquipmentAppTest {
     @Test
     public void testCreateEquipment(){
         Equipment equipment = new Equipment(
-                YearModelValueObject.createThreeShift("年度模型"),
+                YearModelValue.createThreeShift("年度模型"),
                 EquipmentType.RESOURCE_ONE, EquipmentMaster.newBuilder().assetNo("CQ_1024")
                 .info(ChangeableInfo.create("车床一号","这是加工使用的车床"))
                 .size(EquipmentSize.create(1000,1200,1500))

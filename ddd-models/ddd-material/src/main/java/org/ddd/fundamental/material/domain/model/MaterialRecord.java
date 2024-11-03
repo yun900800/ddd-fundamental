@@ -2,7 +2,7 @@ package org.ddd.fundamental.material.domain.model;
 
 import org.ddd.fundamental.core.AbstractAggregateRoot;
 import org.ddd.fundamental.material.value.MaterialRecordId;
-import org.ddd.fundamental.material.MaterialRecordValueObject;
+import org.ddd.fundamental.material.MaterialRecordValue;
 
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -13,16 +13,16 @@ import javax.persistence.Table;
 public class MaterialRecord extends AbstractAggregateRoot<MaterialRecordId> {
 
     @Embedded
-    private MaterialRecordValueObject record;
+    private MaterialRecordValue record;
 
     @SuppressWarnings("unused")
     private MaterialRecord(){}
 
-    public MaterialRecord(MaterialRecordValueObject record){
+    public MaterialRecord(MaterialRecordValue record){
         this.record = record;
     }
 
-    public MaterialRecordValueObject getRecord() {
+    public MaterialRecordValue getRecord() {
         return record;
     }
 

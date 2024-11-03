@@ -7,7 +7,7 @@ import java.util.List;
 
 @Embeddable
 @MappedSuperclass
-public class ComposeMaterialRecord extends AbstractComposeComputable<MaterialRecordValueObject>{
+public class ComposeMaterialRecord extends AbstractComposeComputable<MaterialRecordValue>{
 
     private double qty;
 
@@ -16,7 +16,7 @@ public class ComposeMaterialRecord extends AbstractComposeComputable<MaterialRec
         super(new ArrayList<>());
     }
 
-    public ComposeMaterialRecord(List<MaterialRecordValueObject> computableList) {
+    public ComposeMaterialRecord(List<MaterialRecordValue> computableList) {
         super(computableList);
     }
 

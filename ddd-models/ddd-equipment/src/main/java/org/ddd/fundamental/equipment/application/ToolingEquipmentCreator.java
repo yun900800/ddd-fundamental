@@ -2,7 +2,7 @@ package org.ddd.fundamental.equipment.application;
 
 import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.changeable.ChangeableInfo;
-import org.ddd.fundamental.day.YearModelValueObject;
+import org.ddd.fundamental.day.YearModelValue;
 import org.ddd.fundamental.day.range.DateRange;
 import org.ddd.fundamental.equipment.domain.model.Equipment;
 import org.ddd.fundamental.equipment.domain.model.EquipmentType;
@@ -106,7 +106,7 @@ public class ToolingEquipmentCreator {
 
     public static List<Equipment> createEquipments(){
         Equipment equipment0 = new Equipment(
-                YearModelValueObject.createThreeShift("三班次年度模型"),
+                YearModelValue.createThreeShift("三班次年度模型"),
                 EquipmentType.RESOURCE_ONE, EquipmentMaster.newBuilder().assetNo("CQ_1024")
                 .info(ChangeableInfo.create("车床一号","这是加工使用的车床"))
                 .size(EquipmentSize.create(1000,1200,1500))
@@ -116,7 +116,7 @@ public class ToolingEquipmentCreator {
                 .build()
         );
         Equipment equipment1 = new Equipment(
-                YearModelValueObject.createTwoShift("两班次年度模型"),
+                YearModelValue.createTwoShift("两班次年度模型"),
                 EquipmentType.RESOURCE_ONE, EquipmentMaster.newBuilder().assetNo("CQ_1025")
                 .info(ChangeableInfo.create("车床二号","这是加工使用的车床,可以加工特质材料"))
                 .size(EquipmentSize.create(1200,1500,4000))
@@ -126,7 +126,7 @@ public class ToolingEquipmentCreator {
                 .build()
         );
         Equipment equipment2 = new Equipment(
-                YearModelValueObject.createTwoShift("两班次年度模型"),
+                YearModelValue.createTwoShift("两班次年度模型"),
                 EquipmentType.RESOURCE_ONE, EquipmentMaster.newBuilder().assetNo("CQ_1026")
                 .info(ChangeableInfo.create("机床五号","这是加工使用的机床,主要用来加工特种锡膏"))
                 .size(EquipmentSize.create(4000,2000,1200))
@@ -136,7 +136,7 @@ public class ToolingEquipmentCreator {
                 .build()
         );
         Equipment equipment3 = new Equipment(
-                YearModelValueObject.createThreeShift("三班次年度模型"),
+                YearModelValue.createThreeShift("三班次年度模型"),
                 EquipmentType.RESOURCE_ONE, EquipmentMaster.newBuilder().assetNo("CQ_1027")
                 .info(ChangeableInfo.create("压铸机5号","这是加工使用的机床,主要用来加工特种锡膏"))
                 .size(EquipmentSize.create(4000,4000,1200))
@@ -146,7 +146,7 @@ public class ToolingEquipmentCreator {
                 .build()
         );
         Equipment equipment4 = new Equipment(
-                YearModelValueObject.createThreeShift("三班次年度模型"),
+                YearModelValue.createThreeShift("三班次年度模型"),
                 EquipmentType.RESOURCE_ONE, EquipmentMaster.newBuilder().assetNo("CQ_1028")
                 .info(ChangeableInfo.create("压铸机6号","这是加工使用的机床,主要用来加工特种锡膏"))
                 .size(EquipmentSize.create(4000,4000,1200))

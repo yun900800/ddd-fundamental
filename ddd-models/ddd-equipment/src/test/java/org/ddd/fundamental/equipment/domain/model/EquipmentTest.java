@@ -1,7 +1,7 @@
 package org.ddd.fundamental.equipment.domain.model;
 
 import org.ddd.fundamental.changeable.ChangeableInfo;
-import org.ddd.fundamental.day.YearModelValueObject;
+import org.ddd.fundamental.day.YearModelValue;
 import org.ddd.fundamental.day.range.DateRange;
 import org.ddd.fundamental.equipment.value.*;
 import org.ddd.fundamental.utils.DateUtils;
@@ -14,7 +14,7 @@ public class EquipmentTest {
 
     private static Equipment create(){
         return new Equipment(
-                YearModelValueObject.createThreeShift("年度模型"),
+                YearModelValue.createThreeShift("年度模型"),
                 EquipmentType.RESOURCE_ONE, EquipmentMaster.newBuilder().assetNo("CQ_1024")
                 .info(ChangeableInfo.create("车床一号","这是加工使用的车床"))
                 .size(EquipmentSize.create(1000,1200,1500))
@@ -27,7 +27,7 @@ public class EquipmentTest {
 
     private static Equipment createTwoShiftEquipment(){
         return new Equipment(
-                YearModelValueObject.createTwoShift("年度模型"),
+                YearModelValue.createTwoShift("年度模型"),
                 EquipmentType.RESOURCE_ONE, EquipmentMaster.newBuilder().assetNo("CQ_1024")
                 .info(ChangeableInfo.create("车床一号","这是加工使用的车床"))
                 .size(EquipmentSize.create(1000,1200,1500))

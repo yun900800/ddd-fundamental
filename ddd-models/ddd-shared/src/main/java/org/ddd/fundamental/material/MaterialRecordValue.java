@@ -8,7 +8,7 @@ import javax.persistence.*;
 
 @Embeddable
 @MappedSuperclass
-public class MaterialRecordValueObject implements Computable, ValueObject {
+public class MaterialRecordValue implements Computable, ValueObject {
 
     @Embedded
     @AttributeOverrides({
@@ -25,15 +25,15 @@ public class MaterialRecordValueObject implements Computable, ValueObject {
     private String qrCode;
 
     @SuppressWarnings("unused")
-    MaterialRecordValueObject(){}
+    MaterialRecordValue(){}
 
-    public MaterialRecordValueObject(MaterialMaster master, double qty){
+    public MaterialRecordValue(MaterialMaster master, double qty){
         this.materialMaster = master;
         this.qty = qty;
         this.qrCode = QRCode.randomId(QRCode.class).toUUID();
     }
 
-    public MaterialRecordValueObject(MaterialRecordValueObject record) {
+    public MaterialRecordValue(MaterialRecordValue record) {
         this.materialMaster = record.materialMaster;
         this.qty = record.qty;
         this.qrCode = QRCode.randomId(QRCode.class).toUUID();
@@ -54,7 +54,7 @@ public class MaterialRecordValueObject implements Computable, ValueObject {
     }
 
     @Override
-    public MaterialRecordValueObject changeQty(double qty) {
+    public MaterialRecordValue changeQty(double qty) {
         this.qty = qty;
         return this;
     }

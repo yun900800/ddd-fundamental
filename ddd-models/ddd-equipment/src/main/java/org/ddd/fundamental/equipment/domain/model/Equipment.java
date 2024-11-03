@@ -3,7 +3,7 @@ package org.ddd.fundamental.equipment.domain.model;
 import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.core.AbstractAggregateRoot;
 import org.ddd.fundamental.core.DomainObjectId;
-import org.ddd.fundamental.day.YearModelValueObject;
+import org.ddd.fundamental.day.YearModelValue;
 import org.ddd.fundamental.day.range.DateRange;
 import org.ddd.fundamental.equipment.value.EquipmentMaster;
 import org.ddd.fundamental.factory.EquipmentId;
@@ -25,7 +25,7 @@ public class Equipment extends AbstractAggregateRoot<EquipmentId> {
     private EquipmentType equipmentType;
 
     @Embedded
-    private YearModelValueObject model;
+    private YearModelValue model;
 
     @Embedded
     private EquipmentMaster master;
@@ -63,7 +63,7 @@ public class Equipment extends AbstractAggregateRoot<EquipmentId> {
     private Equipment(){
     }
 
-    public Equipment(YearModelValueObject model, EquipmentType equipmentType,
+    public Equipment(YearModelValue model, EquipmentType equipmentType,
                      EquipmentMaster master){
         super(DomainObjectId.randomId(EquipmentId.class));
         this.model = model;
@@ -158,7 +158,7 @@ public class Equipment extends AbstractAggregateRoot<EquipmentId> {
         return equipmentType;
     }
 
-    public YearModelValueObject getModel() {
+    public YearModelValue getModel() {
         return model.clone();
     }
     public EquipmentMaster getMaster() {

@@ -9,7 +9,7 @@ import java.util.Objects;
 
 @MappedSuperclass
 @Embeddable
-public class YearModelValueObject implements ValueObject, CalculateTime,Cloneable {
+public class YearModelValue implements ValueObject, CalculateTime,Cloneable {
 
     private String modelName;
 
@@ -22,15 +22,15 @@ public class YearModelValueObject implements ValueObject, CalculateTime,Cloneabl
     private DayOff dayOff;
 
     @SuppressWarnings("unused")
-    YearModelValueObject(){}
+    YearModelValue(){}
 
-    private YearModelValueObject(DayType dayType, DayOff off,
-                                 String modelName){
+    private YearModelValue(DayType dayType, DayOff off,
+                           String modelName){
         this(dayType,off, modelName,true);
     }
 
-    private YearModelValueObject(DayType dayType, DayOff off,
-                                 String modelName, boolean hasWeekend){
+    private YearModelValue(DayType dayType, DayOff off,
+                           String modelName, boolean hasWeekend){
         this.dayOff = off;
         this.dayType = dayType;
         this.modelName = modelName;
@@ -45,23 +45,23 @@ public class YearModelValueObject implements ValueObject, CalculateTime,Cloneabl
         return hasWeekend;
     }
 
-    public static YearModelValueObject createTwoShift(String modelName){
-        return new YearModelValueObject(DayType.createTwoShiftDateType("两班制"),
+    public static YearModelValue createTwoShift(String modelName){
+        return new YearModelValue(DayType.createTwoShiftDateType("两班制"),
                 DayOff.createDayOff(),modelName);
     }
 
-    public static YearModelValueObject createThreeShift(String modelName){
-        return new YearModelValueObject(DayType.createThreeShiftDateType("三班制"),
+    public static YearModelValue createThreeShift(String modelName){
+        return new YearModelValue(DayType.createThreeShiftDateType("三班制"),
                 DayOff.createDayOff(),modelName);
     }
 
-    public static YearModelValueObject createTwoShift(String modelName, boolean hasWeekend){
-        return new YearModelValueObject(DayType.createTwoShiftDateType("两班制"),
+    public static YearModelValue createTwoShift(String modelName, boolean hasWeekend){
+        return new YearModelValue(DayType.createTwoShiftDateType("两班制"),
                 DayOff.createDayOff(),modelName,hasWeekend);
     }
 
-    public static YearModelValueObject createThreeShift(String modelName, boolean hasWeekend){
-        return new YearModelValueObject(DayType.createThreeShiftDateType("三班制"),
+    public static YearModelValue createThreeShift(String modelName, boolean hasWeekend){
+        return new YearModelValue(DayType.createThreeShiftDateType("三班制"),
                 DayOff.createDayOff(),modelName,hasWeekend);
     }
 
@@ -76,8 +76,8 @@ public class YearModelValueObject implements ValueObject, CalculateTime,Cloneabl
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof YearModelValueObject)) return false;
-        YearModelValueObject yearModel = (YearModelValueObject) o;
+        if (!(o instanceof YearModelValue)) return false;
+        YearModelValue yearModel = (YearModelValue) o;
         return Objects.equals(dayType, yearModel.dayType) && Objects.equals(dayOff, yearModel.dayOff);
     }
 
@@ -109,9 +109,9 @@ public class YearModelValueObject implements ValueObject, CalculateTime,Cloneabl
 
 
     @Override
-    public YearModelValueObject clone() {
+    public YearModelValue clone() {
         try {
-            YearModelValueObject clone = (YearModelValueObject) super.clone();
+            YearModelValue clone = (YearModelValue) super.clone();
             // TODO: copy mutable state here, so the clone can't change the internals of the original
             return clone;
         } catch (CloneNotSupportedException e) {
