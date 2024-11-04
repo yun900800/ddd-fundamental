@@ -3,29 +3,35 @@ package org.ddd.fundamental.workprocess;
 import org.apache.commons.lang3.Range;
 import org.ddd.fundamental.core.ValueObject;
 import org.ddd.fundamental.day.range.DateRange;
+import org.ddd.fundamental.factory.EquipmentId;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Embeddable
 @MappedSuperclass
 public class AuxiliaryWorkTime implements ValueObject, Cloneable {
     @AttributeOverrides({
             @AttributeOverride(name = "start", column = @Column(name = "set_time_start", nullable = false)),
-            @AttributeOverride(name = "end", column = @Column(name = "set_time_end", nullable = false))
+            @AttributeOverride(name = "end", column = @Column(name = "set_time_end", nullable = false)),
+            @AttributeOverride(name = "desc", column = @Column(name = "set_time_desc", nullable = false))
     })
     private DateRange setTime;
 
     @AttributeOverrides({
             @AttributeOverride(name = "start", column = @Column(name = "offline_time_start", nullable = false)),
-            @AttributeOverride(name = "end", column = @Column(name = "offline_time_end", nullable = false))
+            @AttributeOverride(name = "end", column = @Column(name = "offline_time_end", nullable = false)),
+            @AttributeOverride(name = "desc", column = @Column(name = "offline_time_desc", nullable = false))
     })
     private DateRange offlineTime;
 
     @AttributeOverrides({
             @AttributeOverride(name = "start", column = @Column(name = "check_time_start", nullable = false)),
-            @AttributeOverride(name = "end", column = @Column(name = "check_time_end", nullable = false))
+            @AttributeOverride(name = "end", column = @Column(name = "check_time_end", nullable = false)),
+            @AttributeOverride(name = "desc", column = @Column(name = "check_time_desc", nullable = false))
     })
     private DateRange checkTime;
 

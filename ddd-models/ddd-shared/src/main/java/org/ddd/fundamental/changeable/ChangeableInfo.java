@@ -15,9 +15,7 @@ public class ChangeableInfo implements ValueObject,Cloneable {
     private boolean isUse;
 
     @SuppressWarnings("unused")
-    ChangeableInfo(){
-
-    }
+    ChangeableInfo(){}
     public ChangeableInfo(String name,String desc,boolean isUse){
         this.name = name;
         this.desc = desc;
