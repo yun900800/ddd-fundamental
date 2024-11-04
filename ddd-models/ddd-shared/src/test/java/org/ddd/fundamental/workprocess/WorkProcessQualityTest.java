@@ -159,6 +159,19 @@ public class WorkProcessQualityTest {
                         .noOverCrossPercent()
                         .build();
         workProcessQuality1.changeOwePaymentPercent(6).changeOwePaymentQuantity(940);
+    }
 
+    @Test
+    public void testWorkProcessTimeClone(){
+        WorkProcessQuality workProcessQuality1 =
+                WorkProcessQuality.newBuilder()
+                        .targetQuantity(1000)
+                        .unQualifiedQuantity(20)
+                        .transferQuantityWithOverCross(10)
+                        .withOverCrossQuantity(1050)
+                        .noOverCrossPercent()
+                        .build();
+        WorkProcessQuality workProcessQuality2 = workProcessQuality1.clone();
+        Assert.assertFalse(workProcessQuality1==workProcessQuality2);
     }
 }

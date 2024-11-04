@@ -1,19 +1,16 @@
 package org.ddd.fundamental.day.range;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.Range;
 import org.ddd.fundamental.core.ValueObject;
 import org.ddd.fundamental.day.CalculateTime;
 import org.ddd.fundamental.tuple.Tuple;
 import org.ddd.fundamental.tuple.TwoTuple;
 import org.ddd.fundamental.utils.DateUtils;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
-import java.sql.Time;
 import java.time.*;
 import java.util.Date;
 import java.util.HashMap;
@@ -92,6 +89,15 @@ public class DateRange implements ValueObject, Cloneable, CalculateTime {
     @Override
     public int hashCode() {
         return Objects.hash(desc, start, end);
+    }
+
+    @Override
+    public String toString() {
+        return "DateRange{" +
+                "desc='" + desc + '\'' +
+                ", start=" + start +
+                ", end=" + end +
+                '}';
     }
 
     @Override

@@ -1,20 +1,32 @@
 package org.ddd.fundamental.workprocess;
 
+import org.apache.commons.lang3.Range;
 import org.ddd.fundamental.core.ValueObject;
 import org.ddd.fundamental.day.range.DateRange;
 
-import javax.persistence.Embeddable;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
+import java.util.Date;
 import java.util.Objects;
 
 @Embeddable
 @MappedSuperclass
 public class AuxiliaryWorkTime implements ValueObject, Cloneable {
-
+    @AttributeOverrides({
+            @AttributeOverride(name = "start", column = @Column(name = "set_time_start", nullable = false)),
+            @AttributeOverride(name = "end", column = @Column(name = "set_time_end", nullable = false))
+    })
     private DateRange setTime;
 
+    @AttributeOverrides({
+            @AttributeOverride(name = "start", column = @Column(name = "offline_time_start", nullable = false)),
+            @AttributeOverride(name = "end", column = @Column(name = "offline_time_end", nullable = false))
+    })
     private DateRange offlineTime;
 
+    @AttributeOverrides({
+            @AttributeOverride(name = "start", column = @Column(name = "check_time_start", nullable = false)),
+            @AttributeOverride(name = "end", column = @Column(name = "check_time_end", nullable = false))
+    })
     private DateRange checkTime;
 
     private AuxiliaryWorkTime(){}
@@ -22,6 +34,7 @@ public class AuxiliaryWorkTime implements ValueObject, Cloneable {
     private AuxiliaryWorkTime(DateRange setTime,
                               DateRange offlineTime,
                               DateRange checkTime){
+        notIntersection(setTime,offlineTime,checkTime);
         this.setTime = setTime;
         this.offlineTime = offlineTime;
         this.checkTime = checkTime;
@@ -31,6 +44,57 @@ public class AuxiliaryWorkTime implements ValueObject, Cloneable {
                                            DateRange offlineTime,
                                            DateRange checkTime){
         return new AuxiliaryWorkTime(setTime, offlineTime,checkTime);
+    }
+
+    private void notIntersection(DateRange setTime,
+                                 DateRange offlineTime,
+                                 DateRange checkTime) {
+        Range<Date> setTimeRange = Range.between(setTime.getStart(),setTime.getEnd());
+        Range<Date> offlineTimeRange = Range.between(offlineTime.getStart(),offlineTime.getEnd());
+        Range<Date> checkTimeRange = Range.between(checkTime.getStart(),checkTime.getEnd());
+        if (!isRangeOk(setTimeRange,offlineTimeRange)) {
+            throw new RuntimeException("设置时间与下线时间存在交叉");
+        }
+        if (!isRangeOk(offlineTimeRange,checkTimeRange)) {
+            throw new RuntimeException("下线时间与检查时间与存在交叉");
+        }
+        if (!isRangeOk(setTimeRange,checkTimeRange)) {
+            throw new RuntimeException("设置时间与检查时间与存在交叉");
+        }
+    }
+
+    private static boolean isRangeOk(Range<Date> firstRange, Range<Date> secondRange) {
+        return firstRange.isAfterRange(secondRange) || firstRange.isBeforeRange(secondRange);
+    }
+
+    public AuxiliaryWorkTime changeSetTime(DateRange setTime) {
+        return new AuxiliaryWorkTime(setTime,offlineTime,checkTime);
+    }
+
+    public AuxiliaryWorkTime changeSetTime(Date end){
+        Date start = new Date();
+        DateRange setTime = new DateRange(start,end,"工序设置时间");
+        return new AuxiliaryWorkTime(setTime,offlineTime,checkTime);
+    }
+
+    public AuxiliaryWorkTime changeOffLineTime(DateRange offlineTime) {
+        return new AuxiliaryWorkTime(setTime,offlineTime,checkTime);
+    }
+
+    public AuxiliaryWorkTime changeOffLineTime(Date end){
+        Date start = new Date();
+        DateRange offlineTime = new DateRange(start,end,"工序下线时间");
+        return new AuxiliaryWorkTime(setTime,offlineTime,checkTime);
+    }
+
+    public AuxiliaryWorkTime changeCheckTime(DateRange checkTime){
+        return new AuxiliaryWorkTime(setTime,offlineTime,checkTime);
+    }
+
+    public AuxiliaryWorkTime changeCheckTime(Date end){
+        Date start = new Date();
+        DateRange checkTime = new DateRange(start,end,"工序检查时间");
+        return new AuxiliaryWorkTime(setTime,offlineTime,checkTime);
     }
 
     public DateRange getSetTime() {
