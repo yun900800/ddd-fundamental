@@ -9,10 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "w_craftsman_ship")
@@ -22,6 +19,9 @@ public class CraftsmanShip extends AbstractAggregateRoot<CraftsmanShipId> {
     @Type(type = "json")
     @Column(columnDefinition = "json" , name = "work_process_ids")
     private List<WorkProcessId> workProcessIds = new ArrayList<>();
+
+    @Transient
+    private Map<WorkProcessId,WorkProcessNew> workProcessMap = new HashMap<>();
 
     @Transient
     private WorkProcessNewRepository repository;
@@ -40,6 +40,7 @@ public class CraftsmanShip extends AbstractAggregateRoot<CraftsmanShipId> {
     private void defaultWorkProcessIds() {
         if (null == workProcessIds) {
             this.workProcessIds = new ArrayList<>();
+            this.workProcessMap = new HashMap<>();
         }
     }
 
@@ -52,20 +53,32 @@ public class CraftsmanShip extends AbstractAggregateRoot<CraftsmanShipId> {
                 this.workProcessIds.add(workProcessId);
             }
         }
+    }
 
+    private void initCache(List<WorkProcessNew> processList) {
+        for (WorkProcessNew processNew: processList) {
+            workProcessMap.put(processNew.id(),processNew);
+        }
+    }
+
+    private List<WorkProcessNew> processNewsFromDB() {
+        List<WorkProcessNew> processList = repository.findByIdIn(new HashSet<>(workProcessIds));
+        return processList;
     }
 
     private void validate(){
-        List<WorkProcessNew> processList = repository.findByIdIn(new HashSet<>(workProcessIds));
+        List<WorkProcessNew> processList = processNewsFromDB();
         int size = processList.size();
         for (int i = 1 ; i < size-1; i++) {
             WorkProcessNew pre = processList.get(i-1);
             WorkProcessNew cur = processList.get(i);
+
             log.info(cur.toString());
             if (!pre.acceptNext(cur.id()) || !cur.acceptPre(pre.id())) {
                 throw new RuntimeException("工序不正确");
             }
         }
+        initCache(processList);
     }
 
     public List<WorkProcessId> getWorkProcessIds() {
@@ -79,5 +92,13 @@ public class CraftsmanShip extends AbstractAggregateRoot<CraftsmanShipId> {
     @Override
     public long created() {
         return 0;
+    }
+
+    @Override
+    public String toString() {
+        return "CraftsmanShip{" +
+                "workProcessIds=" + workProcessIds +
+                ", workProcessMap=" + workProcessMap +
+                '}';
     }
 }

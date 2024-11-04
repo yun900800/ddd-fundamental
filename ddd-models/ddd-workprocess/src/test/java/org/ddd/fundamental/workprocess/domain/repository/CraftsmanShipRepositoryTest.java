@@ -29,6 +29,7 @@ public class CraftsmanShipRepositoryTest extends WorkProcessAppTest {
         }
 
         CraftsmanShip craftsmanShip = new CraftsmanShip(workProcessIds,workProcessNewRepository);
+        System.out.println(craftsmanShip);
         craftsmanShipRepository.save(craftsmanShip);
         stopWatch.stop();
         // 统计执行时间（秒）
