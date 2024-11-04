@@ -43,14 +43,22 @@ public class AuxiliaryWorkTimeTest {
         Assert.assertEquals(auxiliaryWorkTime.getCheckTime(),checkTimeRange);
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test
     public void testChange(){
         AuxiliaryWorkTime auxiliaryWorkTime = create();
         auxiliaryWorkTime = auxiliaryWorkTime.changeSetTime(DateUtils.strToDate("2024-11-04 16:30:12","yyyy-MM-dd HH:mm:ss"));
         System.out.println(auxiliaryWorkTime.getSetTime().minutes());
-        auxiliaryWorkTime = auxiliaryWorkTime.changeCheckTime(DateUtils.strToDate("2024-11-04 14:30:12","yyyy-MM-dd HH:mm:ss"));
+        auxiliaryWorkTime = auxiliaryWorkTime.changeCheckTime(
+                new DateRange(
+                        DateUtils.strToDate("2024-11-04 16:30:13","yyyy-MM-dd HH:mm:ss"),
+                        DateUtils.strToDate("2024-11-04 16:55:12","yyyy-MM-dd HH:mm:ss"),"工序下线时间")
+        );
         System.out.println(auxiliaryWorkTime.getCheckTime().minutes());
-        auxiliaryWorkTime = auxiliaryWorkTime.changeOffLineTime(DateUtils.strToDate("2024-11-04 13:30:12","yyyy-MM-dd HH:mm:ss"));
+        auxiliaryWorkTime = auxiliaryWorkTime.changeOffLineTime(
+                new DateRange(
+                        DateUtils.strToDate("2024-11-04 16:56:13","yyyy-MM-dd HH:mm:ss"),
+                        DateUtils.strToDate("2024-11-04 18:55:12","yyyy-MM-dd HH:mm:ss"),"工序检查时间")
+        );
         System.out.println(auxiliaryWorkTime.getOfflineTime().minutes());
     }
 
