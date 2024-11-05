@@ -40,5 +40,15 @@ public class DateRangeTest {
         System.out.println(result);
     }
 
+    @Test
+    public void testDateRangeClone(){
+        DateRange range = new DateRange(
+                DateUtils.strToDate("2024-10-01 12:58:12","yyyy-MM-dd HH:mm:ss"),
+                DateUtils.strToDate("2024-10-01 16:48:12","yyyy-MM-dd HH:mm:ss"),"机器维修");
+        DateRange copy = range.clone();
+        Assert.assertEquals(range,copy);
+        Assert.assertNotSame(range,copy);
+    }
+
 
 }

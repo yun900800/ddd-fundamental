@@ -7,9 +7,7 @@ import org.ddd.fundamental.factory.EquipmentId;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 @Embeddable
 @MappedSuperclass
@@ -35,7 +33,7 @@ public class AuxiliaryWorkTime implements ValueObject, Cloneable {
     })
     private DateRange checkTime;
 
-    private AuxiliaryWorkTime(){}
+    protected AuxiliaryWorkTime(){}
 
     private AuxiliaryWorkTime(DateRange setTime,
                               DateRange offlineTime,
