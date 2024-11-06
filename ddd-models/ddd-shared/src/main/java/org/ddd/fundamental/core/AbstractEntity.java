@@ -53,6 +53,11 @@ public abstract class AbstractEntity<ID extends DomainObjectId> implements Ident
         return this;
     }
 
+    public AbstractEntity<ID> changeAuditable(Auditable auditable){
+        this.auditable = auditable;
+        return this;
+    }
+
     public AbstractEntity<ID> changeUpdated(Long updated){
         this.auditable.changeUpdated(updated);
         return this;

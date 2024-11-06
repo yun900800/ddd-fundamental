@@ -114,7 +114,7 @@ public class Material extends AbstractAggregateRoot<MaterialId> {
     }
 
     public Map<String, String> getMaterialRequiredProps() {
-        return new HashMap<>(materialRequiredProps);
+        return materialRequiredProps;
     }
 
     public Material resetMaterialJson(){
@@ -143,15 +143,15 @@ public class Material extends AbstractAggregateRoot<MaterialId> {
     }
 
     public Map<String, String> getMaterialOptionalProps() {
-        return new HashMap<>(materialOptionalProps);
+        return materialOptionalProps;
     }
 
     public Map<String, String> getMaterialRequiredCharacteristics() {
-        return new HashMap<>(materialRequiredCharacteristics);
+        return materialRequiredCharacteristics;
     }
 
     public Map<String, String> getMaterialOptionalCharacteristics() {
-        return new HashMap<>(materialOptionalCharacteristics);
+        return materialOptionalCharacteristics;
     }
 
     public String name(){

@@ -30,12 +30,21 @@ public class Auditable implements ValueObject, Cloneable{
     }
 
     public Auditable changeUpdateTime(LocalDateTime time){
-        this.updateTime = updateTime;
+        this.updateTime = time;
         return this;
     }
 
     public Auditable changeUpdated(Long updated){
         this.updated = updated;
+        return this;
+    }
+
+    public Auditable changeCreated(Long created){
+        this.created = created;
+        return this;
+    }
+    public Auditable changeCreateTime(LocalDateTime time){
+        this.createTime = time;
         return this;
     }
 

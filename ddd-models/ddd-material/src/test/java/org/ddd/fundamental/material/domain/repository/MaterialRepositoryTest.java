@@ -2,6 +2,7 @@ package org.ddd.fundamental.material.domain.repository;
 
 import com.alibaba.fastjson.JSON;
 import org.ddd.fundamental.changeable.ChangeableInfo;
+import org.ddd.fundamental.day.Auditable;
 import org.ddd.fundamental.material.value.MaterialId;
 import org.ddd.fundamental.material.MaterialMaster;
 import org.ddd.fundamental.material.MaterialTest;
@@ -36,10 +37,16 @@ public class MaterialRepositoryTest extends MaterialTest {
         Material queryMaterial = new Material(info,null);
         queryMaterial.changeId(null);
         queryMaterial.resetRequiredProps();
+        queryMaterial.resetRequiredCharacter();
+        queryMaterial.resetOptionalCharacter();
+        queryMaterial.resetOptionalProps();
         queryMaterial.resetMaterialJson();
+        Auditable auditable = new Auditable(0L);
+        auditable.changeCreateTime(null).changeUpdateTime(null);
+        queryMaterial.changeAuditable(auditable);
         Example<Material> example = Example.of(queryMaterial);
         List<Material> dataList = materialRepository.findAll(example);
-        Assert.assertEquals(dataList.size(),4);
+        Assert.assertEquals(dataList.size(),1);
     }
 
 }

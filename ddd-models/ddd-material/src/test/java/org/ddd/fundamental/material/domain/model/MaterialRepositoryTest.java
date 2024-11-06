@@ -1,6 +1,7 @@
 package org.ddd.fundamental.material.domain.model;
 
 import org.ddd.fundamental.changeable.ChangeableInfo;
+import org.ddd.fundamental.material.domain.repository.MaterialRepository;
 import org.ddd.fundamental.material.value.MaterialId;
 import org.ddd.fundamental.material.MaterialMaster;
 import org.ddd.fundamental.material.MaterialTest;
