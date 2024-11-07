@@ -92,6 +92,10 @@ public class Material extends AbstractAggregateRoot<MaterialId> {
         this(changeableInfo,materialMaster, null, null);
     }
 
+    public ChangeableInfo getChangeableInfo() {
+        return changeableInfo.clone();
+    }
+
     public Material changeName(String name){
         this.changeableInfo = changeableInfo.changeName(name);
         return this;
@@ -111,10 +115,6 @@ public class Material extends AbstractAggregateRoot<MaterialId> {
     public Material addOptionalCharacter(String key, String value){
         this.materialOptionalCharacteristics.put(key,value);
         return this;
-    }
-
-    public Map<String, String> getMaterialRequiredProps() {
-        return materialRequiredProps;
     }
 
     public Material resetMaterialJson(){
@@ -142,16 +142,37 @@ public class Material extends AbstractAggregateRoot<MaterialId> {
         return this;
     }
 
+    /**
+     * 集合对象在返回的时候需要判空
+     * @return
+     */
+    public Map<String, String> getMaterialRequiredProps() {
+
+        if (null != materialRequiredProps){
+            return new HashMap<>(materialRequiredProps);
+        }
+        return null;
+    }
+
     public Map<String, String> getMaterialOptionalProps() {
-        return materialOptionalProps;
+        if (null != materialOptionalProps){
+            return new HashMap<>(materialOptionalProps);
+        }
+        return null;
     }
 
     public Map<String, String> getMaterialRequiredCharacteristics() {
-        return materialRequiredCharacteristics;
+        if (null != materialRequiredCharacteristics){
+            return new HashMap<>(materialRequiredCharacteristics);
+        }
+        return null;
     }
 
     public Map<String, String> getMaterialOptionalCharacteristics() {
-        return materialOptionalCharacteristics;
+        if (null != materialOptionalCharacteristics){
+            return new HashMap<>(materialOptionalCharacteristics);
+        }
+        return null;
     }
 
     public String name(){

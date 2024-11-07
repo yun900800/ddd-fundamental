@@ -6,12 +6,14 @@ import org.hibernate.annotations.Type;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 @Embeddable
 @MappedSuperclass
-public class MaterialBatch implements IBatch{
+public class MaterialBatch implements IBatch, IBatchNoGenerateStrategy{
 
     /**
      * 批次对应的物料id
@@ -67,6 +69,12 @@ public class MaterialBatch implements IBatch{
         }
     }
 
+    public MaterialBatch changeStrategy(IBatchNoGenerateStrategy strategy) {
+        this.strategy = strategy;
+        this.batchNo = strategy.generate(this);
+        return this;
+    }
+
 
     @Override
     public MaterialId materialId() {
@@ -75,20 +83,30 @@ public class MaterialBatch implements IBatch{
 
     @Override
     public String batchNo() {
-        if (!StringUtils.hasLength(batchNo)){
+        if (!StringUtils.hasLength(batchNo) && null!= strategy ){
             batchNo = strategy.generate(this);
+        }
+        String generateBatchNo = generate(this);
+        if (StringUtils.hasLength(generateBatchNo)){
+            return generateBatchNo;
         }
         return batchNo;
     }
 
     @Override
     public Map<String, String> commonProps() {
-        return commonProps;
+        if (null != commonProps) {
+            return new HashMap<>(commonProps);
+        }
+        return null;
     }
 
     @Override
     public Map<String, String> specialProps() {
-        return specialProps;
+        if (null != specialProps) {
+            return new HashMap<>(specialProps);
+        }
+        return null;
     }
 
     @Override
@@ -109,5 +127,34 @@ public class MaterialBatch implements IBatch{
     @Override
     public BatchType batchType() {
         return batchType;
+    }
+
+    @Override
+    public String generate(IBatch batch) {
+        //默认的批次号,可以通过不同的策略进行修改
+        return defaultBatchNo(materialId,batchNumber,batchType());
+    }
+
+    private static String defaultBatchNo(MaterialId id, int batchNumber,BatchType batchType){
+        Date date = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String pre = simpleDateFormat.format(date);
+        String materialId = id.toUUID();
+        return pre + "_" + materialId +"_" +batchType.getValue()+ "_"  + batchNumber;
+    }
+
+    @Override
+    public String toString() {
+        return "MaterialBatch{" +
+                "materialId=" + materialId +
+                ", batchNo='" + batchNo + '\'' +
+                ", commonProps=" + commonProps +
+                ", specialProps=" + specialProps +
+                ", batchNumber=" + batchNumber +
+                ", canSplit=" + canSplit +
+                ", canMerge=" + canMerge +
+                ", strategy=" + strategy +
+                ", batchType=" + batchType +
+                '}';
     }
 }
