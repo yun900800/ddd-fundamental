@@ -13,7 +13,7 @@ import java.util.Map;
 
 @Embeddable
 @MappedSuperclass
-public class MaterialBatch implements IBatch, IBatchNoGenerateStrategy{
+public class MaterialBatchValue implements IBatch, IBatchNoGenerateStrategy{
 
     /**
      * 批次对应的物料id
@@ -47,16 +47,16 @@ public class MaterialBatch implements IBatch, IBatchNoGenerateStrategy{
 
     //生成批次号的接口
     @Transient
-    private IBatchNoGenerateStrategy strategy;
+    private IBatchNoGenerateStrategy strategy = this;
 
     @Enumerated(EnumType.STRING)
     private BatchType batchType;
 
     @SuppressWarnings("unused")
-    protected MaterialBatch(){}
+    protected MaterialBatchValue(){}
 
-    public MaterialBatch(MaterialId materialId,int batchNumber,
-                         BatchType batchType){
+    public MaterialBatchValue(MaterialId materialId, int batchNumber,
+                              BatchType batchType){
         this.materialId = materialId;
         this.batchNumber = batchNumber;
         this.batchType = batchType;
@@ -69,7 +69,7 @@ public class MaterialBatch implements IBatch, IBatchNoGenerateStrategy{
         }
     }
 
-    public MaterialBatch changeStrategy(IBatchNoGenerateStrategy strategy) {
+    public MaterialBatchValue changeStrategy(IBatchNoGenerateStrategy strategy) {
         this.strategy = strategy;
         this.batchNo = strategy.generate(this);
         return this;
@@ -83,14 +83,34 @@ public class MaterialBatch implements IBatch, IBatchNoGenerateStrategy{
 
     @Override
     public String batchNo() {
-        if (!StringUtils.hasLength(batchNo) && null!= strategy ){
-            batchNo = strategy.generate(this);
-        }
-        String generateBatchNo = generate(this);
-        if (StringUtils.hasLength(generateBatchNo)){
-            return generateBatchNo;
-        }
+        batchNo = strategy.generate(this);
         return batchNo;
+    }
+
+    /**
+     * 添加通用属性
+     * @param key
+     * @param value
+     * @return
+     */
+    public MaterialBatchValue addCommonProps(String key,String value){
+        this.commonProps.put(key,value);
+        return this;
+    }
+
+    /**
+     * 移除通用属性
+     * @param key
+     * @return
+     */
+    public MaterialBatchValue removeCommonProps(String key){
+        this.commonProps.remove(key);
+        return this;
+    }
+
+    public MaterialBatchValue clearCommonProps(){
+        this.commonProps.clear();
+        return this;
     }
 
     @Override
@@ -99,6 +119,32 @@ public class MaterialBatch implements IBatch, IBatchNoGenerateStrategy{
             return new HashMap<>(commonProps);
         }
         return null;
+    }
+
+    /**
+     * 添加特殊属性
+     * @param key
+     * @param value
+     * @return
+     */
+    public MaterialBatchValue addSpecialProps(String key,String value){
+        this.specialProps.put(key,value);
+        return this;
+    }
+
+    /**
+     * 移除特殊属性
+     * @param key
+     * @return
+     */
+    public MaterialBatchValue removeSpecialProps(String key){
+        this.specialProps.remove(key);
+        return this;
+    }
+
+    public MaterialBatchValue clearSpecialProps(){
+        this.specialProps.clear();
+        return this;
     }
 
     @Override
@@ -132,7 +178,7 @@ public class MaterialBatch implements IBatch, IBatchNoGenerateStrategy{
     @Override
     public String generate(IBatch batch) {
         //默认的批次号,可以通过不同的策略进行修改
-        return defaultBatchNo(materialId,batchNumber,batchType());
+        return defaultBatchNo(materialId(),batchNumber(),batchType());
     }
 
     private static String defaultBatchNo(MaterialId id, int batchNumber,BatchType batchType){
