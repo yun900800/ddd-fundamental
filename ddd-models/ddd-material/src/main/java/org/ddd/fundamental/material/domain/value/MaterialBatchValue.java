@@ -3,7 +3,6 @@ package org.ddd.fundamental.material.domain.value;
 import org.ddd.fundamental.material.domain.enums.BatchType;
 import org.ddd.fundamental.material.value.MaterialId;
 import org.hibernate.annotations.Type;
-import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import java.text.SimpleDateFormat;
@@ -154,6 +153,12 @@ public class MaterialBatchValue implements IBatch, IBatchNoGenerateStrategy{
         }
         return null;
     }
+
+    public MaterialBatchValue changeBatchType(BatchType batchType){
+        this.batchType = batchType;
+        return this;
+    }
+
 
     @Override
     public int batchNumber() {

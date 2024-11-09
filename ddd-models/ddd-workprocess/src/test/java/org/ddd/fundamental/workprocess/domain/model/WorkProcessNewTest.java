@@ -3,9 +3,9 @@ package org.ddd.fundamental.workprocess.domain.model;
 import org.ddd.fundamental.changeable.ChangeableInfo;
 import org.ddd.fundamental.day.range.DateRange;
 import org.ddd.fundamental.utils.DateUtils;
-import org.ddd.fundamental.workprocess.AuxiliaryWorkTime;
-import org.ddd.fundamental.workprocess.WorkProcessBeat;
-import org.ddd.fundamental.workprocess.WorkProcessQuality;
+import org.ddd.fundamental.workprocess.value.AuxiliaryWorkTime;
+import org.ddd.fundamental.workprocess.value.WorkProcessBeat;
+import org.ddd.fundamental.workprocess.value.WorkProcessQuality;
 import org.junit.Test;
 
 public class WorkProcessNewTest {

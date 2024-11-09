@@ -1,9 +1,8 @@
-package org.ddd.fundamental.workprocess;
+package org.ddd.fundamental.workprocess.value;
 
 import org.apache.commons.lang3.Range;
 import org.ddd.fundamental.core.ValueObject;
 import org.ddd.fundamental.day.range.DateRange;
-import org.ddd.fundamental.factory.EquipmentId;
 
 import javax.persistence.*;
 import java.util.Date;

@@ -1,5 +1,6 @@
 package org.ddd.fundamental.workprocess;
 
+import org.ddd.fundamental.workprocess.value.WorkProcessQuality;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.util.StopWatch;

@@ -2,7 +2,7 @@ package org.ddd.fundamental.workprocess.application;
 
 import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.changeable.ChangeableInfo;
-import org.ddd.fundamental.workprocess.AuxiliaryWorkTime;
+import org.ddd.fundamental.workprocess.value.AuxiliaryWorkTime;
 import org.junit.Assert;
 import org.junit.Test;
 

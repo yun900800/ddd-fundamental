@@ -2,6 +2,7 @@ package org.ddd.fundamental.workprocess;
 
 import org.ddd.fundamental.day.range.DateRange;
 import org.ddd.fundamental.utils.DateUtils;
+import org.ddd.fundamental.workprocess.value.AuxiliaryWorkTime;
 import org.junit.Assert;
 import org.junit.Test;
 
