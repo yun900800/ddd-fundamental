@@ -1,0 +1,41 @@
+package org.ddd.fundamental.shared.api.material;
+
+
+import org.ddd.fundamental.core.AbstractDTO;
+import org.ddd.fundamental.material.MaterialMaster;
+import org.ddd.fundamental.material.value.MaterialId;
+
+public class MaterialDTO extends AbstractDTO<MaterialId> {
+
+
+
+    @SuppressWarnings("unused")
+    private MaterialDTO(){
+        super(MaterialId.randomId(MaterialId.class));
+    }
+
+    private MaterialMaster materialMaster;
+
+
+    public MaterialDTO(MaterialMaster materialMaster, MaterialId id) {
+        super(id);
+        this.materialMaster = materialMaster;
+    }
+
+    public MaterialMaster getMaterialMaster() {
+        return materialMaster.clone();
+    }
+
+    @Override
+    public String toString() {
+        return "MaterialDTO{" +
+                "materialMaster=" + materialMaster +
+                ", id=" + id() +
+                '}';
+    }
+
+    @Override
+    public MaterialId id() {
+        return super.id;
+    }
+}

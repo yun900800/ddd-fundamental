@@ -126,5 +126,11 @@ public class MaterialCreator {
 
     }
 
+    public List<Material> getMaterialList() {
+        return new ArrayList<>(materialList);
+    }
 
+    public List<MaterialBatch> getMaterialBatches() {
+        return new ArrayList<>(materialBatches);
+    }
 }

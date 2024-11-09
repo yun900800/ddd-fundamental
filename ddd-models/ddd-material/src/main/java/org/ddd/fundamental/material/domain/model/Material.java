@@ -175,6 +175,10 @@ public class Material extends AbstractAggregateRoot<MaterialId> {
         return null;
     }
 
+    public MaterialMaster getMaterialMaster() {
+        return materialMaster.clone();
+    }
+
     public String name(){
         return changeableInfo.getName();
     }

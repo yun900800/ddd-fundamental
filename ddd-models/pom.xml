@@ -17,6 +17,7 @@
         <module>ddd-equipment</module>
         <module>ddd-workorder</module>
         <module>ddd-factory</module>
+        <module>ddd-shared-api</module>
     </modules>
     <artifactId>ddd-models</artifactId>
     <name>ddd-models</name>

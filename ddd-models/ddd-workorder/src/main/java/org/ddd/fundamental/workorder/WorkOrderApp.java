@@ -1,11 +1,26 @@
 package org.ddd.fundamental.workorder;
 
+import lombok.extern.slf4j.Slf4j;
+import org.ddd.fundamental.workorder.client.MaterialClient;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
-public class WorkOrderApp {
+@EnableFeignClients
+@Slf4j
+public class WorkOrderApp implements CommandLineRunner {
+
+    @Autowired
+    private MaterialClient materialClient;
     public static void main(String[] args) {
         SpringApplication.run(WorkOrderApp.class,args);
+    }
+
+    @Override
+    public void run(String... args) throws Exception {
+        log.info("materials is {}", materialClient.materials());
     }
 }
