@@ -1,6 +1,6 @@
 package org.ddd.fundamental.material.domain.value.impl;
 
-import org.ddd.fundamental.material.domain.enums.BatchType;
+import org.ddd.fundamental.material.domain.enums.BatchHandleType;
 import org.ddd.fundamental.material.domain.value.MaterialBatchValue;
 import org.ddd.fundamental.workprocess.IWorkProcessHandler;
 import org.ddd.fundamental.workprocess.ProcessInput;
@@ -27,7 +27,7 @@ public class DefaultProcessHandler implements IWorkProcessHandler {
             throw new RuntimeException("输入批次不能多余一个");
         }
         MaterialBatchValue batch = inputs.singleBatch();
-        if (!batch.batchType().equals(BatchType.INPUT_BATCH)){
+        if (!batch.batchClassifyType().equals(BatchHandleType.INPUT_BATCH)){
             throw new RuntimeException("输入批次的类型不对");
         }
     }
@@ -35,7 +35,7 @@ public class DefaultProcessHandler implements IWorkProcessHandler {
     @Override
     public ProcessOutput output() {
         MaterialBatchValue value = inputs.singleBatch();
-        value.changeBatchType(BatchType.OUTPUT_BATCH);
+        value.changeBatchHandleType(BatchHandleType.OUTPUT_BATCH);
         MaterialBatchOutput output = new MaterialBatchOutput(Arrays.asList(value));
         //修改批次类型
         //修改批次号

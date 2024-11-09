@@ -1,6 +1,7 @@
 package org.ddd.fundamental.material.domain.value;
 
-import org.ddd.fundamental.material.domain.enums.BatchType;
+import org.ddd.fundamental.material.domain.enums.BatchClassifyType;
+import org.ddd.fundamental.material.domain.enums.BatchHandleType;
 import org.ddd.fundamental.material.value.MaterialId;
 import org.hibernate.annotations.Type;
 
@@ -49,23 +50,32 @@ public class MaterialBatchValue implements IBatch, IBatchNoGenerateStrategy{
     private IBatchNoGenerateStrategy strategy = this;
 
     @Enumerated(EnumType.STRING)
-    private BatchType batchType;
+    private BatchClassifyType batchClassifyType;
+
+    @Enumerated(EnumType.STRING)
+    private BatchHandleType batchHandleType;
 
     @SuppressWarnings("unused")
     protected MaterialBatchValue(){}
 
     public MaterialBatchValue(MaterialId materialId, int batchNumber,
-                              BatchType batchType){
+                              BatchClassifyType batchType){
         this.materialId = materialId;
         this.batchNumber = batchNumber;
-        this.batchType = batchType;
+        this.batchClassifyType = batchType;
+        this.batchHandleType = BatchHandleType.INPUT_BATCH;
         erpBatchCanSplit();
+        initBatchNo();
     }
 
     private void erpBatchCanSplit(){
-        if (this.batchType.equals(BatchType.ERP_BATCH)) {
+        if (this.batchClassifyType.equals(BatchClassifyType.ERP_BATCH)) {
             this.canSplit = true;
         }
+    }
+
+    private void initBatchNo() {
+        batchNo = strategy.generate(this);
     }
 
     public MaterialBatchValue changeStrategy(IBatchNoGenerateStrategy strategy) {
@@ -82,7 +92,7 @@ public class MaterialBatchValue implements IBatch, IBatchNoGenerateStrategy{
 
     @Override
     public String batchNo() {
-        batchNo = strategy.generate(this);
+        initBatchNo();
         return batchNo;
     }
 
@@ -154,8 +164,13 @@ public class MaterialBatchValue implements IBatch, IBatchNoGenerateStrategy{
         return null;
     }
 
-    public MaterialBatchValue changeBatchType(BatchType batchType){
-        this.batchType = batchType;
+    public MaterialBatchValue changeBatchClassifyType(BatchClassifyType batchType){
+        this.batchClassifyType = batchType;
+        return this;
+    }
+
+    public MaterialBatchValue changeBatchHandleType(BatchHandleType batchHandleType) {
+        this.batchHandleType = batchHandleType;
         return this;
     }
 
@@ -176,17 +191,17 @@ public class MaterialBatchValue implements IBatch, IBatchNoGenerateStrategy{
     }
 
     @Override
-    public BatchType batchType() {
-        return batchType;
+    public BatchClassifyType batchClassifyType() {
+        return batchClassifyType;
     }
 
     @Override
     public String generate(IBatch batch) {
         //默认的批次号,可以通过不同的策略进行修改
-        return defaultBatchNo(materialId(),batchNumber(),batchType());
+        return defaultBatchNo(materialId(),batchNumber(), batchClassifyType());
     }
 
-    private static String defaultBatchNo(MaterialId id, int batchNumber,BatchType batchType){
+    private static String defaultBatchNo(MaterialId id, int batchNumber, BatchClassifyType batchType){
         Date date = new Date();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String pre = simpleDateFormat.format(date);
@@ -204,8 +219,7 @@ public class MaterialBatchValue implements IBatch, IBatchNoGenerateStrategy{
                 ", batchNumber=" + batchNumber +
                 ", canSplit=" + canSplit +
                 ", canMerge=" + canMerge +
-                ", strategy=" + strategy +
-                ", batchType=" + batchType +
+                ", batchType=" + batchClassifyType +
                 '}';
     }
 }

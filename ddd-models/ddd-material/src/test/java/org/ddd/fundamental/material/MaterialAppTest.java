@@ -12,7 +12,7 @@ import org.springframework.test.context.junit4.SpringRunner;
  */
 @SpringBootTest(classes = MaterialApp.class)
 @RunWith(SpringRunner.class)
-public class MaterialTest {
+public class MaterialAppTest {
 
     /**
      * Rigorous Test :-)

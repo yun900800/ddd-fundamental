@@ -4,7 +4,7 @@ import org.ddd.fundamental.changeable.ChangeableInfo;
 import org.ddd.fundamental.material.domain.repository.MaterialRepository;
 import org.ddd.fundamental.material.value.MaterialId;
 import org.ddd.fundamental.material.MaterialMaster;
-import org.ddd.fundamental.material.MaterialTest;
+import org.ddd.fundamental.material.MaterialAppTest;
 import org.ddd.fundamental.material.value.PropsContainer;
 import org.junit.Assert;
 import org.junit.Test;
@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Set;
 
-public class MaterialRepositoryTest extends MaterialTest {
+public class MaterialRepositoryTest extends MaterialAppTest {
 
     @Autowired
     private MaterialRepository repository;

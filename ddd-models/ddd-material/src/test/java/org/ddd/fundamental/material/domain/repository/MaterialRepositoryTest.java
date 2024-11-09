@@ -5,12 +5,10 @@ import org.ddd.fundamental.changeable.ChangeableInfo;
 import org.ddd.fundamental.day.Auditable;
 import org.ddd.fundamental.material.value.MaterialId;
 import org.ddd.fundamental.material.MaterialMaster;
-import org.ddd.fundamental.material.MaterialTest;
+import org.ddd.fundamental.material.MaterialAppTest;
 import org.ddd.fundamental.material.domain.model.Material;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 
@@ -18,7 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MaterialRepositoryTest extends MaterialTest {
+public class MaterialRepositoryTest extends MaterialAppTest {
 
     @Autowired
     private MaterialRepository materialRepository;

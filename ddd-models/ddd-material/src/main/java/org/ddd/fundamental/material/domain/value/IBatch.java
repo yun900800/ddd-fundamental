@@ -1,7 +1,7 @@
 package org.ddd.fundamental.material.domain.value;
 
 import org.ddd.fundamental.core.ValueObject;
-import org.ddd.fundamental.material.domain.enums.BatchType;
+import org.ddd.fundamental.material.domain.enums.BatchClassifyType;
 import org.ddd.fundamental.material.value.MaterialId;
 
 import java.util.Map;
@@ -57,6 +57,6 @@ public interface IBatch extends ValueObject {
      * 批次类型
      * @return
      */
-    BatchType batchType();
+    BatchClassifyType batchClassifyType();
 
 }
