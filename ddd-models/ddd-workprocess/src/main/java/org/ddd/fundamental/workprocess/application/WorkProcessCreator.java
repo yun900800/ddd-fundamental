@@ -9,9 +9,9 @@ import org.ddd.fundamental.utils.DateUtils;
 import org.ddd.fundamental.workprocess.value.AuxiliaryWorkTime;
 import org.ddd.fundamental.workprocess.value.WorkProcessBeat;
 import org.ddd.fundamental.workprocess.value.WorkProcessQuality;
-import org.ddd.fundamental.workprocess.domain.model.WorkProcessNew;
+import org.ddd.fundamental.workprocess.domain.model.WorkProcessTemplate;
 import org.ddd.fundamental.workprocess.domain.repository.CraftsmanShipRepository;
-import org.ddd.fundamental.workprocess.domain.repository.WorkProcessNewRepository;
+import org.ddd.fundamental.workprocess.domain.repository.WorkProcessTemplateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -23,22 +23,22 @@ import java.util.List;
 @Slf4j
 public class WorkProcessCreator {
 
-    private List<WorkProcessNew> workProcessList;
+    private List<WorkProcessTemplate> workProcessList;
 
     @Autowired
-    private WorkProcessNewRepository processNewRepository;
+    private WorkProcessTemplateRepository processNewRepository;
 
     @Autowired
     private CraftsmanShipRepository craftsmanShipRepository;
 
-    public static List<WorkProcessNew> createWorkProcessList() {
-        List<WorkProcessNew> workProcessNews = new ArrayList<>();
+    public static List<WorkProcessTemplate> createWorkProcessList() {
+        List<WorkProcessTemplate> workProcessNews = new ArrayList<>();
         Generators.fill(workProcessNews,()->createWorkProcessNew(),20);
         return workProcessNews;
     }
 
-    public static WorkProcessNew createWorkProcessNew(){
-        WorkProcessNew workProcessNew = new WorkProcessNew(
+    public static WorkProcessTemplate createWorkProcessNew(){
+        WorkProcessTemplate workProcessNew = new WorkProcessTemplate(
                 CollectionUtils.random(createWorkProcessInfo()),
                 CollectionUtils.random(createAuxiliaryWorkTimes()),
                 WorkProcessQuality.newBuilder()

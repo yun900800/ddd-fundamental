@@ -2,7 +2,7 @@ package org.ddd.fundamental.workprocess.domain.model;
 
 import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.core.AbstractAggregateRoot;
-import org.ddd.fundamental.workprocess.domain.repository.WorkProcessNewRepository;
+import org.ddd.fundamental.workprocess.domain.repository.WorkProcessTemplateRepository;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.Column;
@@ -21,16 +21,16 @@ public class CraftsmanShip extends AbstractAggregateRoot<CraftsmanShipId> {
     private List<WorkProcessId> workProcessIds = new ArrayList<>();
 
     @Transient
-    private Map<WorkProcessId,WorkProcessNew> workProcessMap = new HashMap<>();
+    private Map<WorkProcessId, WorkProcessTemplate> workProcessMap = new HashMap<>();
 
     @Transient
-    private WorkProcessNewRepository repository;
+    private WorkProcessTemplateRepository repository;
 
     @SuppressWarnings("unused")
     private CraftsmanShip(){}
 
     public CraftsmanShip(List<WorkProcessId> workProcessIds,
-                         WorkProcessNewRepository repository){
+                         WorkProcessTemplateRepository repository){
         super(CraftsmanShipId.randomId(CraftsmanShipId.class));
         removeDuplicate(workProcessIds);
         this.repository = repository;
@@ -55,23 +55,23 @@ public class CraftsmanShip extends AbstractAggregateRoot<CraftsmanShipId> {
         }
     }
 
-    private void initCache(List<WorkProcessNew> processList) {
-        for (WorkProcessNew processNew: processList) {
+    private void initCache(List<WorkProcessTemplate> processList) {
+        for (WorkProcessTemplate processNew: processList) {
             workProcessMap.put(processNew.id(),processNew);
         }
     }
 
-    private List<WorkProcessNew> processNewsFromDB() {
-        List<WorkProcessNew> processList = repository.findByIdIn(new HashSet<>(workProcessIds));
+    private List<WorkProcessTemplate> processNewsFromDB() {
+        List<WorkProcessTemplate> processList = repository.findByIdIn(new HashSet<>(workProcessIds));
         return processList;
     }
 
     private void validate(){
-        List<WorkProcessNew> processList = processNewsFromDB();
+        List<WorkProcessTemplate> processList = processNewsFromDB();
         int size = processList.size();
         for (int i = 1 ; i < size-1; i++) {
-            WorkProcessNew pre = processList.get(i-1);
-            WorkProcessNew cur = processList.get(i);
+            WorkProcessTemplate pre = processList.get(i-1);
+            WorkProcessTemplate cur = processList.get(i);
 
             log.info(cur.toString());
             if (!pre.acceptNext(cur.id()) || !cur.acceptPre(pre.id())) {
@@ -85,7 +85,7 @@ public class CraftsmanShip extends AbstractAggregateRoot<CraftsmanShipId> {
         return new ArrayList<>(workProcessIds);
     }
 
-    public WorkProcessNewRepository getRepository() {
+    public WorkProcessTemplateRepository getRepository() {
         return repository;
     }
 

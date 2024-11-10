@@ -16,13 +16,13 @@ public class CraftsmanShipRepositoryTest extends WorkProcessAppTest {
     private CraftsmanShipRepository craftsmanShipRepository;
 
     @Autowired
-    private WorkProcessNewRepository workProcessNewRepository;
+    private WorkProcessTemplateRepository workProcessNewRepository;
 
     @Test
     public void createCraftsmanShip(){
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
-        List<WorkProcessNew> workProcessNewList = workProcessNewRepository.findAll();
+        List<WorkProcessTemplate> workProcessNewList = workProcessNewRepository.findAll();
         List<WorkProcessId> workProcessIds = new ArrayList<>();
         for (int i = 0 ; i< 5;i++) {
             workProcessIds.add(CollectionUtils.random(workProcessNewList).id());

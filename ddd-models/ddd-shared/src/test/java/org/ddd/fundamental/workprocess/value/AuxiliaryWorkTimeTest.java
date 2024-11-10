@@ -1,4 +1,4 @@
-package org.ddd.fundamental.workprocess;
+package org.ddd.fundamental.workprocess.value;
 
 import org.ddd.fundamental.day.range.DateRange;
 import org.ddd.fundamental.utils.DateUtils;

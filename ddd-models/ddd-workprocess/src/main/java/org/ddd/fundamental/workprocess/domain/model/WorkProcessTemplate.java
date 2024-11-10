@@ -4,18 +4,17 @@ import org.ddd.fundamental.changeable.ChangeableInfo;
 import org.ddd.fundamental.core.AbstractAggregateRoot;
 import org.ddd.fundamental.factory.EquipmentId;
 import org.ddd.fundamental.factory.ToolingEquipmentId;
-import org.ddd.fundamental.workprocess.value.AuxiliaryWorkTime;
-import org.ddd.fundamental.workprocess.value.WorkProcessBeat;
-import org.ddd.fundamental.workprocess.value.WorkProcessQuality;
+import org.ddd.fundamental.workprocess.value.*;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "w_work_process_new")
-public class WorkProcessNew extends AbstractAggregateRoot<WorkProcessId> {
+public class WorkProcessTemplate extends AbstractAggregateRoot<WorkProcessId> {
 
     /**
      * 工序基本信息
@@ -65,16 +64,20 @@ public class WorkProcessNew extends AbstractAggregateRoot<WorkProcessId> {
     @Column(columnDefinition = "json" , name = "next_ids")
     private Set<WorkProcessId> nextWorkProcessIds = new HashSet<>();
 
+    @Embedded
     private WorkProcessBeat workProcessBeat;
+
+    @Embedded
+    private ProductResources resources = new ProductResources(new ArrayList<>());
 
 
     @SuppressWarnings("unused")
-    private WorkProcessNew(){}
+    private WorkProcessTemplate(){}
 
-    public WorkProcessNew(ChangeableInfo workProcessInfo,
-                          AuxiliaryWorkTime auxiliaryWorkTime,
-                          WorkProcessQuality workProcessQuality,
-                          WorkProcessBeat workProcessBeat){
+    public WorkProcessTemplate(ChangeableInfo workProcessInfo,
+                               AuxiliaryWorkTime auxiliaryWorkTime,
+                               WorkProcessQuality workProcessQuality,
+                               WorkProcessBeat workProcessBeat){
         super(WorkProcessId.randomId(WorkProcessId.class));
         this.workProcessInfo = workProcessInfo;
         this.auxiliaryWorkTime = auxiliaryWorkTime;
@@ -84,25 +87,35 @@ public class WorkProcessNew extends AbstractAggregateRoot<WorkProcessId> {
         this.toolingEquipmentIds = new HashSet<>();
     }
 
+    public WorkProcessTemplate addResource(ProductResource resource){
+        this.resources.addResource(resource);
+        return this;
+    }
+
+    public WorkProcessTemplate removeResource(ProductResource resource){
+        this.resources.removeResource(resource);
+        return this;
+    }
+
     private void defaultEquipmentIds(){
         if (null == equipmentIds) {
             this.equipmentIds = new HashSet<>();
         }
     }
 
-    public WorkProcessNew addEquipmentId(EquipmentId id){
+    public WorkProcessTemplate addEquipmentId(EquipmentId id){
         defaultEquipmentIds();
         this.equipmentIds.add(id);
         return this;
     }
 
-    public WorkProcessNew removeEquipmentId(EquipmentId id){
+    public WorkProcessTemplate removeEquipmentId(EquipmentId id){
         defaultEquipmentIds();
         this.equipmentIds.remove(id);
         return this;
     }
 
-    public WorkProcessNew clearEquipmentIds(){
+    public WorkProcessTemplate clearEquipmentIds(){
         defaultEquipmentIds();
         this.equipmentIds.clear();
         return this;
@@ -114,18 +127,18 @@ public class WorkProcessNew extends AbstractAggregateRoot<WorkProcessId> {
         }
     }
 
-    public WorkProcessNew addToolingId(ToolingEquipmentId id){
+    public WorkProcessTemplate addToolingId(ToolingEquipmentId id){
         defaultToolingIds();
         this.toolingEquipmentIds.add(id);
         return this;
     }
 
-    public WorkProcessNew removeToolingId(ToolingEquipmentId id){
+    public WorkProcessTemplate removeToolingId(ToolingEquipmentId id){
         defaultToolingIds();
         this.toolingEquipmentIds.remove(id);
         return this;
     }
-    public WorkProcessNew clearToolingIds(){
+    public WorkProcessTemplate clearToolingIds(){
         defaultToolingIds();
         this.toolingEquipmentIds.clear();
         return this;
@@ -137,19 +150,19 @@ public class WorkProcessNew extends AbstractAggregateRoot<WorkProcessId> {
         }
     }
 
-    public WorkProcessNew addPreId(WorkProcessId preId){
+    public WorkProcessTemplate addPreId(WorkProcessId preId){
         defaultPreIds();
         this.preWorkProcessIds.add(preId);
         return this;
     }
 
-    public WorkProcessNew removePreId(WorkProcessId preId){
+    public WorkProcessTemplate removePreId(WorkProcessId preId){
         defaultPreIds();
         this.preWorkProcessIds.remove(preId);
         return this;
     }
 
-    public WorkProcessNew clearPreIds(){
+    public WorkProcessTemplate clearPreIds(){
         defaultPreIds();
         this.preWorkProcessIds.clear();
         return this;
@@ -161,19 +174,19 @@ public class WorkProcessNew extends AbstractAggregateRoot<WorkProcessId> {
         }
     }
 
-    public WorkProcessNew addNextId(WorkProcessId preId){
+    public WorkProcessTemplate addNextId(WorkProcessId preId){
         defaultNextIds();
         this.nextWorkProcessIds.add(preId);
         return this;
     }
 
-    public WorkProcessNew removeNextId(WorkProcessId preId){
+    public WorkProcessTemplate removeNextId(WorkProcessId preId){
         defaultNextIds();
         this.nextWorkProcessIds.remove(preId);
         return this;
     }
 
-    public WorkProcessNew clearNextIds(){
+    public WorkProcessTemplate clearNextIds(){
         defaultNextIds();
         this.nextWorkProcessIds.clear();
         return this;

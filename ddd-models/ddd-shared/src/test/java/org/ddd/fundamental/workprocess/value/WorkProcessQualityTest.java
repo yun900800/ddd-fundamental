@@ -1,4 +1,4 @@
-package org.ddd.fundamental.workprocess;
+package org.ddd.fundamental.workprocess.value;
 
 import org.ddd.fundamental.workprocess.value.WorkProcessQuality;
 import org.junit.Assert;
