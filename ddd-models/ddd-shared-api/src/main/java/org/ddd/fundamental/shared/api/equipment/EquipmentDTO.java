@@ -29,6 +29,10 @@ public class EquipmentDTO extends AbstractDTO<EquipmentId> {
         return super.id;
     }
 
+    public String toJson() {
+        return super.toJson();
+    }
+
     @Override
     public String toString() {
         return "EquipmentDTO{" +

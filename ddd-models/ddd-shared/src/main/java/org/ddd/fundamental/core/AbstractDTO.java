@@ -1,6 +1,8 @@
 package org.ddd.fundamental.core;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.lang.NonNull;
 
 import javax.persistence.Id;
@@ -10,6 +12,8 @@ public abstract class AbstractDTO<ID extends DomainObjectId> implements Identifi
     @Id
     @JsonProperty("id")
     protected ID id;
+
+    private static final ObjectMapper mapper  = new ObjectMapper();
 
     protected AbstractDTO() {
     }
@@ -22,6 +26,16 @@ public abstract class AbstractDTO<ID extends DomainObjectId> implements Identifi
     protected AbstractDTO(@NonNull AbstractDTO<ID> source) {
         Objects.requireNonNull(source, "source must not be null");
         this.id = source.id;
+    }
+
+    protected String toJson() {
+        String result = "";
+        try {
+            result  = mapper.writeValueAsString(this);
+        } catch (JsonProcessingException e){
+            result = "error";
+        }
+        return result;
     }
 
     /**

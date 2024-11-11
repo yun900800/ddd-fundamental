@@ -30,6 +30,9 @@ public class ToolingDTO extends AbstractDTO<ToolingEquipmentId> {
         return toolingEquipmentValue;
     }
 
+    public String toJson() {
+        return super.toJson();
+    }
     @Override
     public String toString() {
         return "ToolingDTO{" +
