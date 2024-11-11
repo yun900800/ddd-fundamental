@@ -1,8 +1,11 @@
 package org.ddd.fundamental.material.application;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.material.domain.model.Material;
 import org.ddd.fundamental.material.domain.repository.MaterialRepository;
+import org.ddd.fundamental.material.value.MaterialId;
 import org.ddd.fundamental.shared.api.material.MaterialDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -12,6 +15,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -69,6 +73,38 @@ public class MaterialApplication {
         storeMaterialsToCacheWithNewMethod(materialDTOS);
         return materialDTOS;
     }
+
+    /**
+     * 从缓存中获取数据
+     * @param ids
+     * @return
+     */
+    private List<MaterialDTO> fetchMaterialsFromCache(List<String> ids) {
+        List<Object> objects = newRedisTemplate.opsForValue().multiGet(ids);
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.convertValue(objects, new TypeReference<>() {
+        });
+
+    }
+
+    /**
+     * 根据物料ids 批量查询数据
+     * @param ids
+     * @return
+     */
+    public List<MaterialDTO> materialsByIds(List<String> ids){
+        List<MaterialDTO> materials = fetchMaterialsFromCache(ids);
+        if (CollectionUtils.isEmpty(materials)) {
+            List<Material> materialList = materialRepository.findByIdIn(
+                    ids.stream().map(v->new MaterialId(v)).collect(Collectors.toList())
+            );
+            materials = materialList.stream()
+                    .map(v->new MaterialDTO(v.getMaterialMaster(),v.id()))
+                    .collect(Collectors.toList());
+        }
+        return materials;
+    }
+
 
 
 }

@@ -3,6 +3,7 @@ package org.ddd.fundamental.material.rest;
 import org.ddd.fundamental.material.application.MaterialApplication;
 import org.ddd.fundamental.shared.api.material.MaterialDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,5 +18,10 @@ public class MaterialRest {
     @RequestMapping("/material/materials")
     public List<MaterialDTO> materials() {
         return application.materials();
+    }
+
+    @RequestMapping("/material/materialsByIds")
+    public List<MaterialDTO> materialsByIds(@RequestBody List<String> ids){
+        return application.materialsByIds(ids);
     }
 }

@@ -8,6 +8,9 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.Objects;
 
+/**
+ * 辅助作业时间
+ */
 @Embeddable
 @MappedSuperclass
 public class AuxiliaryWorkTime implements ValueObject, Cloneable {

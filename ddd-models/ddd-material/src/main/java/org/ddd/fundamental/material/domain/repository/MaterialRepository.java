@@ -12,4 +12,6 @@ public interface MaterialRepository extends BaseRepository<Material, MaterialId>
     @Query(value = "SELECT * FROM material WHERE material_json -> ?1 = ?2", nativeQuery = true)
     List<Material> findByAttribute(String key, String value);
 
+    List<Material> findByIdIn(List<MaterialId> ids);
+
 }
