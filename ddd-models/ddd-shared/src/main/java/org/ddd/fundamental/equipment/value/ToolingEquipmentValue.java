@@ -12,7 +12,7 @@ import java.util.Objects;
 
 @Embeddable
 @MappedSuperclass
-public class ToolingEquipmentValueObject implements ValueObject, ProductResources, Cloneable {
+public class ToolingEquipmentValue implements ValueObject, ProductResources, Cloneable {
 
     @AttributeOverrides({
             @AttributeOverride(name  = "name", column = @Column(name = "equipment_name", nullable = false)),
@@ -34,32 +34,32 @@ public class ToolingEquipmentValueObject implements ValueObject, ProductResource
     private MaintainStandard standard;
 
     @SuppressWarnings("unused")
-    private ToolingEquipmentValueObject(){}
+    private ToolingEquipmentValue(){}
 
-    private ToolingEquipmentValueObject(ChangeableInfo toolingEquipment,
-                                       MaintainStandard standard,
-                                        ToolingType toolingType,
-                                        String specification ){
+    private ToolingEquipmentValue(ChangeableInfo toolingEquipment,
+                                  MaintainStandard standard,
+                                  ToolingType toolingType,
+                                  String specification ){
         this.toolingEquipment = toolingEquipment;
         this.standard = standard;
         this.toolingType = toolingType;
         this.specification = specification;
     }
 
-    public static ToolingEquipmentValueObject create(ChangeableInfo toolingEquipment,
-                                                     MaintainStandard standard){
-        return new ToolingEquipmentValueObject(toolingEquipment,standard,
+    public static ToolingEquipmentValue create(ChangeableInfo toolingEquipment,
+                                               MaintainStandard standard){
+        return new ToolingEquipmentValue(toolingEquipment,standard,
                 ToolingType.GZ,"默认没有规格型号");
     }
 
-    public static ToolingEquipmentValueObject create(ChangeableInfo toolingEquipment,
-                                                     MaintainStandard standard,
-                                                     ToolingType toolingType, String specification){
-        return new ToolingEquipmentValueObject(toolingEquipment,standard,
+    public static ToolingEquipmentValue create(ChangeableInfo toolingEquipment,
+                                               MaintainStandard standard,
+                                               ToolingType toolingType, String specification){
+        return new ToolingEquipmentValue(toolingEquipment,standard,
                 toolingType,specification);
     }
 
-    public ToolingEquipmentValueObject enableUse(){
+    public ToolingEquipmentValue enableUse(){
         this.toolingEquipment = this.toolingEquipment.enableUse();
         return this;
     }
@@ -90,8 +90,8 @@ public class ToolingEquipmentValueObject implements ValueObject, ProductResource
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof ToolingEquipmentValueObject)) return false;
-        ToolingEquipmentValueObject that = (ToolingEquipmentValueObject) o;
+        if (!(o instanceof ToolingEquipmentValue)) return false;
+        ToolingEquipmentValue that = (ToolingEquipmentValue) o;
         return Objects.equals(toolingEquipment, that.toolingEquipment) && Objects.equals(standard, that.standard)
                 && Objects.equals(toolingType, that.toolingType) && Objects.equals(specification, that.specification);
     }
@@ -110,9 +110,9 @@ public class ToolingEquipmentValueObject implements ValueObject, ProductResource
     }
 
     @Override
-    public ToolingEquipmentValueObject clone() {
+    public ToolingEquipmentValue clone() {
         try {
-            ToolingEquipmentValueObject clone = (ToolingEquipmentValueObject) super.clone();
+            ToolingEquipmentValue clone = (ToolingEquipmentValue) super.clone();
             // TODO: copy mutable state here, so the clone can't change the internals of the original
             return clone;
         } catch (CloneNotSupportedException e) {

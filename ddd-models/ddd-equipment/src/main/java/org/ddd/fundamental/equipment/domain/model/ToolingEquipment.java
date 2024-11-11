@@ -1,7 +1,7 @@
 package org.ddd.fundamental.equipment.domain.model;
 
 import org.ddd.fundamental.core.AbstractAggregateRoot;
-import org.ddd.fundamental.equipment.value.ToolingEquipmentValueObject;
+import org.ddd.fundamental.equipment.value.ToolingEquipmentValue;
 import org.ddd.fundamental.factory.ToolingEquipmentId;
 
 import javax.persistence.Entity;
@@ -13,7 +13,7 @@ import javax.persistence.Table;
 @Table(name = "tooling_equipment")
 public class ToolingEquipment extends AbstractAggregateRoot<ToolingEquipmentId> {
 
-    private ToolingEquipmentValueObject toolingEquipmentInfo;
+    private ToolingEquipmentValue toolingEquipmentInfo;
 
     /**
      * 资产编号
@@ -31,8 +31,8 @@ public class ToolingEquipment extends AbstractAggregateRoot<ToolingEquipmentId> 
     @SuppressWarnings("unused")
     private ToolingEquipment(){}
 
-    public ToolingEquipment(ToolingEquipmentValueObject toolingEquipmentInfo,
-                            String assetNo,String assetCode){
+    public ToolingEquipment(ToolingEquipmentValue toolingEquipmentInfo,
+                            String assetNo, String assetCode){
         super(ToolingEquipmentId.randomId(ToolingEquipmentId.class));
         this.toolingEquipmentInfo = toolingEquipmentInfo;
         this.assetNo = assetNo;
@@ -45,7 +45,7 @@ public class ToolingEquipment extends AbstractAggregateRoot<ToolingEquipmentId> 
         return this;
     }
 
-    public ToolingEquipmentValueObject getToolingEquipmentInfo() {
+    public ToolingEquipmentValue getToolingEquipmentInfo() {
         return toolingEquipmentInfo.clone();
     }
 

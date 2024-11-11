@@ -159,45 +159,45 @@ public class ToolingEquipmentCreator {
     }
 
     public static List<ToolingEquipment> createToolingList(){
-        ToolingEquipment toolingEquipment0 = new ToolingEquipment(ToolingEquipmentValueObject
+        ToolingEquipment toolingEquipment0 = new ToolingEquipment(ToolingEquipmentValue
                 .create(ChangeableInfo.create("加工中心","这是一个加工设备设备"),
                         MaintainStandard.create("这个不需要检查",new Date()),
                         ToolingType.SB,"VMC-850"),
                 "ASSET_SB_JGZX_1","SB_JGZX_1");
-        ToolingEquipment toolingEquipment1 = new ToolingEquipment(ToolingEquipmentValueObject
+        ToolingEquipment toolingEquipment1 = new ToolingEquipment(ToolingEquipmentValue
                 .create(ChangeableInfo.create("刀体",""),
                         MaintainStandard.create("这个不需要检查",new Date()),
                         ToolingType.JJ,"精镗孔镗刀体"),
                 "ASSET_JJ_DT_1","JJ_DT_1");
 
-        ToolingEquipment toolingEquipment2 = new ToolingEquipment(ToolingEquipmentValueObject
+        ToolingEquipment toolingEquipment2 = new ToolingEquipment(ToolingEquipmentValue
                 .create(ChangeableInfo.create("刀体",""),
                         MaintainStandard.create("这个不需要检查",new Date()),
                         ToolingType.JJ,"铣刀盘"),
                 "ASSET_JJ_DT_2","JJ_DT_2");
-        ToolingEquipment toolingEquipment3 = new ToolingEquipment(ToolingEquipmentValueObject
+        ToolingEquipment toolingEquipment3 = new ToolingEquipment(ToolingEquipmentValue
                 .create(ChangeableInfo.create("刀体",""),
                         MaintainStandard.create("这个不需要检查",new Date()),
                         ToolingType.JJ,"ER刀体"),
                 "ASSET_JJ_DT_3","JJ_DT_3");
 
-        ToolingEquipment toolingEquipment4 = new ToolingEquipment(ToolingEquipmentValueObject
+        ToolingEquipment toolingEquipment4 = new ToolingEquipment(ToolingEquipmentValue
                 .create(ChangeableInfo.create("铣大面",""),
                         MaintainStandard.create("这个不需要检查",new Date()),
                         ToolingType.GZ,"没有规格型号"),
                 "ASSET_GZ_XDM_1","GZ_XDM_1");
 
-        ToolingEquipment toolingEquipment5 = new ToolingEquipment(ToolingEquipmentValueObject
+        ToolingEquipment toolingEquipment5 = new ToolingEquipment(ToolingEquipmentValue
                 .create(ChangeableInfo.create("铣顶面转",""),
                         MaintainStandard.create("这个不需要检查",new Date()),
                         ToolingType.GZ,"没有规格型号"),
                 "ASSET_GZ_XDMZ_1","GZ_XDMZ_1");
-        ToolingEquipment toolingEquipment6 = new ToolingEquipment(ToolingEquipmentValueObject
+        ToolingEquipment toolingEquipment6 = new ToolingEquipment(ToolingEquipmentValue
                 .create(ChangeableInfo.create("铣平面",""),
                         MaintainStandard.create("这个不需要检查",new Date()),
                         ToolingType.GZ,"没有规格型号"),
                 "ASSET_GZ_XPM_1","GZ_XPM_1");
-        ToolingEquipment toolingEquipment7 = new ToolingEquipment(ToolingEquipmentValueObject
+        ToolingEquipment toolingEquipment7 = new ToolingEquipment(ToolingEquipmentValue
                 .create(ChangeableInfo.create("铣侧面转2空",""),
                         MaintainStandard.create("这个不需要检查",new Date()),
                         ToolingType.GZ,"没有规格型号"),

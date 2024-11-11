@@ -237,6 +237,9 @@ public class EquipmentMaster implements ValueObject, ProductResources, Cloneable
         }
     }
 
+    public ChangeableInfo getInfo() {
+        return info.clone();
+    }
 
     @Override
     public void input(ProductInput input) {
