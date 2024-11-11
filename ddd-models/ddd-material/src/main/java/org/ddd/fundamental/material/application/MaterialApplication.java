@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Service
@@ -41,7 +42,7 @@ public class MaterialApplication {
         log.info("存储数据到缓存");
         if (!CollectionUtils.isEmpty(materials)) {
             for (MaterialDTO materialDTO: materials) {
-                redisTemplate.opsForValue().set(materialDTO.id().toUUID(),materialDTO.toJson());
+                redisTemplate.opsForValue().set(materialDTO.id().toUUID(),materialDTO.toJson(),60*10, TimeUnit.SECONDS);
             }
         }
     }
@@ -50,7 +51,7 @@ public class MaterialApplication {
         log.info("存储数据到缓存");
         if (!CollectionUtils.isEmpty(materials)) {
             for (MaterialDTO materialDTO: materials) {
-                newRedisTemplate.opsForValue().set(materialDTO.id().toUUID(),materialDTO);
+                newRedisTemplate.opsForValue().set(materialDTO.id().toUUID(),materialDTO, 60*10, TimeUnit.SECONDS);
             }
         }
     }
