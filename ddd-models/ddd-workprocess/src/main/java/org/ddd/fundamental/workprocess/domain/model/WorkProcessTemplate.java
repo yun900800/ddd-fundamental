@@ -5,6 +5,10 @@ import org.ddd.fundamental.core.AbstractAggregateRoot;
 import org.ddd.fundamental.factory.EquipmentId;
 import org.ddd.fundamental.factory.ToolingEquipmentId;
 import org.ddd.fundamental.workprocess.value.*;
+import org.ddd.fundamental.workprocess.value.quantity.WorkProcessQuantity;
+import org.ddd.fundamental.workprocess.value.resources.ProductResource;
+import org.ddd.fundamental.workprocess.value.resources.ProductResources;
+import org.ddd.fundamental.workprocess.value.time.AuxiliaryWorkTime;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -34,7 +38,7 @@ public class WorkProcessTemplate extends AbstractAggregateRoot<WorkProcessId> {
     private AuxiliaryWorkTime auxiliaryWorkTime;
 
     @Embedded
-    private WorkProcessQuality workProcessQuality;
+    private WorkProcessQuantity workProcessQuality;
 
     /**
      * 工序对应的设备ids
@@ -76,7 +80,7 @@ public class WorkProcessTemplate extends AbstractAggregateRoot<WorkProcessId> {
 
     public WorkProcessTemplate(ChangeableInfo workProcessInfo,
                                AuxiliaryWorkTime auxiliaryWorkTime,
-                               WorkProcessQuality workProcessQuality,
+                               WorkProcessQuantity workProcessQuality,
                                WorkProcessBeat workProcessBeat){
         super(WorkProcessId.randomId(WorkProcessId.class));
         this.workProcessInfo = workProcessInfo;
@@ -228,7 +232,7 @@ public class WorkProcessTemplate extends AbstractAggregateRoot<WorkProcessId> {
         return auxiliaryWorkTime.clone();
     }
 
-    public WorkProcessQuality getWorkProcessQuality() {
+    public WorkProcessQuantity getWorkProcessQuality() {
         return workProcessQuality.clone();
     }
 

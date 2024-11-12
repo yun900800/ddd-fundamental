@@ -3,9 +3,9 @@ package org.ddd.fundamental.workprocess.domain.model;
 import org.ddd.fundamental.changeable.ChangeableInfo;
 import org.ddd.fundamental.day.range.DateRange;
 import org.ddd.fundamental.utils.DateUtils;
-import org.ddd.fundamental.workprocess.value.AuxiliaryWorkTime;
+import org.ddd.fundamental.workprocess.value.time.AuxiliaryWorkTime;
 import org.ddd.fundamental.workprocess.value.WorkProcessBeat;
-import org.ddd.fundamental.workprocess.value.WorkProcessQuality;
+import org.ddd.fundamental.workprocess.value.quantity.WorkProcessQuantity;
 import org.junit.Test;
 
 public class WorkProcessNewTest {
@@ -30,7 +30,7 @@ public class WorkProcessNewTest {
         WorkProcessTemplate workProcessNew = new WorkProcessTemplate(
                 ChangeableInfo.create("主板加工工序","这是用来加工新能源车的主板的工序"),
                 create(),
-                WorkProcessQuality.newBuilder()
+                WorkProcessQuantity.newBuilder()
                         .targetQuantity(1000)
                         .unQualifiedQuantity(20)
                         .transferQuantityWithOverCross(10)

@@ -1,8 +1,8 @@
-package org.ddd.fundamental.workprocess.value;
+package org.ddd.fundamental.workprocess.value.time;
 
 import org.ddd.fundamental.day.range.DateRange;
 import org.ddd.fundamental.utils.DateUtils;
-import org.ddd.fundamental.workprocess.value.AuxiliaryWorkTime;
+import org.ddd.fundamental.workprocess.value.time.AuxiliaryWorkTime;
 import org.junit.Assert;
 import org.junit.Test;
 

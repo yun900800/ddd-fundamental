@@ -1,4 +1,4 @@
-package org.ddd.fundamental.workprocess.value;
+package org.ddd.fundamental.workprocess.value.quantity;
 
 import org.ddd.fundamental.core.ValueObject;
 
@@ -11,7 +11,7 @@ import java.util.Objects;
  */
 @Embeddable
 @MappedSuperclass
-public class WorkProcessTemplateQuality implements ValueObject, Cloneable {
+public class WorkProcessTemplateQuantity implements ValueObject, Cloneable {
 
     /**
      * 工序模板转交比例
@@ -34,12 +34,12 @@ public class WorkProcessTemplateQuality implements ValueObject, Cloneable {
     private Double targetQualifiedRate;
 
     @SuppressWarnings("unused")
-    private WorkProcessTemplateQuality(){}
+    private WorkProcessTemplateQuantity(){}
 
-    private WorkProcessTemplateQuality(double transferPercent,
-                                       double overCrossPercent,
-                                       double owePaymentPercent,
-                                       double targetQualifiedRate){
+    private WorkProcessTemplateQuantity(double transferPercent,
+                                        double overCrossPercent,
+                                        double owePaymentPercent,
+                                        double targetQualifiedRate){
         this.transferPercent = transferPercent;
         this.overCrossPercent = overCrossPercent;
         this.owePaymentPercent = owePaymentPercent;
@@ -84,7 +84,7 @@ public class WorkProcessTemplateQuality implements ValueObject, Cloneable {
 
 
     public interface BuildStep {
-        WorkProcessTemplateQuality build();
+        WorkProcessTemplateQuantity build();
     }
 
     public static class Builder implements TargetStep,
@@ -145,8 +145,8 @@ public class WorkProcessTemplateQuality implements ValueObject, Cloneable {
         }
 
         @Override
-        public WorkProcessTemplateQuality build() {
-            WorkProcessTemplateQuality quality = new WorkProcessTemplateQuality();
+        public WorkProcessTemplateQuantity build() {
+            WorkProcessTemplateQuantity quality = new WorkProcessTemplateQuantity();
             quality.targetQualifiedRate = targetQualifiedRate;
             if (transferPercent != null) {
                 quality.transferPercent = transferPercent;
@@ -164,8 +164,8 @@ public class WorkProcessTemplateQuality implements ValueObject, Cloneable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof WorkProcessTemplateQuality)) return false;
-        WorkProcessTemplateQuality quality = (WorkProcessTemplateQuality) o;
+        if (!(o instanceof WorkProcessTemplateQuantity)) return false;
+        WorkProcessTemplateQuantity quality = (WorkProcessTemplateQuantity) o;
         return Objects.equals(transferPercent, quality.transferPercent) && Objects.equals(overCrossPercent, quality.overCrossPercent) && Objects.equals(owePaymentPercent, quality.owePaymentPercent) && Objects.equals(targetQualifiedRate, quality.targetQualifiedRate);
     }
 
@@ -185,9 +185,9 @@ public class WorkProcessTemplateQuality implements ValueObject, Cloneable {
     }
 
     @Override
-    public WorkProcessTemplateQuality clone() {
+    public WorkProcessTemplateQuantity clone() {
         try {
-            WorkProcessTemplateQuality clone = (WorkProcessTemplateQuality) super.clone();
+            WorkProcessTemplateQuantity clone = (WorkProcessTemplateQuantity) super.clone();
             // TODO: copy mutable state here, so the clone can't change the internals of the original
             return clone;
         } catch (CloneNotSupportedException e) {

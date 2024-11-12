@@ -1,4 +1,4 @@
-package org.ddd.fundamental.workprocess.value;
+package org.ddd.fundamental.workprocess.value.time;
 
 import org.ddd.fundamental.core.ValueObject;
 
@@ -9,7 +9,7 @@ import java.time.Instant;
 import java.util.Objects;
 
 /**
- * 工序关键时间
+ * 工序关键时间(跟工序数据有关而跟工序模板无关)
  */
 @MappedSuperclass
 @Embeddable

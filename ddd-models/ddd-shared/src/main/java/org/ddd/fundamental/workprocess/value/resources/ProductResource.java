@@ -1,4 +1,4 @@
-package org.ddd.fundamental.workprocess.value;
+package org.ddd.fundamental.workprocess.value.resources;
 
 import org.ddd.fundamental.changeable.ChangeableInfo;
 import org.ddd.fundamental.core.DomainObjectId;

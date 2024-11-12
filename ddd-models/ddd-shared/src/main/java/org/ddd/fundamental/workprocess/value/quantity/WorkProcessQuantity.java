@@ -1,4 +1,4 @@
-package org.ddd.fundamental.workprocess.value;
+package org.ddd.fundamental.workprocess.value.quantity;
 
 
 import org.ddd.fundamental.core.ValueObject;
@@ -12,7 +12,7 @@ import java.util.Objects;
  */
 @Embeddable
 @MappedSuperclass
-public class WorkProcessQuality implements ValueObject, Cloneable {
+public class WorkProcessQuantity implements ValueObject, Cloneable {
 
     /**
      * 工序目标数量
@@ -50,15 +50,15 @@ public class WorkProcessQuality implements ValueObject, Cloneable {
     private Integer owePaymentPercent;
 
     @SuppressWarnings("unused")
-    private WorkProcessQuality(){}
+    private WorkProcessQuantity(){}
 
-    private WorkProcessQuality(int targetQuantity,
-                               int unQualifiedQuantity,
-                               int transferQuantity,
-                               Integer overCrossQuantity,
-                               Integer owePaymentQuantity,
-                               Integer overCrossPercent,
-                               Integer owePaymentPercent){
+    private WorkProcessQuantity(int targetQuantity,
+                                int unQualifiedQuantity,
+                                int transferQuantity,
+                                Integer overCrossQuantity,
+                                Integer owePaymentQuantity,
+                                Integer overCrossPercent,
+                                Integer owePaymentPercent){
         this.targetQuantity = targetQuantity;
         this.unQualifiedQuantity = unQualifiedQuantity;
         this.transferQuantity = transferQuantity;
@@ -68,29 +68,29 @@ public class WorkProcessQuality implements ValueObject, Cloneable {
         this.owePaymentPercent = owePaymentPercent;
     }
 
-    public static WorkProcessQuality create(int targetQuantity,
-                                            int unQualifiedQuantity,
-                                            int transferQuantity,
-                                            Integer overCrossQuantity,
-                                            Integer owePaymentQuantity,
-                                            Integer overCrossPercent,
-                                            Integer owePaymentPercent){
-        return new WorkProcessQuality(targetQuantity,unQualifiedQuantity,transferQuantity
+    public static WorkProcessQuantity create(int targetQuantity,
+                                             int unQualifiedQuantity,
+                                             int transferQuantity,
+                                             Integer overCrossQuantity,
+                                             Integer owePaymentQuantity,
+                                             Integer overCrossPercent,
+                                             Integer owePaymentPercent){
+        return new WorkProcessQuantity(targetQuantity,unQualifiedQuantity,transferQuantity
         ,overCrossQuantity,owePaymentQuantity,overCrossPercent,owePaymentPercent);
     }
 
-    public WorkProcessQuality changeTargetQuantity(int targetQuantity){
-        return new WorkProcessQuality(targetQuantity,unQualifiedQuantity,transferQuantity
+    public WorkProcessQuantity changeTargetQuantity(int targetQuantity){
+        return new WorkProcessQuantity(targetQuantity,unQualifiedQuantity,transferQuantity
                 ,overCrossQuantity,owePaymentQuantity,overCrossPercent,owePaymentPercent);
     }
 
-    public WorkProcessQuality changeUnQualifiedQuantity(int unQualifiedQuantity) {
-        return new WorkProcessQuality(targetQuantity,unQualifiedQuantity,transferQuantity
+    public WorkProcessQuantity changeUnQualifiedQuantity(int unQualifiedQuantity) {
+        return new WorkProcessQuantity(targetQuantity,unQualifiedQuantity,transferQuantity
                 ,overCrossQuantity,owePaymentQuantity,overCrossPercent,owePaymentPercent);
     }
 
-    public WorkProcessQuality changeTransferQuantity(int transferQuantity){
-        return new WorkProcessQuality(targetQuantity,unQualifiedQuantity,transferQuantity
+    public WorkProcessQuantity changeTransferQuantity(int transferQuantity){
+        return new WorkProcessQuantity(targetQuantity,unQualifiedQuantity,transferQuantity
                 ,overCrossQuantity,owePaymentQuantity,overCrossPercent,owePaymentPercent);
     }
 
@@ -106,27 +106,27 @@ public class WorkProcessQuality implements ValueObject, Cloneable {
         }
     }
 
-    public WorkProcessQuality changeOverCrossQuantity(int overCrossQuantity){
+    public WorkProcessQuantity changeOverCrossQuantity(int overCrossQuantity){
         checkOwePayment();
-        return new WorkProcessQuality(targetQuantity,unQualifiedQuantity,transferQuantity
+        return new WorkProcessQuantity(targetQuantity,unQualifiedQuantity,transferQuantity
                 ,overCrossQuantity,owePaymentQuantity,overCrossPercent,owePaymentPercent);
     }
 
-    public WorkProcessQuality changeOverCrossPercent(int overCrossPercent){
+    public WorkProcessQuantity changeOverCrossPercent(int overCrossPercent){
         checkOwePayment();
-        return new WorkProcessQuality(targetQuantity,unQualifiedQuantity,transferQuantity
+        return new WorkProcessQuantity(targetQuantity,unQualifiedQuantity,transferQuantity
                 ,overCrossQuantity,owePaymentQuantity,overCrossPercent,owePaymentPercent);
     }
 
-    public WorkProcessQuality changeOwePaymentQuantity(int owePaymentQuantity){
+    public WorkProcessQuantity changeOwePaymentQuantity(int owePaymentQuantity){
         checkOverCross();
-        return new WorkProcessQuality(targetQuantity,unQualifiedQuantity,transferQuantity
+        return new WorkProcessQuantity(targetQuantity,unQualifiedQuantity,transferQuantity
                 ,overCrossQuantity,owePaymentQuantity,overCrossPercent,owePaymentPercent);
     }
 
-    public WorkProcessQuality changeOwePaymentPercent(int owePaymentPercent){
+    public WorkProcessQuantity changeOwePaymentPercent(int owePaymentPercent){
         checkOverCross();
-        return new WorkProcessQuality(targetQuantity,unQualifiedQuantity,transferQuantity
+        return new WorkProcessQuantity(targetQuantity,unQualifiedQuantity,transferQuantity
                 ,overCrossQuantity,owePaymentQuantity,overCrossPercent,owePaymentPercent);
     }
 
@@ -135,9 +135,9 @@ public class WorkProcessQuality implements ValueObject, Cloneable {
     }
 
     @Override
-    public WorkProcessQuality clone() {
+    public WorkProcessQuantity clone() {
         try {
-            WorkProcessQuality clone = (WorkProcessQuality) super.clone();
+            WorkProcessQuantity clone = (WorkProcessQuantity) super.clone();
             // TODO: copy mutable state here, so the clone can't change the internals of the original
             return clone;
         } catch (CloneNotSupportedException e) {
@@ -197,7 +197,7 @@ public class WorkProcessQuality implements ValueObject, Cloneable {
 
 
     public interface BuildStep {
-        WorkProcessQuality build();
+        WorkProcessQuantity build();
     }
 
     public static class Builder implements TargetStep,
@@ -320,8 +320,8 @@ public class WorkProcessQuality implements ValueObject, Cloneable {
 
 
         @Override
-        public WorkProcessQuality build() {
-            WorkProcessQuality workProcessQuality = new WorkProcessQuality();
+        public WorkProcessQuantity build() {
+            WorkProcessQuantity workProcessQuality = new WorkProcessQuantity();
             workProcessQuality.targetQuantity = targetQuantity;
             workProcessQuality.unQualifiedQuantity = unQualifiedQuantity;
             workProcessQuality.transferQuantity = transferQuantity;
@@ -385,8 +385,8 @@ public class WorkProcessQuality implements ValueObject, Cloneable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof WorkProcessQuality)) return false;
-        WorkProcessQuality that = (WorkProcessQuality) o;
+        if (!(o instanceof WorkProcessQuantity)) return false;
+        WorkProcessQuantity that = (WorkProcessQuantity) o;
         return targetQuantity == that.targetQuantity && unQualifiedQuantity == that.unQualifiedQuantity && transferQuantity == that.transferQuantity;
     }
 

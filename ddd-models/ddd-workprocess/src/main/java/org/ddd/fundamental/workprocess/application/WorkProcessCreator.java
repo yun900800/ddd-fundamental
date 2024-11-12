@@ -6,9 +6,9 @@ import org.ddd.fundamental.core.generator.Generators;
 import org.ddd.fundamental.day.range.DateRange;
 import org.ddd.fundamental.utils.CollectionUtils;
 import org.ddd.fundamental.utils.DateUtils;
-import org.ddd.fundamental.workprocess.value.AuxiliaryWorkTime;
+import org.ddd.fundamental.workprocess.value.time.AuxiliaryWorkTime;
 import org.ddd.fundamental.workprocess.value.WorkProcessBeat;
-import org.ddd.fundamental.workprocess.value.WorkProcessQuality;
+import org.ddd.fundamental.workprocess.value.quantity.WorkProcessQuantity;
 import org.ddd.fundamental.workprocess.domain.model.WorkProcessTemplate;
 import org.ddd.fundamental.workprocess.domain.repository.CraftsmanShipRepository;
 import org.ddd.fundamental.workprocess.domain.repository.WorkProcessTemplateRepository;
@@ -41,7 +41,7 @@ public class WorkProcessCreator {
         WorkProcessTemplate workProcessNew = new WorkProcessTemplate(
                 CollectionUtils.random(createWorkProcessInfo()),
                 CollectionUtils.random(createAuxiliaryWorkTimes()),
-                WorkProcessQuality.newBuilder()
+                WorkProcessQuantity.newBuilder()
                         .targetQuantity(1000)
                         .unQualifiedQuantity(20)
                         .transferQuantityWithOverCross(10)

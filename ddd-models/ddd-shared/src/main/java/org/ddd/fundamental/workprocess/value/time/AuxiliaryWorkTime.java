@@ -1,4 +1,4 @@
-package org.ddd.fundamental.workprocess.value;
+package org.ddd.fundamental.workprocess.value.time;
 
 import org.apache.commons.lang3.Range;
 import org.ddd.fundamental.core.ValueObject;
