@@ -11,6 +11,11 @@ import java.util.UUID;
 public abstract class DomainObjectId implements ValueObject{
     private final String uuid;
 
+    @SuppressWarnings("unused")
+    private DomainObjectId(){
+        this.uuid = randomId(DomainObjectId.class).toUUID();
+    }
+
     @JsonCreator
     public DomainObjectId(@NonNull String uuid){
         this.uuid = uuid;

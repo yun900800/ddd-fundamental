@@ -7,7 +7,9 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.MappedSuperclass;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @MappedSuperclass
 @Embeddable
@@ -15,17 +17,17 @@ public class ProductResources implements ValueObject {
 
     @Type(type = "json")
     @Column(columnDefinition = "json" , name = "product_resources")
-    private List<ProductResource> resources = new ArrayList<>();
+    private Set<ProductResource> resources = new HashSet<>();
 
     @SuppressWarnings("unused")
     private ProductResources(){}
 
-    public ProductResources(List<ProductResource> resources){
+    public ProductResources(Set<ProductResource> resources){
         this.resources = resources;
     }
 
-    public List<ProductResource> getResources() {
-        return new ArrayList<>(resources);
+    public Set<ProductResource> getResources() {
+        return new HashSet<>(resources);
     }
 
     public int resourceSize(){
@@ -38,7 +40,7 @@ public class ProductResources implements ValueObject {
     }
 
     public ProductResources removeResource(ProductResource resource) {
-        this.resources.add(resource);
+        this.resources.remove(resource);
         return this;
     }
 

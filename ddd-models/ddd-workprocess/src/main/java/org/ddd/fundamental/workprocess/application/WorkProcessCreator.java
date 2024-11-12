@@ -6,6 +6,10 @@ import org.ddd.fundamental.core.generator.Generators;
 import org.ddd.fundamental.day.range.DateRange;
 import org.ddd.fundamental.utils.CollectionUtils;
 import org.ddd.fundamental.utils.DateUtils;
+import org.ddd.fundamental.workprocess.value.controller.GapRangeControl;
+import org.ddd.fundamental.workprocess.value.controller.ReportWorkControl;
+import org.ddd.fundamental.workprocess.value.controller.WorkOrderControl;
+import org.ddd.fundamental.workprocess.value.controller.WorkProcessTemplateControl;
 import org.ddd.fundamental.workprocess.value.time.AuxiliaryWorkTime;
 import org.ddd.fundamental.workprocess.value.WorkProcessBeat;
 import org.ddd.fundamental.workprocess.value.quantity.WorkProcessQuantity;
@@ -17,6 +21,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Component
@@ -37,18 +42,22 @@ public class WorkProcessCreator {
         return workProcessNews;
     }
 
+    private static List<Boolean> trueOrFalse(){
+        return Arrays.asList(true,false);
+    }
+
     public static WorkProcessTemplate createWorkProcessNew(){
+        WorkProcessTemplateControl control = new WorkProcessTemplateControl.Builder(1,CollectionUtils.random(trueOrFalse()))
+                .canSplit(CollectionUtils.random(trueOrFalse())).isAllowedChecked(CollectionUtils.random(trueOrFalse()))
+                .gapRangeControl(GapRangeControl.create(CollectionUtils.random(trueOrFalse()), CollectionUtils.random(trueOrFalse())))
+                .reportWorkControl(ReportWorkControl.create(CollectionUtils.random(trueOrFalse()),"测试报工规则"))
+                .workOrderControl(WorkOrderControl.create(CollectionUtils.random(trueOrFalse()),CollectionUtils.random(trueOrFalse()),CollectionUtils.random(trueOrFalse())))
+                .build();
         WorkProcessTemplate workProcessNew = new WorkProcessTemplate(
                 CollectionUtils.random(createWorkProcessInfo()),
                 CollectionUtils.random(createAuxiliaryWorkTimes()),
-                WorkProcessQuantity.newBuilder()
-                        .targetQuantity(1000)
-                        .unQualifiedQuantity(20)
-                        .transferQuantityWithOverCross(10)
-                        .withOverCrossQuantity(1050)
-                        .noOverCrossPercent()
-                        .build(),
-                WorkProcessBeat.create(1000,15)
+                WorkProcessBeat.create(1000,15),
+                control
         );
         return workProcessNew;
     }

@@ -9,11 +9,13 @@ import org.ddd.fundamental.workprocess.value.resources.ProductResources;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ProductResourcesTest {
 
-    private static List<ProductResource> createResources(){
+    private static Set<ProductResource> createResources(){
         EquipmentId id = EquipmentId.randomId(EquipmentId.class);
         ProductResource<EquipmentId> resource0 =  ProductResource.create(
                 id,
@@ -26,7 +28,7 @@ public class ProductResourcesTest {
                 stationId,
                 ProductResourceType.WORK_STATION, ChangeableInfo.create("工位生产资源","这是一类工位生产资源")
         );
-        return Arrays.asList(resource0,resource1);
+        return new HashSet<>(Arrays.asList(resource0,resource1));
     }
 
     @Test

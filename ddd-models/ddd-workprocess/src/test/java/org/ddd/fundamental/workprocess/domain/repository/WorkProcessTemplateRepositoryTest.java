@@ -8,6 +8,10 @@ import org.ddd.fundamental.utils.DateUtils;
 import org.ddd.fundamental.workprocess.WorkProcessAppTest;
 import org.ddd.fundamental.workprocess.domain.model.WorkProcessTemplate;
 import org.ddd.fundamental.workprocess.enums.ProductResourceType;
+import org.ddd.fundamental.workprocess.value.controller.GapRangeControl;
+import org.ddd.fundamental.workprocess.value.controller.ReportWorkControl;
+import org.ddd.fundamental.workprocess.value.controller.WorkOrderControl;
+import org.ddd.fundamental.workprocess.value.controller.WorkProcessTemplateControl;
 import org.ddd.fundamental.workprocess.value.time.AuxiliaryWorkTime;
 import org.ddd.fundamental.workprocess.value.resources.ProductResource;
 import org.ddd.fundamental.workprocess.value.WorkProcessBeat;
@@ -36,17 +40,17 @@ public class WorkProcessTemplateRepositoryTest extends WorkProcessAppTest {
 
     @Test
     public void createWorkProcessTemplate() {
+        WorkProcessTemplateControl control = new WorkProcessTemplateControl.Builder(1,true)
+                .canSplit(false).isAllowedChecked(true)
+                .gapRangeControl(GapRangeControl.create(true, false))
+                .reportWorkControl(ReportWorkControl.create(true,"测试报工规则"))
+                .workOrderControl(WorkOrderControl.create(false,true,false))
+                .build();
         WorkProcessTemplate workProcessTemplate = new WorkProcessTemplate(
                 ChangeableInfo.create("主板加工工序","这是用来加工新能源车的主板的工序"),
                 create(),
-                WorkProcessQuantity.newBuilder()
-                        .targetQuantity(1000)
-                        .unQualifiedQuantity(20)
-                        .transferQuantityWithOverCross(10)
-                        .withOverCrossQuantity(1050)
-                        .noOverCrossPercent()
-                        .build(),
-                WorkProcessBeat.create(1000,15)
+                WorkProcessBeat.create(1000,15),
+                control
         );
 
         EquipmentId id = EquipmentId.randomId(EquipmentId.class);
