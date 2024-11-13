@@ -4,8 +4,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.changeable.ChangeableInfo;
 import org.ddd.fundamental.core.generator.Generators;
 import org.ddd.fundamental.day.range.DateRange;
+import org.ddd.fundamental.material.value.MaterialId;
+import org.ddd.fundamental.shared.api.material.MaterialDTO;
+import org.ddd.fundamental.shared.api.material.enums.MaterialType;
 import org.ddd.fundamental.utils.CollectionUtils;
 import org.ddd.fundamental.utils.DateUtils;
+import org.ddd.fundamental.workprocess.client.MaterialClient;
+import org.ddd.fundamental.workprocess.domain.model.CraftsmanShipTemplate;
+import org.ddd.fundamental.workprocess.value.WorkProcessTemplateId;
 import org.ddd.fundamental.workprocess.value.controller.GapRangeControl;
 import org.ddd.fundamental.workprocess.value.controller.ReportWorkControl;
 import org.ddd.fundamental.workprocess.value.controller.WorkOrderControl;
@@ -23,6 +29,8 @@ import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
+import java.util.stream.Collectors;
 
 @Component
 @Slf4j
@@ -31,10 +39,15 @@ public class WorkProcessCreator {
     private List<WorkProcessTemplate> workProcessList;
 
     @Autowired
-    private WorkProcessTemplateRepository processNewRepository;
+    private WorkProcessTemplateRepository templateRepository;
 
     @Autowired
     private CraftsmanShipRepository craftsmanShipRepository;
+
+    @Autowired
+    private MaterialClient client;
+
+    private List<CraftsmanShipTemplate> craftsmanShipTemplates;
 
     public static List<WorkProcessTemplate> createWorkProcessList() {
         List<WorkProcessTemplate> workProcessNews = new ArrayList<>();
@@ -130,16 +143,48 @@ public class WorkProcessCreator {
                 DateUtils.strToDate(date+" 18:59:12","yyyy-MM-dd HH:mm:ss"),"工序检查时间");
         return AuxiliaryWorkTime.create(setTimeRange,offlineTimeRange,checkTimeRange);
     }
+
+    private List<WorkProcessTemplateId> randomTemplateIds(List<WorkProcessTemplateId> templateIds) {
+        int size = templateIds.size();
+        int randomSize = new Random().nextInt(size/2);
+        while (randomSize == 0 || randomSize >= 5){
+            randomSize = new Random().nextInt(size/2);
+        }
+        List<WorkProcessTemplateId> results = new ArrayList<>();
+        for (int i = 0 ; i < randomSize; i++) {
+            results.add(CollectionUtils.random(templateIds));
+        }
+        return results;
+    }
+
+    private CraftsmanShipTemplate createCraftsmanShipTemplate(MaterialId materialId) {
+        List<WorkProcessTemplateId> templateIds = workProcessList.stream().map(v->v.id()).collect(Collectors.toList());
+        CraftsmanShipTemplate craftsmanShip = new CraftsmanShipTemplate(randomTemplateIds(templateIds),templateRepository,
+                materialId);
+        return craftsmanShip;
+    }
+
+    public List<CraftsmanShipTemplate> createCraftsmanShipTemplates(){
+        List<MaterialDTO> materialDTOS = client.materialsByMaterialType(MaterialType.PRODUCTION);
+        List<CraftsmanShipTemplate> craftsmanShipTemplates = new ArrayList<>();
+        for (MaterialDTO materialDTO: materialDTOS) {
+            craftsmanShipTemplates.add(createCraftsmanShipTemplate(materialDTO.id()));
+        }
+        return craftsmanShipTemplates;
+    }
     @PostConstruct
     public void init(){
-        processNewRepository.deleteAll();
+        templateRepository.deleteAll();
         log.info("删除所有工序成功");
         workProcessList = createWorkProcessList();
-        processNewRepository.saveAll(workProcessList);
-        log.info("创建所有工序成功");
+        templateRepository.saveAll(workProcessList);
+        log.info("创建{}个工序成功",workProcessList.size());
 
-        log.info("删除所有工序成功");
+        log.info("删除所有工艺成功");
         craftsmanShipRepository.deleteAll();
+        craftsmanShipTemplates = createCraftsmanShipTemplates();
+        craftsmanShipRepository.saveAll(craftsmanShipTemplates);
+        log.info("创建{}个工艺成功",craftsmanShipTemplates.size());
     }
 
 }
