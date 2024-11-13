@@ -10,9 +10,9 @@ import org.ddd.fundamental.workprocess.value.controller.GapRangeControl;
 import org.ddd.fundamental.workprocess.value.controller.ReportWorkControl;
 import org.ddd.fundamental.workprocess.value.controller.WorkOrderControl;
 import org.ddd.fundamental.workprocess.value.controller.WorkProcessTemplateControl;
+import org.ddd.fundamental.workprocess.value.quantity.WorkProcessTemplateQuantity;
 import org.ddd.fundamental.workprocess.value.time.AuxiliaryWorkTime;
 import org.ddd.fundamental.workprocess.value.WorkProcessBeat;
-import org.ddd.fundamental.workprocess.value.quantity.WorkProcessQuantity;
 import org.ddd.fundamental.workprocess.domain.model.WorkProcessTemplate;
 import org.ddd.fundamental.workprocess.domain.repository.CraftsmanShipRepository;
 import org.ddd.fundamental.workprocess.domain.repository.WorkProcessTemplateRepository;
@@ -46,20 +46,36 @@ public class WorkProcessCreator {
         return Arrays.asList(true,false);
     }
 
-    public static WorkProcessTemplate createWorkProcessNew(){
-        WorkProcessTemplateControl control = new WorkProcessTemplateControl.Builder(1,CollectionUtils.random(trueOrFalse()))
+    private static List<Double> doubleList(){
+        return Arrays.asList(95.2,99.5,99.6,96.4,98.8,97.6);
+    }
+
+    public static WorkProcessTemplateControl createWorkProcessTemplateControl(){
+        return new WorkProcessTemplateControl.Builder(1,CollectionUtils.random(trueOrFalse()))
                 .canSplit(CollectionUtils.random(trueOrFalse())).isAllowedChecked(CollectionUtils.random(trueOrFalse()))
                 .gapRangeControl(GapRangeControl.create(CollectionUtils.random(trueOrFalse()), CollectionUtils.random(trueOrFalse())))
                 .reportWorkControl(ReportWorkControl.create(CollectionUtils.random(trueOrFalse()),"测试报工规则"))
                 .workOrderControl(WorkOrderControl.create(CollectionUtils.random(trueOrFalse()),CollectionUtils.random(trueOrFalse()),CollectionUtils.random(trueOrFalse())))
                 .build();
-        WorkProcessTemplate workProcessNew = new WorkProcessTemplate(
+    }
+
+    public static WorkProcessTemplateQuantity createWorkProcessTemplateQuantity(){
+        return WorkProcessTemplateQuantity.newBuilder().targetQualifiedRate(
+                        CollectionUtils.random(doubleList())
+                ).transferPercent(CollectionUtils.random(doubleList()))
+                .overCrossPercent(CollectionUtils.random(doubleList()))
+                .build();
+    }
+
+    public static WorkProcessTemplate createWorkProcessNew(){
+        WorkProcessTemplate workProcessTemplate = new WorkProcessTemplate(
                 CollectionUtils.random(createWorkProcessInfo()),
                 CollectionUtils.random(createAuxiliaryWorkTimes()),
                 WorkProcessBeat.create(1000,15),
-                control
+                createWorkProcessTemplateControl(),
+                createWorkProcessTemplateQuantity()
         );
-        return workProcessNew;
+        return workProcessTemplate;
     }
 
     public static List<AuxiliaryWorkTime> createAuxiliaryWorkTimes(){

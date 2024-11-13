@@ -15,12 +15,9 @@ public class WorkProcessQuantityTest {
                         .targetQuantity(1000)
                         .unQualifiedQuantity(20)
                         .transferQuantityWithOverCross(10)
-                        .withOverCrossQuantity(1050)
-                        .noOverCrossPercent()
+                        .overCrossQuantity(100)
                         .build();
 
-        Assert.assertNull(workProcessQuality1.getOverCrossPercent());
-        Assert.assertNull(workProcessQuality1.getOwePaymentPercent());
         Assert.assertNull(workProcessQuality1.getOwePaymentQuantity());
 
         WorkProcessQuantity workProcessQuality2 =
@@ -28,11 +25,9 @@ public class WorkProcessQuantityTest {
                         .targetQuantity(1000)
                         .unQualifiedQuantity(20)
                         .transferQuantityWithOverCross(10)
-                        .withOverCrossQuantity(1050)
-                        .overCrossPercent(5)
+                        .overCrossQuantity(100)
                         .build();
 
-        Assert.assertNull(workProcessQuality2.getOwePaymentPercent());
         Assert.assertNull(workProcessQuality2.getOwePaymentQuantity());
 
         WorkProcessQuantity workProcessQuality3 =
@@ -40,35 +35,28 @@ public class WorkProcessQuantityTest {
                         .targetQuantity(1000)
                         .unQualifiedQuantity(20)
                         .transferQuantityWithOverCross(10)
-                        .withOwePaymentQuantity(960)
-                        .noOwePaymentPercent()
+                        .owePaymentQuantity(100)
                         .build();
 
-        Assert.assertNull(workProcessQuality3.getOwePaymentPercent());
         Assert.assertNull(workProcessQuality3.getOverCrossQuantity());
-        Assert.assertNull(workProcessQuality3.getOverCrossPercent());
         WorkProcessQuantity workProcessQuality4 =
                 WorkProcessQuantity.newBuilder()
                         .targetQuantity(1000)
                         .unQualifiedQuantity(20)
                         .transferQuantityWithOverCross(10)
-                        .withOwePaymentQuantity(960)
-                        .owePaymentPercent(98)
+                        .owePaymentQuantity(98)
                         .build();
         Assert.assertNull(workProcessQuality4.getOverCrossQuantity());
-        Assert.assertNull(workProcessQuality4.getOverCrossPercent());
 
         WorkProcessQuantity workProcessQuality5 =
                 WorkProcessQuantity.newBuilder()
                         .targetQuantity(1000)
                         .unQualifiedQuantity(20)
                         .transferQuantityWithOverCross(10)
-                        .withOverCrossPercent(8)
                         .overCrossQuantity(1080)
                         .build();
 
         Assert.assertNull(workProcessQuality5.getOwePaymentQuantity());
-        Assert.assertNull(workProcessQuality5.getOwePaymentPercent());
 
         stopWatch.stop();
         // 统计执行时间（秒）
@@ -84,13 +72,11 @@ public class WorkProcessQuantityTest {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
         WorkProcessQuantity workProcessQuality1 = WorkProcessQuantity.create(1000,20,10,
-                1050,null,null,null);
-        Assert.assertNull(workProcessQuality1.getOverCrossPercent());
-        Assert.assertNull(workProcessQuality1.getOwePaymentPercent());
+                1050,null);
+
         Assert.assertNull(workProcessQuality1.getOwePaymentQuantity());
         WorkProcessQuantity workProcessQuality2 = WorkProcessQuantity.create(1000,20,10,
-                1050,null,5,null);
-        Assert.assertNull(workProcessQuality2.getOwePaymentPercent());
+                1050,null);
         Assert.assertNull(workProcessQuality2.getOwePaymentQuantity());
         stopWatch.stop();
         // 统计执行时间（秒）
@@ -110,8 +96,7 @@ public class WorkProcessQuantityTest {
                         .targetQuantity(1000)
                         .unQualifiedQuantity(20)
                         .transferQuantityWithOverCross(10)
-                        .withOverCrossQuantity(1050)
-                        .noOverCrossPercent()
+                        .owePaymentQuantity(100)
                         .build();
         Assert.assertEquals(workProcessQuality1.getTargetQuantity(),1000);
         workProcessQuality1 = workProcessQuality1.changeTargetQuantity(2000);
@@ -140,25 +125,10 @@ public class WorkProcessQuantityTest {
                         .targetQuantity(1000)
                         .unQualifiedQuantity(20)
                         .transferQuantityWithOverCross(10)
-                        .withOverCrossQuantity(1050)
-                        .noOverCrossPercent()
+                        .overCrossQuantity(1050)
                         .build();
-        workProcessQuality1 = workProcessQuality1.changeOverCrossPercent(6).changeOverCrossQuantity(1060);
-        Assert.assertEquals(workProcessQuality1.getOverCrossQuantity(),1060,0);
-        Assert.assertEquals(workProcessQuality1.getOverCrossPercent(),6,0);
-    }
 
-    @Test(expected = RuntimeException.class)
-    public void testChangeOverCrossThrowException() {
-        WorkProcessQuantity workProcessQuality1 =
-                WorkProcessQuantity.newBuilder()
-                        .targetQuantity(1000)
-                        .unQualifiedQuantity(20)
-                        .transferQuantityWithOverCross(10)
-                        .withOverCrossQuantity(1050)
-                        .noOverCrossPercent()
-                        .build();
-        workProcessQuality1.changeOwePaymentPercent(6).changeOwePaymentQuantity(940);
+        Assert.assertEquals(workProcessQuality1.getOverCrossQuantity(),1050,0);
     }
 
     @Test
@@ -168,8 +138,7 @@ public class WorkProcessQuantityTest {
                         .targetQuantity(1000)
                         .unQualifiedQuantity(20)
                         .transferQuantityWithOverCross(10)
-                        .withOverCrossQuantity(1050)
-                        .noOverCrossPercent()
+                        .owePaymentQuantity(100)
                         .build();
         WorkProcessQuantity workProcessQuality2 = workProcessQuality1.clone();
         Assert.assertFalse(workProcessQuality1==workProcessQuality2);

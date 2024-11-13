@@ -3,6 +3,7 @@ package org.ddd.fundamental.workprocess.domain.repository;
 import org.ddd.fundamental.utils.CollectionUtils;
 import org.ddd.fundamental.workprocess.WorkProcessAppTest;
 import org.ddd.fundamental.workprocess.domain.model.*;
+import org.ddd.fundamental.workprocess.value.WorkProcessTemplateId;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StopWatch;
@@ -23,7 +24,7 @@ public class CraftsmanShipRepositoryTest extends WorkProcessAppTest {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
         List<WorkProcessTemplate> workProcessNewList = workProcessNewRepository.findAll();
-        List<WorkProcessId> workProcessIds = new ArrayList<>();
+        List<WorkProcessTemplateId> workProcessIds = new ArrayList<>();
         for (int i = 0 ; i< 5;i++) {
             workProcessIds.add(CollectionUtils.random(workProcessNewList).id());
         }

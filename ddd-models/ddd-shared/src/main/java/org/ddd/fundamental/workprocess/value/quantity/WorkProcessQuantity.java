@@ -39,15 +39,6 @@ public class WorkProcessQuantity implements ValueObject, Cloneable {
      */
     private Integer owePaymentQuantity;
 
-    /**
-     * 超交百分比
-     */
-    private Integer overCrossPercent;
-
-    /**
-     * 欠交百分比
-     */
-    private Integer owePaymentPercent;
 
     @SuppressWarnings("unused")
     private WorkProcessQuantity(){}
@@ -56,78 +47,47 @@ public class WorkProcessQuantity implements ValueObject, Cloneable {
                                 int unQualifiedQuantity,
                                 int transferQuantity,
                                 Integer overCrossQuantity,
-                                Integer owePaymentQuantity,
-                                Integer overCrossPercent,
-                                Integer owePaymentPercent){
+                                Integer owePaymentQuantity){
         this.targetQuantity = targetQuantity;
         this.unQualifiedQuantity = unQualifiedQuantity;
         this.transferQuantity = transferQuantity;
         this.overCrossQuantity = overCrossQuantity;
         this.owePaymentQuantity = owePaymentQuantity;
-        this.overCrossPercent = overCrossPercent;
-        this.owePaymentPercent = owePaymentPercent;
     }
 
     public static WorkProcessQuantity create(int targetQuantity,
                                              int unQualifiedQuantity,
                                              int transferQuantity,
                                              Integer overCrossQuantity,
-                                             Integer owePaymentQuantity,
-                                             Integer overCrossPercent,
-                                             Integer owePaymentPercent){
+                                             Integer owePaymentQuantity){
         return new WorkProcessQuantity(targetQuantity,unQualifiedQuantity,transferQuantity
-        ,overCrossQuantity,owePaymentQuantity,overCrossPercent,owePaymentPercent);
+        ,overCrossQuantity,owePaymentQuantity);
     }
 
     public WorkProcessQuantity changeTargetQuantity(int targetQuantity){
         return new WorkProcessQuantity(targetQuantity,unQualifiedQuantity,transferQuantity
-                ,overCrossQuantity,owePaymentQuantity,overCrossPercent,owePaymentPercent);
+                ,overCrossQuantity,owePaymentQuantity);
     }
 
     public WorkProcessQuantity changeUnQualifiedQuantity(int unQualifiedQuantity) {
         return new WorkProcessQuantity(targetQuantity,unQualifiedQuantity,transferQuantity
-                ,overCrossQuantity,owePaymentQuantity,overCrossPercent,owePaymentPercent);
+                ,overCrossQuantity,owePaymentQuantity);
     }
 
     public WorkProcessQuantity changeTransferQuantity(int transferQuantity){
         return new WorkProcessQuantity(targetQuantity,unQualifiedQuantity,transferQuantity
-                ,overCrossQuantity,owePaymentQuantity,overCrossPercent,owePaymentPercent);
+                ,overCrossQuantity,owePaymentQuantity);
     }
 
-    private void checkOwePayment(){
-        if (null != owePaymentQuantity || null != owePaymentPercent) {
-            throw new RuntimeException("存在欠交数量或者百分比,请检查一下数据");
-        }
-    }
-
-    private void checkOverCross(){
-        if (null != overCrossPercent || null != overCrossQuantity) {
-            throw new RuntimeException("存在超交数量或者百分比,请检查一下数据");
-        }
-    }
 
     public WorkProcessQuantity changeOverCrossQuantity(int overCrossQuantity){
-        checkOwePayment();
         return new WorkProcessQuantity(targetQuantity,unQualifiedQuantity,transferQuantity
-                ,overCrossQuantity,owePaymentQuantity,overCrossPercent,owePaymentPercent);
-    }
-
-    public WorkProcessQuantity changeOverCrossPercent(int overCrossPercent){
-        checkOwePayment();
-        return new WorkProcessQuantity(targetQuantity,unQualifiedQuantity,transferQuantity
-                ,overCrossQuantity,owePaymentQuantity,overCrossPercent,owePaymentPercent);
+                ,overCrossQuantity,owePaymentQuantity);
     }
 
     public WorkProcessQuantity changeOwePaymentQuantity(int owePaymentQuantity){
-        checkOverCross();
         return new WorkProcessQuantity(targetQuantity,unQualifiedQuantity,transferQuantity
-                ,overCrossQuantity,owePaymentQuantity,overCrossPercent,owePaymentPercent);
-    }
-
-    public WorkProcessQuantity changeOwePaymentPercent(int owePaymentPercent){
-        checkOverCross();
-        return new WorkProcessQuantity(targetQuantity,unQualifiedQuantity,transferQuantity
-                ,overCrossQuantity,owePaymentQuantity,overCrossPercent,owePaymentPercent);
+                ,overCrossQuantity,owePaymentQuantity);
     }
 
     public static TargetStep newBuilder(){
@@ -155,44 +115,31 @@ public class WorkProcessQuantity implements ValueObject, Cloneable {
 
     public interface TransferStep {
 
-        MainStep transferQuantityWithOverCross(int transferQuantity);
+        QuantityStep transferQuantityWithOverCross(int transferQuantity);
 
     }
 
-    public interface MainStep {
-        OverCrossPercentStep withOverCrossQuantity(int overCrossQuantity);
+    public interface QuantityStep {
 
-        OwePaymentPercentStep withOwePaymentQuantity(int owePaymentQuantity);
-
-        OverCrossQuantityStep withOverCrossPercent(int overCrossPercent);
-
-        OwePaymentQuantityStep withOwePaymentPercent(int owePaymentPercent);
-    }
-
-    public interface OverCrossPercentStep {
-        BuildStep overCrossPercent(int overCrossPercent);
-
-        BuildStep noOverCrossPercent();
-    }
-
-    public interface OverCrossQuantityStep {
-        BuildStep overCrossQuantity(int overCrossQuantity);
-
-        BuildStep noOverCrossQuantity();
-    }
-
-
-    public interface OwePaymentPercentStep {
-        BuildStep owePaymentPercent(int owePaymentPercent);
-
-        BuildStep noOwePaymentPercent();
-    }
-
-    public interface OwePaymentQuantityStep {
         BuildStep owePaymentQuantity(int owePaymentQuantity);
 
-        BuildStep noOwePaymentQuantity();
+        BuildStep overCrossQuantity(int overCrossQuantity);
     }
+
+
+//    public interface OverCrossQuantityStep {
+//        OwePaymentQuantityStep overCrossQuantity(int overCrossQuantity);
+//
+//        BuildStep noOverCrossQuantity();
+//    }
+//
+//
+//
+//    public interface OwePaymentQuantityStep {
+//        OverCrossQuantityStep owePaymentQuantity(int owePaymentQuantity);
+//
+//        BuildStep noOwePaymentQuantity();
+//    }
 
 
 
@@ -201,9 +148,7 @@ public class WorkProcessQuantity implements ValueObject, Cloneable {
     }
 
     public static class Builder implements TargetStep,
-            UnQualifiedStep,TransferStep, MainStep,
-            OwePaymentPercentStep, OverCrossPercentStep,
-            OverCrossQuantityStep, OwePaymentQuantityStep,
+            UnQualifiedStep,TransferStep, QuantityStep,
             BuildStep {
 
         /**
@@ -231,16 +176,6 @@ public class WorkProcessQuantity implements ValueObject, Cloneable {
          */
         private Integer owePaymentQuantity;
 
-        /**
-         * 超交百分比
-         */
-        private Integer overCrossPercent;
-
-        /**
-         * 欠交百分比
-         */
-        private Integer owePaymentPercent;
-
         @Override
         public UnQualifiedStep targetQuantity(int targetQuantity) {
             this.targetQuantity = targetQuantity;
@@ -254,7 +189,7 @@ public class WorkProcessQuantity implements ValueObject, Cloneable {
         }
 
         @Override
-        public MainStep transferQuantityWithOverCross(int transferQuantity) {
+        public QuantityStep transferQuantityWithOverCross(int transferQuantity) {
             this.transferQuantity = transferQuantity;
             return this;
         }
@@ -265,36 +200,8 @@ public class WorkProcessQuantity implements ValueObject, Cloneable {
             return this;
         }
 
-        @Override
-        public BuildStep noOverCrossQuantity() {
-            return this;
-        }
 
 
-
-        @Override
-        public OverCrossPercentStep withOverCrossQuantity(int overCrossQuantity) {
-            this.overCrossQuantity = overCrossQuantity;
-            return this;
-        }
-
-        @Override
-        public OwePaymentPercentStep withOwePaymentQuantity(int owePaymentQuantity) {
-            this.owePaymentQuantity = owePaymentQuantity;
-            return this;
-        }
-
-        @Override
-        public OverCrossQuantityStep withOverCrossPercent(int overCrossPercent) {
-            this.overCrossPercent = overCrossPercent;
-            return this;
-        }
-
-        @Override
-        public OwePaymentQuantityStep withOwePaymentPercent(int owePaymentPercent) {
-            this.owePaymentPercent = owePaymentPercent;
-            return this;
-        }
 
         @Override
         public BuildStep owePaymentQuantity(int owePaymentQuantity) {
@@ -302,21 +209,6 @@ public class WorkProcessQuantity implements ValueObject, Cloneable {
             return this;
         }
 
-        @Override
-        public BuildStep noOwePaymentQuantity() {
-            return this;
-        }
-
-        @Override
-        public BuildStep owePaymentPercent(int owePaymentPercent) {
-            this.owePaymentPercent = owePaymentPercent;
-            return this;
-        }
-
-        @Override
-        public BuildStep noOwePaymentPercent() {
-            return this;
-        }
 
 
         @Override
@@ -328,27 +220,10 @@ public class WorkProcessQuantity implements ValueObject, Cloneable {
             if (null!= owePaymentQuantity) {
                 workProcessQuality.owePaymentQuantity = owePaymentQuantity;
             }
-            if (null!= owePaymentPercent) {
-                workProcessQuality.owePaymentPercent = owePaymentPercent;
-            }
-            if (null!= overCrossPercent) {
-                workProcessQuality.overCrossPercent = overCrossPercent;
-            }
             if (null!= overCrossQuantity) {
                 workProcessQuality.overCrossQuantity = overCrossQuantity;
             }
             return workProcessQuality;
-        }
-
-        @Override
-        public BuildStep overCrossPercent(int overCrossPercent) {
-            this.overCrossPercent   = overCrossPercent;
-            return this;
-        }
-
-        @Override
-        public BuildStep noOverCrossPercent() {
-            return this;
         }
     }
 
@@ -374,14 +249,6 @@ public class WorkProcessQuantity implements ValueObject, Cloneable {
         return owePaymentQuantity;
     }
 
-    public Integer getOverCrossPercent() {
-        return overCrossPercent;
-    }
-
-    public Integer getOwePaymentPercent() {
-        return owePaymentPercent;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -403,8 +270,6 @@ public class WorkProcessQuantity implements ValueObject, Cloneable {
                 ", transferQuantity=" + transferQuantity +
                 ", overCrossQuantity=" + overCrossQuantity +
                 ", owePaymentQuantity=" + owePaymentQuantity +
-                ", overCrossPercent=" + overCrossPercent +
-                ", owePaymentPercent=" + owePaymentPercent +
                 '}';
     }
 }

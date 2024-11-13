@@ -6,6 +6,7 @@ import org.ddd.fundamental.factory.EquipmentId;
 import org.ddd.fundamental.factory.WorkStationId;
 import org.ddd.fundamental.utils.DateUtils;
 import org.ddd.fundamental.workprocess.WorkProcessAppTest;
+import org.ddd.fundamental.workprocess.application.WorkProcessCreator;
 import org.ddd.fundamental.workprocess.domain.model.WorkProcessTemplate;
 import org.ddd.fundamental.workprocess.enums.ProductResourceType;
 import org.ddd.fundamental.workprocess.value.controller.GapRangeControl;
@@ -40,17 +41,12 @@ public class WorkProcessTemplateRepositoryTest extends WorkProcessAppTest {
 
     @Test
     public void createWorkProcessTemplate() {
-        WorkProcessTemplateControl control = new WorkProcessTemplateControl.Builder(1,true)
-                .canSplit(false).isAllowedChecked(true)
-                .gapRangeControl(GapRangeControl.create(true, false))
-                .reportWorkControl(ReportWorkControl.create(true,"测试报工规则"))
-                .workOrderControl(WorkOrderControl.create(false,true,false))
-                .build();
         WorkProcessTemplate workProcessTemplate = new WorkProcessTemplate(
                 ChangeableInfo.create("主板加工工序","这是用来加工新能源车的主板的工序"),
                 create(),
                 WorkProcessBeat.create(1000,15),
-                control
+                WorkProcessCreator.createWorkProcessTemplateControl(),
+                WorkProcessCreator.createWorkProcessTemplateQuantity()
         );
 
         EquipmentId id = EquipmentId.randomId(EquipmentId.class);

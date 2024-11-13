@@ -3,6 +3,7 @@ package org.ddd.fundamental.workprocess.domain.model;
 import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.core.AbstractAggregateRoot;
 import org.ddd.fundamental.workprocess.domain.repository.WorkProcessTemplateRepository;
+import org.ddd.fundamental.workprocess.value.WorkProcessTemplateId;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.Column;
@@ -18,10 +19,10 @@ public class CraftsmanShip extends AbstractAggregateRoot<CraftsmanShipId> {
 
     @Type(type = "json")
     @Column(columnDefinition = "json" , name = "work_process_ids")
-    private List<WorkProcessId> workProcessIds = new ArrayList<>();
+    private List<WorkProcessTemplateId> workProcessIds = new ArrayList<>();
 
     @Transient
-    private Map<WorkProcessId, WorkProcessTemplate> workProcessMap = new HashMap<>();
+    private Map<WorkProcessTemplateId, WorkProcessTemplate> workProcessMap = new HashMap<>();
 
     @Transient
     private WorkProcessTemplateRepository repository;
@@ -29,7 +30,7 @@ public class CraftsmanShip extends AbstractAggregateRoot<CraftsmanShipId> {
     @SuppressWarnings("unused")
     private CraftsmanShip(){}
 
-    public CraftsmanShip(List<WorkProcessId> workProcessIds,
+    public CraftsmanShip(List<WorkProcessTemplateId> workProcessIds,
                          WorkProcessTemplateRepository repository){
         super(CraftsmanShipId.randomId(CraftsmanShipId.class));
         removeDuplicate(workProcessIds);
@@ -44,10 +45,10 @@ public class CraftsmanShip extends AbstractAggregateRoot<CraftsmanShipId> {
         }
     }
 
-    private void removeDuplicate(List<WorkProcessId> workProcessIds){
+    private void removeDuplicate(List<WorkProcessTemplateId> workProcessIds){
         defaultWorkProcessIds();
-        Set<WorkProcessId> workProcessIdSet = new HashSet<>();
-        for (WorkProcessId workProcessId:workProcessIds) {
+        Set<WorkProcessTemplateId> workProcessIdSet = new HashSet<>();
+        for (WorkProcessTemplateId workProcessId:workProcessIds) {
             if (!workProcessIdSet.contains(workProcessId)) {
                 workProcessIdSet.add(workProcessId);
                 this.workProcessIds.add(workProcessId);
@@ -61,11 +62,18 @@ public class CraftsmanShip extends AbstractAggregateRoot<CraftsmanShipId> {
         }
     }
 
+    /**
+     * 从db中获取工序模板
+     * @return
+     */
     private List<WorkProcessTemplate> processNewsFromDB() {
         List<WorkProcessTemplate> processList = repository.findByIdIn(new HashSet<>(workProcessIds));
         return processList;
     }
 
+    /**
+     * 验证工序是否合法
+     */
     private void validate(){
         List<WorkProcessTemplate> processList = processNewsFromDB();
         int size = processList.size();
@@ -81,7 +89,7 @@ public class CraftsmanShip extends AbstractAggregateRoot<CraftsmanShipId> {
         initCache(processList);
     }
 
-    public List<WorkProcessId> getWorkProcessIds() {
+    public List<WorkProcessTemplateId> getWorkProcessIds() {
         return new ArrayList<>(workProcessIds);
     }
 

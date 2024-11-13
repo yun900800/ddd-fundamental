@@ -16,7 +16,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "w_work_process_new")
-public class WorkProcessTemplate extends AbstractAggregateRoot<WorkProcessId> {
+public class WorkProcessTemplate extends AbstractAggregateRoot<WorkProcessTemplateId> {
 
     /**
      * 工序基本信息
@@ -35,22 +35,19 @@ public class WorkProcessTemplate extends AbstractAggregateRoot<WorkProcessId> {
     @Embedded
     private AuxiliaryWorkTime auxiliaryWorkTime;
 
-//    @Embedded
-//    private WorkProcessQuantity workProcessQuality;
-
     /**
      * 工序可以对接的前工序
      */
     @Type(type = "json")
     @Column(columnDefinition = "json" , name = "pre_ids")
-    private Set<WorkProcessId> preWorkProcessIds = new HashSet<>();
+    private Set<WorkProcessTemplateId> preWorkProcessIds = new HashSet<>();
 
     /**
      * 工序可以对接的后工序
      */
     @Type(type = "json")
     @Column(columnDefinition = "json" , name = "next_ids")
-    private Set<WorkProcessId> nextWorkProcessIds = new HashSet<>();
+    private Set<WorkProcessTemplateId> nextWorkProcessIds = new HashSet<>();
 
     @Embedded
     private WorkProcessBeat workProcessBeat;
@@ -71,12 +68,14 @@ public class WorkProcessTemplate extends AbstractAggregateRoot<WorkProcessId> {
     public WorkProcessTemplate(ChangeableInfo workProcessInfo,
                                AuxiliaryWorkTime auxiliaryWorkTime,
                                WorkProcessBeat workProcessBeat,
-                               WorkProcessTemplateControl workProcessController){
-        super(WorkProcessId.randomId(WorkProcessId.class));
+                               WorkProcessTemplateControl workProcessController,
+                               WorkProcessTemplateQuantity workProcessTemplateQuantity){
+        super(WorkProcessTemplateId.randomId(WorkProcessTemplateId.class));
         this.workProcessInfo = workProcessInfo;
         this.auxiliaryWorkTime = auxiliaryWorkTime;
         this.workProcessBeat = workProcessBeat;
         this.workProcessController = workProcessController;
+        this.workProcessTemplateQuantity = workProcessTemplateQuantity;
     }
 
     public WorkProcessTemplate addResource(ProductResource resource){
@@ -95,13 +94,13 @@ public class WorkProcessTemplate extends AbstractAggregateRoot<WorkProcessId> {
         }
     }
 
-    public WorkProcessTemplate addPreId(WorkProcessId preId){
+    public WorkProcessTemplate addPreId(WorkProcessTemplateId preId){
         defaultPreIds();
         this.preWorkProcessIds.add(preId);
         return this;
     }
 
-    public WorkProcessTemplate removePreId(WorkProcessId preId){
+    public WorkProcessTemplate removePreId(WorkProcessTemplateId preId){
         defaultPreIds();
         this.preWorkProcessIds.remove(preId);
         return this;
@@ -119,13 +118,13 @@ public class WorkProcessTemplate extends AbstractAggregateRoot<WorkProcessId> {
         }
     }
 
-    public WorkProcessTemplate addNextId(WorkProcessId preId){
+    public WorkProcessTemplate addNextId(WorkProcessTemplateId preId){
         defaultNextIds();
         this.nextWorkProcessIds.add(preId);
         return this;
     }
 
-    public WorkProcessTemplate removeNextId(WorkProcessId preId){
+    public WorkProcessTemplate removeNextId(WorkProcessTemplateId preId){
         defaultNextIds();
         this.nextWorkProcessIds.remove(preId);
         return this;
@@ -144,7 +143,7 @@ public class WorkProcessTemplate extends AbstractAggregateRoot<WorkProcessId> {
      * @param id
      * @return
      */
-    public boolean acceptPre(WorkProcessId id){
+    public boolean acceptPre(WorkProcessTemplateId id){
         if (null == preWorkProcessIds || preWorkProcessIds.isEmpty()){
             return true;
         }
@@ -158,7 +157,7 @@ public class WorkProcessTemplate extends AbstractAggregateRoot<WorkProcessId> {
      * @param id
      * @return
      */
-    public boolean acceptNext(WorkProcessId id){
+    public boolean acceptNext(WorkProcessTemplateId id){
         if (null == nextWorkProcessIds || nextWorkProcessIds.isEmpty()){
             return true;
         }
@@ -173,11 +172,11 @@ public class WorkProcessTemplate extends AbstractAggregateRoot<WorkProcessId> {
         return auxiliaryWorkTime.clone();
     }
 
-    public Set<WorkProcessId> getPreWorkProcessIds() {
+    public Set<WorkProcessTemplateId> getPreWorkProcessIds() {
         return new HashSet<>(preWorkProcessIds);
     }
 
-    public Set<WorkProcessId> getNextWorkProcessIds() {
+    public Set<WorkProcessTemplateId> getNextWorkProcessIds() {
         return new HashSet<>(nextWorkProcessIds);
     }
 

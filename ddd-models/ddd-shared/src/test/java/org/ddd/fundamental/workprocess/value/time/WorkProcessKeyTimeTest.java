@@ -1,6 +1,5 @@
 package org.ddd.fundamental.workprocess.value.time;
 
-import org.ddd.fundamental.workprocess.value.time.WorkProcessKeyTime;
 import org.junit.Assert;
 import org.junit.Test;
 
