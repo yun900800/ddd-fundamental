@@ -64,4 +64,10 @@ public class MaterialRepositoryTest extends MaterialAppTest {
         Assert.assertEquals(materialList.size(),1);
     }
 
+    @Test
+    public void testQueryByMaterialType () {
+        List<Material> materials = materialRepository.getByMaterialType(MaterialType.PRODUCTION.name());
+        Assert.assertTrue(materials.size() > 0);
+    }
+
 }

@@ -14,4 +14,12 @@ public interface MaterialRepository extends BaseRepository<Material, MaterialId>
 
     List<Material> findByIdIn(List<MaterialId> ids);
 
+    /**
+     * 根据物料类型查询数据
+     * @param materialType
+     * @return
+     */
+    @Query(value = "SELECT * FROM material WHERE material_type = ?1", nativeQuery = true)
+    List<Material> getByMaterialType(String materialType);
+
 }

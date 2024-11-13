@@ -1,8 +1,17 @@
 package org.ddd.fundamental.workprocess;
 
+import lombok.extern.slf4j.Slf4j;
+import org.ddd.fundamental.shared.api.material.MaterialDTO;
+import org.ddd.fundamental.shared.api.material.enums.MaterialType;
+import org.ddd.fundamental.workprocess.client.MaterialClient;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.cloud.openfeign.EnableFeignClients;
+
+import java.util.List;
 
 @SpringBootApplication
 @EntityScan(
@@ -11,8 +20,19 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
                 "org.ddd.fundamental.infra.hibernate"
         }
 )
-public class WorkProcessApp {
+@EnableFeignClients
+@Slf4j
+public class WorkProcessApp implements CommandLineRunner {
     public static void main(String[] args) {
         SpringApplication.run(WorkProcessApp.class);
+    }
+
+    @Autowired
+    private MaterialClient client;
+
+    @Override
+    public void run(String... args) throws Exception {
+        List<MaterialDTO> materialDTOList = client.materialsByMaterialType(MaterialType.PRODUCTION);
+        log.info("products is {}",materialDTOList);
     }
 }

@@ -3,6 +3,7 @@ package org.ddd.fundamental.material.domain.model;
 import org.ddd.fundamental.changeable.ChangeableInfo;
 import org.ddd.fundamental.core.AbstractAggregateRoot;
 import org.ddd.fundamental.core.DomainObjectId;
+import org.ddd.fundamental.material.domain.value.ControlProps;
 import org.ddd.fundamental.material.value.MaterialId;
 import org.ddd.fundamental.material.MaterialMaster;
 import org.ddd.fundamental.material.value.PropsContainer;
@@ -32,6 +33,11 @@ public class Material extends AbstractAggregateRoot<MaterialId> {
     @Type(type = "json")
     @Column(columnDefinition = "json", name = "material_json")
     private String json;
+
+    /**
+     * 物料控制属性
+     */
+    private ControlProps materialControlProps;
 
     // MYSQL 执行json查询 SELECT * FROM material s WHERE s.material_props->'$.usage'='生产电路板' AND s.material_json->'$.name'='kafka';
     /**
@@ -73,7 +79,8 @@ public class Material extends AbstractAggregateRoot<MaterialId> {
 
     public Material(ChangeableInfo changeableInfo, MaterialMaster materialMaster,
                     PropsContainer propsContainer,
-                    PropsContainer characterContainer){
+                    PropsContainer characterContainer,
+                    ControlProps materialControlProps){
         super(DomainObjectId.randomId(MaterialId.class));
         this.changeableInfo = changeableInfo;
         this.materialMaster = materialMaster;
@@ -85,11 +92,11 @@ public class Material extends AbstractAggregateRoot<MaterialId> {
             this.materialRequiredCharacteristics = characterContainer.getRequiredMap();
             this.materialOptionalCharacteristics = characterContainer.getOptionalMap();
         }
-
+        this.materialControlProps = materialControlProps;
     }
 
     public Material(ChangeableInfo changeableInfo, MaterialMaster materialMaster){
-        this(changeableInfo,materialMaster, null, null);
+        this(changeableInfo,materialMaster, null, null,null);
     }
 
     public ChangeableInfo getChangeableInfo() {

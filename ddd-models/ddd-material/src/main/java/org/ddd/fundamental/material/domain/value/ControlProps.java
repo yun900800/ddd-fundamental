@@ -1,8 +1,11 @@
 package org.ddd.fundamental.material.domain.value;
 
 import org.ddd.fundamental.core.ValueObject;
+import org.ddd.fundamental.shared.api.material.enums.MaterialType;
 
 import javax.persistence.Embeddable;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.MappedSuperclass;
 import java.util.Objects;
 
@@ -15,6 +18,7 @@ public class ControlProps implements ValueObject, Cloneable {
 
     private String materialLevel;
 
+    @Enumerated(EnumType.STRING)
     private MaterialType materialType;
 
     @SuppressWarnings("unused")

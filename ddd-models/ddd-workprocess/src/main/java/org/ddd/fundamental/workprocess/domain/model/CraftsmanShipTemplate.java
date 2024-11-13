@@ -2,6 +2,7 @@ package org.ddd.fundamental.workprocess.domain.model;
 
 import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.core.AbstractAggregateRoot;
+import org.ddd.fundamental.material.value.MaterialId;
 import org.ddd.fundamental.workprocess.domain.repository.WorkProcessTemplateRepository;
 import org.ddd.fundamental.workprocess.value.WorkProcessTemplateId;
 import org.hibernate.annotations.Type;
@@ -12,14 +13,22 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.util.*;
 
+/**
+ * 工艺模板
+ */
 @Entity
-@Table(name = "w_craftsman_ship")
+@Table(name = "w_craftsman_ship_template")
 @Slf4j
-public class CraftsmanShip extends AbstractAggregateRoot<CraftsmanShipId> {
+public class CraftsmanShipTemplate extends AbstractAggregateRoot<CraftsmanShipId> {
 
     @Type(type = "json")
     @Column(columnDefinition = "json" , name = "work_process_ids")
     private List<WorkProcessTemplateId> workProcessIds = new ArrayList<>();
+
+    /**
+     * 工艺对应的产品id
+     */
+    private MaterialId productId;
 
     @Transient
     private Map<WorkProcessTemplateId, WorkProcessTemplate> workProcessMap = new HashMap<>();
@@ -28,11 +37,13 @@ public class CraftsmanShip extends AbstractAggregateRoot<CraftsmanShipId> {
     private WorkProcessTemplateRepository repository;
 
     @SuppressWarnings("unused")
-    private CraftsmanShip(){}
+    private CraftsmanShipTemplate(){}
 
-    public CraftsmanShip(List<WorkProcessTemplateId> workProcessIds,
-                         WorkProcessTemplateRepository repository){
+    public CraftsmanShipTemplate(List<WorkProcessTemplateId> workProcessIds,
+                                 WorkProcessTemplateRepository repository,
+                                 MaterialId productId){
         super(CraftsmanShipId.randomId(CraftsmanShipId.class));
+        this.productId = productId;
         removeDuplicate(workProcessIds);
         this.repository = repository;
         validate();

@@ -21,7 +21,7 @@ public class MaterialTest {
         ChangeableInfo info = ChangeableInfo.create("螺纹钢混合1","这是一种高级的钢材1");
         MaterialMaster materialMaster = new MaterialMaster("XG-code","锡膏",
                 "XG-spec-002","瓶");
-        Material material = new Material(info,materialMaster,requiredPropsContainer,null);
+        Material material = new Material(info,materialMaster,requiredPropsContainer,null,null);
         Assert.assertEquals(material.getMaterialRequiredProps().get("materialType"),"rawMaterial");
         Assert.assertEquals(material.getMaterialOptionalProps().get("spec"),"x37b");
         Assert.assertEquals(material.getMaterialOptionalProps().size(),3);

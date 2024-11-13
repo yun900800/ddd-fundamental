@@ -49,7 +49,7 @@ public class MaterialRepositoryTest extends MaterialAppTest {
                 .addProperty("storageCondition","干燥")
                 .addProperty("purchaseCycle","三个月")
                 .build();
-        Material material = new Material(info,materialMaster,props,null);
+        Material material = new Material(info,materialMaster,props,null,null);
         repository.save(material);
 
         MaterialId id = material.id();

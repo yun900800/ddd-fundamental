@@ -14,8 +14,11 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * 工序模板
+ */
 @Entity
-@Table(name = "w_work_process_new")
+@Table(name = "w_work_process_template")
 public class WorkProcessTemplate extends AbstractAggregateRoot<WorkProcessTemplateId> {
 
     /**

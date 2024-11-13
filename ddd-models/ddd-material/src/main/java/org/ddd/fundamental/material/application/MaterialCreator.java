@@ -8,9 +8,11 @@ import org.ddd.fundamental.material.domain.model.Material;
 import org.ddd.fundamental.material.domain.model.MaterialBatch;
 import org.ddd.fundamental.material.domain.repository.MaterialBatchRepository;
 import org.ddd.fundamental.material.domain.repository.MaterialRepository;
+import org.ddd.fundamental.material.domain.value.ControlProps;
 import org.ddd.fundamental.material.domain.value.MaterialBatchValue;
 import org.ddd.fundamental.material.value.MaterialId;
 import org.ddd.fundamental.material.value.PropsContainer;
+import org.ddd.fundamental.shared.api.material.enums.MaterialType;
 import org.ddd.fundamental.utils.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -44,7 +46,23 @@ public class MaterialCreator {
         return Arrays.asList(1,2,3,4,5,6,7,8,9,10,12,15,18,30);
     }
 
-    private static Material createMaterial(String name, int index, Set<String> requiredSets, Set<String> characterSets) {
+    private static Map<MaterialType, List<String>> createMaterial(){
+        Map<MaterialType,List<String>> map = new HashMap<>();
+        map.put(MaterialType.RAW_MATERIAL,Arrays.asList(
+                "螺纹钢","锡膏","测试仪器","螺钉","纸张"
+        ));
+        map.put(MaterialType.WORKING_IN_PROGRESS,Arrays.asList(
+                "工序1的在制品","工序5的在制品","工序3的在制品","工序8的在制品","工序9的在制品"
+        ));
+        map.put(MaterialType.PRODUCTION,Arrays.asList(
+                "鼠标","主板","酒瓶塞子","电脑","玩具"
+        ));
+        return map;
+    }
+
+    private static Material createMaterial(String name, int index, Set<String> requiredSets,
+                                           Set<String> characterSets,
+                                           MaterialType type) {
 
         String unit = CollectionUtils.random(units());
         String code = "XG-spec-" +index;
@@ -62,18 +80,24 @@ public class MaterialCreator {
                 .addProperty("width", CollectionUtils.random(numbers())+ "cm")
                 .addProperty("height",CollectionUtils.random(numbers())+ "cm")
                 .build();
+
         ChangeableInfo info = ChangeableInfo.create(name+"-"+index,"这是一种高级的材料——"+index);
-        MaterialMaster materialMaster = new MaterialMaster(code,"锡膏",
+        MaterialMaster materialMaster = new MaterialMaster(code,name+"-"+index,
                 spec,unit);
-        Material material = new Material(info,materialMaster,requiredPropsContainer,optionalCharacterContainer);
+
+        ControlProps materialControlProps = ControlProps.create("默认等级",
+                type);
+        Material material = new Material(info,materialMaster,requiredPropsContainer,optionalCharacterContainer,materialControlProps);
         return material;
     }
 
     private static List<Material> createMaterials(){
         List<Material> materials = new ArrayList<>();
         for (int i = 0 ; i< 50;i++) {
-            materials.add(createMaterial("螺纹钢",(i+1), Set.of("materialType","unit"),
-                    Set.of("weight","width")));
+            MaterialType type = CollectionUtils.random(Arrays.asList(MaterialType.values()));
+            String name = CollectionUtils.random(createMaterial().get(type));
+            materials.add(createMaterial(name,(i+1), Set.of("materialType","unit"),
+                    Set.of("weight","width"), type));
         }
         return materials;
     }

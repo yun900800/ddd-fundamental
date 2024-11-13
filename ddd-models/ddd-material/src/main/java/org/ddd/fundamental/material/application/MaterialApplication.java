@@ -7,6 +7,7 @@ import org.ddd.fundamental.material.domain.model.Material;
 import org.ddd.fundamental.material.domain.repository.MaterialRepository;
 import org.ddd.fundamental.material.value.MaterialId;
 import org.ddd.fundamental.shared.api.material.MaterialDTO;
+import org.ddd.fundamental.shared.api.material.enums.MaterialType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -15,7 +16,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -103,6 +103,18 @@ public class MaterialApplication {
                     .collect(Collectors.toList());
         }
         return materials;
+    }
+
+    /**
+     * 根据物料类型查询物料
+     * @param materialType
+     * @return
+     */
+    public List<MaterialDTO> materialsByMaterialType(MaterialType materialType){
+        List<Material> materialList = materialRepository.getByMaterialType(materialType.name());
+        return materialList.stream()
+                .map(v->new MaterialDTO(v.getMaterialMaster(),v.id()))
+                .collect(Collectors.toList());
     }
 
 

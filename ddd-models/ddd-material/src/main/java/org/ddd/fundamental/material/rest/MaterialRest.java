@@ -2,6 +2,7 @@ package org.ddd.fundamental.material.rest;
 
 import org.ddd.fundamental.material.application.MaterialApplication;
 import org.ddd.fundamental.shared.api.material.MaterialDTO;
+import org.ddd.fundamental.shared.api.material.enums.MaterialType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,5 +24,10 @@ public class MaterialRest {
     @RequestMapping("/material/materialsByIds")
     public List<MaterialDTO> materialsByIds(@RequestBody List<String> ids){
         return application.materialsByIds(ids);
+    }
+
+    @RequestMapping("/material/materialsByMaterialType")
+    public List<MaterialDTO> materialsByMaterialType(@RequestBody MaterialType materialType){
+        return application.materialsByMaterialType(materialType);
     }
 }

@@ -1,5 +1,6 @@
 package org.ddd.fundamental.workprocess.domain.repository;
 
+import org.ddd.fundamental.material.value.MaterialId;
 import org.ddd.fundamental.utils.CollectionUtils;
 import org.ddd.fundamental.workprocess.WorkProcessAppTest;
 import org.ddd.fundamental.workprocess.domain.model.*;
@@ -29,7 +30,8 @@ public class CraftsmanShipRepositoryTest extends WorkProcessAppTest {
             workProcessIds.add(CollectionUtils.random(workProcessNewList).id());
         }
 
-        CraftsmanShip craftsmanShip = new CraftsmanShip(workProcessIds,workProcessNewRepository);
+        CraftsmanShipTemplate craftsmanShip = new CraftsmanShipTemplate(workProcessIds,workProcessNewRepository,
+                MaterialId.randomId(MaterialId.class));
         System.out.println(craftsmanShip);
         craftsmanShipRepository.save(craftsmanShip);
         stopWatch.stop();
