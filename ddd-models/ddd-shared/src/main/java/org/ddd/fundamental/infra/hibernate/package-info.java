@@ -13,13 +13,15 @@
         @TypeDef(defaultForType = RPAccountId.class, typeClass = RPAccountIdType.class),
         @TypeDef(defaultForType = WorkProcessTemplateId.class, typeClass = WorkProcessTemplateIdType.class),
         @TypeDef(defaultForType = WorkOrderId.class, typeClass = WorkOrderIdType.class),
-        @TypeDef(defaultForType = CraftsmanShipId.class, typeClass = CraftsmanShipIdType.class)
+        @TypeDef(defaultForType = CraftsmanShipId.class, typeClass = CraftsmanShipIdType.class),
+        @TypeDef(defaultForType = ProductStructureDataId.class, typeClass = ProductStructureDataIdType.class)
 })
 
 
 package org.ddd.fundamental.infra.hibernate;
 
 import io.hypersistence.utils.hibernate.type.json.JsonType;
+import org.ddd.fundamental.bom.ProductStructureDataId;
 import org.ddd.fundamental.equipment.value.RPAccountId;
 import org.ddd.fundamental.factory.*;
 import org.ddd.fundamental.material.value.MaterialId;

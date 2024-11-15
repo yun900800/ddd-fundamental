@@ -45,19 +45,21 @@ public class ProductStructure<T> implements ValueObject {
 
     public List<MaterialIdNode> toMaterialIdList() {
         List<MaterialIdNode> materialIdNodes = new ArrayList<>();
-        traverse(this, null,materialIdNodes);
+        MaterialId productId = this.id;
+        traverse(this, null,materialIdNodes,productId);
         return materialIdNodes;
     }
 
     private void traverse(ProductStructure<T> structure, MaterialId parentId,
-                                          List<MaterialIdNode> materialIdNodes){
+                                          List<MaterialIdNode> materialIdNodes,
+                          MaterialId productId){
         MaterialId currentId = structure.getId();
-        materialIdNodes.add(MaterialIdNode.create(currentId,parentId));
+        materialIdNodes.add(MaterialIdNode.create(currentId,parentId,productId));
         if (CollectionUtils.isEmpty(structure.children)){
             return;
         }
         for (ProductStructure<T> temp: structure.getChildren()) {
-            traverse(temp,currentId,materialIdNodes);
+            traverse(temp,currentId,materialIdNodes,productId);
         }
     }
 

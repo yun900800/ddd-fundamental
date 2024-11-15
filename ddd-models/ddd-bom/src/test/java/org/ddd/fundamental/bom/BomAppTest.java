@@ -12,7 +12,7 @@ import org.springframework.test.context.junit4.SpringRunner;
  */
 @SpringBootTest(classes = BomApp.class)
 @RunWith(SpringRunner.class)
-public class AppTest {
+public class BomAppTest {
 
     /**
      * Rigorous Test :-)
