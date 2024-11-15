@@ -12,7 +12,7 @@ import org.ddd.fundamental.material.domain.value.ControlProps;
 import org.ddd.fundamental.material.domain.value.MaterialBatchValue;
 import org.ddd.fundamental.material.value.MaterialId;
 import org.ddd.fundamental.material.value.PropsContainer;
-import org.ddd.fundamental.shared.api.material.enums.MaterialType;
+import org.ddd.fundamental.material.value.MaterialType;
 import org.ddd.fundamental.utils.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

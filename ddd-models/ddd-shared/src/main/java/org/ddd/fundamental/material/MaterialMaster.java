@@ -43,6 +43,10 @@ public class MaterialMaster implements ValueObject, Cloneable{
         this.unit = Objects.requireNonNull(unit, "unit must not be null");
     }
 
+    public static MaterialMaster create(String code,String name,String spec,String unit){
+        return new MaterialMaster(code, name, spec,unit);
+    }
+
     public @NotNull String getCode() {
         return code;
     }

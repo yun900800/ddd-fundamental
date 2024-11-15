@@ -7,7 +7,7 @@ import org.ddd.fundamental.material.domain.model.Material;
 import org.ddd.fundamental.material.domain.repository.MaterialRepository;
 import org.ddd.fundamental.material.value.MaterialId;
 import org.ddd.fundamental.shared.api.material.MaterialDTO;
-import org.ddd.fundamental.shared.api.material.enums.MaterialType;
+import org.ddd.fundamental.material.value.MaterialType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;

@@ -18,6 +18,7 @@ public class WorkOrder extends AbstractAggregateRoot<WorkOrderId> {
     private WorkOrder(){}
 
     public WorkOrder(WorkOrderValue order){
+        super(WorkOrderId.randomId(WorkOrderId.class));
         this.order = order;
     }
 

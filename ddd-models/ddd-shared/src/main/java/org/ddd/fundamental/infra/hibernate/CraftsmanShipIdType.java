@@ -1,8 +1,8 @@
-package org.ddd.fundamental.workprocess.infra.hibernate;
+package org.ddd.fundamental.infra.hibernate;
 
 import org.ddd.fundamental.infra.hibernate.DomainObjectIdCustomType;
 import org.ddd.fundamental.infra.hibernate.DomainObjectIdTypeDescriptor;
-import org.ddd.fundamental.workprocess.domain.model.CraftsmanShipId;
+import org.ddd.fundamental.workprocess.value.CraftsmanShipId;
 
 public class CraftsmanShipIdType extends DomainObjectIdCustomType<CraftsmanShipId> {
     private static final DomainObjectIdTypeDescriptor<CraftsmanShipId> TYPE_DESCRIPTOR = new DomainObjectIdTypeDescriptor<>(

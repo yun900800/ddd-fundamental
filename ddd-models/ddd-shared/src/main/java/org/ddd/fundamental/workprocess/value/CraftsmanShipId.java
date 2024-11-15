@@ -1,4 +1,4 @@
-package org.ddd.fundamental.workprocess.domain.model;
+package org.ddd.fundamental.workprocess.value;
 
 import org.ddd.fundamental.core.DomainObjectId;
 

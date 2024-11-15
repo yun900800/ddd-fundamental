@@ -1,7 +1,7 @@
 package org.ddd.fundamental.material.domain.value;
 
 import org.ddd.fundamental.core.ValueObject;
-import org.ddd.fundamental.shared.api.material.enums.MaterialType;
+import org.ddd.fundamental.material.value.MaterialType;
 
 import javax.persistence.Embeddable;
 import javax.persistence.EnumType;

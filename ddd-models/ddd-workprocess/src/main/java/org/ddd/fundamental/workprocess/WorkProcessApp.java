@@ -2,7 +2,7 @@ package org.ddd.fundamental.workprocess;
 
 import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.shared.api.material.MaterialDTO;
-import org.ddd.fundamental.shared.api.material.enums.MaterialType;
+import org.ddd.fundamental.material.value.MaterialType;
 import org.ddd.fundamental.workprocess.client.MaterialClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;

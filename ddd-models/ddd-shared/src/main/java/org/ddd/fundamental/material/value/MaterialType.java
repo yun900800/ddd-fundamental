@@ -1,4 +1,4 @@
-package org.ddd.fundamental.shared.api.material.enums;
+package org.ddd.fundamental.material.value;
 
 public enum MaterialType {
     PRODUCTION("产品或成品"),

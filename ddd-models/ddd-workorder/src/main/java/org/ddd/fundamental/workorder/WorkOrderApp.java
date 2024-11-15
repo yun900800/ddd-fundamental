@@ -2,8 +2,10 @@ package org.ddd.fundamental.workorder;
 
 import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.shared.api.material.MaterialDTO;
+import org.ddd.fundamental.shared.api.optemplate.CraftsmanShipTemplateDTO;
 import org.ddd.fundamental.workorder.client.EquipmentClient;
 import org.ddd.fundamental.workorder.client.MaterialClient;
+import org.ddd.fundamental.workorder.client.WorkProcessClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -30,6 +32,9 @@ public class WorkOrderApp implements CommandLineRunner {
 
     @Autowired
     private EquipmentClient equipmentClient;
+
+    @Autowired
+    private WorkProcessClient workProcessClient;
     public static void main(String[] args) {
         SpringApplication.run(WorkOrderApp.class,args);
     }
@@ -44,6 +49,9 @@ public class WorkOrderApp implements CommandLineRunner {
 //                materialDTOList.get(2).id().toUUID(),materialDTOList.get(5).id().toUUID());
 //        materialDTOList = materialClient.materialsByIds(ids);
 //        log.info("materials is {} in ids:{}", materialDTOList,ids);
+
+        List<CraftsmanShipTemplateDTO> craftsmanShipTemplateDTOS = workProcessClient.craftsmanShipTemplates();
+        log.info("CraftsmanShipTemplates is {}",craftsmanShipTemplateDTOS);
 
     }
 }

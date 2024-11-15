@@ -6,7 +6,7 @@ import org.ddd.fundamental.core.generator.Generators;
 import org.ddd.fundamental.day.range.DateRange;
 import org.ddd.fundamental.material.value.MaterialId;
 import org.ddd.fundamental.shared.api.material.MaterialDTO;
-import org.ddd.fundamental.shared.api.material.enums.MaterialType;
+import org.ddd.fundamental.material.value.MaterialType;
 import org.ddd.fundamental.utils.CollectionUtils;
 import org.ddd.fundamental.utils.DateUtils;
 import org.ddd.fundamental.workprocess.client.MaterialClient;
@@ -187,4 +187,11 @@ public class WorkProcessCreator {
         log.info("创建{}个工艺成功",craftsmanShipTemplates.size());
     }
 
+    public List<WorkProcessTemplate> getWorkProcessList() {
+        return new ArrayList<>(workProcessList);
+    }
+
+    public List<CraftsmanShipTemplate> getCraftsmanShipTemplates() {
+        return new ArrayList<>(craftsmanShipTemplates);
+    }
 }

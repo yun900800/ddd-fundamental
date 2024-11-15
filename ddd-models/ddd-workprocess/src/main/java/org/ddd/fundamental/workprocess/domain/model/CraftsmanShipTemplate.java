@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.core.AbstractAggregateRoot;
 import org.ddd.fundamental.material.value.MaterialId;
 import org.ddd.fundamental.workprocess.domain.repository.WorkProcessTemplateRepository;
+import org.ddd.fundamental.workprocess.value.CraftsmanShipId;
 import org.ddd.fundamental.workprocess.value.WorkProcessTemplateId;
 import org.hibernate.annotations.Type;
 
@@ -106,6 +107,10 @@ public class CraftsmanShipTemplate extends AbstractAggregateRoot<CraftsmanShipId
 
     public WorkProcessTemplateRepository getRepository() {
         return repository;
+    }
+
+    public MaterialId getProductId() {
+        return productId;
     }
 
     @Override

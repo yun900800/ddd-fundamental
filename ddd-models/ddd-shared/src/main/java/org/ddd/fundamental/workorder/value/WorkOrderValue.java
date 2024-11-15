@@ -3,8 +3,11 @@ package org.ddd.fundamental.workorder.value;
 import org.ddd.fundamental.core.ValueObject;
 import org.ddd.fundamental.material.value.MaterialId;
 import org.ddd.fundamental.workorder.enums.WorkOrderType;
+import org.ddd.fundamental.workprocess.value.CraftsmanShipId;
 
 import javax.persistence.Embeddable;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.MappedSuperclass;
 import java.time.Instant;
 import java.util.Objects;
@@ -13,12 +16,18 @@ import java.util.Objects;
 @Embeddable
 public class WorkOrderValue implements ValueObject,Cloneable {
 
+    @Enumerated(EnumType.STRING)
     private WorkOrderType workOrderType;
 
     /**
      * 产品id
      */
     private MaterialId productId;
+
+    /**
+     * 工艺id
+     */
+    private CraftsmanShipId craftsmanShipId;
 
     /**
      * 工单预计开始时间
@@ -45,21 +54,25 @@ public class WorkOrderValue implements ValueObject,Cloneable {
 
     private WorkOrderValue(WorkOrderType workOrderType, MaterialId productId,
                           Instant startTime, Instant endTime,
-                          Double productQty, String customerName) {
+                          Double productQty, String customerName,
+                           CraftsmanShipId craftsmanShipId) {
         this.workOrderType = workOrderType;
         this.productId = productId;
         this.startTime = startTime;
         this.endTime = endTime;
         this.productQty = productQty;
         this.customerName = customerName;
+        this.craftsmanShipId = craftsmanShipId;
     }
 
     public static WorkOrderValue create(WorkOrderType workOrderType, MaterialId productId,
                                         Instant startTime, Instant endTime,
-                                        Double productQty, String customerName){
+                                        Double productQty, String customerName,
+                                        CraftsmanShipId craftsmanShipId){
         return new WorkOrderValue(workOrderType,
                 productId,startTime,endTime,
-                productQty,customerName);
+                productQty,customerName,
+                craftsmanShipId);
     }
 
     public WorkOrderType getWorkOrderType() {

@@ -7,6 +7,7 @@ import org.ddd.fundamental.material.value.MaterialId;
 import org.ddd.fundamental.material.MaterialMaster;
 import org.ddd.fundamental.material.MaterialAppTest;
 import org.ddd.fundamental.material.domain.model.Material;
+import org.ddd.fundamental.material.value.MaterialType;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -3,13 +3,13 @@
         @TypeDef(
                 name = "json",
                 typeClass = JsonType.class
-        ),
-        @TypeDef(defaultForType = CraftsmanShipId.class, typeClass = CraftsmanShipIdType.class),
+        )
 })
 package org.ddd.fundamental.workprocess.infra.hibernate;
 
 import io.hypersistence.utils.hibernate.type.json.JsonType;
-import org.ddd.fundamental.workprocess.domain.model.CraftsmanShipId;
+import org.ddd.fundamental.infra.hibernate.CraftsmanShipIdType;
+import org.ddd.fundamental.workprocess.value.CraftsmanShipId;
 import org.ddd.fundamental.workprocess.domain.model.WorkProcessId;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;

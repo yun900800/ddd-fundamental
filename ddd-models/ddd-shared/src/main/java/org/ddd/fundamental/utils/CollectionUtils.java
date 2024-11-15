@@ -1,6 +1,7 @@
 package org.ddd.fundamental.utils;
 
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class CollectionUtils {
@@ -14,4 +15,5 @@ public class CollectionUtils {
                 = ThreadLocalRandom.current().nextInt(size) % size;
         return collection.get(randomElementIndex);
     }
+
 }
