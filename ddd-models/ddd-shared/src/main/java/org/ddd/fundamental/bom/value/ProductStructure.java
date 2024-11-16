@@ -3,9 +3,6 @@ package org.ddd.fundamental.bom.value;
 import org.ddd.fundamental.core.ValueObject;
 import org.ddd.fundamental.material.value.MaterialId;
 import org.ddd.fundamental.material.value.MaterialType;
-import org.ddd.fundamental.tuple.ThreeTuple;
-import org.ddd.fundamental.tuple.Tuple;
-import org.ddd.fundamental.tuple.TwoTuple;
 import org.springframework.util.CollectionUtils;
 
 import javax.persistence.Embeddable;
@@ -63,6 +60,34 @@ public class ProductStructure<T> implements ValueObject {
         List<MaterialId> rawMaterials = new ArrayList<>();
         traverse(this,spares,rawMaterials);
         return ProductStructureList.create(productId,spares,rawMaterials);
+    }
+
+    public ProductStructureNodeList toProductStructureNodeList(){
+        MaterialId productId = this.id;
+        List<MaterialIdNode> spares = new ArrayList<>();
+        List<MaterialIdNode> rawMaterials = new ArrayList<>();
+        traverse(this,null,spares,rawMaterials, productId);
+        return ProductStructureNodeList.create(
+                MaterialIdNode.create(productId,null,productId),
+                spares,rawMaterials);
+    }
+
+    private void traverse(ProductStructure<T> structure, MaterialId parentId,
+                          List<MaterialIdNode> spares, List<MaterialIdNode> rawMaterials,
+                          MaterialId productId) {
+        MaterialId currentId = structure.getId();
+        if (structure.materialType.equals(MaterialType.WORKING_IN_PROGRESS)) {
+            spares.add(MaterialIdNode.create(currentId,parentId,productId));
+        }
+        if (structure.materialType.equals(MaterialType.RAW_MATERIAL)){
+            rawMaterials.add(MaterialIdNode.create(currentId,parentId,productId));
+        }
+        if (CollectionUtils.isEmpty(structure.children)){
+            return;
+        }
+        for (ProductStructure<T> temp: structure.getChildren()) {
+            traverse(temp,currentId,spares,rawMaterials,productId);
+        }
     }
 
     private void traverse(ProductStructure<T> structure,
