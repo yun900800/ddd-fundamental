@@ -3,6 +3,9 @@ package org.ddd.fundamental.bom.value;
 import org.ddd.fundamental.core.ValueObject;
 import org.ddd.fundamental.material.value.MaterialId;
 import org.ddd.fundamental.material.value.MaterialType;
+import org.ddd.fundamental.tuple.ThreeTuple;
+import org.ddd.fundamental.tuple.Tuple;
+import org.ddd.fundamental.tuple.TwoTuple;
 import org.springframework.util.CollectionUtils;
 
 import javax.persistence.Embeddable;
@@ -49,6 +52,36 @@ public class ProductStructure<T> implements ValueObject {
         traverse(this, null,materialIdNodes,productId);
         return materialIdNodes;
     }
+
+    /**
+     * 根据产品bom的结构生成产品和配件，原材料相关数据
+     * @return
+     */
+    public ProductStructureList toProductStructureList(){
+        MaterialId productId = this.id;
+        List<MaterialId> spares = new ArrayList<>();
+        List<MaterialId> rawMaterials = new ArrayList<>();
+        traverse(this,spares,rawMaterials);
+        return ProductStructureList.create(productId,spares,rawMaterials);
+    }
+
+    private void traverse(ProductStructure<T> structure,
+                          List<MaterialId> spares, List<MaterialId> rawMaterials) {
+        if (structure.materialType.equals(MaterialType.WORKING_IN_PROGRESS)) {
+            spares.add(structure.getId());
+        }
+        if (structure.materialType.equals(MaterialType.RAW_MATERIAL)){
+            rawMaterials.add(structure.getId());
+        }
+        if (CollectionUtils.isEmpty(structure.children)){
+            return;
+        }
+        for (ProductStructure<T> temp: structure.getChildren()) {
+            traverse(temp,spares,rawMaterials);
+        }
+    }
+
+
 
     private void traverse(ProductStructure<T> structure, MaterialId parentId,
                                           List<MaterialIdNode> materialIdNodes,

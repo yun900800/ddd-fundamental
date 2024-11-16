@@ -60,4 +60,13 @@ public class ProductStructureList implements ValueObject,Cloneable {
     public List<MaterialId> getRawMaterialIds() {
         return new ArrayList<>(rawMaterialIds);
     }
+
+    @Override
+    public String toString() {
+        return "ProductStructureList{" +
+                "productId=" + productId +
+                ", sparePartIds=" + sparePartIds +
+                ", rawMaterialIds=" + rawMaterialIds +
+                '}';
+    }
 }

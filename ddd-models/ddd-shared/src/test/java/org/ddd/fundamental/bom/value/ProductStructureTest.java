@@ -60,4 +60,22 @@ public class ProductStructureTest {
         List<MaterialIdNode> results = structure.toMaterialIdList();
         System.out.println(results);
     }
+
+    @Test
+    public void testToProductStructureList(){
+        ProductStructure structure = CollectionUtils.random(new ArrayList<>(BomCreator.createProductStructures(5)));
+        Set<ProductStructure> spares = BomCreator.createSparePartsStructures(10);
+        Set<ProductStructure> rawMaterials = BomCreator.createRawMaterialStructures(20);
+        log.info("spares size is {}",spares.size());
+        for (int i = 0 ; i< 4; i++) {
+            ProductStructure spare = CollectionUtils.random(new ArrayList<>(spares));
+            spare.addStructure(CollectionUtils.random(new ArrayList<>(rawMaterials)));
+            spare.addStructure(CollectionUtils.random(new ArrayList<>(rawMaterials)));
+            spare.addStructure(CollectionUtils.random(new ArrayList<>(rawMaterials)));
+            structure.addStructure(spare);
+        }
+        System.out.println(structure);
+        ProductStructureList structureList = structure.toProductStructureList();
+        System.out.println(structureList);
+    }
 }
