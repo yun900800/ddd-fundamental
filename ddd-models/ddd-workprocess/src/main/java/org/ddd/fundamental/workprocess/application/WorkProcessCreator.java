@@ -30,6 +30,7 @@ import org.ddd.fundamental.workprocess.value.WorkProcessBeat;
 import org.ddd.fundamental.workprocess.domain.model.WorkProcessTemplate;
 import org.ddd.fundamental.workprocess.domain.repository.CraftsmanShipRepository;
 import org.ddd.fundamental.workprocess.domain.repository.WorkProcessTemplateRepository;
+import org.springframework.beans.factory.SmartInitializingSingleton;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -39,7 +40,7 @@ import java.util.stream.Collectors;
 
 @Component
 @Slf4j
-public class WorkProcessCreator {
+public class WorkProcessCreator implements SmartInitializingSingleton {
 
     private List<WorkProcessTemplate> workProcessList;
 
@@ -105,7 +106,9 @@ public class WorkProcessCreator {
     }
 
     private List<ToolingEquipmentId> createToolingIds(){
+        log.info("开始查询工装id");
         List<ToolingDTO> equipmentDTOS = equipmentClient.toolingList();
+        log.info("结束查询工装id");
         this.toolingEquipmentIds =  equipmentDTOS.stream().map(v->v.id()).collect(Collectors.toList());
         return toolingEquipmentIds;
     }
@@ -138,9 +141,9 @@ public class WorkProcessCreator {
                 createWorkProcessTemplateControl(),
                 createWorkProcessTemplateQuantity()
         );
-//        for (ProductResource resource: createProductResource()) {
-//            workProcessTemplate.addResource(resource);
-//        }
+        for (ProductResource resource: createProductResource()) {
+            workProcessTemplate.addResource(resource);
+        }
         return workProcessTemplate;
     }
 
@@ -225,7 +228,8 @@ public class WorkProcessCreator {
         }
         return craftsmanShipTemplates;
     }
-    @PostConstruct
+    //注意@PostConstruct注解的方法中调用feign接口或者调用hystrix断路器会出现重试的错误
+    //@PostConstruct
     public void init(){
         templateRepository.deleteAll();
         log.info("删除所有工序成功");
@@ -246,5 +250,10 @@ public class WorkProcessCreator {
 
     public List<CraftsmanShipTemplate> getCraftsmanShipTemplates() {
         return new ArrayList<>(craftsmanShipTemplates);
+    }
+
+    @Override
+    public void afterSingletonsInstantiated() {
+        init();
     }
 }
