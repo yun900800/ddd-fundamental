@@ -1,8 +1,10 @@
 package org.ddd.fundamental.workprocess.value.resources;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.ddd.fundamental.changeable.ChangeableInfo;
 import org.ddd.fundamental.core.DomainObjectId;
 import org.ddd.fundamental.core.ValueObject;
+import org.ddd.fundamental.jackson.ProductResourceDeserializer;
 import org.ddd.fundamental.workprocess.enums.ProductResourceType;
 
 import javax.persistence.Embeddable;
@@ -15,6 +17,7 @@ import java.util.Objects;
  */
 @Embeddable
 @MappedSuperclass
+@JsonDeserialize(using = ProductResourceDeserializer.class)
 public class ProductResource<ID extends DomainObjectId> implements ValueObject, Cloneable {
 
     private ID id;

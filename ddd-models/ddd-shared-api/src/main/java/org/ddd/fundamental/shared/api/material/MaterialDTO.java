@@ -1,7 +1,6 @@
 package org.ddd.fundamental.shared.api.material;
 
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.ddd.fundamental.core.AbstractDTO;
 import org.ddd.fundamental.material.MaterialMaster;
 import org.ddd.fundamental.material.value.MaterialId;

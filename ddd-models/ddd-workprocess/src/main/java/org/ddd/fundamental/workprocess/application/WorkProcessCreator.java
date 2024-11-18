@@ -4,19 +4,27 @@ import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.changeable.ChangeableInfo;
 import org.ddd.fundamental.core.generator.Generators;
 import org.ddd.fundamental.day.range.DateRange;
+import org.ddd.fundamental.factory.EquipmentId;
+import org.ddd.fundamental.factory.ToolingEquipmentId;
 import org.ddd.fundamental.material.value.MaterialId;
+import org.ddd.fundamental.shared.api.equipment.EquipmentDTO;
+import org.ddd.fundamental.shared.api.equipment.ToolingDTO;
 import org.ddd.fundamental.shared.api.material.MaterialDTO;
 import org.ddd.fundamental.material.value.MaterialType;
 import org.ddd.fundamental.utils.CollectionUtils;
 import org.ddd.fundamental.utils.DateUtils;
+import org.ddd.fundamental.workprocess.client.EquipmentClient;
 import org.ddd.fundamental.workprocess.client.MaterialClient;
 import org.ddd.fundamental.workprocess.domain.model.CraftsmanShipTemplate;
+import org.ddd.fundamental.workprocess.enums.ProductResourceType;
 import org.ddd.fundamental.workprocess.value.WorkProcessTemplateId;
 import org.ddd.fundamental.workprocess.value.controller.GapRangeControl;
 import org.ddd.fundamental.workprocess.value.controller.ReportWorkControl;
 import org.ddd.fundamental.workprocess.value.controller.WorkOrderControl;
 import org.ddd.fundamental.workprocess.value.controller.WorkProcessTemplateControl;
 import org.ddd.fundamental.workprocess.value.quantity.WorkProcessTemplateQuantity;
+import org.ddd.fundamental.workprocess.value.resources.ProductResource;
+import org.ddd.fundamental.workprocess.value.resources.ProductResources;
 import org.ddd.fundamental.workprocess.value.time.AuxiliaryWorkTime;
 import org.ddd.fundamental.workprocess.value.WorkProcessBeat;
 import org.ddd.fundamental.workprocess.domain.model.WorkProcessTemplate;
@@ -26,10 +34,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -47,9 +52,16 @@ public class WorkProcessCreator {
     @Autowired
     private MaterialClient client;
 
+    @Autowired
+    private EquipmentClient equipmentClient;
+
+    private List<EquipmentId> equipmentIds;
+
+    private List<ToolingEquipmentId> toolingEquipmentIds;
+
     private List<CraftsmanShipTemplate> craftsmanShipTemplates;
 
-    public static List<WorkProcessTemplate> createWorkProcessList() {
+    public List<WorkProcessTemplate> createWorkProcessList() {
         List<WorkProcessTemplate> workProcessNews = new ArrayList<>();
         Generators.fill(workProcessNews,()->createWorkProcessNew(),20);
         return workProcessNews;
@@ -80,7 +92,45 @@ public class WorkProcessCreator {
                 .build();
     }
 
-    public static WorkProcessTemplate createWorkProcessNew(){
+    public ProductResources createProductResources() {
+        return new ProductResources(new HashSet<>(createProductResource()));
+    }
+
+    private List<EquipmentId> createEquipmentIds() {
+        log.info("开始查询设备id");
+        List<EquipmentDTO> equipmentDTOS = equipmentClient.equipments();
+        log.info("结束查询设备id");
+        equipmentIds =  equipmentDTOS.stream().map(v->v.id()).collect(Collectors.toList());
+        return equipmentIds;
+    }
+
+    private List<ToolingEquipmentId> createToolingIds(){
+        List<ToolingDTO> equipmentDTOS = equipmentClient.toolingList();
+        this.toolingEquipmentIds =  equipmentDTOS.stream().map(v->v.id()).collect(Collectors.toList());
+        return toolingEquipmentIds;
+    }
+
+
+    public List<ProductResource> createProductResource(){
+
+        if (org.springframework.util.CollectionUtils.isEmpty(equipmentIds)) {
+            createEquipmentIds();
+        }
+        EquipmentId equipmentId = CollectionUtils.random(equipmentIds);
+        if (org.springframework.util.CollectionUtils.isEmpty(toolingEquipmentIds)) {
+            createToolingIds();
+        }
+        ToolingEquipmentId toolingId = CollectionUtils.random(toolingEquipmentIds);
+        ProductResource equipment = ProductResource.create(equipmentId, ProductResourceType.EQUIPMENT,ChangeableInfo.create(
+            "设备生产资源","这是一个设备生产资源"
+        ));
+        ProductResource tooling = ProductResource.create(toolingId, ProductResourceType.TOOLING,ChangeableInfo.create(
+                "工装生产资源","这是一个工装生产资源"
+        ));
+        return Arrays.asList(equipment, tooling);
+    }
+
+    public WorkProcessTemplate createWorkProcessNew(){
         WorkProcessTemplate workProcessTemplate = new WorkProcessTemplate(
                 CollectionUtils.random(createWorkProcessInfo()),
                 CollectionUtils.random(createAuxiliaryWorkTimes()),
@@ -88,6 +138,9 @@ public class WorkProcessCreator {
                 createWorkProcessTemplateControl(),
                 createWorkProcessTemplateQuantity()
         );
+//        for (ProductResource resource: createProductResource()) {
+//            workProcessTemplate.addResource(resource);
+//        }
         return workProcessTemplate;
     }
 

@@ -1,8 +1,10 @@
 package org.ddd.fundamental.workprocess;
 
 import lombok.extern.slf4j.Slf4j;
+import org.ddd.fundamental.shared.api.equipment.EquipmentDTO;
 import org.ddd.fundamental.shared.api.material.MaterialDTO;
 import org.ddd.fundamental.material.value.MaterialType;
+import org.ddd.fundamental.workprocess.client.EquipmentClient;
 import org.ddd.fundamental.workprocess.client.MaterialClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -30,9 +32,14 @@ public class WorkProcessApp implements CommandLineRunner {
     @Autowired
     private MaterialClient client;
 
+    @Autowired
+    private EquipmentClient equipmentClient;
+
     @Override
     public void run(String... args) throws Exception {
         List<MaterialDTO> materialDTOList = client.materialsByMaterialType(MaterialType.PRODUCTION);
         log.info("products is {}",materialDTOList);
+        List<EquipmentDTO> equipmentDTOS = equipmentClient.equipments();
+        log.info("equipmentDTOS is {}",equipmentDTOS);
     }
 }

@@ -11,7 +11,7 @@ import java.util.List;
         fallbackFactory = MaterialFactoryClientFallback.class)
 public interface MaterialClient {
 
-    @RequestMapping("/material/materialsByMaterialType1")
+    @RequestMapping("/material/materialsByMaterialType")
     List<MaterialDTO> materialsByMaterialType(MaterialType materialType);
 
 }

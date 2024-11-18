@@ -147,6 +147,17 @@ public class WorkProcessKeyTime implements ValueObject, Cloneable {
     }
 
     @Override
+    public String toString() {
+        return "WorkProcessKeyTime{" +
+                "startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", interruptTime=" + interruptTime +
+                ", restartTime=" + restartTime +
+                ", reason='" + reason + '\'' +
+                '}';
+    }
+
+    @Override
     public WorkProcessKeyTime clone() {
         try {
             WorkProcessKeyTime clone = (WorkProcessKeyTime) super.clone();

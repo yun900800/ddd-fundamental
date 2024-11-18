@@ -1,18 +1,16 @@
 package org.ddd.fundamental.day;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.ddd.fundamental.core.ValueObject;
-import org.ddd.fundamental.utils.DateUtils;
 
 import javax.persistence.Embeddable;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import java.text.SimpleDateFormat;
+
 import java.time.Duration;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -23,16 +21,14 @@ import java.util.Objects;
 @MappedSuperclass
 @Embeddable
 public class Shift implements ValueObject , CalculateTime{
-    @Temporal(TemporalType.TIMESTAMP)
     private LocalTime start;
 
-    @Temporal(TemporalType.TIMESTAMP)
     private LocalTime end;
 
     private String shiftName;
 
     @SuppressWarnings("unused")
-    Shift(){
+    public Shift(){
     }
 
     public Shift(LocalTime start, LocalTime end,String shiftName){
@@ -105,10 +101,12 @@ public class Shift implements ValueObject , CalculateTime{
 
     @Override
     public String toString() {
-        return "Shift{" +
-                shiftName + " = " + formatStart() +
-                " - " + formatEnd() +
-                "}";
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

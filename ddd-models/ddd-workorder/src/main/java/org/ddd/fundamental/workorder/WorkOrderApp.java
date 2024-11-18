@@ -41,17 +41,17 @@ public class WorkOrderApp implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-//        List<MaterialDTO> materialDTOList = materialClient.materials();
-//        log.info("materials is {}", materialDTOList);
-//        log.info("equipments is {}", equipmentClient.equipments());
-//        log.info("toolingList is {}", equipmentClient.toolingList());
-//        List<String> ids = Arrays.asList(materialDTOList.get(0).id().toUUID(),
-//                materialDTOList.get(2).id().toUUID(),materialDTOList.get(5).id().toUUID());
-//        materialDTOList = materialClient.materialsByIds(ids);
-//        log.info("materials is {} in ids:{}", materialDTOList,ids);
+        List<MaterialDTO> materialDTOList = materialClient.materials();
+        log.info("materials is {}", materialDTOList);
+        log.info("equipments is {}", equipmentClient.equipments());
+        log.info("toolingList is {}", equipmentClient.toolingList());
+        List<String> ids = Arrays.asList(materialDTOList.get(0).id().toUUID(),
+                materialDTOList.get(2).id().toUUID(),materialDTOList.get(5).id().toUUID());
+        materialDTOList = materialClient.materialsByIds(ids);
+        log.info("materials is {} in ids:{}", materialDTOList,ids);
 
-        List<CraftsmanShipTemplateDTO> craftsmanShipTemplateDTOS = workProcessClient.craftsmanShipTemplates();
-        log.info("CraftsmanShipTemplates is {}",craftsmanShipTemplateDTOS);
+//        List<CraftsmanShipTemplateDTO> craftsmanShipTemplateDTOS = workProcessClient.craftsmanShipTemplates();
+//        log.info("CraftsmanShipTemplates is {}",craftsmanShipTemplateDTOS);
 
     }
 }
