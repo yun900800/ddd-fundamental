@@ -3,7 +3,6 @@ package org.ddd.fundamental.equipment.domain.model;
 import org.ddd.fundamental.core.AbstractAggregateRoot;
 import org.ddd.fundamental.equipment.value.ToolingEquipmentValue;
 import org.ddd.fundamental.factory.EquipmentId;
-import org.ddd.fundamental.factory.ToolingEquipmentId;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;

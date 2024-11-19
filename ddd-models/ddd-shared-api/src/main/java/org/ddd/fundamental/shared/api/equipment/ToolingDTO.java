@@ -3,8 +3,6 @@ package org.ddd.fundamental.shared.api.equipment;
 import org.ddd.fundamental.core.AbstractDTO;
 import org.ddd.fundamental.equipment.value.ToolingEquipmentValue;
 import org.ddd.fundamental.factory.EquipmentId;
-import org.ddd.fundamental.factory.ToolingEquipmentId;
-
 public class ToolingDTO extends AbstractDTO<EquipmentId> {
 
     private ToolingEquipmentValue toolingEquipmentValue;

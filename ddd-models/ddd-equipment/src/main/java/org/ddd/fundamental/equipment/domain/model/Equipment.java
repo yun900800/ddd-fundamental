@@ -7,7 +7,6 @@ import org.ddd.fundamental.day.YearModelValue;
 import org.ddd.fundamental.day.range.DateRange;
 import org.ddd.fundamental.equipment.value.EquipmentMaster;
 import org.ddd.fundamental.factory.EquipmentId;
-import org.ddd.fundamental.factory.ToolingEquipmentId;
 import org.ddd.fundamental.tuple.TwoTuple;
 import org.hibernate.annotations.Type;
 
@@ -109,7 +108,7 @@ public class Equipment extends AbstractAggregateRoot<EquipmentId> {
         return this;
     }
 
-    public Equipment removeToolingId(ToolingEquipmentId id){
+    public Equipment removeToolingId(EquipmentId id){
         defaultToolingIds();
         this.toolingEquipmentIds.remove(id);
         return this;

@@ -5,7 +5,6 @@ import org.ddd.fundamental.equipment.domain.model.ToolingEquipment;
 import org.ddd.fundamental.equipment.domain.repository.EquipmentRepository;
 import org.ddd.fundamental.equipment.domain.repository.ToolingEquipmentRepository;
 import org.ddd.fundamental.factory.EquipmentId;
-import org.ddd.fundamental.factory.ToolingEquipmentId;
 import org.ddd.fundamental.shared.api.equipment.EquipmentDTO;
 import org.ddd.fundamental.shared.api.equipment.ToolingDTO;
 import org.springframework.beans.factory.annotation.Autowired;

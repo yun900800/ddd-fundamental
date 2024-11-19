@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import org.ddd.fundamental.changeable.ChangeableInfo;
 import org.ddd.fundamental.factory.EquipmentId;
-import org.ddd.fundamental.factory.ToolingEquipmentId;
 import org.ddd.fundamental.workprocess.enums.ProductResourceType;
 import org.ddd.fundamental.workprocess.value.resources.ProductResource;
 
@@ -41,7 +40,7 @@ public class ProductResourceDeserializer extends StdDeserializer<ProductResource
                     ProductResourceType.EQUIPMENT,info);
         }
         if (ProductResourceType.TOOLING.getValue().equals(resourceType)) {
-            return ProductResource.create(new ToolingEquipmentId(id),
+            return ProductResource.create(new EquipmentId(id),
                     ProductResourceType.TOOLING,info);
         }
         return null;

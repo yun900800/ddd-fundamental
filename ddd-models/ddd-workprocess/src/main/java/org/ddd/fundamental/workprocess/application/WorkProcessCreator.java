@@ -5,7 +5,6 @@ import org.ddd.fundamental.changeable.ChangeableInfo;
 import org.ddd.fundamental.core.generator.Generators;
 import org.ddd.fundamental.day.range.DateRange;
 import org.ddd.fundamental.factory.EquipmentId;
-import org.ddd.fundamental.factory.ToolingEquipmentId;
 import org.ddd.fundamental.material.value.MaterialId;
 import org.ddd.fundamental.shared.api.equipment.EquipmentDTO;
 import org.ddd.fundamental.shared.api.equipment.ToolingDTO;
