@@ -2,6 +2,7 @@ package org.ddd.fundamental.equipment.domain.model;
 
 import org.ddd.fundamental.core.AbstractAggregateRoot;
 import org.ddd.fundamental.equipment.value.ToolingEquipmentValue;
+import org.ddd.fundamental.factory.EquipmentId;
 import org.ddd.fundamental.factory.ToolingEquipmentId;
 
 import javax.persistence.Entity;
@@ -11,7 +12,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "tooling_equipment")
-public class ToolingEquipment extends AbstractAggregateRoot<ToolingEquipmentId> {
+public class ToolingEquipment extends AbstractAggregateRoot<EquipmentId> {
 
     private ToolingEquipmentValue toolingEquipmentInfo;
 
@@ -33,7 +34,7 @@ public class ToolingEquipment extends AbstractAggregateRoot<ToolingEquipmentId> 
 
     public ToolingEquipment(ToolingEquipmentValue toolingEquipmentInfo,
                             String assetNo, String assetCode){
-        super(ToolingEquipmentId.randomId(ToolingEquipmentId.class));
+        super(EquipmentId.randomId(EquipmentId.class));
         this.toolingEquipmentInfo = toolingEquipmentInfo;
         this.assetNo = assetNo;
         this.assetCode = assetCode;

@@ -2,27 +2,28 @@ package org.ddd.fundamental.shared.api.equipment;
 
 import org.ddd.fundamental.core.AbstractDTO;
 import org.ddd.fundamental.equipment.value.ToolingEquipmentValue;
+import org.ddd.fundamental.factory.EquipmentId;
 import org.ddd.fundamental.factory.ToolingEquipmentId;
 
-public class ToolingDTO extends AbstractDTO<ToolingEquipmentId> {
+public class ToolingDTO extends AbstractDTO<EquipmentId> {
 
     private ToolingEquipmentValue toolingEquipmentValue;
 
     @SuppressWarnings("unused")
     private ToolingDTO(){}
 
-    private ToolingDTO(ToolingEquipmentId id,ToolingEquipmentValue toolingEquipmentValue){
+    private ToolingDTO(EquipmentId id,ToolingEquipmentValue toolingEquipmentValue){
         super(id);
         this.toolingEquipmentValue = toolingEquipmentValue;
     }
 
-    public static ToolingDTO create(ToolingEquipmentId id,ToolingEquipmentValue toolingEquipmentValue){
+    public static ToolingDTO create(EquipmentId id,ToolingEquipmentValue toolingEquipmentValue){
         return new ToolingDTO(id,toolingEquipmentValue);
     }
 
 
     @Override
-    public ToolingEquipmentId id() {
+    public EquipmentId id() {
         return super.id;
     }
 

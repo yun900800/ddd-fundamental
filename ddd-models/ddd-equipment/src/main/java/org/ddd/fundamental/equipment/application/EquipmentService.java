@@ -29,7 +29,7 @@ public class EquipmentService {
     private ToolingEquipmentCreator creator;
 
     @Transactional
-    public void addToolingToEquipment(ToolingEquipmentId toolingId, EquipmentId equipmentId) {
+    public void addToolingToEquipment(EquipmentId toolingId, EquipmentId equipmentId) {
         ToolingEquipment toolingEquipment = toolingRepository.getById(toolingId);
         Equipment equipment = equipmentRepository.getById(equipmentId);
         toolingEquipment.enableUse();

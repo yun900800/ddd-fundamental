@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.Objects;
 
 /**
- * 辅助作业时间
+ * 辅助作业时间(这个跟资源矩阵的组合有关系)
  */
 @Embeddable
 @MappedSuperclass

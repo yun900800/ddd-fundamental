@@ -62,7 +62,7 @@ public class WorkProcessCreator implements SmartInitializingSingleton {
 
     private List<MaterialId> rawMaterialIds;
 
-    private List<ToolingEquipmentId> toolingEquipmentIds;
+    private List<EquipmentId> toolingEquipmentIds;
 
     private List<CraftsmanShipTemplate> craftsmanShipTemplates;
 
@@ -125,7 +125,7 @@ public class WorkProcessCreator implements SmartInitializingSingleton {
         return rawMaterialIds;
     }
 
-    private List<ToolingEquipmentId> createToolingIds(){
+    private List<EquipmentId> createToolingIds(){
         log.info("开始查询工装id");
         List<ToolingDTO> equipmentDTOS = equipmentClient.toolingList();
         log.info("结束查询工装id");
@@ -142,7 +142,7 @@ public class WorkProcessCreator implements SmartInitializingSingleton {
         if (org.springframework.util.CollectionUtils.isEmpty(toolingEquipmentIds)) {
             createToolingIds();
         }
-        ToolingEquipmentId toolingId = CollectionUtils.random(toolingEquipmentIds);
+        EquipmentId toolingId = CollectionUtils.random(toolingEquipmentIds);
         if (org.springframework.util.CollectionUtils.isEmpty(workInProgressIds)) {
             createWorkInProgressIds();
         }

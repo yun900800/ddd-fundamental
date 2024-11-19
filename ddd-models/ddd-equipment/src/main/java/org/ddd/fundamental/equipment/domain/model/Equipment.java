@@ -32,7 +32,7 @@ public class Equipment extends AbstractAggregateRoot<EquipmentId> {
 
     @Type(type = "json")
     @Column(columnDefinition = "json", name = "tooling_equipment_ids")
-    private Set<ToolingEquipmentId> toolingEquipmentIds = new HashSet<>();
+    private Set<EquipmentId> toolingEquipmentIds = new HashSet<>();
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(
@@ -103,7 +103,7 @@ public class Equipment extends AbstractAggregateRoot<EquipmentId> {
         }
     }
 
-    public Equipment addToolingId(ToolingEquipmentId id){
+    public Equipment addToolingId(EquipmentId id){
         defaultToolingIds();
         this.toolingEquipmentIds.add(id);
         return this;
