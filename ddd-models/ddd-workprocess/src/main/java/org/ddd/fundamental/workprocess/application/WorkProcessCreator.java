@@ -58,6 +58,10 @@ public class WorkProcessCreator implements SmartInitializingSingleton {
 
     private List<EquipmentId> equipmentIds;
 
+    private List<MaterialId> workInProgressIds;
+
+    private List<MaterialId> rawMaterialIds;
+
     private List<ToolingEquipmentId> toolingEquipmentIds;
 
     private List<CraftsmanShipTemplate> craftsmanShipTemplates;
@@ -105,6 +109,22 @@ public class WorkProcessCreator implements SmartInitializingSingleton {
         return equipmentIds;
     }
 
+    private List<MaterialId> createWorkInProgressIds(){
+        log.info("开始查询在制品id");
+        List<MaterialDTO> materialDTOS = client.materialsByMaterialType(MaterialType.WORKING_IN_PROGRESS);
+        log.info("结束查询在制品id");
+        workInProgressIds = materialDTOS.stream().map(v->v.id()).collect(Collectors.toList());
+        return workInProgressIds;
+    }
+
+    private List<MaterialId> createRawMaterialIds(){
+        log.info("开始查询在制品id");
+        List<MaterialDTO> materialDTOS = client.materialsByMaterialType(MaterialType.RAW_MATERIAL);
+        log.info("结束查询在制品id");
+        rawMaterialIds = materialDTOS.stream().map(v->v.id()).collect(Collectors.toList());
+        return rawMaterialIds;
+    }
+
     private List<ToolingEquipmentId> createToolingIds(){
         log.info("开始查询工装id");
         List<ToolingDTO> equipmentDTOS = equipmentClient.toolingList();
@@ -115,7 +135,6 @@ public class WorkProcessCreator implements SmartInitializingSingleton {
 
 
     public List<ProductResource> createProductResource(){
-
         if (org.springframework.util.CollectionUtils.isEmpty(equipmentIds)) {
             createEquipmentIds();
         }
@@ -124,13 +143,43 @@ public class WorkProcessCreator implements SmartInitializingSingleton {
             createToolingIds();
         }
         ToolingEquipmentId toolingId = CollectionUtils.random(toolingEquipmentIds);
-        ProductResource equipment = ProductResource.create(equipmentId, ProductResourceType.EQUIPMENT,ChangeableInfo.create(
-            "设备生产资源","这是一个设备生产资源"
-        ));
-        ProductResource tooling = ProductResource.create(toolingId, ProductResourceType.TOOLING,ChangeableInfo.create(
-                "工装生产资源","这是一个工装生产资源"
-        ));
-        return Arrays.asList(equipment, tooling);
+        if (org.springframework.util.CollectionUtils.isEmpty(workInProgressIds)) {
+            createWorkInProgressIds();
+        }
+        MaterialId workInProgressId = CollectionUtils.random(workInProgressIds);
+        if (org.springframework.util.CollectionUtils.isEmpty(rawMaterialIds)) {
+            createRawMaterialIds();
+        }
+        MaterialId rawMaterialId = CollectionUtils.random(rawMaterialIds);
+        List<ProductResource> resources = new ArrayList<>();
+        if (null != equipmentId) {
+            ProductResource equipment = ProductResource.create(equipmentId, ProductResourceType.EQUIPMENT,ChangeableInfo.create(
+                    "设备生产资源","这是一个设备生产资源"
+            ));
+            resources.add(equipment);
+        }
+
+        if (null != toolingId) {
+            ProductResource tooling = ProductResource.create(toolingId, ProductResourceType.TOOLING,ChangeableInfo.create(
+                    "工装生产资源","这是一个工装生产资源"
+            ));
+            resources.add(tooling);
+        }
+        if (workInProgressId !=null) {
+            ProductResource workInProgress = ProductResource.create(workInProgressId, ProductResourceType.MATERIAL,ChangeableInfo.create(
+                    "在制品生产资源","这是一个在制品生产资源"
+            ));
+            resources.add(workInProgress);
+        }
+
+        if (rawMaterialId != null) {
+            ProductResource rawMaterial = ProductResource.create(rawMaterialId, ProductResourceType.MATERIAL,ChangeableInfo.create(
+                    "原材料生产资源","这是一个原材料生产资源"
+            ));
+            resources.add(rawMaterial);
+        }
+
+        return resources;
     }
 
     public WorkProcessTemplate createWorkProcessNew(){
