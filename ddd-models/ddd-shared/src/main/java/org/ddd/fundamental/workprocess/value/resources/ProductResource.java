@@ -28,7 +28,7 @@ public class ProductResource<ID extends DomainObjectId> implements ValueObject, 
 
     private ProductResource(){}
 
-    private ProductResource(ID id, ProductResourceType resourceType,
+    protected ProductResource(ID id, ProductResourceType resourceType,
                             ChangeableInfo resource){
         this.id = id;
         this.resourceType = resourceType;

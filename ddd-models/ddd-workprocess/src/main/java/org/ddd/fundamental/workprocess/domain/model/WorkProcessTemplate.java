@@ -187,6 +187,18 @@ public class WorkProcessTemplate extends AbstractAggregateRoot<WorkProcessTempla
         return workProcessBeat.clone();
     }
 
+    public ProductResources getResources() {
+        return resources;
+    }
+
+    public WorkProcessTemplateControl getWorkProcessController() {
+        return workProcessController.clone();
+    }
+
+    public WorkProcessTemplateQuantity getWorkProcessTemplateQuantity() {
+        return workProcessTemplateQuantity.clone();
+    }
+
     @Override
     public String toString() {
         return "WorkProcessNew{" +
