@@ -7,8 +7,7 @@ import org.ddd.fundamental.core.ValueObject;
 import org.ddd.fundamental.jackson.ProductResourceDeserializer;
 import org.ddd.fundamental.workprocess.enums.ProductResourceType;
 
-import javax.persistence.Embeddable;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 import java.util.Objects;
 
 /**
@@ -20,10 +19,16 @@ import java.util.Objects;
 @JsonDeserialize(using = ProductResourceDeserializer.class)
 public class ProductResource<ID extends DomainObjectId> implements ValueObject, Cloneable {
 
+    @Column(name = "resource_id")
     private ID id;
 
     private ProductResourceType resourceType;
 
+    @AttributeOverrides({
+            @AttributeOverride(name  = "name", column = @Column(name = "resource_name", nullable = false)),
+            @AttributeOverride(name  = "desc", column = @Column(name = "resource_desc", nullable = false)),
+            @AttributeOverride(name  = "isUse", column = @Column(name = "resource_use", nullable = false))
+    })
     private ChangeableInfo resource;
 
     private ProductResource(){}

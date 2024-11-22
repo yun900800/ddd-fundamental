@@ -5,14 +5,19 @@ import org.ddd.fundamental.day.YearModelValue;
 import org.ddd.fundamental.day.range.DateRange;
 import org.ddd.fundamental.equipment.EquipmentAppTest;
 import org.ddd.fundamental.equipment.domain.model.Equipment;
+import org.ddd.fundamental.equipment.domain.model.EquipmentResource;
 import org.ddd.fundamental.equipment.domain.model.EquipmentType;
 import org.ddd.fundamental.equipment.domain.model.ToolingEquipment;
 import org.ddd.fundamental.equipment.value.*;
 import org.ddd.fundamental.factory.EquipmentId;
 import org.ddd.fundamental.utils.CollectionUtils;
 import org.ddd.fundamental.utils.DateUtils;
+import org.ddd.fundamental.workprocess.enums.ProductResourceType;
+import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -96,4 +101,36 @@ public class EquipmentRepositoryTest extends EquipmentAppTest {
 
     }
 
+    @Test
+    @Transactional
+    @Rollback(value = false)
+    public void testAddEquipmentResource() {
+        List<Equipment> equipments = equipmentRepository.findAll();
+        Equipment equipment = CollectionUtils.random(equipments);
+        EquipmentId id = equipment.id();
+        EquipmentResource resource = EquipmentResource.create(EquipmentResourceValue.create(
+                id, ProductResourceType.EQUIPMENT, ChangeableInfo.create("生产设备测试新增","这是一种生产设备用于测试新增")
+        ));
+        equipment.setResource(resource);
+        equipmentRepository.save(equipment);
+
+        equipment = equipmentRepository.findById(id).get();
+        Assert.assertEquals(equipment.getEquipmentResource(),resource);
+    }
+
+    @Test
+    @Transactional
+    @Rollback(value = false)
+    public void testRemoveEquipmentResource(){
+        List<Equipment> equipments = equipmentRepository.findAll();
+        Equipment equipment = CollectionUtils.random(equipments);
+        EquipmentId id = equipment.id();
+        EquipmentResource resource = EquipmentResource.create(EquipmentResourceValue.create(
+                id, ProductResourceType.EQUIPMENT, ChangeableInfo.create("生产设备测试删除","这是一种生产设备,用于测试删除")
+        ));
+        equipment.setResource(resource);
+        equipmentRepository.save(equipment);
+        equipment.setResource(null);
+        equipmentRepository.save(equipment);
+    }
 }

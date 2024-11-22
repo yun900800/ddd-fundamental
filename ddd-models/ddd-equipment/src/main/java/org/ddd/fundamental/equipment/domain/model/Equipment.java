@@ -6,6 +6,7 @@ import org.ddd.fundamental.core.DomainObjectId;
 import org.ddd.fundamental.day.YearModelValue;
 import org.ddd.fundamental.day.range.DateRange;
 import org.ddd.fundamental.equipment.value.EquipmentMaster;
+import org.ddd.fundamental.equipment.value.EquipmentResourceValue;
 import org.ddd.fundamental.factory.EquipmentId;
 import org.ddd.fundamental.tuple.TwoTuple;
 import org.hibernate.annotations.Type;
@@ -28,6 +29,10 @@ public class Equipment extends AbstractAggregateRoot<EquipmentId> {
 
     @Embedded
     private EquipmentMaster master;
+
+    @OneToOne(mappedBy = "equipment", cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY, optional = false)
+    private EquipmentResource equipmentResource;
 
     @Type(type = "json")
     @Column(columnDefinition = "json", name = "tooling_equipment_ids")
@@ -69,6 +74,18 @@ public class Equipment extends AbstractAggregateRoot<EquipmentId> {
         this.equipmentType = equipmentType;
         this.master = master;
         this.dateRanges = new HashSet<>();
+    }
+
+    public void setResource(EquipmentResource equipmentResource) {
+        if (equipmentResource == null) {
+            if (this.equipmentResource != null) {
+                this.equipmentResource.setEquipment(null);
+            }
+        }
+        else {
+            equipmentResource.setEquipment(this);
+        }
+        this.equipmentResource = equipmentResource;
     }
 
     private void defaultDateRanges(){
@@ -167,6 +184,10 @@ public class Equipment extends AbstractAggregateRoot<EquipmentId> {
     public List<DateRange> getDateRanges() {
         defaultDateRanges();
         return new ArrayList<>(dateRanges);
+    }
+
+    public EquipmentResource getEquipmentResource() {
+        return equipmentResource;
     }
 
     @Override

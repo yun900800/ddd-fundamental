@@ -81,6 +81,31 @@ public class WorkProcessTemplate extends AbstractAggregateRoot<WorkProcessTempla
         this.workProcessTemplateQuantity = workProcessTemplateQuantity;
     }
 
+    public WorkProcessTemplate changeName(String name){
+        this.workProcessInfo = workProcessInfo.changeName(name);
+        return this;
+    }
+
+    public WorkProcessTemplate changeDesc(String desc){
+        this.workProcessInfo = workProcessInfo.changeDesc(desc);
+        return this;
+    }
+
+    public WorkProcessTemplate enableUse(){
+        this.workProcessInfo = workProcessInfo.enableUse();
+        return this;
+    }
+
+    public WorkProcessTemplate changeWorkProcessBeat(WorkProcessBeat beat){
+        this.workProcessBeat = beat;
+        return this;
+    }
+
+    public WorkProcessTemplate changeQuantity(WorkProcessTemplateQuantity quantity) {
+        this.workProcessTemplateQuantity = quantity;
+        return this;
+    }
+
     public WorkProcessTemplate addResource(ProductResource resource){
         this.resources.addResource(resource);
         return this;

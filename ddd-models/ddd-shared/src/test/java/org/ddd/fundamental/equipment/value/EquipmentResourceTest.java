@@ -13,7 +13,7 @@ public class EquipmentResourceTest {
 
     @Test
     public void testCreateEquipmentResource(){
-        EquipmentResource resource = EquipmentResource.create(
+        EquipmentResourceValue resource = EquipmentResourceValue.create(
                 EquipmentId.randomId(EquipmentId.class),
                 ProductResourceType.EQUIPMENT,
                 ChangeableInfo.create("设备资源","这是一个设备资源"),
@@ -24,7 +24,7 @@ public class EquipmentResourceTest {
 
     @Test
     public void testUsed(){
-        EquipmentResource resource = EquipmentResource.create(
+        EquipmentResourceValue resource = EquipmentResourceValue.create(
                 EquipmentId.randomId(EquipmentId.class),
                 ProductResourceType.EQUIPMENT,
                 ChangeableInfo.create("设备资源","这是一个设备资源"),
@@ -43,7 +43,7 @@ public class EquipmentResourceTest {
 
     @Test
     public void testAddRange() {
-        EquipmentResource resource = EquipmentResource.create(
+        EquipmentResourceValue resource = EquipmentResourceValue.create(
                 EquipmentId.randomId(EquipmentId.class),
                 ProductResourceType.EQUIPMENT,
                 ChangeableInfo.create("设备资源","这是一个设备资源"),
@@ -63,7 +63,7 @@ public class EquipmentResourceTest {
 
     @Test(expected = RuntimeException.class)
     public void testAddRangeThrowException(){
-        EquipmentResource resource = EquipmentResource.create(
+        EquipmentResourceValue resource = EquipmentResourceValue.create(
                 EquipmentId.randomId(EquipmentId.class),
                 ProductResourceType.EQUIPMENT,
                 ChangeableInfo.create("设备资源","这是一个设备资源"),

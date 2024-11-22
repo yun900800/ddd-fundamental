@@ -8,6 +8,8 @@ import java.util.Objects;
 
 /**
  * 工序控制 属性设置为基本类型会导致数据库生成不为空的检查
+ *
+ * 一个对象属性太多怎么设置好的api
  */
 @MappedSuperclass
 @Embeddable
@@ -166,12 +168,21 @@ public class WorkProcessTemplateControl implements ValueObject, Cloneable {
         if (this == o) return true;
         if (!(o instanceof WorkProcessTemplateControl)) return false;
         WorkProcessTemplateControl that = (WorkProcessTemplateControl) o;
-        return Objects.equals(canSplit, that.canSplit) && Objects.equals(gapRangeControl, that.gapRangeControl) && Objects.equals(reportWorkControl, that.reportWorkControl) && Objects.equals(workOrderControl, that.workOrderControl) && Objects.equals(isAllowedChecked, that.isAllowedChecked) && Objects.equals(isParallelProcessing, that.isParallelProcessing) && Objects.equals(processOrder, that.processOrder) && Objects.equals(isBatchManage, that.isBatchManage);
+        return Objects.equals(canSplit, that.canSplit) &&
+                Objects.equals(gapRangeControl, that.gapRangeControl) &&
+                Objects.equals(reportWorkControl, that.reportWorkControl) &&
+                Objects.equals(workOrderControl, that.workOrderControl) &&
+                Objects.equals(isAllowedChecked, that.isAllowedChecked) &&
+                Objects.equals(isParallelProcessing, that.isParallelProcessing) &&
+                Objects.equals(processOrder, that.processOrder) &&
+                Objects.equals(isBatchManage, that.isBatchManage);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(canSplit, gapRangeControl, reportWorkControl, workOrderControl, isAllowedChecked, isParallelProcessing, processOrder, isBatchManage);
+        return Objects.hash(canSplit, gapRangeControl, reportWorkControl,
+                workOrderControl, isAllowedChecked, isParallelProcessing,
+                processOrder, isBatchManage);
     }
 
     public boolean getCanSplit() {

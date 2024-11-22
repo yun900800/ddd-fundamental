@@ -5,26 +5,33 @@ import org.ddd.fundamental.day.range.DateRangeValue;
 import org.ddd.fundamental.factory.EquipmentId;
 import org.ddd.fundamental.workprocess.enums.ProductResourceType;
 import org.ddd.fundamental.workprocess.value.resources.ProductResource;
+import org.hibernate.annotations.Type;
 import org.springframework.util.CollectionUtils;
 
-import javax.persistence.Embeddable;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 @Embeddable
 @MappedSuperclass
-public class EquipmentResource extends ProductResource<EquipmentId> {
+public class EquipmentResourceValue extends ProductResource<EquipmentId> {
 
     /**
      * 设备资源或者工装的计划时间段
      */
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(
+            name="equipment_date_range",
+            joinColumns=@JoinColumn(name="resource_id")
+    )
     private List<DateRangeValue> planRanges = new ArrayList<>();
 
     /**
      * 设备资源或者工装的使用时间段
      */
+    @Type(type = "json")
+    @Column(columnDefinition = "json", name = "equipment_use_range")
     private DateRangeValue useRange;
 
     /**
@@ -32,12 +39,12 @@ public class EquipmentResource extends ProductResource<EquipmentId> {
      */
     private boolean used;
 
-    private EquipmentResource() {
+    private EquipmentResourceValue() {
         super(null, null,null);
     }
 
-    private EquipmentResource(EquipmentId id, ProductResourceType resourceType,
-                              ChangeableInfo info, DateRangeValue useRange){
+    private EquipmentResourceValue(EquipmentId id, ProductResourceType resourceType,
+                                   ChangeableInfo info, DateRangeValue useRange){
         super(id,resourceType,info);
         this.useRange = useRange;
         if (null == useRange){
@@ -46,24 +53,28 @@ public class EquipmentResource extends ProductResource<EquipmentId> {
         this.planRanges = new ArrayList<>();
     }
 
-    public static EquipmentResource create(EquipmentId id, ProductResourceType resourceType,
-                                           ChangeableInfo info,DateRangeValue useRange){
-        return new EquipmentResource(id,resourceType,info,useRange);
+    public static EquipmentResourceValue create(EquipmentId id, ProductResourceType resourceType,
+                                                ChangeableInfo info, DateRangeValue useRange){
+        return new EquipmentResourceValue(id,resourceType,info,useRange);
+    }
+    public static EquipmentResourceValue create(EquipmentId id, ProductResourceType resourceType,
+                                                ChangeableInfo info){
+        return new EquipmentResourceValue(id,resourceType,info,null);
     }
 
-    public EquipmentResource recordUseRange(DateRangeValue value){
+    public EquipmentResourceValue recordUseRange(DateRangeValue value){
         this.useRange = value;
         this.used = true;
         return this;
     }
 
-    public EquipmentResource finishUseRange(){
+    public EquipmentResourceValue finishUseRange(){
         this.useRange = null;
         this.used = false;
         return this;
     }
 
-    public EquipmentResource addRange(DateRangeValue value){
+    public EquipmentResourceValue addRange(DateRangeValue value){
         if (CollectionUtils.isEmpty(planRanges)) {
             planRanges.add(value);
             return this;
@@ -81,12 +92,12 @@ public class EquipmentResource extends ProductResource<EquipmentId> {
         }
     }
 
-    public EquipmentResource removeRange(DateRangeValue value){
+    public EquipmentResourceValue removeRange(DateRangeValue value){
         this.planRanges.remove(value);
         return this;
     }
 
-    public EquipmentResource clearRanges(){
+    public EquipmentResourceValue clearRanges(){
         this.planRanges.clear();
         return this;
     }
@@ -110,9 +121,9 @@ public class EquipmentResource extends ProductResource<EquipmentId> {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof EquipmentResource)) return false;
+        if (!(o instanceof EquipmentResourceValue)) return false;
         if (!super.equals(o)) return false;
-        EquipmentResource resource = (EquipmentResource) o;
+        EquipmentResourceValue resource = (EquipmentResourceValue) o;
         return used == resource.used && Objects.equals(planRanges, resource.planRanges) && Objects.equals(useRange, resource.useRange);
     }
 
