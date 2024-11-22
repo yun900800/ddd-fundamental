@@ -9,6 +9,8 @@ import org.ddd.fundamental.equipment.value.EquipmentMaster;
 import org.ddd.fundamental.equipment.value.EquipmentResourceValue;
 import org.ddd.fundamental.factory.EquipmentId;
 import org.ddd.fundamental.tuple.TwoTuple;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -30,8 +32,11 @@ public class Equipment extends AbstractAggregateRoot<EquipmentId> {
     @Embedded
     private EquipmentMaster master;
 
+    //注意这里的optional的作用optional = false
     @OneToOne(mappedBy = "equipment", cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY, optional = false)
+            optional = false,
+            fetch = FetchType.LAZY, orphanRemoval = true)
+    @NotFound(action = NotFoundAction.IGNORE)
     private EquipmentResource equipmentResource;
 
     @Type(type = "json")
@@ -64,7 +69,7 @@ public class Equipment extends AbstractAggregateRoot<EquipmentId> {
     private Set<DateRange> dateRanges = new HashSet<>();
 
     @SuppressWarnings("unused")
-    private Equipment(){
+    protected Equipment(){
     }
 
     public Equipment(YearModelValue model, EquipmentType equipmentType,

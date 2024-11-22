@@ -3,6 +3,7 @@ package org.ddd.fundamental.equipment.domain.repository;
 import org.ddd.fundamental.changeable.ChangeableInfo;
 import org.ddd.fundamental.day.YearModelValue;
 import org.ddd.fundamental.day.range.DateRange;
+import org.ddd.fundamental.day.range.DateRangeValue;
 import org.ddd.fundamental.equipment.EquipmentAppTest;
 import org.ddd.fundamental.equipment.domain.model.Equipment;
 import org.ddd.fundamental.equipment.domain.model.EquipmentResource;
@@ -16,9 +17,11 @@ import org.ddd.fundamental.workprocess.enums.ProductResourceType;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.Commit;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 
@@ -29,6 +32,9 @@ public class EquipmentRepositoryTest extends EquipmentAppTest {
 
     @Autowired
     private ToolingEquipmentRepository toolingRepository;
+
+    @Autowired
+    private EquipmentResourceRepository resourceRepository;
 
     @Test
     public void testCreateEquipment(){
@@ -42,6 +48,11 @@ public class EquipmentRepositoryTest extends EquipmentAppTest {
                 .qualityInfo(QualityInfo.create("验证已经通过","每年验证一次", true))
                 .build()
         );
+        EquipmentId id = equipment.id();
+        EquipmentResource resource = EquipmentResource.create(EquipmentResourceValue.create(
+                id, ProductResourceType.EQUIPMENT, ChangeableInfo.create("生产设备测试新增","这是一种生产设备用于测试新增")
+        ));
+        equipment.setResource(resource);
         equipmentRepository.save(equipment);
     }
 
@@ -101,36 +112,31 @@ public class EquipmentRepositoryTest extends EquipmentAppTest {
 
     }
 
+
     @Test
-    @Transactional
-    @Rollback(value = false)
-    public void testAddEquipmentResource() {
+    public void testChangeResource(){
         List<Equipment> equipments = equipmentRepository.findAll();
         Equipment equipment = CollectionUtils.random(equipments);
-        EquipmentId id = equipment.id();
-        EquipmentResource resource = EquipmentResource.create(EquipmentResourceValue.create(
-                id, ProductResourceType.EQUIPMENT, ChangeableInfo.create("生产设备测试新增","这是一种生产设备用于测试新增")
-        ));
-        equipment.setResource(resource);
+        EquipmentResource resource = equipment.getEquipmentResource();
+        resource.getEquipmentResourceValue().addRange(DateRangeValue.create(Instant.now(),Instant.now(),""));
         equipmentRepository.save(equipment);
+        //resourceRepository.deleteById(id);
 
-        equipment = equipmentRepository.findById(id).get();
-        Assert.assertEquals(equipment.getEquipmentResource(),resource);
     }
 
     @Test
-    @Transactional
-    @Rollback(value = false)
-    public void testRemoveEquipmentResource(){
+    public void testRemoveEquipment() {
         List<Equipment> equipments = equipmentRepository.findAll();
         Equipment equipment = CollectionUtils.random(equipments);
         EquipmentId id = equipment.id();
-        EquipmentResource resource = EquipmentResource.create(EquipmentResourceValue.create(
-                id, ProductResourceType.EQUIPMENT, ChangeableInfo.create("生产设备测试删除","这是一种生产设备,用于测试删除")
-        ));
-        equipment.setResource(resource);
-        equipmentRepository.save(equipment);
-        equipment.setResource(null);
-        equipmentRepository.save(equipment);
+        equipmentRepository.deleteById(id);
+    }
+
+    @Test
+    public void testQueryByName(){
+        List<Equipment> equipments = equipmentRepository.queryByName("车床");
+        Assert.assertEquals(3, equipments.size(),0);
+        EquipmentResource equipmentResource = equipments.get(0).getEquipmentResource();
+        Assert.assertEquals(0,equipmentResource.created(),0);
     }
 }

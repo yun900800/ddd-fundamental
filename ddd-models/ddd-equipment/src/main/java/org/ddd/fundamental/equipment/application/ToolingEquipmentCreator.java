@@ -4,16 +4,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.changeable.ChangeableInfo;
 import org.ddd.fundamental.day.YearModelValue;
 import org.ddd.fundamental.day.range.DateRange;
-import org.ddd.fundamental.equipment.domain.model.Equipment;
-import org.ddd.fundamental.equipment.domain.model.EquipmentType;
-import org.ddd.fundamental.equipment.domain.model.RPAccount;
-import org.ddd.fundamental.equipment.domain.model.ToolingEquipment;
+import org.ddd.fundamental.equipment.domain.model.*;
 import org.ddd.fundamental.equipment.domain.repository.EquipmentRepository;
 import org.ddd.fundamental.equipment.domain.repository.RPAccountRepository;
 import org.ddd.fundamental.equipment.domain.repository.ToolingEquipmentRepository;
 import org.ddd.fundamental.equipment.enums.ToolingType;
 import org.ddd.fundamental.equipment.value.*;
 import org.ddd.fundamental.utils.DateUtils;
+import org.ddd.fundamental.workprocess.enums.ProductResourceType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -105,6 +103,7 @@ public class ToolingEquipmentCreator {
     }
 
     public static List<Equipment> createEquipments(){
+
         Equipment equipment0 = new Equipment(
                 YearModelValue.createThreeShift("三班次年度模型"),
                 EquipmentType.RESOURCE_ONE, EquipmentMaster.newBuilder().assetNo("CQ_1024")
@@ -115,6 +114,10 @@ public class ToolingEquipmentCreator {
                 .qualityInfo(QualityInfo.create("验证已经通过","每年验证一次", true))
                 .build()
         );
+        EquipmentResource resource0 = EquipmentResource.create(EquipmentResourceValue.create(
+                equipment0.id(), ProductResourceType.EQUIPMENT, ChangeableInfo.create("生产设备测试删除","这是一种生产设备,用于测试删除")
+        ));
+        equipment0.setResource(resource0);
         Equipment equipment1 = new Equipment(
                 YearModelValue.createTwoShift("两班次年度模型"),
                 EquipmentType.RESOURCE_ONE, EquipmentMaster.newBuilder().assetNo("CQ_1025")
@@ -125,6 +128,10 @@ public class ToolingEquipmentCreator {
                 .qualityInfo(QualityInfo.create("验证已经通过","半年验证一次", true))
                 .build()
         );
+        EquipmentResource resource1 = EquipmentResource.create(EquipmentResourceValue.create(
+                equipment1.id(), ProductResourceType.EQUIPMENT, ChangeableInfo.create("生产设备测试删除","这是一种生产设备,用于测试删除")
+        ));
+        equipment1.setResource(resource1);
         Equipment equipment2 = new Equipment(
                 YearModelValue.createTwoShift("两班次年度模型"),
                 EquipmentType.RESOURCE_ONE, EquipmentMaster.newBuilder().assetNo("CQ_1026")
@@ -135,6 +142,10 @@ public class ToolingEquipmentCreator {
                 .qualityInfo(QualityInfo.create("验证已经通过","八个月验证一次", true))
                 .build()
         );
+        EquipmentResource resource2 = EquipmentResource.create(EquipmentResourceValue.create(
+                equipment2.id(), ProductResourceType.EQUIPMENT, ChangeableInfo.create("生产设备测试删除","这是一种生产设备,用于测试删除")
+        ));
+        equipment2.setResource(resource2);
         Equipment equipment3 = new Equipment(
                 YearModelValue.createThreeShift("三班次年度模型"),
                 EquipmentType.RESOURCE_ONE, EquipmentMaster.newBuilder().assetNo("CQ_1027")
@@ -145,6 +156,10 @@ public class ToolingEquipmentCreator {
                 .qualityInfo(QualityInfo.create("验证已经通过","一年验证一次", true))
                 .build()
         );
+        EquipmentResource resource3 = EquipmentResource.create(EquipmentResourceValue.create(
+                equipment3.id(), ProductResourceType.EQUIPMENT, ChangeableInfo.create("生产设备测试删除","这是一种生产设备,用于测试删除")
+        ));
+        equipment3.setResource(resource3);
         Equipment equipment4 = new Equipment(
                 YearModelValue.createThreeShift("三班次年度模型"),
                 EquipmentType.RESOURCE_ONE, EquipmentMaster.newBuilder().assetNo("CQ_1028")
@@ -155,6 +170,11 @@ public class ToolingEquipmentCreator {
                 .qualityInfo(QualityInfo.create("验证已经通过","一年验证一次", true))
                 .build()
         );
+        EquipmentResource resource4 = EquipmentResource.create(EquipmentResourceValue.create(
+                equipment4.id(), ProductResourceType.EQUIPMENT, ChangeableInfo.create("生产设备测试删除","这是一种生产设备,用于测试删除")
+        ));
+        equipment4.setResource(resource4);
+
         return Arrays.asList(equipment0,equipment1,equipment2,equipment3,equipment4);
     }
 
