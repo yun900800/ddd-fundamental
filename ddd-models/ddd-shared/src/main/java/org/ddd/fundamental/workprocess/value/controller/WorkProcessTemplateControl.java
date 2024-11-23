@@ -22,11 +22,6 @@ public class WorkProcessTemplateControl implements ValueObject, Cloneable {
     private boolean canSplit;
 
     /**
-     * 是否允许前后工序间隔期
-     */
-    private GapRangeControl gapRangeControl;
-
-    /**
      * 报工控制
      */
     private ReportWorkControl reportWorkControl;
@@ -62,13 +57,12 @@ public class WorkProcessTemplateControl implements ValueObject, Cloneable {
 
     }
 
-    private WorkProcessTemplateControl(boolean canSplit, GapRangeControl gapRangeControl,
+    private WorkProcessTemplateControl(boolean canSplit,
                                        boolean isAllowedChecked, boolean isParallelProcessing,
                                        Integer processOrder, boolean isBatchManage,
                                        ReportWorkControl reportWorkControl,
                                        WorkOrderControl workOrderControl) {
         this.canSplit = canSplit;
-        this.gapRangeControl = gapRangeControl;
         this.isAllowedChecked = isAllowedChecked;
         this.isParallelProcessing = isParallelProcessing;
         this.processOrder = processOrder;
@@ -82,11 +76,6 @@ public class WorkProcessTemplateControl implements ValueObject, Cloneable {
          * 工序是否可以拆分
          */
         private boolean canSplit;
-
-        /**
-         * 是否允许前后工序间隔期
-         */
-        private GapRangeControl gapRangeControl;
 
         /**
          * 报工控制
@@ -128,10 +117,6 @@ public class WorkProcessTemplateControl implements ValueObject, Cloneable {
             return this;
         }
 
-        public Builder gapRangeControl(GapRangeControl gapRangeControl){
-            this.gapRangeControl = gapRangeControl;
-            return this;
-        }
 
         public Builder reportWorkControl(ReportWorkControl reportWorkControl){
             this.reportWorkControl = reportWorkControl;
@@ -155,7 +140,7 @@ public class WorkProcessTemplateControl implements ValueObject, Cloneable {
 
         public WorkProcessTemplateControl build() {
             return new WorkProcessTemplateControl(
-                    canSplit,gapRangeControl,isAllowedChecked,
+                    canSplit,isAllowedChecked,
                     isParallelProcessing,processOrder,
                     isBatchManage, reportWorkControl,
                     workOrderControl
@@ -169,7 +154,6 @@ public class WorkProcessTemplateControl implements ValueObject, Cloneable {
         if (!(o instanceof WorkProcessTemplateControl)) return false;
         WorkProcessTemplateControl that = (WorkProcessTemplateControl) o;
         return Objects.equals(canSplit, that.canSplit) &&
-                Objects.equals(gapRangeControl, that.gapRangeControl) &&
                 Objects.equals(reportWorkControl, that.reportWorkControl) &&
                 Objects.equals(workOrderControl, that.workOrderControl) &&
                 Objects.equals(isAllowedChecked, that.isAllowedChecked) &&
@@ -180,17 +164,13 @@ public class WorkProcessTemplateControl implements ValueObject, Cloneable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(canSplit, gapRangeControl, reportWorkControl,
+        return Objects.hash(canSplit,reportWorkControl,
                 workOrderControl, isAllowedChecked, isParallelProcessing,
                 processOrder, isBatchManage);
     }
 
     public boolean getCanSplit() {
         return canSplit;
-    }
-
-    public GapRangeControl getGapRangeControl() {
-        return gapRangeControl;
     }
 
     public ReportWorkControl getReportWorkControl() {
@@ -221,7 +201,6 @@ public class WorkProcessTemplateControl implements ValueObject, Cloneable {
     public String toString() {
         return "WorkProcessControl{" +
                 "canSplit=" + canSplit +
-                ", gapRangeControl=" + gapRangeControl +
                 ", reportWorkControl=" + reportWorkControl +
                 ", workOrderControl=" + workOrderControl +
                 ", isAllowedChecked=" + isAllowedChecked +

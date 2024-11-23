@@ -15,11 +15,9 @@ public class WorkProcessTemplateControlTest {
 
         WorkProcessTemplateControl control1 = new WorkProcessTemplateControl.Builder(1,true)
                 .canSplit(false).isAllowedChecked(true)
-                .gapRangeControl(GapRangeControl.create(true, false))
                 .reportWorkControl(ReportWorkControl.create(true,"测试报工规则"))
                 .workOrderControl(WorkOrderControl.create(false,true,false))
                 .build();
-        Assert.assertEquals(control1.getGapRangeControl(),GapRangeControl.create(true, false));
         Assert.assertEquals(control1.getReportWorkControl(),ReportWorkControl.create(true,"测试报工规则"));
         Assert.assertEquals(control1.getWorkOrderControl(),WorkOrderControl.create(false,true,false));
     }
