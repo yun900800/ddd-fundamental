@@ -15,11 +15,10 @@ import org.ddd.fundamental.utils.DateUtils;
 import org.ddd.fundamental.workprocess.client.EquipmentClient;
 import org.ddd.fundamental.workprocess.client.MaterialClient;
 import org.ddd.fundamental.workprocess.domain.model.CraftsmanShipTemplate;
+import org.ddd.fundamental.workprocess.enums.BatchManagable;
 import org.ddd.fundamental.workprocess.enums.ProductResourceType;
 import org.ddd.fundamental.workprocess.value.WorkProcessTemplateId;
-import org.ddd.fundamental.workprocess.value.controller.GapRangeControl;
 import org.ddd.fundamental.workprocess.value.controller.ReportWorkControl;
-import org.ddd.fundamental.workprocess.value.controller.WorkOrderControl;
 import org.ddd.fundamental.workprocess.value.controller.WorkProcessTemplateControl;
 import org.ddd.fundamental.workprocess.value.quantity.WorkProcessTemplateQuantity;
 import org.ddd.fundamental.workprocess.value.resources.ProductResource;
@@ -33,7 +32,6 @@ import org.springframework.beans.factory.SmartInitializingSingleton;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -75,16 +73,19 @@ public class WorkProcessCreator implements SmartInitializingSingleton {
         return Arrays.asList(true,false);
     }
 
+    private static List<BatchManagable> batchManagables() {
+        return Arrays.asList(BatchManagable.values());
+    }
+
     private static List<Double> doubleList(){
         return Arrays.asList(95.2,99.5,99.6,96.4,98.8,97.6);
     }
 
     public static WorkProcessTemplateControl createWorkProcessTemplateControl(){
-        return new WorkProcessTemplateControl.Builder(1,CollectionUtils.random(trueOrFalse()))
+        return new WorkProcessTemplateControl.Builder(1,CollectionUtils.random(batchManagables()))
                 .canSplit(CollectionUtils.random(trueOrFalse())).isAllowedChecked(CollectionUtils.random(trueOrFalse()))
-                .gapRangeControl(GapRangeControl.create(CollectionUtils.random(trueOrFalse()), CollectionUtils.random(trueOrFalse())))
+                .nextProcessSyncMinutes(20.0)
                 .reportWorkControl(ReportWorkControl.create(CollectionUtils.random(trueOrFalse()),"测试报工规则"))
-                .workOrderControl(WorkOrderControl.create(CollectionUtils.random(trueOrFalse()),CollectionUtils.random(trueOrFalse()),CollectionUtils.random(trueOrFalse())))
                 .build();
     }
 
@@ -184,7 +185,7 @@ public class WorkProcessCreator implements SmartInitializingSingleton {
     public WorkProcessTemplate createWorkProcessNew(){
         WorkProcessTemplate workProcessTemplate = new WorkProcessTemplate(
                 CollectionUtils.random(createWorkProcessInfo()),
-                CollectionUtils.random(createAuxiliaryWorkTimes()),
+//                CollectionUtils.random(createAuxiliaryWorkTimes()),
                 WorkProcessBeat.create(1000,15),
                 createWorkProcessTemplateControl(),
                 createWorkProcessTemplateQuantity()

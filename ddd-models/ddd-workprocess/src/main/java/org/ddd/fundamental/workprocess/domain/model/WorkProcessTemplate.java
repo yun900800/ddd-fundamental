@@ -7,7 +7,6 @@ import org.ddd.fundamental.workprocess.value.controller.WorkProcessTemplateContr
 import org.ddd.fundamental.workprocess.value.quantity.WorkProcessTemplateQuantity;
 import org.ddd.fundamental.workprocess.value.resources.ProductResource;
 import org.ddd.fundamental.workprocess.value.resources.ProductResources;
-import org.ddd.fundamental.workprocess.value.time.AuxiliaryWorkTime;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -32,11 +31,6 @@ public class WorkProcessTemplate extends AbstractAggregateRoot<WorkProcessTempla
     })
     private ChangeableInfo workProcessInfo;
 
-    /**
-     * 工序辅助作业时间
-     */
-    @Embedded
-    private AuxiliaryWorkTime auxiliaryWorkTime;
 
     /**
      * 工序可以对接的前工序
@@ -69,13 +63,11 @@ public class WorkProcessTemplate extends AbstractAggregateRoot<WorkProcessTempla
     private WorkProcessTemplate(){}
 
     public WorkProcessTemplate(ChangeableInfo workProcessInfo,
-                               AuxiliaryWorkTime auxiliaryWorkTime,
                                WorkProcessBeat workProcessBeat,
                                WorkProcessTemplateControl workProcessController,
                                WorkProcessTemplateQuantity workProcessTemplateQuantity){
         super(WorkProcessTemplateId.randomId(WorkProcessTemplateId.class));
         this.workProcessInfo = workProcessInfo;
-        this.auxiliaryWorkTime = auxiliaryWorkTime;
         this.workProcessBeat = workProcessBeat;
         this.workProcessController = workProcessController;
         this.workProcessTemplateQuantity = workProcessTemplateQuantity;
@@ -196,10 +188,6 @@ public class WorkProcessTemplate extends AbstractAggregateRoot<WorkProcessTempla
         return workProcessInfo.clone();
     }
 
-    public AuxiliaryWorkTime getAuxiliaryWorkTime() {
-        return auxiliaryWorkTime.clone();
-    }
-
     public Set<WorkProcessTemplateId> getPreWorkProcessIds() {
         return new HashSet<>(preWorkProcessIds);
     }
@@ -228,7 +216,6 @@ public class WorkProcessTemplate extends AbstractAggregateRoot<WorkProcessTempla
     public String toString() {
         return "WorkProcessNew{" +
                 "workProcessInfo=" + workProcessInfo +
-                ", auxiliaryWorkTime=" + auxiliaryWorkTime +
                 ", preWorkProcessIds=" + preWorkProcessIds +
                 ", nextWorkProcessIds=" + nextWorkProcessIds +
                 ", resources=" + resources +

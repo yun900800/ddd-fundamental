@@ -9,26 +9,20 @@ import org.ddd.fundamental.workprocess.WorkProcessAppTest;
 import org.ddd.fundamental.workprocess.application.WorkProcessCreator;
 import org.ddd.fundamental.workprocess.domain.model.WorkProcessTemplate;
 import org.ddd.fundamental.workprocess.enums.ProductResourceType;
-import org.ddd.fundamental.workprocess.value.controller.GapRangeControl;
-import org.ddd.fundamental.workprocess.value.controller.ReportWorkControl;
-import org.ddd.fundamental.workprocess.value.controller.WorkOrderControl;
-import org.ddd.fundamental.workprocess.value.controller.WorkProcessTemplateControl;
 import org.ddd.fundamental.workprocess.value.quantity.WorkProcessTemplateQuantity;
 import org.ddd.fundamental.workprocess.value.time.AuxiliaryWorkTime;
 import org.ddd.fundamental.workprocess.value.resources.ProductResource;
 import org.ddd.fundamental.workprocess.value.WorkProcessBeat;
-import org.ddd.fundamental.workprocess.value.quantity.WorkProcessQuantity;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.netflix.hystrix.HystrixCommands;
 
 public class WorkProcessTemplateRepositoryTest extends WorkProcessAppTest {
 
     private static WorkProcessTemplate createTemplate(){
         WorkProcessTemplate workProcessTemplate = new WorkProcessTemplate(
                 ChangeableInfo.create("主板加工工序","这是用来加工新能源车的主板的工序"),
-                create(),
+//                create(),
                 WorkProcessBeat.create(1000,15),
                 WorkProcessCreator.createWorkProcessTemplateControl(),
                 WorkProcessCreator.createWorkProcessTemplateQuantity()
@@ -72,7 +66,7 @@ public class WorkProcessTemplateRepositoryTest extends WorkProcessAppTest {
     public void createWorkProcessTemplate() {
         WorkProcessTemplate workProcessTemplate = new WorkProcessTemplate(
                 ChangeableInfo.create("主板加工工序","这是用来加工新能源车的主板的工序"),
-                create(),
+//                create(),
                 WorkProcessBeat.create(1000,15),
                 WorkProcessCreator.createWorkProcessTemplateControl(),
                 WorkProcessCreator.createWorkProcessTemplateQuantity()
@@ -99,7 +93,7 @@ public class WorkProcessTemplateRepositoryTest extends WorkProcessAppTest {
     public void changeWorkProcessTemplate(){
         WorkProcessTemplate workProcessTemplate = new WorkProcessTemplate(
                 ChangeableInfo.create("主板加工工序测试","这是用来加工新能源车的主板的工序1"),
-                create(),
+//                create(),
                 WorkProcessBeat.create(1000,15),
                 WorkProcessCreator.createWorkProcessTemplateControl(),
                 WorkProcessCreator.createWorkProcessTemplateQuantity()

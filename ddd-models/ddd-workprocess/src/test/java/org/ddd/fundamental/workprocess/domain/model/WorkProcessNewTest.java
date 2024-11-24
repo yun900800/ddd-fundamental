@@ -30,7 +30,7 @@ public class WorkProcessNewTest {
 
         WorkProcessTemplate workProcessNew = new WorkProcessTemplate(
                 ChangeableInfo.create("主板加工工序","这是用来加工新能源车的主板的工序"),
-                create(),
+//                create(),
                 WorkProcessBeat.create(1000,15),
                 WorkProcessCreator.createWorkProcessTemplateControl(),
                 WorkProcessCreator.createWorkProcessTemplateQuantity()

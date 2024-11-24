@@ -1,8 +1,11 @@
 package org.ddd.fundamental.workprocess.value.controller;
 
 import org.ddd.fundamental.core.ValueObject;
+import org.ddd.fundamental.workprocess.enums.BatchManagable;
 
 import javax.persistence.Embeddable;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.MappedSuperclass;
 import java.util.Objects;
 
@@ -27,19 +30,9 @@ public class WorkProcessTemplateControl implements ValueObject, Cloneable {
     private ReportWorkControl reportWorkControl;
 
     /**
-     * 工单控制,这个属性是可选的
-     */
-    private WorkOrderControl workOrderControl;
-
-    /**
      * 工序的输出是否需要检验
      */
     private boolean isAllowedChecked;
-
-    /**
-     * 是否允许并行加工
-     */
-    private boolean isParallelProcessing;
 
     /**
      * 工序生产顺序
@@ -47,9 +40,14 @@ public class WorkProcessTemplateControl implements ValueObject, Cloneable {
     private Integer processOrder;
 
     /**
-     * 是否进行批次管理
+     * 批次管理
      */
-    private boolean isBatchManage;
+    private BatchManagable batchManagable;
+
+    /**
+     * 后工序同步间隔分钟数
+     */
+    private double nextProcessSyncMinutes;
 
 
     @SuppressWarnings("unused")
@@ -57,18 +55,16 @@ public class WorkProcessTemplateControl implements ValueObject, Cloneable {
 
     }
 
-    private WorkProcessTemplateControl(boolean canSplit,
-                                       boolean isAllowedChecked, boolean isParallelProcessing,
-                                       Integer processOrder, boolean isBatchManage,
-                                       ReportWorkControl reportWorkControl,
-                                       WorkOrderControl workOrderControl) {
+    private WorkProcessTemplateControl(boolean canSplit, double nextProcessSyncMinutes,
+                                       boolean isAllowedChecked,
+                                       Integer processOrder, BatchManagable batchManagable,
+                                       ReportWorkControl reportWorkControl) {
         this.canSplit = canSplit;
         this.isAllowedChecked = isAllowedChecked;
-        this.isParallelProcessing = isParallelProcessing;
         this.processOrder = processOrder;
-        this.isBatchManage = isBatchManage;
+        this.batchManagable = batchManagable;
         this.reportWorkControl = reportWorkControl;
-        this.workOrderControl = workOrderControl;
+        this.nextProcessSyncMinutes = nextProcessSyncMinutes;
     }
 
     public static class Builder {
@@ -82,10 +78,6 @@ public class WorkProcessTemplateControl implements ValueObject, Cloneable {
          */
         private ReportWorkControl reportWorkControl;
 
-        /**
-         * 工单控制,这个属性是可选的
-         */
-        private WorkOrderControl workOrderControl;
 
         /**
          * 工序的输出是否需要检验
@@ -93,23 +85,24 @@ public class WorkProcessTemplateControl implements ValueObject, Cloneable {
         private boolean isAllowedChecked;
 
         /**
-         * 是否允许并行加工
-         */
-        private boolean isParallelProcessing;
-
-        /**
          * 工序生产顺序
          */
         private final Integer processOrder;
 
         /**
-         * 是否进行批次管理
+         * 批次管理
          */
-        private final boolean isBatchManage;
+        @Enumerated(EnumType.STRING)
+        private BatchManagable batchManagable;
 
-        public Builder(Integer processOrder,Boolean isBatchManage){
+        /**
+         * 后工序同步间隔分钟数
+         */
+        private double nextProcessSyncMinutes;
+
+        public Builder(Integer processOrder,BatchManagable batchManagable){
             this.processOrder = processOrder;
-            this.isBatchManage = isBatchManage;
+            this.batchManagable = batchManagable;
         }
 
         public Builder canSplit(boolean canSplit){
@@ -123,27 +116,21 @@ public class WorkProcessTemplateControl implements ValueObject, Cloneable {
             return this;
         }
 
-        public Builder workOrderControl(WorkOrderControl workOrderControl){
-            this.workOrderControl = workOrderControl;
-            return this;
-        }
-
         public Builder isAllowedChecked(boolean isAllowedChecked){
             this.isAllowedChecked = isAllowedChecked;
             return this;
         }
 
-        public Builder isParallelProcessing(boolean isParallelProcessing){
-            this.isParallelProcessing = isParallelProcessing;
+        public Builder nextProcessSyncMinutes(double nextProcessSyncMinutes){
+            this.nextProcessSyncMinutes = nextProcessSyncMinutes;
             return this;
         }
 
         public WorkProcessTemplateControl build() {
             return new WorkProcessTemplateControl(
-                    canSplit,isAllowedChecked,
-                    isParallelProcessing,processOrder,
-                    isBatchManage, reportWorkControl,
-                    workOrderControl
+                    canSplit, nextProcessSyncMinutes,
+                    isAllowedChecked,processOrder,
+                    batchManagable, reportWorkControl
             );
         }
     }
@@ -155,18 +142,16 @@ public class WorkProcessTemplateControl implements ValueObject, Cloneable {
         WorkProcessTemplateControl that = (WorkProcessTemplateControl) o;
         return Objects.equals(canSplit, that.canSplit) &&
                 Objects.equals(reportWorkControl, that.reportWorkControl) &&
-                Objects.equals(workOrderControl, that.workOrderControl) &&
                 Objects.equals(isAllowedChecked, that.isAllowedChecked) &&
-                Objects.equals(isParallelProcessing, that.isParallelProcessing) &&
                 Objects.equals(processOrder, that.processOrder) &&
-                Objects.equals(isBatchManage, that.isBatchManage);
+                Objects.equals(batchManagable, that.batchManagable);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(canSplit,reportWorkControl,
-                workOrderControl, isAllowedChecked, isParallelProcessing,
-                processOrder, isBatchManage);
+                 isAllowedChecked,
+                processOrder, batchManagable);
     }
 
     public boolean getCanSplit() {
@@ -177,24 +162,16 @@ public class WorkProcessTemplateControl implements ValueObject, Cloneable {
         return reportWorkControl;
     }
 
-    public WorkOrderControl getWorkOrderControl() {
-        return workOrderControl;
-    }
-
     public boolean getAllowedChecked() {
         return isAllowedChecked;
-    }
-
-    public boolean getParallelProcessing() {
-        return isParallelProcessing;
     }
 
     public Integer getProcessOrder() {
         return processOrder;
     }
 
-    public boolean getBatchManage() {
-        return isBatchManage;
+    public BatchManagable getBatchManagable() {
+        return batchManagable;
     }
 
     @Override
@@ -202,11 +179,9 @@ public class WorkProcessTemplateControl implements ValueObject, Cloneable {
         return "WorkProcessControl{" +
                 "canSplit=" + canSplit +
                 ", reportWorkControl=" + reportWorkControl +
-                ", workOrderControl=" + workOrderControl +
                 ", isAllowedChecked=" + isAllowedChecked +
-                ", isParallelProcessing=" + isParallelProcessing +
                 ", processOrder=" + processOrder +
-                ", isBatchManage=" + isBatchManage +
+                ", batchManagable=" + batchManagable +
                 '}';
     }
 
