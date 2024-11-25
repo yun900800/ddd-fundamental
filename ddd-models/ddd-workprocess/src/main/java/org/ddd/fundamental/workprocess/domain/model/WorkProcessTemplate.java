@@ -13,8 +13,12 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+
+
 /**
  * 工序模板
+ * 注意,紧密的一对一关系使用双向关联(创建的时候一定要都存在,否则会报错误)
+ * 而松散的一对一关系使用单向关联,因为这能避免n+1查询问题
  */
 @Entity
 @Table(name = "w_work_process_template")
@@ -53,11 +57,19 @@ public class WorkProcessTemplate extends AbstractAggregateRoot<WorkProcessTempla
     private ProductResources resources = new ProductResources(new HashSet<>());
 
     @Embedded
-    private WorkProcessTemplateControl workProcessController;
+    private WorkProcessTemplateControl workProcessTemplateControl;
 
     @Embedded
     private WorkProcessTemplateQuantity workProcessTemplateQuantity;
 
+    @OneToOne(cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY, orphanRemoval = true)
+    @JoinColumn(name = "template_id")
+    private WorkProcessTemplateControlEntity control;
+
+    public WorkProcessTemplateControlEntity getControl() {
+        return control;
+    }
 
     @SuppressWarnings("unused")
     private WorkProcessTemplate(){}
@@ -69,8 +81,26 @@ public class WorkProcessTemplate extends AbstractAggregateRoot<WorkProcessTempla
         super(WorkProcessTemplateId.randomId(WorkProcessTemplateId.class));
         this.workProcessInfo = workProcessInfo;
         this.workProcessBeat = workProcessBeat;
-        this.workProcessController = workProcessController;
+        this.workProcessTemplateControl = workProcessController;
         this.workProcessTemplateQuantity = workProcessTemplateQuantity;
+    }
+
+//    public WorkProcessTemplate setControl(WorkProcessTemplateControlEntity control) {
+//        if (control == null) {
+//            if (this.control != null) {
+//                this.control.setTemplate(null);
+//            }
+//        }
+//        else {
+//            control.setTemplate(this);
+//        }
+//        this.control = control;
+//        return this;
+//    }
+
+    public WorkProcessTemplate setControl(WorkProcessTemplateControlEntity control){
+        this.control = control;
+        return this;
     }
 
     public WorkProcessTemplate changeName(String name){
@@ -99,7 +129,7 @@ public class WorkProcessTemplate extends AbstractAggregateRoot<WorkProcessTempla
     }
 
     public WorkProcessTemplate changeWorkProcessTemplateControl(WorkProcessTemplateControl control){
-        this.workProcessController = control;
+        this.workProcessTemplateControl = control;
         return this;
     }
 
@@ -108,7 +138,7 @@ public class WorkProcessTemplate extends AbstractAggregateRoot<WorkProcessTempla
      * @return
      */
     public WorkProcessTemplate disableSplit() {
-        this.workProcessController.disableSplit();
+        this.workProcessTemplateControl.disableSplit();
         return this;
     }
 
@@ -117,17 +147,17 @@ public class WorkProcessTemplate extends AbstractAggregateRoot<WorkProcessTempla
      * @return
      */
     public WorkProcessTemplate enableSplit(){
-        this.workProcessController.enableSplit();
+        this.workProcessTemplateControl.enableSplit();
         return this;
     }
 
     public WorkProcessTemplate allowChecked(){
-        this.workProcessController.allowChecked();
+        this.workProcessTemplateControl.allowChecked();
         return this;
     }
 
     public WorkProcessTemplate notAllowChecked(){
-        this.workProcessController.notAllowChecked();
+        this.workProcessTemplateControl.notAllowChecked();
         return this;
     }
 
@@ -237,8 +267,8 @@ public class WorkProcessTemplate extends AbstractAggregateRoot<WorkProcessTempla
         return resources;
     }
 
-    public WorkProcessTemplateControl getWorkProcessController() {
-        return workProcessController.clone();
+    public WorkProcessTemplateControl getWorkProcessTemplateControl() {
+        return workProcessTemplateControl.clone();
     }
 
     public WorkProcessTemplateQuantity getWorkProcessTemplateQuantity() {

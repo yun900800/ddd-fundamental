@@ -8,9 +8,11 @@ import org.ddd.fundamental.utils.DateUtils;
 import org.ddd.fundamental.workprocess.WorkProcessAppTest;
 import org.ddd.fundamental.workprocess.application.WorkProcessCreator;
 import org.ddd.fundamental.workprocess.domain.model.WorkProcessTemplate;
+import org.ddd.fundamental.workprocess.domain.model.WorkProcessTemplateControlEntity;
 import org.ddd.fundamental.workprocess.enums.BatchManagable;
 import org.ddd.fundamental.workprocess.enums.ProductResourceType;
 import org.ddd.fundamental.workprocess.value.WorkProcessTemplateId;
+import org.ddd.fundamental.workprocess.value.controller.ReportWorkControl;
 import org.ddd.fundamental.workprocess.value.controller.WorkProcessTemplateControl;
 import org.ddd.fundamental.workprocess.value.quantity.WorkProcessTemplateQuantity;
 import org.ddd.fundamental.workprocess.value.time.AuxiliaryWorkTime;
@@ -149,7 +151,7 @@ public class WorkProcessTemplateRepositoryTest extends WorkProcessAppTest {
         template.changeWorkProcessTemplateControl(control);
         workProcessTemplateRepository.save(template);
         WorkProcessTemplate queryTemplate = workProcessTemplateRepository.getById(id);
-        Assert.assertEquals(queryTemplate.getWorkProcessController(),control);
+        Assert.assertEquals(queryTemplate.getWorkProcessTemplateControl(),control);
     }
 
     @Test
@@ -162,8 +164,34 @@ public class WorkProcessTemplateRepositoryTest extends WorkProcessAppTest {
         template.changeName("测试修改名字哈哈");
         workProcessTemplateRepository.save(template);
         WorkProcessTemplate queryTemplate = workProcessTemplateRepository.getById(id);
-        Assert.assertEquals(queryTemplate.getWorkProcessController().getCanSplit(), true);
-        Assert.assertEquals(queryTemplate.getWorkProcessController().getAllowedChecked(), true);
+        Assert.assertEquals(queryTemplate.getWorkProcessTemplateControl().getCanSplit(), true);
+        Assert.assertEquals(queryTemplate.getWorkProcessTemplateControl().getAllowedChecked(), true);
         Assert.assertEquals(queryTemplate.getWorkProcessInfo().getName(), "测试修改名字哈哈");
+    }
+
+    @Test
+    public void testAddControl() {
+        WorkProcessTemplate template = createTemplate();
+        template.setControl(WorkProcessTemplateControlEntity.create(
+              new WorkProcessTemplateControl.Builder(5,BatchManagable.SERIAL).canSplit(true)
+                      .reportWorkControl(ReportWorkControl.create(true,""))
+                      .nextProcessSyncMinutes(15).build()
+        ));
+        workProcessTemplateRepository.save(template);
+    }
+
+    @Test
+    public void testRemoveControl() {
+        WorkProcessTemplate template = createTemplate();
+        WorkProcessTemplateId id = template.id();
+        template.setControl(WorkProcessTemplateControlEntity.create(
+                new WorkProcessTemplateControl.Builder(5,BatchManagable.SERIAL).canSplit(true)
+                        .reportWorkControl(ReportWorkControl.create(true,""))
+                        .nextProcessSyncMinutes(15).build()
+        ));
+        workProcessTemplateRepository.save(template);
+        template = workProcessTemplateRepository.findById(id).get();
+        template.setControl(null);
+        workProcessTemplateRepository.save(template);
     }
 }
