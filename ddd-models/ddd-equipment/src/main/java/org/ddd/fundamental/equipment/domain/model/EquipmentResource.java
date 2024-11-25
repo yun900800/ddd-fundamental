@@ -55,6 +55,11 @@ public class EquipmentResource extends AbstractEntity<EquipmentId> {
         return this;
     }
 
+    public EquipmentResource removePlanDateRange(DateRangeValue planDateRange){
+        this.equipmentResourceValue.removeRange(planDateRange);
+        return this;
+    }
+
     public void setEquipment(Equipment equipment) {
         this.equipment = equipment;
     }

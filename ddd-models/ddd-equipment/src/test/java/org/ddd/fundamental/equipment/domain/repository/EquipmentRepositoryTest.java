@@ -179,4 +179,25 @@ public class EquipmentRepositoryTest extends EquipmentAppTest {
         equipment = equipmentRepository.findById(id).get();
         Assert.assertEquals(equipment.getEquipmentResource().getEquipmentResourceValue().getPlanRanges().size(),3);
     }
+
+    @Test
+    public void testRemovePlanDateRange() {
+        List<Equipment> equipments = equipmentRepository.findAll();
+        Equipment equipment = CollectionUtils.random(equipments);
+        EquipmentId id = equipment.id();
+        Instant t0 = Instant.now();
+        Instant t1 = t0.plusSeconds(3600*2);
+        Instant t2 = t1.plusSeconds(3600*3);
+        Instant t3 = t2.plusSeconds(3600*4);
+        equipment.getEquipmentResource().addPlanDateRange(DateRangeValue.create(t0,t1,"这是为工单1准备的"));
+        equipment.getEquipmentResource().addPlanDateRange(DateRangeValue.create(t1.plusSeconds(1),t2,"这是为工单2准备的"));
+        equipment.getEquipmentResource().addPlanDateRange(DateRangeValue.create(t2.plusSeconds(1),t3,"这是为工单3准备的"));
+        equipmentRepository.save(equipment);
+        equipment = equipmentRepository.findById(id).get();
+        List<DateRangeValue> rangeValues = equipment.getEquipmentResource().getEquipmentResourceValue().getPlanRanges();
+        equipment.getEquipmentResource().removePlanDateRange(rangeValues.get(0));
+        equipmentRepository.save(equipment);
+        equipment = equipmentRepository.findById(id).get();
+        Assert.assertEquals(equipment.getEquipmentResource().getEquipmentResourceValue().getPlanRanges().size(),2);
+    }
 }
