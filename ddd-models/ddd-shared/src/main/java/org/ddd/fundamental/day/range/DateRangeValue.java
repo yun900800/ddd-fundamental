@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.Range;
 import org.ddd.fundamental.core.ValueObject;
 import org.ddd.fundamental.day.CalculateTime;
+import org.ddd.fundamental.tuple.ThreeTuple;
 import org.ddd.fundamental.tuple.Tuple;
 import org.ddd.fundamental.tuple.TwoTuple;
 import org.ddd.fundamental.utils.DateUtils;
@@ -37,7 +38,7 @@ public class DateRangeValue implements ValueObject,Cloneable, CalculateTime {
     private String desc;
 
     @Transient
-    private final Map<DateRangeValue,TwoTuple<Integer,Long>>
+    private final Map<DateRangeValue,ThreeTuple<Integer,Long,Long>>
             cache = new HashMap<>();
 
     @Transient
@@ -56,7 +57,26 @@ public class DateRangeValue implements ValueObject,Cloneable, CalculateTime {
         return new DateRangeValue(start,end,desc);
     }
 
-    public TwoTuple<Integer,Long> range(){
+    public static DateRangeValue createByDuration(Instant start, int seconds){
+        Instant end = start.plusSeconds(seconds);
+        return new DateRangeValue(start,end,"range is "+seconds);
+    }
+
+    public static DateRangeValue start(){
+        Instant current = Instant.now();
+        return new DateRangeValue(current,current,"");
+    }
+
+    public DateRangeValue finish(String reason){
+        if (start != end ) {
+            throw new RuntimeException("这个时间段已经结束,请检查");
+        }
+        this.end = Instant.now();
+        this.desc = reason;
+        return this;
+    }
+
+    public ThreeTuple<Integer,Long,Long> range(){
         if (cache.containsKey(this)) {
             return cache.get(this);
         } else {
@@ -68,8 +88,9 @@ public class DateRangeValue implements ValueObject,Cloneable, CalculateTime {
             LocalTime dStartTime = dtStart.toLocalTime();
             LocalTime dEndTime = dtEnd.toLocalTime();
             long minutes = Duration.between(dStartTime,dEndTime).toMinutes();
+            long seconds = Duration.between(dStartTime,dEndTime).toSeconds();
             log.info("data need calculate again");
-            TwoTuple<Integer,Long> result = Tuple.tuple(date,minutes);
+            ThreeTuple<Integer,Long,Long> result = Tuple.tuple(date,minutes,seconds);
             cache.put(this, result);
             return result;
         }
@@ -135,7 +156,6 @@ public class DateRangeValue implements ValueObject,Cloneable, CalculateTime {
                 "start=" + start +
                 ", end=" + end +
                 ", desc='" + desc + '\'' +
-                ", cache=" + cache +
                 '}';
     }
 

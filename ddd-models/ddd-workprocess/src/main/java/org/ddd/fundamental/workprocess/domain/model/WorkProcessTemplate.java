@@ -98,6 +98,39 @@ public class WorkProcessTemplate extends AbstractAggregateRoot<WorkProcessTempla
         return this;
     }
 
+    public WorkProcessTemplate changeWorkProcessTemplateControl(WorkProcessTemplateControl control){
+        this.workProcessController = control;
+        return this;
+    }
+
+    /**
+     * 禁止工序可以拆分
+     * @return
+     */
+    public WorkProcessTemplate disableSplit() {
+        this.workProcessController.disableSplit();
+        return this;
+    }
+
+    /**
+     * 允许工序可以拆分
+     * @return
+     */
+    public WorkProcessTemplate enableSplit(){
+        this.workProcessController.enableSplit();
+        return this;
+    }
+
+    public WorkProcessTemplate allowChecked(){
+        this.workProcessController.allowChecked();
+        return this;
+    }
+
+    public WorkProcessTemplate notAllowChecked(){
+        this.workProcessController.notAllowChecked();
+        return this;
+    }
+
     public WorkProcessTemplate addResource(ProductResource resource){
         this.resources.addResource(resource);
         return this;

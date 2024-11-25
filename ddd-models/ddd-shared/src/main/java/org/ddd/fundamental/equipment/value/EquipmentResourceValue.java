@@ -20,7 +20,7 @@ public class EquipmentResourceValue extends ProductResource<EquipmentId> {
     /**
      * 设备资源或者工装的计划时间段
      */
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(
             name="equipment_date_range",
             joinColumns=@JoinColumn(name="resource_id")

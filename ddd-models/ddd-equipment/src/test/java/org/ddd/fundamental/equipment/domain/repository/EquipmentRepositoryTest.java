@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class EquipmentRepositoryTest extends EquipmentAppTest {
 
@@ -138,5 +139,44 @@ public class EquipmentRepositoryTest extends EquipmentAppTest {
         Assert.assertTrue(equipments.size()==3 || equipments.size()==2);
         EquipmentResource equipmentResource = equipments.get(0).getEquipmentResource();
         Assert.assertEquals(0,equipmentResource.created(),0);
+    }
+
+    @Test
+    public void testSetCurrentUseDateRange(){
+        List<Equipment> equipments = equipmentRepository.findAll();
+        Equipment equipment = CollectionUtils.random(equipments);
+        equipment.getEquipmentResource().setCurrentUseDateRange(DateRangeValue.createByDuration(Instant.now(),3600*4));
+        equipmentRepository.save(equipment);
+    }
+
+    @Test
+    public void testFinishUseRange() throws InterruptedException {
+        List<Equipment> equipments = equipmentRepository.findAll();
+        Equipment equipment = CollectionUtils.random(equipments);
+        EquipmentId id = equipment.id();
+        Instant start = Instant.now().minusSeconds(3600 * 4);
+        equipment.getEquipmentResource().setCurrentUseDateRange(DateRangeValue.createByDuration(start, 3600 * 2));
+        equipmentRepository.save(equipment);
+        TimeUnit.SECONDS.sleep(1);
+        equipment = equipmentRepository.findById(id).get();
+        equipment.getEquipmentResource().finishUseRange();
+        equipmentRepository.save(equipment);
+    }
+
+    @Test
+    public void testAddPlanDateRange() {
+        List<Equipment> equipments = equipmentRepository.findAll();
+        Equipment equipment = CollectionUtils.random(equipments);
+        EquipmentId id = equipment.id();
+        Instant t0 = Instant.now();
+        Instant t1 = t0.plusSeconds(3600*2);
+        Instant t2 = t1.plusSeconds(3600*3);
+        Instant t3 = t2.plusSeconds(3600*4);
+        equipment.getEquipmentResource().addPlanDateRange(DateRangeValue.create(t0,t1,"这是为工单1准备的"));
+        equipment.getEquipmentResource().addPlanDateRange(DateRangeValue.create(t1.plusSeconds(1),t2,"这是为工单2准备的"));
+        equipment.getEquipmentResource().addPlanDateRange(DateRangeValue.create(t2.plusSeconds(1),t3,"这是为工单3准备的"));
+        equipmentRepository.save(equipment);
+        equipment = equipmentRepository.findById(id).get();
+        Assert.assertEquals(equipment.getEquipmentResource().getEquipmentResourceValue().getPlanRanges().size(),3);
     }
 }

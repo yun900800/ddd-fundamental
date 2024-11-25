@@ -1,6 +1,7 @@
 package org.ddd.fundamental.workprocess.domain.value;
 
 import org.ddd.fundamental.day.range.DateRange;
+import org.ddd.fundamental.day.range.DateRangeValue;
 
 import javax.persistence.Embeddable;
 import javax.persistence.MappedSuperclass;
@@ -22,29 +23,39 @@ public class WorkProcessTime extends WorkProcessCycle implements Cloneable {
     /**
      * 运输时间
      */
-    private DateRange transferTime;
+    private DateRangeValue transferTime;
 
 
-    private WorkProcessTime(DateRange waitTimeRange,
-                            DateRange setTime,
-                            DateRange workTime,
-                            DateRange offlineTime,
-                            DateRange transferTime
+    private WorkProcessTime(DateRangeValue waitTimeRange,
+                            DateRangeValue setTime,
+                            DateRangeValue workTime,
+                            DateRangeValue offlineTime,
+                            DateRangeValue transferTime
                             ){
         super(waitTimeRange,setTime,workTime, offlineTime);
         this.transferTime = transferTime;
     }
 
-    public static WorkProcessTime create(DateRange waitTimeRange,
-                                         DateRange setTime,
-                                         DateRange workTime,
-                                         DateRange offlineTime,
-                                         DateRange transferTime
+    public static WorkProcessTime create(DateRangeValue waitTimeRange,
+                                         DateRangeValue setTime,
+                                         DateRangeValue workTime,
+                                         DateRangeValue offlineTime,
+                                         DateRangeValue transferTime
                                          ){
         return new WorkProcessTime(waitTimeRange,setTime,workTime,offlineTime,transferTime);
     }
 
-    public DateRange getTransferTime() {
+    public WorkProcessTime startTransferTime() {
+        this.transferTime = DateRangeValue.start();
+        return this;
+    }
+
+    public WorkProcessCycle endTransferTime(String reason){
+        this.transferTime.finish(reason);
+        return this;
+    }
+
+    public DateRangeValue getTransferTime() {
         return transferTime.clone();
     }
 

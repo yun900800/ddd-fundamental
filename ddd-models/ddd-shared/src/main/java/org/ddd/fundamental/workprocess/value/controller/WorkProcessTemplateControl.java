@@ -51,9 +51,7 @@ public class WorkProcessTemplateControl implements ValueObject, Cloneable {
 
 
     @SuppressWarnings("unused")
-    private WorkProcessTemplateControl(){
-
-    }
+    private WorkProcessTemplateControl(){}
 
     private WorkProcessTemplateControl(boolean canSplit, double nextProcessSyncMinutes,
                                        boolean isAllowedChecked,
@@ -152,6 +150,34 @@ public class WorkProcessTemplateControl implements ValueObject, Cloneable {
         return Objects.hash(canSplit,reportWorkControl,
                  isAllowedChecked,
                 processOrder, batchManagable);
+    }
+
+    /**
+     * 禁止工序可以拆分
+     * @return
+     */
+    public WorkProcessTemplateControl disableSplit() {
+        this.canSplit = false;
+        return this;
+    }
+
+    /**
+     * 允许工序可以拆分
+     * @return
+     */
+    public WorkProcessTemplateControl enableSplit(){
+        this.canSplit = true;
+        return this;
+    }
+
+    public WorkProcessTemplateControl allowChecked(){
+        this.isAllowedChecked = true;
+        return this;
+    }
+
+    public WorkProcessTemplateControl notAllowChecked(){
+        this.isAllowedChecked = false;
+        return this;
     }
 
     public boolean getCanSplit() {

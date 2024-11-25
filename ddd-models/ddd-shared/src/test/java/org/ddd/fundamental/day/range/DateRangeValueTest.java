@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.springframework.util.StopWatch;
 
 import java.time.Instant;
+import java.util.concurrent.TimeUnit;
 
 public class DateRangeValueTest {
 
@@ -110,4 +111,13 @@ public class DateRangeValueTest {
         Assert.assertTrue(range.isBeforeRange(other1));
         Assert.assertFalse(range.isAfterRange(other));
     }
+
+    @Test
+    public void testDateRangeStartAndFinish() throws InterruptedException {
+        DateRangeValue rangeValue = DateRangeValue.start();
+        TimeUnit.SECONDS.sleep(5);
+        rangeValue.finish("5秒以后机器故障");
+        Assert.assertEquals(rangeValue.minutes(),0);
+    }
 }
+
