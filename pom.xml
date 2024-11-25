@@ -27,6 +27,7 @@
       <module>ddd-datasource</module>
       <module>ddd-message-mq</module>
       <module>ddd-models</module>
+      <module>ddd-models/ddd-event</module>
   </modules>
   <packaging>pom</packaging>
   <parent>
