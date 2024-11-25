@@ -1,5 +1,6 @@
 package org.ddd.fundamental.workprocess.value.resources;
 
+import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.core.ValueObject;
 import org.hibernate.annotations.Type;
 
@@ -13,6 +14,7 @@ import java.util.Set;
 
 @MappedSuperclass
 @Embeddable
+@Slf4j
 public class ProductResources implements ValueObject {
 
     @Type(type = "json")
@@ -20,9 +22,11 @@ public class ProductResources implements ValueObject {
     private Set<ProductResource> resources = new HashSet<>();
 
     @SuppressWarnings("unused")
-    private ProductResources(){}
+    protected ProductResources(){
+    }
 
     public ProductResources(Set<ProductResource> resources){
+
         this.resources = resources;
     }
 
@@ -42,6 +46,10 @@ public class ProductResources implements ValueObject {
     public ProductResources removeResource(ProductResource resource) {
         this.resources.remove(resource);
         return this;
+    }
+
+    public void setResources(Set<ProductResource> resources) {
+        this.resources = resources;
     }
 
     @Override

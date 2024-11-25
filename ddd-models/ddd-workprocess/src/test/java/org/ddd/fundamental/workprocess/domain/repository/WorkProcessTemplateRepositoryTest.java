@@ -28,7 +28,7 @@ public class WorkProcessTemplateRepositoryTest extends WorkProcessAppTest {
         WorkProcessTemplate workProcessTemplate = new WorkProcessTemplate(
                 ChangeableInfo.create("主板加工工序","这是用来加工新能源车的主板的工序"),
 //                create(),
-                WorkProcessBeat.create(1000,15),
+                WorkProcessBeat.create(1000,18),
                 WorkProcessCreator.createWorkProcessTemplateControl(),
                 WorkProcessCreator.createWorkProcessTemplateQuantity()
         );
@@ -189,9 +189,9 @@ public class WorkProcessTemplateRepositoryTest extends WorkProcessAppTest {
                         .reportWorkControl(ReportWorkControl.create(true,""))
                         .nextProcessSyncMinutes(15).build()
         ));
-        workProcessTemplateRepository.save(template);
-        template = workProcessTemplateRepository.findById(id).get();
+        template = workProcessTemplateRepository.save(template);
         template.setControl(null);
         workProcessTemplateRepository.save(template);
+        template = workProcessTemplateRepository.findById(id).get();
     }
 }
