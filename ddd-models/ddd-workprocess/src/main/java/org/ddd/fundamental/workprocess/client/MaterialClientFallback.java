@@ -4,6 +4,8 @@ import com.netflix.hystrix.exception.HystrixTimeoutException;
 import feign.FeignException;
 import feign.RetryableException;
 import lombok.extern.slf4j.Slf4j;
+import org.ddd.fundamental.material.MaterialMaster;
+import org.ddd.fundamental.material.value.MaterialId;
 import org.ddd.fundamental.shared.api.material.MaterialDTO;
 import org.ddd.fundamental.material.value.MaterialType;
 
@@ -39,6 +41,12 @@ public class MaterialClientFallback implements MaterialClient {
             log.error("Other error took place: " + cause.getLocalizedMessage());
         }
         log.info("MaterialClientFallback is execute");
-        return new ArrayList<>();
+        MaterialDTO materialDTO = new MaterialDTO(
+                MaterialMaster.create("default-code","默认产品","default-spec","个"),
+                MaterialId.randomId(MaterialId.class)
+        );
+        List<MaterialDTO> materialDTOS = new ArrayList<>();
+        materialDTOS.add(materialDTO);
+        return materialDTOS;
     }
 }

@@ -1,5 +1,6 @@
 package org.ddd.fundamental.workorder.client;
 
+import org.ddd.fundamental.material.value.MaterialType;
 import org.ddd.fundamental.shared.api.material.MaterialDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,5 +17,8 @@ public interface MaterialClient {
 
     @RequestMapping("/material/materialsByIds")
     List<MaterialDTO> materialsByIds(@RequestBody List<String> ids);
+
+    @RequestMapping("/material/materialsByMaterialType")
+    List<MaterialDTO> materialsByMaterialType(MaterialType materialType);
 
 }

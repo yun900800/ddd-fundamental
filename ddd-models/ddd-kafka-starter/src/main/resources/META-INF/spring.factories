@@ -1,0 +1,1 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=org.ddd.fundamental.kafka.config.CustomKafkaConfiguration

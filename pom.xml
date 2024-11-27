@@ -28,6 +28,7 @@
       <module>ddd-message-mq</module>
       <module>ddd-models</module>
       <module>ddd-models/ddd-event</module>
+      <module>ddd-models/ddd-kafka-starter</module>
   </modules>
   <packaging>pom</packaging>
   <parent>

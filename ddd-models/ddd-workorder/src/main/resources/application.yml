@@ -14,4 +14,6 @@ spring:
       hibernate:
         format_sql: true
     database-platform: org.hibernate.dialect.MySQLDialect
+  kafka:
+    bootstrap-servers: localhost:29092
 

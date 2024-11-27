@@ -2,17 +2,20 @@ package org.ddd.fundamental.core;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.ddd.fundamental.day.Auditable;
+import org.springframework.data.domain.Persistable;
 import org.springframework.data.util.ProxyUtils;
 import org.springframework.lang.NonNull;
 
 import javax.persistence.Embedded;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 @MappedSuperclass
-public abstract class AbstractEntity<ID extends DomainObjectId> implements IdentifiableDomainObject<ID>, CreateInfo {
+public abstract class AbstractEntity<ID extends DomainObjectId> implements
+        IdentifiableDomainObject<ID>, CreateInfo , Persistable<ID> {
 
     @Id
     @JsonProperty("id")
@@ -20,6 +23,10 @@ public abstract class AbstractEntity<ID extends DomainObjectId> implements Ident
 
     @Embedded
     private Auditable auditable;
+
+    @Transient
+    private boolean isNew = true;
+
 
     /**
      * Default constructor
@@ -48,6 +55,16 @@ public abstract class AbstractEntity<ID extends DomainObjectId> implements Ident
         this.auditable = new Auditable(created());
     }
 
+    @Override
+    public boolean isNew() {
+        return isNew;
+    }
+
+    public AbstractEntity setIsNew(boolean isNew){
+        this.isNew = isNew;
+        return this;
+    }
+
     public AbstractEntity<ID> changeUpdateTime(LocalDateTime time){
         this.auditable.changeUpdateTime(time);
         return this;
@@ -67,6 +84,10 @@ public abstract class AbstractEntity<ID extends DomainObjectId> implements Ident
     @NonNull
     public ID id() {
         return id;
+    }
+    @Override
+    public ID getId() {
+        return id();
     }
 
     public void changeId(ID id){

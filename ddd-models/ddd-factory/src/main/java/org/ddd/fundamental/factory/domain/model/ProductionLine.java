@@ -18,8 +18,9 @@ public class ProductionLine extends AbstractAggregateRoot<ProductionLineId> {
     @Embedded
     private ProductionLineValue line;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    @JoinColumn(name = "line_id", nullable = false)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY,
+            mappedBy = "line")
+    //@JoinColumn(name = "line_id", nullable = false)
     private List<WorkStation> workStations = new ArrayList<>();
 
     @Type(type = "json")
@@ -28,7 +29,7 @@ public class ProductionLine extends AbstractAggregateRoot<ProductionLineId> {
 
 
     @SuppressWarnings("unused")
-    private ProductionLine(){}
+    protected ProductionLine(){}
 
     public ProductionLine(ProductionLineValue line){
         super(ProductionLineId.randomId(ProductionLineId.class));
@@ -57,12 +58,14 @@ public class ProductionLine extends AbstractAggregateRoot<ProductionLineId> {
     public ProductionLine addWorkStation(WorkStation station){
         defaultWorkStations();
         this.workStations.add(station);
+        station.setLine(this);
         return this;
     }
 
     public ProductionLine removeWorkStation(WorkStation station){
         defaultWorkStations();
         this.workStations.remove(station);
+        station.setLine(null);
         return this;
     }
 

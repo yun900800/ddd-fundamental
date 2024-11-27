@@ -12,12 +12,20 @@ spring:
     show-sql: true
     properties:
       hibernate:
-        format_sql: false
+        format_sql: true
+        enable_lazy_load_no_trans: true
+        use_sql_comments: false
     database-platform: org.hibernate.dialect.MySQLDialect
+
 logging:
   level:
     net:
       ttddyy:
         dsproxy:
-          listener: info
-
+          listener: debug
+#    org:
+#      hibernate:
+#        SQL: debug
+#        type:
+#          descriptor:
+#            sql: trace

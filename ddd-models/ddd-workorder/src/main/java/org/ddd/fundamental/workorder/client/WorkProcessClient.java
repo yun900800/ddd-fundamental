@@ -8,6 +8,6 @@ import java.util.List;
 
 @FeignClient(name = "work-process-client", url = "http://localhost:9003")
 public interface WorkProcessClient {
-    @RequestMapping("/process/process-templates")
+    @RequestMapping("/process/craftsmanShip-templates")
     List<CraftsmanShipTemplateDTO> craftsmanShipTemplates();
 }
