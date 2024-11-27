@@ -72,7 +72,7 @@ public class FactoryCreator {
         }
     }
 
-    @PostConstruct
+    //@PostConstruct
     public void  init(){
         lineRepository.deleteAll();
         log.info("删除产线和工位数据成功");
