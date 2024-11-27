@@ -9,7 +9,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
         format_sql: true
@@ -23,9 +23,3 @@ logging:
       ttddyy:
         dsproxy:
           listener: debug
-#    org:
-#      hibernate:
-#        SQL: debug
-#        type:
-#          descriptor:
-#            sql: trace

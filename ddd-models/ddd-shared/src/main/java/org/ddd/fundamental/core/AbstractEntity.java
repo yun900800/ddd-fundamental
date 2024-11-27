@@ -1,19 +1,22 @@
 package org.ddd.fundamental.core;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.day.Auditable;
 import org.springframework.data.domain.Persistable;
 import org.springframework.data.util.ProxyUtils;
 import org.springframework.lang.NonNull;
 
-import javax.persistence.Embedded;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+/**
+ * 核心的属性可以使用实体的生命周期注解进行实现
+ * @param <ID>
+ */
 @MappedSuperclass
+@Slf4j
 public abstract class AbstractEntity<ID extends DomainObjectId> implements
         IdentifiableDomainObject<ID>, CreateInfo , Persistable<ID> {
 
@@ -60,9 +63,9 @@ public abstract class AbstractEntity<ID extends DomainObjectId> implements
         return isNew;
     }
 
-    public AbstractEntity setIsNew(boolean isNew){
-        this.isNew = isNew;
-        return this;
+    @PostLoad
+    public void loadedEntityNotNew() {
+        this.isNew = false;
     }
 
     public AbstractEntity<ID> changeUpdateTime(LocalDateTime time){

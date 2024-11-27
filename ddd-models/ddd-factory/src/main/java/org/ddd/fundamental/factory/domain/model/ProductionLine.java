@@ -1,5 +1,6 @@
 package org.ddd.fundamental.factory.domain.model;
 
+import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.core.AbstractAggregateRoot;
 import org.ddd.fundamental.factory.EquipmentId;
 import org.ddd.fundamental.factory.ProductionLineId;
@@ -13,6 +14,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "f_production_line")
+@Slf4j
 public class ProductionLine extends AbstractAggregateRoot<ProductionLineId> {
 
     @Embedded
@@ -58,6 +60,7 @@ public class ProductionLine extends AbstractAggregateRoot<ProductionLineId> {
     public ProductionLine addWorkStation(WorkStation station){
         defaultWorkStations();
         this.workStations.add(station);
+        //这里为什么还要去查询一下子表
         station.setLine(this);
         return this;
     }

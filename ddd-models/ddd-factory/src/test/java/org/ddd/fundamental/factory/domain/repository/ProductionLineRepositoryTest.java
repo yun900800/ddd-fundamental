@@ -178,17 +178,17 @@ public class ProductionLineRepositoryTest extends FactoryAppTest {
         log.info("start execute  a query");
         ProductionLineId id = productionLine.id();
         ProductionLine line = repository.findById(id).get();
+        log.info("finish execute  a query");
         line.addWorkStation(new WorkStation(
                 new WorkStationValueObject(ChangeableInfo.create(
                         "电路板产线1工位5", "工位5需要一点点细心"
                 ))
         ));
-        line.setIsNew(false);
         repository.save(line);
         Assert.assertEquals(line.getLine().name(),"电路板产线1");
         //注意，如果不查询子side,则不会执行原来的查询
         //Assert.assertEquals(line.getWorkStations().get(0).getWorkStation().name(),"电路板产线1工位3");
-        log.info("finish execute  a query");
+
     }
 
 //    select
