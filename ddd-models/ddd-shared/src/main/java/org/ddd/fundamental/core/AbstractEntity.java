@@ -2,6 +2,8 @@ package org.ddd.fundamental.core;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.extern.slf4j.Slf4j;
+import org.ddd.fundamental.Thread.ThreadUtils;
+import org.ddd.fundamental.core.tenant.TenantInfo;
 import org.ddd.fundamental.day.Auditable;
 import org.springframework.data.domain.Persistable;
 import org.springframework.data.util.ProxyUtils;
@@ -27,6 +29,9 @@ public abstract class AbstractEntity<ID extends DomainObjectId> implements
     @Embedded
     private Auditable auditable;
 
+    @Embedded
+    private TenantInfo tenantInfo;
+
     @Transient
     private boolean isNew = true;
 
@@ -46,6 +51,7 @@ public abstract class AbstractEntity<ID extends DomainObjectId> implements
         Objects.requireNonNull(source, "source must not be null");
         this.id = source.id;
         this.auditable = new Auditable(created());
+        this.tenantInfo = ThreadUtils.getTenantInfo();
     }
 
     /**
@@ -56,6 +62,7 @@ public abstract class AbstractEntity<ID extends DomainObjectId> implements
     protected AbstractEntity(@NonNull ID id) {
         this.id = Objects.requireNonNull(id, "id must not be null");
         this.auditable = new Auditable(created());
+        this.tenantInfo = ThreadUtils.getTenantInfo();
     }
 
     @Override

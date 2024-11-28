@@ -15,7 +15,9 @@
         @TypeDef(defaultForType = WorkOrderId.class, typeClass = WorkOrderIdType.class),
         @TypeDef(defaultForType = CraftsmanShipId.class, typeClass = CraftsmanShipIdType.class),
         @TypeDef(defaultForType = ProductStructureDataId.class, typeClass = ProductStructureDataIdType.class),
-        @TypeDef(defaultForType = EquipmentResourceId.class, typeClass = EquipmentResourceIdType.class)
+        @TypeDef(defaultForType = EquipmentResourceId.class, typeClass = EquipmentResourceIdType.class),
+        @TypeDef(defaultForType = TenantId.class, typeClass = TenantIdType.class),
+        @TypeDef(defaultForType = FactoryId.class, typeClass = FactoryIdType.class)
 })
 
 
@@ -23,6 +25,8 @@ package org.ddd.fundamental.infra.hibernate;
 
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import org.ddd.fundamental.bom.ProductStructureDataId;
+import org.ddd.fundamental.core.tenant.FactoryId;
+import org.ddd.fundamental.core.tenant.TenantId;
 import org.ddd.fundamental.equipment.value.EquipmentResourceId;
 import org.ddd.fundamental.equipment.value.RPAccountId;
 import org.ddd.fundamental.factory.*;
