@@ -80,4 +80,13 @@ public class CustomKafkaConfiguration {
     public ConcurrentKafkaListenerContainerFactory<String, String> workProcessKafkaListenerContainerFactory() {
         return kafkaListenerContainerFactory("workProcess");
     }
+
+    /**
+     * 按照分组配置不同的消费者工厂
+     * @return
+     */
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String, String> materialKafkaListenerContainerFactory() {
+        return kafkaListenerContainerFactory("material");
+    }
 }

@@ -10,6 +10,6 @@ public class WorkOrderConsumer {
 
     @KafkaListener(topics = "work_order_topic", groupId = "workProcess", containerFactory = "workProcessKafkaListenerContainerFactory")
     public void handleWorkOrder(String message) {
-        log.info("handle workOrder is {}",message);
+        log.info("handle workOrder is {} in workProcess",message);
     }
 }
