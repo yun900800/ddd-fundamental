@@ -19,7 +19,14 @@ public class WorkOrderProducer {
     private KafkaTemplate<String,String> kafkaTemplate;
 
     @Autowired
+    private KafkaTemplate<String,Object> multiTypeKafkaTemplate;
+
+    @Autowired
     private ObjectMapper mapper;
+
+    public void sendWorkOrderByType(WorkOrderEvent event){
+        multiTypeKafkaTemplate.send("work_order_topic",event);
+    }
 
     public void sendWorkOrder(WorkOrderEvent event) {
         String result = "";

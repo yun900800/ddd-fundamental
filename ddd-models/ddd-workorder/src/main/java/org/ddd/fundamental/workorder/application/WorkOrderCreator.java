@@ -99,7 +99,8 @@ public class WorkOrderCreator implements SmartInitializingSingleton {
         workOrderRepository.deleteAll();
         this.workOrderList = createWorkOrders();
         workOrderRepository.saveAll(workOrderList);
-        producer.sendWorkOrders(toEvents(workOrderList));
+        //producer.sendWorkOrders(toEvents(workOrderList));
+        producer.sendWorkOrderByType(toEvents(workOrderList).get(0));
         log.info("finish create workOrders");
     }
 
