@@ -59,6 +59,30 @@ public class MachineShop extends AbstractAggregateRoot<MachineShopId> {
         return this;
     }
 
+    public MachineShop changeName(String name) {
+        this.machineShop = this.machineShop.changeName(name);
+        return this;
+    }
+
+    public MachineShop changeDesc(String desc) {
+        this.machineShop = this.machineShop.changeDesc(desc);
+        return this;
+    }
+
+    public MachineShop enableUse(){
+        this.machineShop = this.machineShop.enableUse();
+        return this;
+    }
+
+    public MachineShop disableUse(){
+        this.machineShop = this.machineShop.disableUse();
+        return this;
+    }
+
+    public List<ProductionLineId> getLines() {
+        return new ArrayList<>(lines);
+    }
+
     @Override
     public long created() {
         return 0;

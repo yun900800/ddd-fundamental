@@ -35,12 +35,26 @@ public class MachineShopValueObject implements ValueObject, Cloneable {
         return this;
     }
 
+    public MachineShopValueObject enableUse(){
+        this.machineShop = this.machineShop.enableUse();
+        return this;
+    }
+
+    public MachineShopValueObject disableUse(){
+        this.machineShop = this.machineShop.disableUse();
+        return this;
+    }
+
     public String name(){
         return this.machineShop.getName();
     }
 
     public String desc(){
         return this.machineShop.getDesc();
+    }
+
+    public boolean isUse(){
+        return this.machineShop.isUse();
     }
 
     public ChangeableInfo getMachineShop() {
