@@ -38,6 +38,26 @@ public class WorkStation extends AbstractEntity<WorkStationId> {
         return workStation.clone();
     }
 
+    public WorkStation changeName(String name){
+        this.workStation = this.workStation.changeName(name);
+        return this;
+    }
+
+    public WorkStation changeDesc(String desc){
+        this.workStation = this.workStation.changeDesc(desc);
+        return this;
+    }
+
+    public WorkStation enableUse() {
+        this.workStation = this.workStation.enableUse();
+        return this;
+    }
+
+    public WorkStation disableUse(){
+        this.workStation = this.workStation.disableUse();
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -5,6 +5,7 @@ import org.ddd.fundamental.changeable.ChangeableInfo;
 import org.ddd.fundamental.factory.EquipmentId;
 import org.ddd.fundamental.factory.FactoryAppTest;
 import org.ddd.fundamental.factory.ProductionLineId;
+import org.ddd.fundamental.factory.WorkStationId;
 import org.ddd.fundamental.factory.domain.model.ProductionLine;
 import org.ddd.fundamental.factory.domain.model.WorkStation;
 import org.ddd.fundamental.factory.value.ProductionLineValue;
@@ -13,6 +14,8 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.stream.Collectors;
 
 @Slf4j
 public class ProductionLineRepositoryTest extends FactoryAppTest {
@@ -270,5 +273,23 @@ public class ProductionLineRepositoryTest extends FactoryAppTest {
         Assert.assertEquals(queryLine.getLine().name(),"修改测试产线");
         Assert.assertEquals(queryLine.getLine().desc(),"修改描述");
         Assert.assertEquals(queryLine.getLine().isUse(),true);
+    }
+
+    @Test
+    public void changeLineAndWorkStation(){
+        ProductionLine line = initProductLine();
+        repository.save(line);
+        ProductionLineId id = line.id();
+        ProductionLine queryLine = repository.findById(id).orElse(null);
+        WorkStation station0 = queryLine.getWorkStations().get(0);
+        WorkStationId stationId = station0.id();
+        station0.changeName("测试岗位修改").enableUse().changeDesc("测试描述修改");
+        repository.save(queryLine);
+        ProductionLine queryLine1 = repository.findById(id).orElse(null);
+        WorkStation queryStation = queryLine1.getWorkStations().stream()
+                .filter(v->v.id().equals(stationId)).collect(Collectors.toList()).get(0);
+        Assert.assertEquals(queryStation.getWorkStation().name(),"测试岗位修改");
+        Assert.assertEquals(queryStation.getWorkStation().desc(),"测试描述修改");
+        Assert.assertEquals(queryStation.getWorkStation().isUse(),true);
     }
 }
