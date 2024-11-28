@@ -12,6 +12,7 @@ import org.ddd.fundamental.factory.value.WorkStationValueObject;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 public class ProductionLineRepositoryTest extends FactoryAppTest {
@@ -141,10 +142,8 @@ public class ProductionLineRepositoryTest extends FactoryAppTest {
 //    line_id=?
 //    where
 //    id=?
-    //以上方式不是效率最高的一种方式, 因为数据量不大,所以可以使用
-    // 这里提出一个例子, 使用批量数据来测试一下高效与低效之间的差别
-    @Test
-    public void createProductLine(){
+
+    private ProductionLine initProductLine(){
         ProductionLine productionLine = new ProductionLine(new ProductionLineValue(
                 ChangeableInfo.create("电路板产线1", "这是一个生产电路板的产线")
         ));
@@ -172,6 +171,15 @@ public class ProductionLineRepositoryTest extends FactoryAppTest {
                         ))
                 )
         );
+
+        return productionLine;
+    }
+    //以上方式不是效率最高的一种方式, 因为数据量不大,所以可以使用
+    // 这里提出一个例子, 使用批量数据来测试一下高效与低效之间的差别
+    @Test
+    public void createProductLine(){
+
+        ProductionLine productionLine = initProductLine();
         log.info("start save productLine");
         repository.save(productionLine);
         log.info("end save productLine");
@@ -226,5 +234,41 @@ public class ProductionLineRepositoryTest extends FactoryAppTest {
         line.addEquipment(EquipmentId.randomId(EquipmentId.class));
         line.addEquipment(EquipmentId.randomId(EquipmentId.class));
         repository.save(line);
+    }
+
+    /**
+     * 注意比较这个例子和下一个例子的区别
+     */
+    @Test
+    public void changeLineInfo() {
+        ProductionLine line = initProductLine();
+        repository.save(line);
+        ProductionLineId id = line.id();
+        ProductionLine queryLine = repository.findById(id).orElse(null);
+        queryLine.changeName("修改测试产线");
+        queryLine.changeDesc("修改描述");
+        queryLine.enableLine();
+        repository.save(queryLine);
+        //这里存在延迟加载所以不会更新工位信息
+        Assert.assertEquals(queryLine.getLine().name(),"修改测试产线");
+        Assert.assertEquals(queryLine.getLine().desc(),"修改描述");
+        Assert.assertEquals(queryLine.getLine().isUse(),true);
+    }
+
+    @Test
+    public void changeLineInfoNew() {
+        ProductionLine line = initProductLine();
+        repository.save(line);
+        ProductionLineId id = line.id();
+        line.changeName("修改测试产线");
+        line.changeDesc("修改描述");
+        line.enableLine();
+        //line.setNew(false);
+        repository.save(line);
+        //注意这里实际上是更新原来插入的四条工位信息
+        ProductionLine queryLine = repository.findById(id).orElse(null);
+        Assert.assertEquals(queryLine.getLine().name(),"修改测试产线");
+        Assert.assertEquals(queryLine.getLine().desc(),"修改描述");
+        Assert.assertEquals(queryLine.getLine().isUse(),true);
     }
 }

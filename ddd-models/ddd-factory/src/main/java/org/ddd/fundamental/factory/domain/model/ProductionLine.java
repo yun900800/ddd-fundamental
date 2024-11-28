@@ -20,7 +20,7 @@ public class ProductionLine extends AbstractAggregateRoot<ProductionLineId> {
     @Embedded
     private ProductionLineValue line;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY,
+    @OneToMany(cascade = {CascadeType.ALL}, orphanRemoval = true, fetch = FetchType.LAZY,
             mappedBy = "line")
     //@JoinColumn(name = "line_id", nullable = false)
     private List<WorkStation> workStations = new ArrayList<>();
@@ -39,16 +39,36 @@ public class ProductionLine extends AbstractAggregateRoot<ProductionLineId> {
         this.equipmentIds = new ArrayList<>();
     }
 
+    public ProductionLine changeName(String name) {
+        this.line = this.line.changeName(name);
+        return this;
+    }
+
+    public ProductionLine changeDesc(String desc) {
+        this.line = this.line.changeDesc(desc);
+        return this;
+    }
+
+    public ProductionLine enableLine(){
+        this.line = this.line.enableLine();
+        return this;
+    }
+
+    public ProductionLine disableLine() {
+        this.line = this.line.disableLine();
+        return this;
+    }
+
     public ProductionLineValue getLine() {
         return line.clone();
     }
 
     public List<WorkStation> getWorkStations() {
-        return new ArrayList<>(workStations);
+        return workStations;
     }
 
     public List<EquipmentId> getEquipmentIds() {
-        return new ArrayList<>(equipmentIds);
+        return equipmentIds;
     }
 
     private void defaultWorkStations(){
@@ -104,6 +124,8 @@ public class ProductionLine extends AbstractAggregateRoot<ProductionLineId> {
         this.equipmentIds.clear();
         return this;
     }
+
+
 
     @Override
     public boolean equals(Object o) {

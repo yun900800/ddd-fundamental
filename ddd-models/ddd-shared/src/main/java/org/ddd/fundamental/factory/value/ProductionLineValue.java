@@ -33,12 +33,26 @@ public class ProductionLineValue implements ValueObject,Cloneable {
         return this;
     }
 
+    public ProductionLineValue enableLine(){
+        this.productLine = this.productLine.enableUse();
+        return this;
+    }
+
+    public ProductionLineValue disableLine() {
+        this.productLine = this.productLine.disableUse();
+        return this;
+    }
+
     public String name(){
         return this.productLine.getName();
     }
 
     public String desc(){
         return this.productLine.getDesc();
+    }
+
+    public boolean isUse() {
+        return this.productLine.isUse();
     }
 
     public ChangeableInfo getProductLine() {

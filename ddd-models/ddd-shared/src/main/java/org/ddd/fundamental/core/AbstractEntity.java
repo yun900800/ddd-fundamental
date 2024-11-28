@@ -70,8 +70,18 @@ public abstract class AbstractEntity<ID extends DomainObjectId> implements
         return isNew;
     }
 
+//    public AbstractEntity setNew(boolean isNew){
+//        this.isNew = isNew;
+//        return this;
+//    }
+
     @PostLoad
     public void loadedEntityNotNew() {
+        this.isNew = false;
+    }
+
+    @PostPersist
+    public void savedEntityNotNew(){
         this.isNew = false;
     }
 
