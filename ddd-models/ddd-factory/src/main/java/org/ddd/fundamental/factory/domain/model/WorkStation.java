@@ -35,7 +35,7 @@ public class WorkStation extends AbstractEntity<WorkStationId> {
     }
 
     public WorkStationValueObject getWorkStation() {
-        return workStation;
+        return workStation.clone();
     }
 
     @Override

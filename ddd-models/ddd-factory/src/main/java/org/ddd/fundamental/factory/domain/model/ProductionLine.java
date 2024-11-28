@@ -64,11 +64,11 @@ public class ProductionLine extends AbstractAggregateRoot<ProductionLineId> {
     }
 
     public List<WorkStation> getWorkStations() {
-        return workStations;
+        return new ArrayList<>(workStations);
     }
 
     public List<EquipmentId> getEquipmentIds() {
-        return equipmentIds;
+        return new ArrayList<>(equipmentIds);
     }
 
     private void defaultWorkStations(){
