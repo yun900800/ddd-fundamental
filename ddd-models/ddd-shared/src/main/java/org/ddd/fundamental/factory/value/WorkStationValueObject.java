@@ -38,12 +38,26 @@ public class WorkStationValueObject implements ValueObject, Cloneable {
         return this;
     }
 
+    public WorkStationValueObject enableUse(){
+        this.workStation = this.workStation.enableUse();
+        return this;
+    }
+
+    public WorkStationValueObject disableUse(){
+        this.workStation = this.workStation.disableUse();
+        return this;
+    }
+
     public String name(){
         return this.workStation.getName();
     }
 
     public String desc(){
         return this.workStation.getDesc();
+    }
+
+    public boolean isUse() {
+        return this.workStation.isUse();
     }
 
     @Override
