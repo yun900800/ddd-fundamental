@@ -2,15 +2,16 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>ddd-models</artifactId>
+        <artifactId>ddd-fundamental</artifactId>
         <groupId>org.ddd.fundamental</groupId>
         <version>1.0-SNAPSHOT</version>
+        <relativePath>../../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>ddd-factory</artifactId>
+    <artifactId>ddd-redis-manager</artifactId>
 
-    <name>ddd-factory</name>
+    <name>ddd-redis-manager</name>
     <!-- FIXME change it to the project's website -->
     <url>http://www.example.com</url>
 
@@ -33,14 +34,15 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.ddd.fundamental</groupId>
-            <artifactId>ddd-shared</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <scope>test</scope>
         </dependency>
+        <!-- Optionally: parameterized tests support -->
         <dependency>
-            <groupId>org.ddd.fundamental</groupId>
-            <artifactId>ddd-shared-api</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.ddd.fundamental</groupId>
@@ -49,37 +51,12 @@
         </dependency>
         <dependency>
             <groupId>org.ddd.fundamental</groupId>
-            <artifactId>ddd-redis-manager</artifactId>
+            <artifactId>ddd-shared-api</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.hypersistence</groupId>
-            <artifactId>hypersistence-utils-hibernate-55</artifactId>
-            <version>3.8.3</version>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-core</artifactId>
-            <version>5.5.4.Final</version>
-        </dependency>
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.11</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.gavlyukovskiy</groupId>
-            <artifactId>datasource-proxy-spring-boot-starter</artifactId>
-            <version>1.8.1</version>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
         </dependency>
     </dependencies>
 </project>

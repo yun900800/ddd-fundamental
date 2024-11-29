@@ -29,6 +29,7 @@
       <module>ddd-models</module>
       <module>ddd-models/ddd-event</module>
       <module>ddd-models/ddd-kafka-starter</module>
+      <module>ddd-models/ddd-redis-manager</module>
   </modules>
   <packaging>pom</packaging>
   <parent>

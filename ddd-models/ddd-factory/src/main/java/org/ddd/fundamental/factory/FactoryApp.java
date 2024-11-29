@@ -17,7 +17,8 @@ import org.springframework.context.annotation.ComponentScan;
 )
 @ComponentScan(basePackages = {
         "org.ddd.fundamental.creator",
-        "org.ddd.fundamental.factory"
+        "org.ddd.fundamental.factory",
+        "org.ddd.fundamental.redis"
 })
 public class FactoryApp implements CommandLineRunner {
 
