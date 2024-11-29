@@ -26,6 +26,7 @@ public class WorkStation extends AbstractEntity<WorkStationId> {
         this.workStation = workStation;
     }
 
+
     public void setLine(ProductionLine line) {
         this.line = line;
     }
