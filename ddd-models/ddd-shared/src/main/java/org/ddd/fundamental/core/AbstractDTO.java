@@ -28,7 +28,7 @@ public abstract class AbstractDTO<ID extends DomainObjectId> implements Identifi
         this.id = source.id;
     }
 
-    protected String toJson() {
+    public String toJson() {
         String result = "";
         try {
             result  = mapper.writeValueAsString(this);

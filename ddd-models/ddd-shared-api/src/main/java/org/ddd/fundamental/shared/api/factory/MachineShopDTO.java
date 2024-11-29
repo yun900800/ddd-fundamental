@@ -9,7 +9,7 @@ public class MachineShopDTO extends AbstractDTO<MachineShopId> {
     private MachineShopValueObject machineShopValue;
 
     @SuppressWarnings("unused")
-    protected MachineShopDTO(){}
+    public MachineShopDTO(){}
 
     private MachineShopDTO(MachineShopId id,MachineShopValueObject machineShopValue){
         super(id);

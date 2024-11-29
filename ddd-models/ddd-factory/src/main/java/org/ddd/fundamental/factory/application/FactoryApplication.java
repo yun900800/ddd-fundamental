@@ -1,6 +1,7 @@
 package org.ddd.fundamental.factory.application;
 
 import lombok.extern.slf4j.Slf4j;
+import org.ddd.fundamental.factory.cache.CacheStoreManager;
 import org.ddd.fundamental.factory.domain.model.MachineShop;
 import org.ddd.fundamental.factory.domain.model.ProductionLine;
 import org.ddd.fundamental.factory.domain.repository.MachineShopRepository;
@@ -28,13 +29,23 @@ public class FactoryApplication {
     @Autowired
     private ProductionLineRepository productionLineRepository;
 
+    @Autowired
+    private CacheStoreManager manager;
+
     public List<MachineShopDTO> machineShops(){
         List<MachineShop> machineShopList = machineShopRepository.findAll();
         if (CollectionUtils.isEmpty(machineShopList)) {
             return new ArrayList<>();
         }
-        return machineShopList.stream().map(v->MachineShopDTO.create(v.id(),v.getMachineShop()))
+
+        List<MachineShopDTO> machineShopDTOS =
+        machineShopList.stream().map(v->MachineShopDTO.create(v.id(),v.getMachineShop()))
                 .collect(Collectors.toList());
+        //存储数据到缓存
+        manager.storeDataToCache(machineShopDTOS);
+        MachineShopDTO firstMachineShop = manager.fetchDataFromCache(machineShopDTOS.get(0).id(), MachineShopDTO.class);
+        log.info("firstMachineShop is {}",firstMachineShop);
+        return machineShopDTOS;
     }
 
     public List<ProductLineDTO> productLines(){
@@ -42,11 +53,16 @@ public class FactoryApplication {
         if (CollectionUtils.isEmpty(productionLines)) {
             return new ArrayList<>();
         }
-        return productionLines.stream().map(v->ProductLineDTO.create(
+        List<ProductLineDTO>  productLineDTOS = productionLines.stream().map(v->ProductLineDTO.create(
                 v.id(),v.getLine(), v.getEquipmentIds(), v.getWorkStations().stream()
                         .map(u-> WorkStationDTO.create(u.id(), u.getWorkStation()))
                         .collect(Collectors.toList())
         )).collect(Collectors.toList());
+        //存储数据到缓存
+        manager.storeDataToCache(productLineDTOS);
+        ProductLineDTO firstProductLineDTO = manager.fetchDataFromCache(productLineDTOS.get(0).id(), ProductLineDTO.class);
+        log.info("firstProductLineDTO is {}",firstProductLineDTO);
+        return productLineDTOS;
     }
 
 }
