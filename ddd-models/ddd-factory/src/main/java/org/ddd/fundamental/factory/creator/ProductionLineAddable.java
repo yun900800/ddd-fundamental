@@ -8,6 +8,10 @@ import org.ddd.fundamental.factory.domain.model.WorkStation;
 import org.ddd.fundamental.factory.domain.repository.ProductionLineRepository;
 import org.ddd.fundamental.factory.value.ProductionLineValue;
 import org.ddd.fundamental.factory.value.WorkStationValueObject;
+import org.ddd.fundamental.redis.config.RedisStoreManager;
+import org.ddd.fundamental.shared.api.factory.MachineShopDTO;
+import org.ddd.fundamental.shared.api.factory.ProductLineDTO;
+import org.ddd.fundamental.shared.api.factory.WorkStationDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -16,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 @Component
 @Slf4j
@@ -25,7 +30,12 @@ public class ProductionLineAddable implements DataAddable {
     @Autowired
     private ProductionLineRepository repository;
 
+    @Autowired
+    private RedisStoreManager manager;
+
     private List<ProductionLine> lines = new ArrayList<>();
+
+
 
     private static List<ProductionLine> createProductionLine(String lineName, int size, int count){
         List<ProductionLine> productionLines = new ArrayList<>();
@@ -52,6 +62,13 @@ public class ProductionLineAddable implements DataAddable {
         log.info("ProductionLineAddable execute add all ProductionLines");
         lines = createProductionLine("电路板产线",4,6);
         repository.saveAll(lines);
+        List<ProductLineDTO> productLineDTOS = lines.stream()
+                .map(v->ProductLineDTO.create(v.id(), v.getLine(),
+                        v.getEquipmentIds(),v.getWorkStations().stream()
+                                .map(u-> WorkStationDTO.create(u.id(),
+                                        u.getWorkStation())).collect(Collectors.toList())
+                        )).collect(Collectors.toList());
+        manager.storeDataListToCache(productLineDTOS);
         log.info("finish");
     }
 

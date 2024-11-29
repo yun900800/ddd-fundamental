@@ -7,6 +7,8 @@ import org.ddd.fundamental.factory.domain.model.MachineShop;
 import org.ddd.fundamental.factory.domain.model.ProductionLine;
 import org.ddd.fundamental.factory.domain.repository.MachineShopRepository;
 import org.ddd.fundamental.factory.value.MachineShopValueObject;
+import org.ddd.fundamental.redis.config.RedisStoreManager;
+import org.ddd.fundamental.shared.api.factory.MachineShopDTO;
 import org.ddd.fundamental.utils.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
@@ -16,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @Slf4j
@@ -27,6 +30,9 @@ public class MachineShopAddable implements DataAddable {
 
     @Autowired
     private ProductionLineAddable productionLineAddable;
+
+    @Autowired
+    private RedisStoreManager manager;
 
     private List<MachineShop> machineShops = new ArrayList<>();
 
@@ -54,6 +60,10 @@ public class MachineShopAddable implements DataAddable {
         this.machineShops =  createMachineShop();
         addLineRandomToMachineShop();
         machineShopRepository.saveAll(machineShops);
+        List<MachineShopDTO> machineShopDTOS = machineShops.stream()
+                        .map(v->MachineShopDTO.create(v.id(),
+                                v.getMachineShop())).collect(Collectors.toList());
+        manager.storeDataListToCache(machineShopDTOS);
         log.info("finish");
     }
 }
