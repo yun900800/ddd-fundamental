@@ -76,10 +76,5 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.11</version>
         </dependency>
-        <dependency>
-            <groupId>com.github.gavlyukovskiy</groupId>
-            <artifactId>datasource-proxy-spring-boot-starter</artifactId>
-            <version>1.8.1</version>
-        </dependency>
     </dependencies>
 </project>

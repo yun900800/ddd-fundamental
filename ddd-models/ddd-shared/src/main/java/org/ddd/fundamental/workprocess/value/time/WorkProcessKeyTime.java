@@ -47,15 +47,15 @@ public class WorkProcessKeyTime implements ValueObject, Cloneable {
         this.reason = "";
     }
 
-    public static WorkProcessKeyTime create(){
+    public static WorkProcessKeyTime start(){
         return new WorkProcessKeyTime(Instant.now());
     }
 
-    public static WorkProcessKeyTime create(Instant startTime){
+    public static WorkProcessKeyTime start(Instant startTime){
         return new WorkProcessKeyTime(startTime);
     }
 
-    public WorkProcessKeyTime changeEndTime(Instant endTime){
+    public WorkProcessKeyTime finish(Instant endTime){
         if (endTime.isBefore(this.startTime)) {
             throw new RuntimeException("工序结束时间不能早于工序开始时间");
         }
@@ -69,17 +69,17 @@ public class WorkProcessKeyTime implements ValueObject, Cloneable {
         return new WorkProcessKeyTime(startTime,endTime,interruptTime,reason,restartTime);
     }
 
-    public WorkProcessKeyTime changeEndTime() {
+    public WorkProcessKeyTime finish() {
         Instant endTime = Instant.now();
-        return changeEndTime(endTime);
+        return finish(endTime);
     }
 
-    public WorkProcessKeyTime changeInterruptTime() {
+    public WorkProcessKeyTime interrupt() {
         Instant interruptTime = Instant.now();
-        return changeInterruptTime(interruptTime);
+        return interrupt(interruptTime);
     }
 
-    public WorkProcessKeyTime changeInterruptTime(Instant interruptTime) {
+    public WorkProcessKeyTime interrupt(Instant interruptTime) {
         if (interruptTime.isBefore(this.startTime)) {
             throw new RuntimeException("工序中断时间不能早于工序开始时间");
         }
@@ -92,12 +92,12 @@ public class WorkProcessKeyTime implements ValueObject, Cloneable {
         return new WorkProcessKeyTime(this.startTime,this.endTime,interruptTime,reason,restartTime);
     }
 
-    public WorkProcessKeyTime changeRestartTime() {
+    public WorkProcessKeyTime restart() {
         Instant restartTime = Instant.now();
-        return changeRestartTime(restartTime);
+        return restart(restartTime);
     }
 
-    public WorkProcessKeyTime changeRestartTime(Instant restartTime) {
+    public WorkProcessKeyTime restart(Instant restartTime) {
         if (restartTime.isBefore(this.startTime)) {
             throw new RuntimeException("工序重启时间不能早于工序开始时间");
         }

@@ -127,21 +127,6 @@ public class WorkProcessQuantity implements ValueObject, Cloneable {
     }
 
 
-//    public interface OverCrossQuantityStep {
-//        OwePaymentQuantityStep overCrossQuantity(int overCrossQuantity);
-//
-//        BuildStep noOverCrossQuantity();
-//    }
-//
-//
-//
-//    public interface OwePaymentQuantityStep {
-//        OverCrossQuantityStep owePaymentQuantity(int owePaymentQuantity);
-//
-//        BuildStep noOwePaymentQuantity();
-//    }
-
-
 
     public interface BuildStep {
         WorkProcessQuantity build();
@@ -226,8 +211,6 @@ public class WorkProcessQuantity implements ValueObject, Cloneable {
             return workProcessQuality;
         }
     }
-
-
 
     public int getTargetQuantity() {
         return targetQuantity;

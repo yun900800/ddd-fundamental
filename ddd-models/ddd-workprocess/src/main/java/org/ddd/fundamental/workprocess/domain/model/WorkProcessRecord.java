@@ -22,10 +22,15 @@ public class WorkProcessRecord extends AbstractAggregateRoot<WorkProcessId> {
     private ChangeableInfo processInfo;
 
     /**
-     * 工序资源,时间,数量信息
+     * 工序资源,时间,
      */
     @Embedded
     private WorkProcessValue workProcessValue;
+
+    @OneToOne(cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY, orphanRemoval = true)
+    @JoinColumn(name = "quantity_id")
+    private WorkProcessQuantityEntity quantity;
 
 
     @SuppressWarnings("unused")
@@ -36,6 +41,14 @@ public class WorkProcessRecord extends AbstractAggregateRoot<WorkProcessId> {
         super(WorkProcessId.randomId(WorkProcessId.class));
         this.processInfo = processInfo;
         this.workProcessValue = workProcessValue;
+    }
+
+    public WorkProcessQuantityEntity getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(WorkProcessQuantityEntity quantity) {
+        this.quantity = quantity;
     }
 
     public static WorkProcessRecord create(ChangeableInfo processInfo,

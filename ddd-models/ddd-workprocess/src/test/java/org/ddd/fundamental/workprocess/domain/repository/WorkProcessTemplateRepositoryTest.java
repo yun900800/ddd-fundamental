@@ -194,4 +194,5 @@ public class WorkProcessTemplateRepositoryTest extends WorkProcessAppTest {
         workProcessTemplateRepository.save(template);
         template = workProcessTemplateRepository.findById(id).get();
     }
+
 }

@@ -17,17 +17,13 @@ public class WorkProcessRecordTest {
         WorkProcessRecord record = WorkProcessRecord.create(
                 ChangeableInfo.create("模切工序","打磨电路板"),
                 WorkProcessValue.create(
-                        WorkProcessKeyTime.create(),
-                        WorkProcessQuantity.newBuilder()
-                                .targetQuantity(10000)
-                                .unQualifiedQuantity(0)
-                                .transferQuantityWithOverCross(10)
-                                .overCrossQuantity(100)
-                                .build(),
+                        WorkProcessKeyTime.start(),
                         new ProductResources(new HashSet<>()),
                         WorkProcessTemplateId.randomId(WorkProcessTemplateId.class)
                 )
         );
         System.out.println(record);
     }
+
+
 }

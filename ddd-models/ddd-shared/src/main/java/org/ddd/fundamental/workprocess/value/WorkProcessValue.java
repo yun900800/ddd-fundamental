@@ -2,6 +2,7 @@ package org.ddd.fundamental.workprocess.value;
 
 import org.ddd.fundamental.core.ValueObject;
 import org.ddd.fundamental.workprocess.value.quantity.WorkProcessQuantity;
+import org.ddd.fundamental.workprocess.value.resources.ProductResource;
 import org.ddd.fundamental.workprocess.value.resources.ProductResources;
 import org.ddd.fundamental.workprocess.value.time.WorkProcessKeyTime;
 
@@ -19,11 +20,6 @@ public class WorkProcessValue implements ValueObject, Cloneable {
     private WorkProcessKeyTime workProcessKeyTime;
 
     /**
-     * 工序数量
-     */
-    private WorkProcessQuantity workProcessQuantity;
-
-    /**
      * 工序资源
      */
     private ProductResources productResources;
@@ -37,30 +33,54 @@ public class WorkProcessValue implements ValueObject, Cloneable {
     private WorkProcessValue(){}
 
     private WorkProcessValue(WorkProcessKeyTime workProcessKeyTime,
-                             WorkProcessQuantity workProcessQuantity,
                              ProductResources productResources,
                              WorkProcessTemplateId templateId){
         this.productResources = productResources;
         this.workProcessKeyTime = workProcessKeyTime;
-        this.workProcessQuantity = workProcessQuantity;
         this.templateId = templateId;
     }
 
     public static WorkProcessValue create(WorkProcessKeyTime workProcessKeyTime,
-                                          WorkProcessQuantity workProcessQuantity,
                                           ProductResources productResources,
                                           WorkProcessTemplateId templateId){
-        return new WorkProcessValue(workProcessKeyTime,workProcessQuantity,
+        return new WorkProcessValue(workProcessKeyTime,
                 productResources,templateId);
+    }
+
+    public WorkProcessValue addResource(ProductResource resource){
+        this.productResources = this.productResources.addResource(resource);
+        return this;
+    }
+
+    public WorkProcessValue removeResource(ProductResource resource){
+        this.productResources = this.productResources.removeResource(resource);
+        return this;
+    }
+
+    public WorkProcessValue start() {
+        this.workProcessKeyTime = WorkProcessKeyTime.start();
+        return this;
+    }
+
+    public WorkProcessValue finish() {
+        this.workProcessKeyTime = this.workProcessKeyTime.finish();
+        return this;
+    }
+
+    public WorkProcessValue interrupt(){
+        this.workProcessKeyTime = this.workProcessKeyTime.interrupt();
+        return this;
+    }
+
+    public WorkProcessValue restart() {
+        this.workProcessKeyTime = this.workProcessKeyTime.restart();
+        return this;
     }
 
     public WorkProcessKeyTime getWorkProcessKeyTime() {
         return workProcessKeyTime.clone();
     }
 
-    public WorkProcessQuantity getWorkProcessQuantity() {
-        return workProcessQuantity.clone();
-    }
 
     public ProductResources getProductResources() {
         return productResources;
@@ -75,19 +95,18 @@ public class WorkProcessValue implements ValueObject, Cloneable {
         if (this == o) return true;
         if (!(o instanceof WorkProcessValue)) return false;
         WorkProcessValue that = (WorkProcessValue) o;
-        return Objects.equals(workProcessKeyTime, that.workProcessKeyTime) && Objects.equals(workProcessQuantity, that.workProcessQuantity) && Objects.equals(productResources, that.productResources) && Objects.equals(templateId, that.templateId);
+        return Objects.equals(workProcessKeyTime, that.workProcessKeyTime) &&  Objects.equals(productResources, that.productResources) && Objects.equals(templateId, that.templateId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(workProcessKeyTime, workProcessQuantity, productResources, templateId);
+        return Objects.hash(workProcessKeyTime, productResources, templateId);
     }
 
     @Override
     public String toString() {
         return "WorkProcessValue{" +
                 "workProcessKeyTime=" + workProcessKeyTime +
-                ", workProcessQuantity=" + workProcessQuantity +
                 ", productResources=" + productResources +
                 ", templateId=" + templateId +
                 '}';

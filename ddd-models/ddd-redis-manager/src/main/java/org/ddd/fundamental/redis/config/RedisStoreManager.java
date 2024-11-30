@@ -1,6 +1,5 @@
 package org.ddd.fundamental.redis.config;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.core.AbstractDTO;
@@ -9,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -35,10 +34,30 @@ public class RedisStoreManager {
      * @param <ID>
      */
     public <T extends AbstractDTO<ID>,ID extends DomainObjectId> void storeDataListToCache(List<T> dataList){
+        storeDataListToCache(dataList,"");
+    }
+
+    public <T extends AbstractDTO<ID>,ID extends DomainObjectId> void storeDataListToCache(List<T> dataList,String prefix){
         for (T data: dataList) {
-            newRedisTemplate.opsForValue().set(data.id().toUUID(),data,60*10, TimeUnit.SECONDS);
+            String key = generateStoreKey(prefix,data);
+            newRedisTemplate.opsForValue().set(key,data,60*10, TimeUnit.SECONDS);
         }
     }
+
+    private <T extends AbstractDTO<ID>, ID extends DomainObjectId> String generateStoreKey(String prefix,T data){
+        if (!StringUtils.hasLength(prefix)) {
+            prefix = data.getClass().getSimpleName();
+        }
+        return prefix + "_" + data.id().toUUID();
+    }
+
+    private <T extends AbstractDTO<ID>, ID extends DomainObjectId> String generateFetchKey(String prefix,Class<T> clazz,ID id){
+        if (!StringUtils.hasLength(prefix)) {
+            prefix = clazz.getSimpleName();
+        }
+        return prefix + "_" + id.toUUID();
+    }
+
 
     /**
      * 存储批量数据到缓存中
@@ -47,8 +66,13 @@ public class RedisStoreManager {
      * @param <ID>
      */
     public <T extends AbstractDTO<ID>,ID extends DomainObjectId> void storeDataCollectionToCache(Collection<T> dataCollection){
+        storeDataCollectionToCache(dataCollection,"");
+    }
+
+    public <T extends AbstractDTO<ID>,ID extends DomainObjectId> void storeDataCollectionToCache(Collection<T> dataCollection,String prefix){
         for (T data: dataCollection) {
-            newRedisTemplate.opsForValue().set(data.id().toUUID(),data,60*10, TimeUnit.SECONDS);
+            String key = generateStoreKey(prefix,data);
+            newRedisTemplate.opsForValue().set(key,data,60*10, TimeUnit.SECONDS);
         }
     }
 
@@ -60,16 +84,29 @@ public class RedisStoreManager {
      * @param <ID>
      */
     public <T extends AbstractDTO<ID>,ID extends DomainObjectId> void storeDataToCache(T data){
-        newRedisTemplate.opsForValue().set(data.id().toUUID(),data,60*10, TimeUnit.SECONDS);
+        storeDataToCache(data,"");
+    }
+
+    public <T extends AbstractDTO<ID>,ID extends DomainObjectId> void storeDataToCache(T data,String prefix){
+        String key = generateStoreKey(prefix,data);
+        newRedisTemplate.opsForValue().set(key,data,60*10, TimeUnit.SECONDS);
     }
 
     public <T extends AbstractDTO<ID>,ID extends DomainObjectId> T fetchDataFromCache(ID id, Class<T> clazz){
-        Object object = newRedisTemplate.opsForValue().get(id.toUUID());
+        return fetchDataFromCache(id,clazz,"");
+    }
+
+    public <T extends AbstractDTO<ID>,ID extends DomainObjectId> T fetchDataFromCache(ID id, Class<T> clazz,String prefix){
+        String key  = generateFetchKey(prefix, clazz,id);
+        Object object = newRedisTemplate.opsForValue().get(key);
         return mapper.convertValue(object,clazz);
     }
 
     public <T extends AbstractDTO<ID>,ID extends DomainObjectId> List<T> fetchDataListFromCache(List<ID> ids,Class<T> clazz){
-        List<String> stringIds = ids.stream().map(v->v.toUUID()).collect(Collectors.toList());
+        return fetchDataListFromCache(ids,clazz,"");
+    }
+    public <T extends AbstractDTO<ID>,ID extends DomainObjectId> List<T> fetchDataListFromCache(List<ID> ids,Class<T> clazz,String prefix){
+        List<String> stringIds = ids.stream().map(v->generateFetchKey(prefix, clazz,v)).collect(Collectors.toList());
         List<Object> list = newRedisTemplate.opsForValue().multiGet(stringIds);
         List<T> result = new ArrayList<>();
         for (Object obj: list) {

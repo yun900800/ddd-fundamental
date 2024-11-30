@@ -44,10 +44,9 @@ public class FactoryApplication {
         List<MachineShopDTO> machineShopDTOS =
         machineShopList.stream().map(v->MachineShopDTO.create(v.id(),v.getMachineShop()))
                 .collect(Collectors.toList());
-//        //存储数据到缓存
-//        manager.storeDataListToCache(machineShopDTOS);
-//        MachineShopDTO firstMachineShop = manager.fetchDataFromCache(machineShopDTOS.get(0).id(), MachineShopDTO.class);
-//        log.info("firstMachineShop is {}",firstMachineShop);
+
+        MachineShopDTO firstMachineShop = manager.fetchDataFromCache(machineShopDTOS.get(0).id(), MachineShopDTO.class);
+        log.info("firstMachineShop is {}",firstMachineShop);
         return machineShopDTOS;
     }
 
