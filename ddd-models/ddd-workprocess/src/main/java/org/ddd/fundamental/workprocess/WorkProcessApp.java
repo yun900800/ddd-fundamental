@@ -12,6 +12,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.util.StopWatch;
 
 import java.util.List;
@@ -21,6 +23,12 @@ import java.util.List;
         {
                 "org.ddd.fundamental.workprocess",
                 "org.ddd.fundamental.infra.hibernate"
+        }
+)
+@EnableJpaRepositories(
+        basePackages = {
+                "org.ddd.fundamental.core.repository",
+                "org.ddd.fundamental.workprocess.domain.repository"
         }
 )
 @EnableFeignClients

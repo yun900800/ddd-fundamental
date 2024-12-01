@@ -7,6 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
 @EntityScan(
@@ -18,8 +19,14 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan(basePackages = {
         "org.ddd.fundamental.creator",
         "org.ddd.fundamental.factory",
-        "org.ddd.fundamental.redis"
+        "org.ddd.fundamental.redis",
 })
+@EnableJpaRepositories(
+        basePackages = {
+                "org.ddd.fundamental.core.repository",
+                "org.ddd.fundamental.factory.domain.repository"
+        }
+)
 public class FactoryApp implements CommandLineRunner {
 
     @Autowired
