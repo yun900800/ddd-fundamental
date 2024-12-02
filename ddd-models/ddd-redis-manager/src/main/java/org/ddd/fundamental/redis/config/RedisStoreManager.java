@@ -1,6 +1,9 @@
 package org.ddd.fundamental.redis.config;
 
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.CollectionType;
 import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.core.AbstractDTO;
 import org.ddd.fundamental.core.DomainObjectId;
@@ -10,6 +13,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -149,14 +154,23 @@ public class RedisStoreManager {
     public <T extends AbstractDTO<ID>,ID extends DomainObjectId> List<T> fetchDataListFromCache(List<ID> ids,Class<T> clazz){
         return fetchDataListFromCache(ids,clazz,"");
     }
-    public <T extends AbstractDTO<ID>,ID extends DomainObjectId> List<T> fetchDataListFromCache(List<ID> ids,Class<T> clazz,String prefix){
+    public <T extends AbstractDTO<ID>,ID extends DomainObjectId> List<T> fetchDataListFromCache(List<ID> ids,Class<T> clazz,String prefix) {
         List<String> stringIds = ids.stream().map(v->generateFetchKey(prefix, clazz,v)).collect(Collectors.toList());
         List<Object> list = newRedisTemplate.opsForValue().multiGet(stringIds);
+        CollectionType javaType = mapper.getTypeFactory().constructCollectionType(List.class,clazz);
         List<T> result = new ArrayList<>();
-        for (Object obj: list) {
-            T data = mapper.convertValue(obj,clazz);
-            result.add(data);
+        try {
+            List<T> dataList = mapper.readValue(mapper.writeValueAsString(list),javaType);
+            log.info("batch handle data is {}",dataList);
+            return dataList;
+        }catch (IOException e){
+            for (Object obj: list) {
+                T data = mapper.convertValue(obj,clazz);
+                result.add(data);
+            }
+            log.info("single handle data is {}",result);
         }
         return result;
+
     }
 }

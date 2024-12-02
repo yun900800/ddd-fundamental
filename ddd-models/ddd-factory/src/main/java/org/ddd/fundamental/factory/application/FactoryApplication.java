@@ -73,16 +73,16 @@ public class FactoryApplication {
                         .map(u-> WorkStationDTO.create(u.id(), u.getWorkStation()))
                         .collect(Collectors.toList())
         )).collect(Collectors.toList());
-//        //存储数据到缓存
-//        manager.storeDataListToCache(productLineDTOS);
-//        ProductLineDTO firstProductLineDTO = manager.fetchDataFromCache(productLineDTOS.get(0).id(), ProductLineDTO.class);
-//        log.info("firstProductLineDTO is {}",firstProductLineDTO);
-//        List<ProductionLineId> ids = Arrays.asList(
-//                productLineDTOS.get(0).id(),
-//                productLineDTOS.get(2).id()
-//        );
-//        List<ProductLineDTO> lineDTOS = manager.fetchDataListFromCache(ids,ProductLineDTO.class);
-//        log.info("lineDTOS is {}",lineDTOS);
+        //存储数据到缓存
+        manager.storeDataListToCache(productLineDTOS);
+        ProductLineDTO firstProductLineDTO = manager.fetchDataFromCache(productLineDTOS.get(0).id(), ProductLineDTO.class);
+        log.info("firstProductLineDTO is {}",firstProductLineDTO);
+        List<ProductionLineId> ids = Arrays.asList(
+                productLineDTOS.get(0).id(),
+                productLineDTOS.get(2).id()
+        );
+        List<ProductLineDTO> lineDTOS = manager.fetchDataListFromCache(ids,ProductLineDTO.class);
+        log.info("lineDTOS is {}",lineDTOS);
         return productLineDTOS;
     }
 
