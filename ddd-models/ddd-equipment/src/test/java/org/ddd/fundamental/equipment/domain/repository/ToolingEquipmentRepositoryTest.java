@@ -3,6 +3,7 @@ package org.ddd.fundamental.equipment.domain.repository;
 import org.ddd.fundamental.changeable.ChangeableInfo;
 import org.ddd.fundamental.equipment.EquipmentAppTest;
 import org.ddd.fundamental.equipment.application.ToolingEquipmentCreator;
+import org.ddd.fundamental.equipment.creator.ToolingEquipmentAddable;
 import org.ddd.fundamental.equipment.domain.model.ToolingEquipment;
 import org.ddd.fundamental.equipment.enums.ToolingType;
 import org.ddd.fundamental.equipment.value.MaintainStandard;
@@ -26,11 +27,11 @@ public class ToolingEquipmentRepositoryTest extends EquipmentAppTest {
                 "ASSET_GZ_GD_1","GZ_GD_1");
 
         repository.save(toolingEquipment);
-        repository.saveAll(ToolingEquipmentCreator.createToolingList());
+        repository.saveAll(ToolingEquipmentAddable.createToolingList());
     }
 
     @Test
     public void testBatchCreateToolingEquipments(){
-        repository.saveAll(ToolingEquipmentCreator.createToolingList());
+        repository.saveAll(ToolingEquipmentAddable.createToolingList());
     }
 }

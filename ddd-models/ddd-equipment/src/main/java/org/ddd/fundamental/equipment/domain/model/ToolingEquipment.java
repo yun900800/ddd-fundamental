@@ -1,17 +1,14 @@
 package org.ddd.fundamental.equipment.domain.model;
 
-import org.ddd.fundamental.core.AbstractAggregateRoot;
+import org.ddd.fundamental.core.AbstractEntity;
 import org.ddd.fundamental.equipment.value.ToolingEquipmentValue;
 import org.ddd.fundamental.factory.EquipmentId;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "tooling_equipment")
-public class ToolingEquipment extends AbstractAggregateRoot<EquipmentId> {
+public class ToolingEquipment extends AbstractEntity<EquipmentId> {
 
     private ToolingEquipmentValue toolingEquipmentInfo;
 
@@ -28,6 +25,9 @@ public class ToolingEquipment extends AbstractAggregateRoot<EquipmentId> {
     @Enumerated(EnumType.STRING)
     private EquipmentType equipmentType;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Equipment equipment;
+
     @SuppressWarnings("unused")
     private ToolingEquipment(){}
 
@@ -38,6 +38,14 @@ public class ToolingEquipment extends AbstractAggregateRoot<EquipmentId> {
         this.assetNo = assetNo;
         this.assetCode = assetCode;
         this.equipmentType = EquipmentType.RESOURCE_TWO;
+    }
+
+    public Equipment getEquipment() {
+        return equipment;
+    }
+
+    public void setEquipment(Equipment equipment) {
+        this.equipment = equipment;
     }
 
     public ToolingEquipment enableUse(){

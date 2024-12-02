@@ -7,22 +7,31 @@ public class ToolingDTO extends AbstractDTO<EquipmentId> {
 
     private ToolingEquipmentValue toolingEquipmentValue;
 
+    private EquipmentId equipmentId;
+
     @SuppressWarnings("unused")
     private ToolingDTO(){}
 
-    private ToolingDTO(EquipmentId id,ToolingEquipmentValue toolingEquipmentValue){
+    private ToolingDTO(EquipmentId id,ToolingEquipmentValue toolingEquipmentValue,
+                       EquipmentId equipmentId){
         super(id);
         this.toolingEquipmentValue = toolingEquipmentValue;
+        this.equipmentId = equipmentId;
     }
 
-    public static ToolingDTO create(EquipmentId id,ToolingEquipmentValue toolingEquipmentValue){
-        return new ToolingDTO(id,toolingEquipmentValue);
+    public static ToolingDTO create(EquipmentId id,ToolingEquipmentValue toolingEquipmentValue,
+                                    EquipmentId equipmentId){
+        return new ToolingDTO(id,toolingEquipmentValue,equipmentId);
     }
 
 
     @Override
     public EquipmentId id() {
         return super.id;
+    }
+
+    public EquipmentId getEquipmentId() {
+        return equipmentId;
     }
 
     public ToolingEquipmentValue getToolingEquipmentValue() {

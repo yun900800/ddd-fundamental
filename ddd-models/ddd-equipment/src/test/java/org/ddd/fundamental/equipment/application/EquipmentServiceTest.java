@@ -1,6 +1,8 @@
 package org.ddd.fundamental.equipment.application;
 
 import org.ddd.fundamental.equipment.EquipmentAppTest;
+import org.ddd.fundamental.equipment.creator.EquipmentAddable;
+import org.ddd.fundamental.equipment.creator.ToolingEquipmentAddable;
 import org.ddd.fundamental.equipment.domain.model.Equipment;
 import org.ddd.fundamental.equipment.domain.model.ToolingEquipment;
 import org.ddd.fundamental.utils.CollectionUtils;
@@ -15,11 +17,14 @@ public class EquipmentServiceTest extends EquipmentAppTest {
     private EquipmentService equipmentService;
 
     @Autowired
-    private ToolingEquipmentCreator creator;
+    private ToolingEquipmentAddable creator;
+
+    @Autowired
+    private EquipmentAddable equipmentAddable;
 
     @Test
     public void testAddToolingToEquipment(){
-        List<Equipment> equipmentList = creator.getEquipments();
+        List<Equipment> equipmentList = equipmentAddable.getEquipments();
         List<ToolingEquipment> toolingEquipments = creator.getToolingEquipments();
         Equipment equipment = CollectionUtils.random(equipmentList);
         ToolingEquipment toolingEquipment = CollectionUtils.random(toolingEquipments);

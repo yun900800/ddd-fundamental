@@ -104,7 +104,6 @@ public class EquipmentRepositoryTest extends EquipmentAppTest {
 
         ToolingEquipment tooling1 = CollectionUtils.random(toolingEquipments);
         ToolingEquipment tooling2 = CollectionUtils.random(toolingEquipments);
-        randomEquipment.addToolingId(tooling1.id()).addToolingId(tooling2.id());
         equipmentRepository.save(randomEquipment);
         tooling1.enableUse();
         toolingRepository.save(tooling1);

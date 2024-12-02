@@ -38,10 +38,6 @@ public class Equipment extends AbstractAggregateRoot<EquipmentId> {
             fetch = FetchType.LAZY, orphanRemoval = true)
     private EquipmentResource equipmentResource;
 
-    @Type(type = "json")
-    @Column(columnDefinition = "json", name = "tooling_equipment_ids")
-    private Set<EquipmentId> toolingEquipmentIds = new HashSet<>();
-
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(
             name="equipment_dates",
@@ -114,30 +110,6 @@ public class Equipment extends AbstractAggregateRoot<EquipmentId> {
     public Equipment clearDateRange(){
         defaultDateRanges();
         this.dateRanges.clear();
-        return this;
-    }
-
-    private void defaultToolingIds(){
-        if (null == this.toolingEquipmentIds){
-            this.toolingEquipmentIds = new HashSet<>();
-        }
-    }
-
-    public Equipment addToolingId(EquipmentId id){
-        defaultToolingIds();
-        this.toolingEquipmentIds.add(id);
-        return this;
-    }
-
-    public Equipment removeToolingId(EquipmentId id){
-        defaultToolingIds();
-        this.toolingEquipmentIds.remove(id);
-        return this;
-    }
-
-    public Equipment clearToolingIds(){
-        defaultToolingIds();
-        this.toolingEquipmentIds.clear();
         return this;
     }
 

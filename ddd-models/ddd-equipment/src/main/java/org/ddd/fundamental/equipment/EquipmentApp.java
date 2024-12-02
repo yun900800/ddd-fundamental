@@ -7,6 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @EntityScan(
         {
@@ -19,6 +20,12 @@ import org.springframework.context.annotation.ComponentScan;
         "org.ddd.fundamental.equipment",
         "org.ddd.fundamental.redis",
 })
+@EnableJpaRepositories(
+        basePackages = {
+                "org.ddd.fundamental.core.repository",
+                "org.ddd.fundamental.equipment.domain.repository"
+        }
+)
 @SpringBootApplication
 public class EquipmentApp implements CommandLineRunner {
 

@@ -8,6 +8,7 @@ import org.ddd.fundamental.equipment.value.RPAccountValue;
 import org.ddd.fundamental.redis.config.RedisStoreManager;
 import org.ddd.fundamental.shared.api.equipment.RPAccountDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 
 @Component
 @Slf4j
+@Order(1)
 public class RPAccountAddable implements DataAddable {
 
     private final RPAccountRepository accountRepository;

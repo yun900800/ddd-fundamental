@@ -1,8 +1,11 @@
 package org.ddd.fundamental.equipment.application;
 
+import org.ddd.fundamental.equipment.creator.EquipmentAddable;
+import org.ddd.fundamental.equipment.creator.ToolingEquipmentAddable;
 import org.ddd.fundamental.equipment.domain.model.Equipment;
 import org.ddd.fundamental.equipment.domain.model.ToolingEquipment;
 import org.ddd.fundamental.equipment.domain.repository.EquipmentRepository;
+import org.ddd.fundamental.equipment.domain.repository.EquipmentResourceRepository;
 import org.ddd.fundamental.equipment.domain.repository.ToolingEquipmentRepository;
 import org.ddd.fundamental.factory.EquipmentId;
 import org.ddd.fundamental.shared.api.equipment.EquipmentDTO;
@@ -25,22 +28,33 @@ public class EquipmentService {
     private ToolingEquipmentRepository toolingRepository;
 
     @Autowired
-    private ToolingEquipmentCreator creator;
+    private EquipmentResourceRepository resourceRepository;
+
+    @Autowired
+    private ToolingEquipmentAddable creator;
+
+    @Autowired
+    private EquipmentAddable equipmentAddable;
 
     @Transactional
     public void addToolingToEquipment(EquipmentId toolingId, EquipmentId equipmentId) {
-        ToolingEquipment toolingEquipment = toolingRepository.getById(toolingId);
-        Equipment equipment = equipmentRepository.getById(equipmentId);
+        ToolingEquipment toolingEquipment = toolingRepository.findById(toolingId).orElse(null);
+        Equipment equipment = equipmentRepository.getOne(equipmentId);
+        toolingEquipment.setEquipment(equipment);
         toolingEquipment.enableUse();
-        equipment.addToolingId(toolingEquipment.id());
         toolingRepository.save(toolingEquipment);
-        equipmentRepository.save(equipment);
+    }
+
+    @Transactional
+    public void deleteAllEquipments() {
+        resourceRepository.deleteAllEquipmentResources();
+        equipmentRepository.deleteAllEquipments();
     }
 
     @Transactional(readOnly = true)
     public List<EquipmentDTO> equipments() {
-        if (null != creator.getEquipments() && !CollectionUtils.isEmpty(creator.getEquipments())) {
-            return creator.getEquipments().stream()
+        if (null != equipmentAddable.getEquipments() && !CollectionUtils.isEmpty(equipmentAddable.getEquipments())) {
+            return equipmentAddable.getEquipments().stream()
                     .map(v-> EquipmentDTO.create(v.id(),v.getMaster())).collect(Collectors.toList());
         }
         return equipmentRepository.findAll().stream()
@@ -51,9 +65,19 @@ public class EquipmentService {
     public List<ToolingDTO> toolingList() {
         if (null != creator.getToolingEquipments() && !CollectionUtils.isEmpty(creator.getToolingEquipments())) {
             return creator.getToolingEquipments().stream()
-                    .map(v-> ToolingDTO.create(v.id(),v.getToolingEquipmentInfo())).collect(Collectors.toList());
+                    .map(v-> {
+                        if (v.getEquipment() == null) {
+                            return ToolingDTO.create(v.id(),v.getToolingEquipmentInfo(),null);
+                        }
+                        return ToolingDTO.create(v.id(),v.getToolingEquipmentInfo(),v.getEquipment().id());
+                    }).collect(Collectors.toList());
         }
         return toolingRepository.findAll().stream()
-                .map(v-> ToolingDTO.create(v.id(),v.getToolingEquipmentInfo())).collect(Collectors.toList());
+                .map(v-> {
+                    if (v.getEquipment() == null) {
+                        return ToolingDTO.create(v.id(),v.getToolingEquipmentInfo(),null);
+                    }
+                    return ToolingDTO.create(v.id(),v.getToolingEquipmentInfo(),v.getEquipment().id());
+                }).collect(Collectors.toList());
     }
 }
