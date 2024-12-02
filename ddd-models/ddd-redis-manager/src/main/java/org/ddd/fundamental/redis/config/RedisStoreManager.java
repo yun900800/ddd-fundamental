@@ -49,6 +49,24 @@ public class RedisStoreManager {
         }
     }
 
+    public <T extends AbstractDTO<ID>,ID extends DomainObjectId> List<T> queryAllData(Class<T> clazz){
+        return queryAllData(clazz,"");
+    }
+
+    public <T extends AbstractDTO<ID>,ID extends DomainObjectId> List<T> queryAllData(Class<T> clazz,String prefix){
+        if (!StringUtils.hasLength(prefix)) {
+            prefix = clazz.getSimpleName();
+        }
+        Set<String> keys = newRedisTemplate.keys(Pattern.matches("\\*$", prefix) ? prefix : prefix + ":*");
+        List<T> dataList = new ArrayList<>();
+        for (String key: keys) {
+            Object obj = newRedisTemplate.opsForValue().get(key);
+            T data = mapper.convertValue(obj,clazz);
+            dataList.add(data);
+        }
+        return dataList;
+    }
+
     public <T extends AbstractDTO<ID>,ID extends DomainObjectId> void deleteAllData(Class<T> clazz){
         deleteAllData(clazz,"");
     }
