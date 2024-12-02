@@ -44,7 +44,7 @@
         </dependency>
         <dependency>
             <groupId>org.ddd.fundamental</groupId>
-            <artifactId>ddd-redis-starter</artifactId>
+            <artifactId>ddd-redis-manager</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>

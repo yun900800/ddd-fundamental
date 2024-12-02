@@ -3,6 +3,8 @@ package org.ddd.fundamental.core.repository;
 import java.util.List;
 
 public interface BaseHibernateRepository<T> {
+
+    String transactionId();
     @Deprecated
     List<T> findAll();
 

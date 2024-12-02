@@ -26,6 +26,18 @@ public class BaseHibernateRepositoryImpl<T> implements BaseHibernateRepository<T
     }
 
     @Override
+    public String transactionId() {
+        log.info("entityManager is {}",entityManager);
+        return String.valueOf(
+                entityManager.createNativeQuery(
+                                MySQLQueries.INSTANCE
+                                        .transactionId()
+                        )
+                        .getSingleResult()
+        );
+    }
+
+    @Override
     public List<T> findAll() {
         return null;
     }

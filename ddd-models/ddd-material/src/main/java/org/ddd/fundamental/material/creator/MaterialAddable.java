@@ -1,38 +1,47 @@
-package org.ddd.fundamental.material.application;
+package org.ddd.fundamental.material.creator;
 
 import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.changeable.ChangeableInfo;
+import org.ddd.fundamental.creator.DataAddable;
 import org.ddd.fundamental.material.MaterialMaster;
-import org.ddd.fundamental.material.domain.enums.BatchClassifyType;
 import org.ddd.fundamental.material.domain.model.Material;
-import org.ddd.fundamental.material.domain.model.MaterialBatch;
-import org.ddd.fundamental.material.domain.repository.MaterialBatchRepository;
 import org.ddd.fundamental.material.domain.repository.MaterialRepository;
 import org.ddd.fundamental.material.domain.value.ControlProps;
-import org.ddd.fundamental.material.domain.value.MaterialBatchValue;
-import org.ddd.fundamental.material.value.MaterialId;
-import org.ddd.fundamental.material.value.PropsContainer;
 import org.ddd.fundamental.material.value.MaterialType;
+import org.ddd.fundamental.material.value.PropsContainer;
+import org.ddd.fundamental.redis.config.RedisStoreManager;
+import org.ddd.fundamental.shared.api.material.MaterialDTO;
 import org.ddd.fundamental.utils.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 @Slf4j
-public class MaterialCreator {
+@Order(1)
+public class MaterialAddable implements DataAddable {
 
-    @Autowired
-    private MaterialRepository materialRepository;
+    private final MaterialRepository repository;
 
-    @Autowired
-    private MaterialBatchRepository batchRepository;
+    private final RedisStoreManager manager;
 
     private List<Material> materialList;
 
-    private List<MaterialBatch> materialBatches;
+    @Autowired
+    public MaterialAddable(MaterialRepository repository,
+                             RedisStoreManager manager
+    ){
+        this.repository = repository;
+        this.manager = manager;
+    }
+
+    public List<Material> getMaterialList() {
+        return new ArrayList<>(materialList);
+    }
 
     private static List<String> materialTypes(){
         return Arrays.asList("rawMaterial","workInProgress","production");
@@ -42,13 +51,13 @@ public class MaterialCreator {
         return Arrays.asList("个","瓶","箱","颗","台","桶");
     }
 
-    private static List<Integer> numbers(){
+    public static List<Integer> numbers(){
         return Arrays.asList(1,2,3,4,5,6,7,8,9,10,12,15,18,30);
     }
 
     private static Map<MaterialType, List<String>> createMaterial(){
         Map<MaterialType,List<String>> map = new HashMap<>();
-        map.put(MaterialType.RAW_MATERIAL,Arrays.asList(
+        map.put(MaterialType.RAW_MATERIAL, Arrays.asList(
                 "螺纹钢","锡膏","测试仪器","螺钉","纸张"
         ));
         map.put(MaterialType.WORKING_IN_PROGRESS,Arrays.asList(
@@ -91,7 +100,7 @@ public class MaterialCreator {
         return material;
     }
 
-    private static List<Material> createMaterials(){
+    public static List<Material> createMaterials(){
         List<Material> materials = new ArrayList<>();
         for (int i = 0 ; i< 50;i++) {
             MaterialType type = CollectionUtils.random(Arrays.asList(MaterialType.values()));
@@ -102,59 +111,21 @@ public class MaterialCreator {
         return materials;
     }
 
-    public static List<String> workProcessNames(){
-        return Arrays.asList("工序1","工序2","工序3","工序4","工序5");
-
-    }
-
-    public static List<MaterialBatch> createMaterialBatch(){
-        List<MaterialBatch> materialBatches1 = new ArrayList<>();
-        for (int i = 0 ; i < 200; i++) {
-            materialBatches1.add(
-                    createMaterialBatch(CollectionUtils.random(workProcessNames()),
-                            i+1)
-            );
+    private static List<MaterialDTO> entityToDTO(List<Material> materials) {
+        if (org.springframework.util.CollectionUtils.isEmpty(materials)) {
+            return new ArrayList<>();
         }
-        return materialBatches1;
+        return materials.stream().map(v->
+                MaterialDTO.create(v.getMaterialMaster(),v.id()))
+                .collect(Collectors.toList());
     }
-
-    private static MaterialBatch createMaterialBatch(String workProcessName,int index) {
-        Material material = CollectionUtils.random(createMaterials());
-        MaterialId  materialId = material.id();
-        int batchNumber = CollectionUtils.random(numbers());
-        BatchClassifyType batchClassifyType = CollectionUtils.random(Arrays.asList(
-                BatchClassifyType.PRODUCT_BATCH,
-                BatchClassifyType.ERP_BATCH
-        ));
-        MaterialBatch batch = MaterialBatch.create(new MaterialBatchValue(
-                materialId,
-                batchNumber, batchClassifyType
-        ), ChangeableInfo.create(workProcessName+ index + material.name() + index +
-                "批次", "这是在"+ workProcessName+ index+ "为"+ material.name() + index +"产生的批次"));
-        return batch;
-    }
-
-    //@PostConstruct
-    public void init(){
-        materialRepository.deleteAll();
-        log.info("删除基础物料成功");
+    @Override
+    @Transactional
+    public void execute() {
+        log.info("MaterialAddable execute create all materials start");
         materialList = createMaterials();
-        materialRepository.saveAll(materialList);
-        log.info("创建基础物料成功");
-
-        batchRepository.deleteAll();
-        log.info("删除基础物料批次成功");
-        materialBatches = createMaterialBatch();
-        batchRepository.saveAll(materialBatches);
-        log.info("创建基础物料批次成功");
-
-    }
-
-    public List<Material> getMaterialList() {
-        return new ArrayList<>(materialList);
-    }
-
-    public List<MaterialBatch> getMaterialBatches() {
-        return new ArrayList<>(materialBatches);
+        repository.persistAll(materialList);
+        log.info("MaterialAddable execute create all materials finished");
+        manager.storeDataListToCache(entityToDTO(materialList));
     }
 }

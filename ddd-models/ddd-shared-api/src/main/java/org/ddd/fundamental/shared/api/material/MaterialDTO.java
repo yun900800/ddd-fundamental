@@ -22,6 +22,10 @@ public class MaterialDTO extends AbstractDTO<MaterialId> {
         this.materialMaster = materialMaster;
     }
 
+    public static MaterialDTO create(MaterialMaster materialMaster, MaterialId id){
+        return new MaterialDTO(materialMaster,id);
+    }
+
     public MaterialMaster getMaterialMaster() {
         return materialMaster.clone();
     }

@@ -23,7 +23,6 @@ public class EquipmentResource extends AbstractEntity<EquipmentId> {
     private EquipmentResourceValue equipmentResourceValue;
 
     @OneToOne(fetch = FetchType.LAZY)
-    //@JoinColumn(name = "equipment_id")
     @MapsId
     @JoinColumn(name = "id")
     private Equipment equipment;
