@@ -3,8 +3,10 @@ package org.ddd.fundamental.workprocess.domain.model;
 import org.ddd.fundamental.changeable.ChangeableInfo;
 import org.ddd.fundamental.core.AbstractAggregateRoot;
 import org.ddd.fundamental.workprocess.value.WorkProcessValue;
+import org.ddd.fundamental.workprocess.value.time.WorkProcessKeyTime;
 
 import javax.persistence.*;
+import java.time.Instant;
 
 @Entity
 @Table(name = "work_process_record")
@@ -63,6 +65,47 @@ public class WorkProcessRecord extends AbstractAggregateRoot<WorkProcessId> {
 
     public WorkProcessValue getWorkProcessValue() {
         return workProcessValue.clone();
+    }
+
+    public WorkProcessRecord start() {
+        this.workProcessValue = this.workProcessValue.start();
+        return this;
+    }
+
+    public WorkProcessRecord start(Instant startTime) {
+        this.workProcessValue = this.workProcessValue.start(startTime);
+        return this;
+    }
+
+
+    public WorkProcessRecord finish() {
+        this.workProcessValue = this.workProcessValue.finish();
+        return this;
+    }
+
+    public WorkProcessRecord finish(Instant endTime) {
+        this.workProcessValue = this.workProcessValue.finish(endTime);
+        return this;
+    }
+
+    public WorkProcessRecord interrupt(){
+        this.workProcessValue = this.workProcessValue.interrupt();
+        return this;
+    }
+
+    public WorkProcessRecord interrupt(Instant interruptTime) {
+        this.workProcessValue = this.workProcessValue.interrupt(interruptTime);
+        return this;
+    }
+
+    public WorkProcessRecord restart() {
+        this.workProcessValue = this.workProcessValue.restart();
+        return this;
+    }
+
+    public WorkProcessRecord restart(Instant restartTime) {
+        this.workProcessValue = this.workProcessValue.restart(restartTime);
+        return this;
     }
 
     @Override

@@ -8,6 +8,7 @@ import org.ddd.fundamental.workprocess.value.time.WorkProcessKeyTime;
 
 import javax.persistence.Embeddable;
 import javax.persistence.MappedSuperclass;
+import java.time.Instant;
 import java.util.Objects;
 
 @MappedSuperclass
@@ -62,8 +63,18 @@ public class WorkProcessValue implements ValueObject, Cloneable {
         return this;
     }
 
+    public WorkProcessValue start(Instant startTime) {
+        this.workProcessKeyTime = WorkProcessKeyTime.start(startTime);
+        return this;
+    }
+
     public WorkProcessValue finish() {
         this.workProcessKeyTime = this.workProcessKeyTime.finish();
+        return this;
+    }
+
+    public WorkProcessValue finish(Instant finishTime) {
+        this.workProcessKeyTime = this.workProcessKeyTime.finish(finishTime);
         return this;
     }
 
@@ -72,8 +83,18 @@ public class WorkProcessValue implements ValueObject, Cloneable {
         return this;
     }
 
+    public WorkProcessValue interrupt(Instant interruptTime) {
+        this.workProcessKeyTime = this.workProcessKeyTime.interrupt(interruptTime);
+        return this;
+    }
+
     public WorkProcessValue restart() {
         this.workProcessKeyTime = this.workProcessKeyTime.restart();
+        return this;
+    }
+
+    public WorkProcessValue restart(Instant restartTime) {
+        this.workProcessKeyTime = this.workProcessKeyTime.restart(restartTime);
         return this;
     }
 

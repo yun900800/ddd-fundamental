@@ -9,10 +9,17 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
-        format_sql: true
+        format_sql: false
         enable_lazy_load_no_trans: true
     database-platform: org.hibernate.dialect.MySQLDialect
+
+logging:
+  level:
+    net:
+      ttddyy:
+        dsproxy:
+          listener: debug
 

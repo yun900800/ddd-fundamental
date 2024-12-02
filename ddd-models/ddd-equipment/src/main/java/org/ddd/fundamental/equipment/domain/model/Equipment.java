@@ -36,7 +36,6 @@ public class Equipment extends AbstractAggregateRoot<EquipmentId> {
     @OneToOne(mappedBy = "equipment", cascade = CascadeType.ALL,
             optional = false,
             fetch = FetchType.LAZY, orphanRemoval = true)
-    //@NotFound(action = NotFoundAction.IGNORE)
     private EquipmentResource equipmentResource;
 
     @Type(type = "json")

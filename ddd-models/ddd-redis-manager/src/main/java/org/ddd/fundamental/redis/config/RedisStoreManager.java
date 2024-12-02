@@ -13,7 +13,9 @@ import org.springframework.util.StringUtils;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Component
@@ -26,6 +28,30 @@ public class RedisStoreManager {
 
     @Autowired
     private ObjectMapper mapper;
+
+    public <T extends AbstractDTO<ID>,ID extends DomainObjectId> void deleteData(String prefix,ID id, Class<T> clazz) {
+        String key  = generateFetchKey(prefix, clazz,id);
+        newRedisTemplate.delete(key);
+    }
+
+    public <T extends AbstractDTO<ID>,ID extends DomainObjectId> void deleteData(ID id, Class<T> clazz) {
+        String key  = generateFetchKey("", clazz,id);
+        newRedisTemplate.delete(key);
+    }
+
+    public <T extends AbstractDTO<ID>,ID extends DomainObjectId> void deleteAllData(Class<T> clazz,String prefix){
+        if (!StringUtils.hasLength(prefix)) {
+            prefix = clazz.getSimpleName();
+        }
+        Set<String> keys = newRedisTemplate.keys(Pattern.matches("\\*$", prefix) ? prefix : prefix + ":*");
+        for (String key: keys) {
+            boolean result = newRedisTemplate.delete(key);
+        }
+    }
+
+    public <T extends AbstractDTO<ID>,ID extends DomainObjectId> void deleteAllData(Class<T> clazz){
+        deleteAllData(clazz,"");
+    }
 
     /**
      * 存储批量数据到缓存中
@@ -48,14 +74,14 @@ public class RedisStoreManager {
         if (!StringUtils.hasLength(prefix)) {
             prefix = data.getClass().getSimpleName();
         }
-        return prefix + "_" + data.id().toUUID();
+        return prefix + ":" + data.id().toUUID();
     }
 
     private <T extends AbstractDTO<ID>, ID extends DomainObjectId> String generateFetchKey(String prefix,Class<T> clazz,ID id){
         if (!StringUtils.hasLength(prefix)) {
             prefix = clazz.getSimpleName();
         }
-        return prefix + "_" + id.toUUID();
+        return prefix + ":" + id.toUUID();
     }
 
 

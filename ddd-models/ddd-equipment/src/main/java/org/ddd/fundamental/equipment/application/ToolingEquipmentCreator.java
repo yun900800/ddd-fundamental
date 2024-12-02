@@ -31,9 +31,6 @@ public class ToolingEquipmentCreator {
     @Autowired
     private EquipmentRepository equipmentRepository;
 
-    @Autowired
-    private RPAccountRepository accountRepository;
-
     private List<ToolingEquipment> toolingEquipments = new ArrayList<>();
 
 
@@ -42,49 +39,6 @@ public class ToolingEquipmentCreator {
 
     private List<DateRange> dateRanges = new ArrayList<>();
 
-    private List<RPAccount> rpAccounts = new ArrayList<>();
-
-    public static List<RPAccount> createRpaAccount(){
-        RPAccount account1 = new RPAccount(
-                RPAccountValue.create(1,"SUT","二级使用时间")
-        );
-        RPAccount account2 = new RPAccount(
-                RPAccountValue.create(2,"DCI","干扰性中断,也叫作技术性停机")
-        );
-        RPAccount account3 = new RPAccount(
-                RPAccountValue.create(3,"LCI","物流性中断,也叫作组织性停机")
-        );
-        RPAccount account4 = new RPAccount(
-                RPAccountValue.create(4,"SCI","人员性中断")
-        );
-        RPAccount account5 = new RPAccount(
-                RPAccountValue.create(5,"IMN","非计划设备闲置")
-        );
-        RPAccount account6 = new RPAccount(
-                RPAccountValue.create(6,"IMS","计划的设备闲置")
-        );
-        RPAccount account7 = new RPAccount(
-                RPAccountValue.create(7,"SET","调试")
-        );
-        RPAccount account8 = new RPAccount(
-                RPAccountValue.create(8,"STA","启动")
-        );
-        RPAccount account9 = new RPAccount(
-                RPAccountValue.create(9,"U8","可自定义(如试制生产或类似的时间)")
-        );
-        RPAccount account10 = new RPAccount(
-                RPAccountValue.create(10,"U9","可自定义")
-        );
-        RPAccount account11 = new RPAccount(
-                RPAccountValue.create(11,"MUT","主要利用时间,即生产时间")
-        );
-        RPAccount account12 = new RPAccount(
-                RPAccountValue.create(12,"BKS","休息时间,例如停工，休息，即不计入生产开工的其他时间")
-        );
-        return Arrays.asList(account1,account2,account3,account4
-            ,account5,account6,account7,account8,
-                account9,account10,account11,account12);
-    }
 
     public static List<DateRange> createDateRanges(){
         DateRange range0 = new DateRange(
@@ -254,11 +208,5 @@ public class ToolingEquipmentCreator {
         log.info("创建主设备成功");
 
         this.dateRanges = createDateRanges();
-
-        accountRepository.deleteAll();
-        log.info("删除RPA账号成功");
-        rpAccounts = createRpaAccount();
-        accountRepository.saveAll(rpAccounts);
-        log.info("创建RPA账号成功");
     }
 }
