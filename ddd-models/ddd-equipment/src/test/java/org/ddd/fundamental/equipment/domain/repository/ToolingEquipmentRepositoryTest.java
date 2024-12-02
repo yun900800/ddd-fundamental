@@ -2,7 +2,6 @@ package org.ddd.fundamental.equipment.domain.repository;
 
 import org.ddd.fundamental.changeable.ChangeableInfo;
 import org.ddd.fundamental.equipment.EquipmentAppTest;
-import org.ddd.fundamental.equipment.application.ToolingEquipmentCreator;
 import org.ddd.fundamental.equipment.creator.ToolingEquipmentAddable;
 import org.ddd.fundamental.equipment.domain.model.ToolingEquipment;
 import org.ddd.fundamental.equipment.enums.ToolingType;

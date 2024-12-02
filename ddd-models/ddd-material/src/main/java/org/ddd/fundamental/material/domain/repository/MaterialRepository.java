@@ -28,4 +28,7 @@ public interface MaterialRepository extends BaseHibernateRepository<Material>,Ba
     @Query("delete from Material")
     void deleteAllMaterials();
 
+    @Query("from Material")
+    List<Material> findAll();
+
 }
