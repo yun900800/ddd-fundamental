@@ -50,24 +50,10 @@ public class WorkProcessCreator implements SmartInitializingSingleton {
     @Autowired
     private MaterialClient client;
 
-    @Autowired
-    private EquipmentClient equipmentClient;
-
-    private List<EquipmentId> equipmentIds;
-
-    private List<MaterialId> workInProgressIds;
-
-    private List<MaterialId> rawMaterialIds;
-
-    private List<EquipmentId> toolingEquipmentIds;
 
     private List<CraftsmanShipTemplate> craftsmanShipTemplates;
 
-    public List<WorkProcessTemplate> createWorkProcessList() {
-        List<WorkProcessTemplate> workProcessNews = new ArrayList<>();
-        Generators.fill(workProcessNews,()->createWorkProcessNew(),20);
-        return workProcessNews;
-    }
+
 
     private static List<Boolean> trueOrFalse(){
         return Arrays.asList(true,false);
@@ -97,104 +83,12 @@ public class WorkProcessCreator implements SmartInitializingSingleton {
                 .build();
     }
 
-    public ProductResources createProductResources() {
-        return new ProductResources(new HashSet<>(createProductResource()));
-    }
-
-    private List<EquipmentId> createEquipmentIds() {
-        log.info("开始查询设备id");
-        List<EquipmentDTO> equipmentDTOS = equipmentClient.equipments();
-        log.info("结束查询设备id");
-        equipmentIds =  equipmentDTOS.stream().map(v->v.id()).collect(Collectors.toList());
-        return equipmentIds;
-    }
-
-    private List<MaterialId> createWorkInProgressIds(){
-        log.info("开始查询在制品id");
-        List<MaterialDTO> materialDTOS = client.materialsByMaterialType(MaterialType.WORKING_IN_PROGRESS);
-        log.info("结束查询在制品id");
-        workInProgressIds = materialDTOS.stream().map(v->v.id()).collect(Collectors.toList());
-        return workInProgressIds;
-    }
-
-    private List<MaterialId> createRawMaterialIds(){
-        log.info("开始查询在制品id");
-        List<MaterialDTO> materialDTOS = client.materialsByMaterialType(MaterialType.RAW_MATERIAL);
-        log.info("结束查询在制品id");
-        rawMaterialIds = materialDTOS.stream().map(v->v.id()).collect(Collectors.toList());
-        return rawMaterialIds;
-    }
-
-    private List<EquipmentId> createToolingIds(){
-        log.info("开始查询工装id");
-        List<ToolingDTO> equipmentDTOS = equipmentClient.toolingList();
-        log.info("结束查询工装id");
-        this.toolingEquipmentIds =  equipmentDTOS.stream().map(v->v.id()).collect(Collectors.toList());
-        return toolingEquipmentIds;
-    }
 
 
-    public List<ProductResource> createProductResource(){
-        if (org.springframework.util.CollectionUtils.isEmpty(equipmentIds)) {
-            createEquipmentIds();
-        }
-        EquipmentId equipmentId = CollectionUtils.random(equipmentIds);
-        if (org.springframework.util.CollectionUtils.isEmpty(toolingEquipmentIds)) {
-            createToolingIds();
-        }
-        EquipmentId toolingId = CollectionUtils.random(toolingEquipmentIds);
-        if (org.springframework.util.CollectionUtils.isEmpty(workInProgressIds)) {
-            createWorkInProgressIds();
-        }
-        MaterialId workInProgressId = CollectionUtils.random(workInProgressIds);
-        if (org.springframework.util.CollectionUtils.isEmpty(rawMaterialIds)) {
-            createRawMaterialIds();
-        }
-        MaterialId rawMaterialId = CollectionUtils.random(rawMaterialIds);
-        List<ProductResource> resources = new ArrayList<>();
-        if (null != equipmentId) {
-            ProductResource equipment = ProductResource.create(equipmentId, ProductResourceType.EQUIPMENT,ChangeableInfo.create(
-                    "设备生产资源","这是一个设备生产资源"
-            ));
-            resources.add(equipment);
-        }
 
-        if (null != toolingId) {
-            ProductResource tooling = ProductResource.create(toolingId, ProductResourceType.TOOLING,ChangeableInfo.create(
-                    "工装生产资源","这是一个工装生产资源"
-            ));
-            resources.add(tooling);
-        }
-        if (workInProgressId !=null) {
-            ProductResource workInProgress = ProductResource.create(workInProgressId, ProductResourceType.MATERIAL,ChangeableInfo.create(
-                    "在制品生产资源","这是一个在制品生产资源"
-            ));
-            resources.add(workInProgress);
-        }
 
-        if (rawMaterialId != null) {
-            ProductResource rawMaterial = ProductResource.create(rawMaterialId, ProductResourceType.MATERIAL,ChangeableInfo.create(
-                    "原材料生产资源","这是一个原材料生产资源"
-            ));
-            resources.add(rawMaterial);
-        }
 
-        return resources;
-    }
 
-    public WorkProcessTemplate createWorkProcessNew(){
-        WorkProcessTemplate workProcessTemplate = new WorkProcessTemplate(
-                CollectionUtils.random(createWorkProcessInfo()),
-//                CollectionUtils.random(createAuxiliaryWorkTimes()),
-                WorkProcessBeat.create(1000,15),
-                createWorkProcessTemplateControl(),
-                createWorkProcessTemplateQuantity()
-        );
-        for (ProductResource resource: createProductResource()) {
-            workProcessTemplate.addResource(resource);
-        }
-        return workProcessTemplate;
-    }
 
     public static List<AuxiliaryWorkTime> createAuxiliaryWorkTimes(){
         String[] dates = {
@@ -280,11 +174,11 @@ public class WorkProcessCreator implements SmartInitializingSingleton {
     //注意@PostConstruct注解的方法中调用feign接口或者调用hystrix断路器会出现重试的错误
     //@PostConstruct
     public void init(){
-        templateRepository.deleteAll();
-        log.info("删除所有工序成功");
-        workProcessList = createWorkProcessList();
-        templateRepository.saveAll(workProcessList);
-        log.info("创建{}个工序成功",workProcessList.size());
+//        templateRepository.deleteAll();
+//        log.info("删除所有工序成功");
+//        workProcessList = createWorkProcessList();
+//        templateRepository.saveAll(workProcessList);
+//        log.info("创建{}个工序成功",workProcessList.size());
 
         log.info("删除所有工艺成功");
         craftsmanShipRepository.deleteAll();
@@ -303,6 +197,6 @@ public class WorkProcessCreator implements SmartInitializingSingleton {
 
     @Override
     public void afterSingletonsInstantiated() {
-        init();
+        //init();
     }
 }

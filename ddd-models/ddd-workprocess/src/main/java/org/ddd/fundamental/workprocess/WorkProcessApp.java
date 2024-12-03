@@ -1,6 +1,7 @@
 package org.ddd.fundamental.workprocess;
 
 import lombok.extern.slf4j.Slf4j;
+import org.ddd.fundamental.creator.CreatorDataManager;
 import org.ddd.fundamental.shared.api.equipment.EquipmentDTO;
 import org.ddd.fundamental.shared.api.material.MaterialDTO;
 import org.ddd.fundamental.material.value.MaterialType;
@@ -44,13 +45,11 @@ public class WorkProcessApp implements CommandLineRunner {
     }
 
     @Autowired
-    private MaterialClient client;
-
-    @Autowired
-    private EquipmentClient equipmentClient;
+    private CreatorDataManager manager;
 
     @Override
     public void run(String... args) throws Exception {
+        manager.execute();
 //        StopWatch stopWatch = new StopWatch();
 //        stopWatch.start();
 //        List<MaterialDTO> materialDTOList = client.materialsByMaterialType(MaterialType.PRODUCTION);

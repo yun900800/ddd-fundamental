@@ -3,6 +3,8 @@ package org.ddd.fundamental.workprocess.application;
 import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.shared.api.optemplate.CraftsmanShipTemplateDTO;
 import org.ddd.fundamental.shared.api.optemplate.WorkProcessTemplateDTO;
+import org.ddd.fundamental.workprocess.creator.CraftsmanShipAddable;
+import org.ddd.fundamental.workprocess.creator.WorkProcessTemplateAddable;
 import org.ddd.fundamental.workprocess.domain.model.CraftsmanShipTemplate;
 import org.ddd.fundamental.workprocess.domain.model.WorkProcessTemplate;
 import org.ddd.fundamental.workprocess.domain.repository.CraftsmanShipRepository;
@@ -29,11 +31,14 @@ public class WorkProcessTemplateApplication {
     private CraftsmanShipRepository craftsmanShipRepository;
 
     @Autowired
-    private WorkProcessCreator creator;
+    private WorkProcessTemplateAddable creator;
+
+    @Autowired
+    private CraftsmanShipAddable craftsmanShipAddable;
 
 
     public List<CraftsmanShipTemplateDTO> craftsmanShipTemplates(){
-        List<CraftsmanShipTemplate> craftsmanShipTemplates = creator.getCraftsmanShipTemplates();
+        List<CraftsmanShipTemplate> craftsmanShipTemplates = craftsmanShipAddable.getCraftsmanShipTemplates();
         if (CollectionUtils.isEmpty(craftsmanShipTemplates)) {
             craftsmanShipTemplates =
                     craftsmanShipRepository.findAll();

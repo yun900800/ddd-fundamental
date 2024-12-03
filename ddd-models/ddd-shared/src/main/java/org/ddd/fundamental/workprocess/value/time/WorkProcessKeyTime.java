@@ -10,18 +10,51 @@ import java.util.Objects;
 
 /**
  * 工序关键时间(跟工序数据有关而跟工序模板无关)
+ * 这部分与工序时间相关的操作可以抽象成一个状态机
  */
 @MappedSuperclass
 @Embeddable
 public class WorkProcessKeyTime implements ValueObject, Cloneable {
 
+    /**
+     * 工序开始执行时间
+     */
     private Instant startTime;
 
+    /**
+     * 工序结束执行时间
+     */
     private Instant endTime;
 
+    /**
+     * 工序中断执行时间
+     */
     private Instant interruptTime;
 
+    /**
+     * 工序重启时间
+     */
     private Instant restartTime;
+
+    /**
+     * 换线是否的设置时间
+     */
+    private Instant changeLineSetTime;
+
+    /**
+     * 下线时间
+     */
+    private Instant offlineTime;
+
+    /**
+     * 下线后设备运输时间
+     */
+    private Instant transferTime;
+
+    /**
+     * 检查开始时间
+     */
+    private Instant startCheckTime;
 
     private String reason;
 
@@ -40,19 +73,139 @@ public class WorkProcessKeyTime implements ValueObject, Cloneable {
         this.reason = reason;
     }
 
-    private WorkProcessKeyTime(Instant startTime){
+    private WorkProcessKeyTime(Instant startTime, Instant changeLineSetTime){
+        this.changeLineSetTime = changeLineSetTime;
         this.startTime = startTime;
         this.endTime = null;
         this.interruptTime = null;
         this.reason = "";
+        this.offlineTime = null;
+        this.transferTime = null;
     }
 
+
+
     public static WorkProcessKeyTime start(){
-        return new WorkProcessKeyTime(Instant.now());
+        return new WorkProcessKeyTime(Instant.now(),null);
     }
 
     public static WorkProcessKeyTime start(Instant startTime){
-        return new WorkProcessKeyTime(startTime);
+        return new WorkProcessKeyTime(startTime,null);
+    }
+
+    public static WorkProcessKeyTime changeLineStart(Instant startTime) {
+        return new WorkProcessKeyTime(null,startTime);
+    }
+    public static WorkProcessKeyTime changeLineStart() {
+        return new WorkProcessKeyTime(null,Instant.now());
+    }
+
+    /**
+     * 开始检查工序
+     * @param startCheckTime
+     * @return
+     */
+    public WorkProcessKeyTime startCheck(Instant startCheckTime){
+        if (this.endTime == null){
+            throw new RuntimeException("工序还没有结束,不能检查");
+        }
+        this.startCheckTime = startCheckTime;
+        return this;
+    }
+
+    public WorkProcessKeyTime startCheck(){
+        startCheck(Instant.now());
+        return this;
+    }
+
+    /**
+     * 工序启动
+     * @param startTime
+     * @return
+     */
+    public WorkProcessKeyTime startProcess(Instant startTime){
+        if (this.changeLineSetTime == null) {
+            throw new RuntimeException("启动工序的时候先要设置换线时间");
+        }
+        this.startTime = startTime;
+        return this;
+    }
+
+    /**
+     * 工序启动
+     * @param
+     * @return
+     */
+    public WorkProcessKeyTime startProcess(){
+        startProcess(Instant.now());
+        return this;
+    }
+
+    /**
+     * 换线开始设置时间
+     * @param setTime
+     * @return
+     */
+    public WorkProcessKeyTime startSetTime(Instant setTime){
+        if (null != this.startTime){
+            throw new RuntimeException("工序已经开始启动啦,不能再设置换线时间");
+        }
+        this.changeLineSetTime = setTime;
+        return this;
+    }
+
+    /**
+     * 换线开始设置时间
+     * @return
+     */
+    public WorkProcessKeyTime startSetTime(){
+        this.startSetTime(Instant.now());
+        return this;
+    }
+
+    /**
+     * 开始下线
+     * @param offlineTime
+     * @return
+     */
+    public WorkProcessKeyTime startOffline(Instant offlineTime) {
+        if (this.endTime == null) {
+            throw new RuntimeException("工序没有结束的时候不能下线");
+        }
+        this.offlineTime = offlineTime;
+        return this;
+    }
+
+    /**
+     * 开始下线
+     * @param
+     * @return
+     */
+    public WorkProcessKeyTime startOffline() {
+        this.startOffline(Instant.now());
+        return this;
+    }
+
+    /**
+     * 开始运输
+     * @param transferTime
+     * @return
+     */
+    public WorkProcessKeyTime startTransfer(Instant transferTime){
+        if (this.offlineTime == null) {
+            throw new RuntimeException("工序没有下线的时候不能运输设备或者生成运输工单");
+        }
+        this.transferTime = transferTime;
+        return this;
+    }
+
+    /**
+     * 开始运输
+     * @return
+     */
+    public WorkProcessKeyTime startTransfer(){
+        this.startTransfer(Instant.now());
+        return this;
     }
 
     public WorkProcessKeyTime finish(Instant endTime){
@@ -131,19 +284,33 @@ public class WorkProcessKeyTime implements ValueObject, Cloneable {
         return reason;
     }
 
+    public Instant getRestartTime() {
+        return restartTime;
+    }
+
+    public Instant getChangeLineSetTime() {
+        return changeLineSetTime;
+    }
+
+    public Instant getOfflineTime() {
+        return offlineTime;
+    }
+
+    public Instant getTransferTime() {
+        return transferTime;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof WorkProcessKeyTime)) return false;
         WorkProcessKeyTime that = (WorkProcessKeyTime) o;
-        return Objects.equals(startTime, that.startTime) && Objects.equals(endTime, that.endTime)
-                && Objects.equals(interruptTime, that.interruptTime) && Objects.equals(reason, that.reason)
-                && Objects.equals(restartTime, that.restartTime);
+        return Objects.equals(startTime, that.startTime) && Objects.equals(endTime, that.endTime) && Objects.equals(interruptTime, that.interruptTime) && Objects.equals(restartTime, that.restartTime) && Objects.equals(changeLineSetTime, that.changeLineSetTime) && Objects.equals(offlineTime, that.offlineTime) && Objects.equals(transferTime, that.transferTime) && Objects.equals(reason, that.reason);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(startTime, endTime, interruptTime, reason,restartTime);
+        return Objects.hash(startTime, endTime, interruptTime, restartTime, changeLineSetTime, offlineTime, transferTime, reason);
     }
 
     @Override
@@ -153,6 +320,9 @@ public class WorkProcessKeyTime implements ValueObject, Cloneable {
                 ", endTime=" + endTime +
                 ", interruptTime=" + interruptTime +
                 ", restartTime=" + restartTime +
+                ", changeLineSetTime=" + changeLineSetTime +
+                ", offlineTime=" + offlineTime +
+                ", transferTime=" + transferTime +
                 ", reason='" + reason + '\'' +
                 '}';
     }
