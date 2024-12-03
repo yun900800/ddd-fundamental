@@ -113,6 +113,10 @@ public class CraftsmanShipTemplate extends AbstractAggregateRoot<CraftsmanShipId
         return productId;
     }
 
+    public Map<WorkProcessTemplateId, WorkProcessTemplate> getWorkProcessMap() {
+        return workProcessMap;
+    }
+
     @Override
     public long created() {
         return 0;

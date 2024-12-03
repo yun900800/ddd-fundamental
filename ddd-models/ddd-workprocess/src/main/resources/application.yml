@@ -9,10 +9,10 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
-        format_sql: true
+        format_sql: false
     database-platform: org.hibernate.dialect.MySQLDialect
   kafka:
     bootstrap-servers: localhost:29092
@@ -27,4 +27,12 @@ hystrix:
       execution:
         timeout:
           enabled: false
+
+
+logging:
+  level:
+    net:
+      ttddyy:
+        dsproxy:
+          listener: debug
 

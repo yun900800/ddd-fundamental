@@ -13,7 +13,9 @@ import org.ddd.fundamental.equipment.value.*;
 import org.ddd.fundamental.factory.EquipmentId;
 import org.ddd.fundamental.utils.CollectionUtils;
 import org.ddd.fundamental.utils.DateUtils;
+import org.ddd.fundamental.workorder.value.WorkOrderId;
 import org.ddd.fundamental.workprocess.enums.ProductResourceType;
+import org.ddd.fundamental.workprocess.value.WorkProcessId;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -118,7 +120,10 @@ public class EquipmentRepositoryTest extends EquipmentAppTest {
         List<Equipment> equipments = equipmentRepository.findAll();
         Equipment equipment = CollectionUtils.random(equipments);
         EquipmentResource resource = equipment.getEquipmentResource();
-        resource.getEquipmentResourceValue().addRange(DateRangeValue.create(Instant.now(),Instant.now(),""));
+        resource.getEquipmentResourceValue().addRange(
+                EquipmentPlanRange.create(DateRangeValue.create(Instant.now(),Instant.now(),""),
+                        WorkOrderId.randomId(WorkOrderId.class), WorkProcessId.randomId(WorkProcessId.class))
+                );
         equipmentRepository.save(equipment);
         //resourceRepository.deleteById(id);
 
@@ -144,7 +149,11 @@ public class EquipmentRepositoryTest extends EquipmentAppTest {
     public void testSetCurrentUseDateRange(){
         List<Equipment> equipments = equipmentRepository.findAll();
         Equipment equipment = CollectionUtils.random(equipments);
-        equipment.getEquipmentResource().setCurrentUseDateRange(DateRangeValue.createByDuration(Instant.now(),3600*4));
+        equipment.getEquipmentResource().setCurrentUseDateRange(
+                EquipmentPlanRange.create(DateRangeValue.createByDuration(Instant.now(),3600*4),
+                        WorkOrderId.randomId(WorkOrderId.class), WorkProcessId.randomId(WorkProcessId.class))
+
+        );
         equipmentRepository.save(equipment);
     }
 
@@ -154,7 +163,11 @@ public class EquipmentRepositoryTest extends EquipmentAppTest {
         Equipment equipment = CollectionUtils.random(equipments);
         EquipmentId id = equipment.id();
         Instant start = Instant.now().minusSeconds(3600 * 4);
-        equipment.getEquipmentResource().setCurrentUseDateRange(DateRangeValue.createByDuration(start, 3600 * 2));
+        equipment.getEquipmentResource().setCurrentUseDateRange(
+                EquipmentPlanRange.create(DateRangeValue.createByDuration(start, 3600 * 2),
+                        WorkOrderId.randomId(WorkOrderId.class), WorkProcessId.randomId(WorkProcessId.class))
+
+        );
         equipmentRepository.save(equipment);
         TimeUnit.SECONDS.sleep(1);
         equipment = equipmentRepository.findById(id).get();
@@ -171,9 +184,12 @@ public class EquipmentRepositoryTest extends EquipmentAppTest {
         Instant t1 = t0.plusSeconds(3600*2);
         Instant t2 = t1.plusSeconds(3600*3);
         Instant t3 = t2.plusSeconds(3600*4);
-        equipment.getEquipmentResource().addPlanDateRange(DateRangeValue.create(t0,t1,"这是为工单1准备的"));
-        equipment.getEquipmentResource().addPlanDateRange(DateRangeValue.create(t1.plusSeconds(1),t2,"这是为工单2准备的"));
-        equipment.getEquipmentResource().addPlanDateRange(DateRangeValue.create(t2.plusSeconds(1),t3,"这是为工单3准备的"));
+        equipment.getEquipmentResource().addPlanDateRange(EquipmentPlanRange.create(DateRangeValue.create(t0,t1,"这是为工单1准备的"),
+                WorkOrderId.randomId(WorkOrderId.class), WorkProcessId.randomId(WorkProcessId.class)));
+        equipment.getEquipmentResource().addPlanDateRange(EquipmentPlanRange.create(DateRangeValue.create(t1.plusSeconds(1),t2,"这是为工单2准备的"),
+                WorkOrderId.randomId(WorkOrderId.class), WorkProcessId.randomId(WorkProcessId.class)));
+        equipment.getEquipmentResource().addPlanDateRange(EquipmentPlanRange.create(DateRangeValue.create(t2.plusSeconds(1),t3,"这是为工单3准备的"),
+                WorkOrderId.randomId(WorkOrderId.class), WorkProcessId.randomId(WorkProcessId.class)));
         equipmentRepository.save(equipment);
         equipment = equipmentRepository.findById(id).get();
         Assert.assertEquals(equipment.getEquipmentResource().getEquipmentResourceValue().getPlanRanges().size(),3);
@@ -188,12 +204,24 @@ public class EquipmentRepositoryTest extends EquipmentAppTest {
         Instant t1 = t0.plusSeconds(3600*2);
         Instant t2 = t1.plusSeconds(3600*3);
         Instant t3 = t2.plusSeconds(3600*4);
-        equipment.getEquipmentResource().addPlanDateRange(DateRangeValue.create(t0,t1,"这是为工单1准备的"));
-        equipment.getEquipmentResource().addPlanDateRange(DateRangeValue.create(t1.plusSeconds(1),t2,"这是为工单2准备的"));
-        equipment.getEquipmentResource().addPlanDateRange(DateRangeValue.create(t2.plusSeconds(1),t3,"这是为工单3准备的"));
+        equipment.getEquipmentResource().addPlanDateRange(
+
+                EquipmentPlanRange.create(DateRangeValue.create(t0,t1,"这是为工单1准备的"),
+                        WorkOrderId.randomId(WorkOrderId.class), WorkProcessId.randomId(WorkProcessId.class))
+        );
+        equipment.getEquipmentResource().addPlanDateRange(
+
+                EquipmentPlanRange.create(DateRangeValue.create(t1.plusSeconds(1),t2,"这是为工单2准备的"),
+                        WorkOrderId.randomId(WorkOrderId.class), WorkProcessId.randomId(WorkProcessId.class))
+        );
+        equipment.getEquipmentResource().addPlanDateRange(
+                EquipmentPlanRange.create(DateRangeValue.create(t2.plusSeconds(1),t3,"这是为工单3准备的"),
+                        WorkOrderId.randomId(WorkOrderId.class), WorkProcessId.randomId(WorkProcessId.class))
+
+        );
         equipmentRepository.save(equipment);
         equipment = equipmentRepository.findById(id).get();
-        List<DateRangeValue> rangeValues = equipment.getEquipmentResource().getEquipmentResourceValue().getPlanRanges();
+        List<EquipmentPlanRange> rangeValues = equipment.getEquipmentResource().getEquipmentResourceValue().getPlanRanges();
         equipment.getEquipmentResource().removePlanDateRange(rangeValues.get(0));
         equipmentRepository.save(equipment);
         equipment = equipmentRepository.findById(id).get();

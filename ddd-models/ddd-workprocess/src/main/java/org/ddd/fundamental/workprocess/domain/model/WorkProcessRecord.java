@@ -2,8 +2,8 @@ package org.ddd.fundamental.workprocess.domain.model;
 
 import org.ddd.fundamental.changeable.ChangeableInfo;
 import org.ddd.fundamental.core.AbstractAggregateRoot;
+import org.ddd.fundamental.workprocess.value.WorkProcessId;
 import org.ddd.fundamental.workprocess.value.WorkProcessValue;
-import org.ddd.fundamental.workprocess.value.time.WorkProcessKeyTime;
 
 import javax.persistence.*;
 import java.time.Instant;

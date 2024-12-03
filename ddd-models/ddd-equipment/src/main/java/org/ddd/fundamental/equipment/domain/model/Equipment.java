@@ -38,6 +38,10 @@ public class Equipment extends AbstractAggregateRoot<EquipmentId> {
             fetch = FetchType.LAZY, orphanRemoval = true)
     private EquipmentResource equipmentResource;
 
+    @OneToOne(fetch = FetchType.LAZY, orphanRemoval = true,
+            cascade = CascadeType.ALL)
+    private EquipmentPlan equipmentPlan;
+
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(
             name="equipment_dates",
@@ -74,6 +78,14 @@ public class Equipment extends AbstractAggregateRoot<EquipmentId> {
         this.equipmentType = equipmentType;
         this.master = master;
         this.dateRanges = new HashSet<>();
+    }
+
+    public EquipmentPlan getEquipmentPlan() {
+        return equipmentPlan;
+    }
+
+    public void setEquipmentPlan(EquipmentPlan equipmentPlan) {
+        this.equipmentPlan = equipmentPlan;
     }
 
     public void setResource(EquipmentResource equipmentResource) {

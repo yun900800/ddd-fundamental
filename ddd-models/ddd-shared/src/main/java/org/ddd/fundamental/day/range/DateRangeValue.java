@@ -1,5 +1,6 @@
 package org.ddd.fundamental.day.range;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.Range;
 import org.ddd.fundamental.core.ValueObject;
@@ -42,9 +43,10 @@ public class DateRangeValue implements ValueObject,Cloneable, CalculateTime {
             cache = new HashMap<>();
 
     @Transient
+    @JsonIgnore
     private Range<Instant> range;
 
-    private DateRangeValue(){}
+    protected DateRangeValue(){}
 
     private DateRangeValue(Instant start, Instant end, String desc){
         this.start = start;
@@ -168,5 +170,17 @@ public class DateRangeValue implements ValueObject,Cloneable, CalculateTime {
         } catch (CloneNotSupportedException e) {
             throw new AssertionError();
         }
+    }
+
+    public void setStart(Instant start) {
+        this.start = start;
+    }
+
+    public void setEnd(Instant end) {
+        this.end = end;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 }

@@ -1,5 +1,6 @@
 package org.ddd.fundamental.workprocess.domain.model;
 
+import org.ddd.fundamental.workprocess.value.WorkProcessId;
 import org.junit.Assert;
 import org.junit.Test;
 

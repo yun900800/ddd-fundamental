@@ -2,6 +2,7 @@ package org.ddd.fundamental.equipment.domain.model;
 
 import org.ddd.fundamental.core.AbstractEntity;
 import org.ddd.fundamental.day.range.DateRangeValue;
+import org.ddd.fundamental.equipment.value.EquipmentPlanRange;
 import org.ddd.fundamental.equipment.value.EquipmentResourceValue;
 import org.ddd.fundamental.factory.EquipmentId;
 
@@ -39,7 +40,7 @@ public class EquipmentResource extends AbstractEntity<EquipmentId> {
         return new EquipmentResource(value);
     }
 
-    public EquipmentResource setCurrentUseDateRange(DateRangeValue useDateRange) {
+    public EquipmentResource setCurrentUseDateRange(EquipmentPlanRange useDateRange) {
         this.equipmentResourceValue.recordUseRange(useDateRange);
         return this;
     }
@@ -49,12 +50,12 @@ public class EquipmentResource extends AbstractEntity<EquipmentId> {
         return this;
     }
 
-    public EquipmentResource addPlanDateRange(DateRangeValue planDateRange){
+    public EquipmentResource addPlanDateRange(EquipmentPlanRange planDateRange){
         this.equipmentResourceValue.addRange(planDateRange);
         return this;
     }
 
-    public EquipmentResource removePlanDateRange(DateRangeValue planDateRange){
+    public EquipmentResource removePlanDateRange(EquipmentPlanRange planDateRange){
         this.equipmentResourceValue.removeRange(planDateRange);
         return this;
     }

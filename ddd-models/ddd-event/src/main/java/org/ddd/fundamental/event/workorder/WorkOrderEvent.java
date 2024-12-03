@@ -5,6 +5,10 @@ import org.ddd.fundamental.event.core.DomainEventType;
 import org.ddd.fundamental.workorder.value.WorkOrderValue;
 
 public class WorkOrderEvent extends BaseDomainEvent<WorkOrderValue> {
+
+    protected WorkOrderEvent(){
+        super(DomainEventType.EQUIPMENT,null);
+    }
     protected WorkOrderEvent(DomainEventType type, WorkOrderValue data) {
         super(type, data);
     }

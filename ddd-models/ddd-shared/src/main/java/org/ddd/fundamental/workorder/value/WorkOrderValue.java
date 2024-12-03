@@ -134,4 +134,8 @@ public class WorkOrderValue implements ValueObject,Cloneable {
             throw new AssertionError();
         }
     }
+
+    public CraftsmanShipId getCraftsmanShipId() {
+        return craftsmanShipId;
+    }
 }

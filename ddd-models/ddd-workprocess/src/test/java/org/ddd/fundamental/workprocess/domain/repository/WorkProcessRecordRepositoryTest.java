@@ -1,9 +1,8 @@
 package org.ddd.fundamental.workprocess.domain.repository;
 
-import com.mysql.cj.xdevapi.TableImpl;
 import org.ddd.fundamental.changeable.ChangeableInfo;
 import org.ddd.fundamental.workprocess.WorkProcessAppTest;
-import org.ddd.fundamental.workprocess.domain.model.WorkProcessId;
+import org.ddd.fundamental.workprocess.value.WorkProcessId;
 import org.ddd.fundamental.workprocess.domain.model.WorkProcessQuantityEntity;
 import org.ddd.fundamental.workprocess.domain.model.WorkProcessRecord;
 import org.ddd.fundamental.workprocess.value.WorkProcessTemplateId;

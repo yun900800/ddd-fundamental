@@ -25,14 +25,14 @@ public class EquipmentResourceValue extends ProductResource<EquipmentId> {
             name="equipment_date_range",
             joinColumns=@JoinColumn(name="resource_id")
     )
-    private List<DateRangeValue> planRanges = new ArrayList<>();
+    private List<EquipmentPlanRange> planRanges = new ArrayList<>();
 
     /**
      * 设备资源或者工装的使用时间段
      */
     @Type(type = "json")
     @Column(columnDefinition = "json", name = "equipment_use_range")
-    private DateRangeValue useRange;
+    private EquipmentPlanRange useRange;
 
     /**
      * 设备是否正在使用
@@ -44,7 +44,7 @@ public class EquipmentResourceValue extends ProductResource<EquipmentId> {
     }
 
     private EquipmentResourceValue(EquipmentId id, ProductResourceType resourceType,
-                                   ChangeableInfo info, DateRangeValue useRange){
+                                   ChangeableInfo info, EquipmentPlanRange useRange){
         super(id,resourceType,info);
         this.useRange = useRange;
         if (null == useRange){
@@ -54,7 +54,7 @@ public class EquipmentResourceValue extends ProductResource<EquipmentId> {
     }
 
     public static EquipmentResourceValue create(EquipmentId id, ProductResourceType resourceType,
-                                                ChangeableInfo info, DateRangeValue useRange){
+                                                ChangeableInfo info, EquipmentPlanRange useRange){
         return new EquipmentResourceValue(id,resourceType,info,useRange);
     }
     public static EquipmentResourceValue create(EquipmentId id, ProductResourceType resourceType,
@@ -62,7 +62,7 @@ public class EquipmentResourceValue extends ProductResource<EquipmentId> {
         return new EquipmentResourceValue(id,resourceType,info,null);
     }
 
-    public EquipmentResourceValue recordUseRange(DateRangeValue value){
+    public EquipmentResourceValue recordUseRange(EquipmentPlanRange value){
         this.useRange = value;
         this.used = true;
         return this;
@@ -74,7 +74,7 @@ public class EquipmentResourceValue extends ProductResource<EquipmentId> {
         return this;
     }
 
-    public EquipmentResourceValue addRange(DateRangeValue value){
+    public EquipmentResourceValue addRange(EquipmentPlanRange value){
         if (CollectionUtils.isEmpty(planRanges)) {
             planRanges.add(value);
             return this;
@@ -84,15 +84,15 @@ public class EquipmentResourceValue extends ProductResource<EquipmentId> {
         return this;
     }
 
-    private void validate(DateRangeValue value){
+    private void validate(EquipmentPlanRange value){
         int size = planRanges.size();
-        DateRangeValue lastValue = planRanges.get(size-1);
-        if (!value.isAfterRange(lastValue)) {
+        EquipmentPlanRange lastValue = planRanges.get(size-1);
+        if (!value.getDateRangeValue().isAfterRange(lastValue.getDateRangeValue())) {
             throw new RuntimeException("添加的DateRange必须在最后DateRange之后");
         }
     }
 
-    public EquipmentResourceValue removeRange(DateRangeValue value){
+    public EquipmentResourceValue removeRange(EquipmentPlanRange value){
         this.planRanges.remove(value);
         return this;
     }
@@ -103,11 +103,11 @@ public class EquipmentResourceValue extends ProductResource<EquipmentId> {
     }
 
 
-    public List<DateRangeValue> getPlanRanges() {
+    public List<EquipmentPlanRange> getPlanRanges() {
         return new ArrayList<>(planRanges);
     }
 
-    public DateRangeValue getUseRange() {
+    public EquipmentPlanRange getUseRange() {
         if (null != useRange) {
             return useRange.clone();
         }

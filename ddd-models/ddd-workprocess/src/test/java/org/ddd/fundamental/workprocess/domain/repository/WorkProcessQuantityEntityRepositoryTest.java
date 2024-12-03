@@ -2,7 +2,7 @@ package org.ddd.fundamental.workprocess.domain.repository;
 
 import org.ddd.fundamental.changeable.ChangeableInfo;
 import org.ddd.fundamental.workprocess.WorkProcessAppTest;
-import org.ddd.fundamental.workprocess.domain.model.WorkProcessId;
+import org.ddd.fundamental.workprocess.value.WorkProcessId;
 import org.ddd.fundamental.workprocess.domain.model.WorkProcessQuantityEntity;
 import org.ddd.fundamental.workprocess.domain.model.WorkProcessRecord;
 import org.ddd.fundamental.workprocess.value.WorkProcessTemplateId;
@@ -12,7 +12,6 @@ import org.ddd.fundamental.workprocess.value.resources.ProductResources;
 import org.ddd.fundamental.workprocess.value.time.WorkProcessKeyTime;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 

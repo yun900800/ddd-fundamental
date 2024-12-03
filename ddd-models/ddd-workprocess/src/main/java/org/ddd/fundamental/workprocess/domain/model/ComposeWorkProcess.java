@@ -1,5 +1,7 @@
 package org.ddd.fundamental.workprocess.domain.model;
 
+import org.ddd.fundamental.workprocess.value.WorkProcessId;
+
 import java.util.*;
 
 public class ComposeWorkProcess {

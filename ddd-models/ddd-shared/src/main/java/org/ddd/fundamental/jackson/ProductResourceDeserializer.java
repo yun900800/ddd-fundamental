@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.changeable.ChangeableInfo;
 import org.ddd.fundamental.factory.EquipmentId;
 import org.ddd.fundamental.factory.WorkStationId;
+import org.ddd.fundamental.material.value.MaterialId;
 import org.ddd.fundamental.workprocess.enums.ProductResourceType;
 import org.ddd.fundamental.workprocess.value.resources.ProductResource;
 
@@ -49,6 +50,10 @@ public class ProductResourceDeserializer extends StdDeserializer<ProductResource
         if (ProductResourceType.WORK_STATION.name().equals(resourceType)) {
             return ProductResource.create(new WorkStationId(id),
                     ProductResourceType.WORK_STATION,info);
+        }
+        if (ProductResourceType.MATERIAL.name().equals(resourceType)) {
+            return ProductResource.create(new MaterialId(id),
+                    ProductResourceType.MATERIAL,info);
         }
         return null;
     }

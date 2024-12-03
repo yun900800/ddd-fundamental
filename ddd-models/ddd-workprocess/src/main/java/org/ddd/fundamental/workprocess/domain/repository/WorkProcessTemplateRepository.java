@@ -1,7 +1,6 @@
 package org.ddd.fundamental.workprocess.domain.repository;
 
 import org.ddd.fundamental.core.repository.BaseRepository;
-import org.ddd.fundamental.workprocess.domain.model.WorkProcessId;
 import org.ddd.fundamental.workprocess.domain.model.WorkProcessTemplate;
 import org.ddd.fundamental.workprocess.value.WorkProcessTemplateId;
 

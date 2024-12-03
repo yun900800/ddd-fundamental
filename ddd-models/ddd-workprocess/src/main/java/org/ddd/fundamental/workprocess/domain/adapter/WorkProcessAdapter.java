@@ -3,7 +3,7 @@ package org.ddd.fundamental.workprocess.domain.adapter;
 import org.ddd.fundamental.design.chain.AbstractChainStep;
 import org.ddd.fundamental.design.chain.ChainStep;
 import org.ddd.fundamental.workprocess.domain.model.WorkProcess;
-import org.ddd.fundamental.workprocess.domain.model.WorkProcessId;
+import org.ddd.fundamental.workprocess.value.WorkProcessId;
 
 import java.util.Optional;
 

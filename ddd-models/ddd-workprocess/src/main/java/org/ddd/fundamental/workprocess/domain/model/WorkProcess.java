@@ -1,6 +1,7 @@
 package org.ddd.fundamental.workprocess.domain.model;
 
 import org.ddd.fundamental.core.AbstractAggregateRoot;
+import org.ddd.fundamental.workprocess.value.WorkProcessId;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.Column;
