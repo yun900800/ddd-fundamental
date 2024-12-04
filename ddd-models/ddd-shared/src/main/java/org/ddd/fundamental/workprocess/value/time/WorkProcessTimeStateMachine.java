@@ -25,22 +25,22 @@ public class WorkProcessTimeStateMachine {
         ).to(WorkProcessTimeState.LINE_CHANGED)
                 .on(WorkProcessTimeEvent.CHANGE_LINE_START_EVENT)
                 .when(checkCondition())
-                .perform(doAction());
+                .perform(doLineChangedAction());
 
         // 从init到运行或者从换线到运行
         builder.externalTransitions().fromAmong(
                 WorkProcessTimeState.INIT, WorkProcessTimeState.LINE_CHANGED
         ).to(WorkProcessTimeState.WORK_PROCESS_RUNNING)
                 .on(WorkProcessTimeEvent.WORK_PROCESS_START_EVENT)
-                .when(checkCondition())
-                .perform(doAction());
+                .when(checkProcessStartCondition())
+                .perform(doProcessStartAction());
 
         // 从运行到中断
         builder.externalTransition().from(WorkProcessTimeState.WORK_PROCESS_RUNNING)
                 .to(WorkProcessTimeState.WORK_PROCESS_INTERRUPTED)
                 .on(WorkProcessTimeEvent.WORK_PROCESS_INTERRUPT_EVENT)
-                .when(checkCondition())
-                .perform(doAction());
+                .when(checkProcessInterruptCondition())
+                .perform(doProcessInterruptAction());
 
         // 从中断到工序检查
         builder.externalTransition().from(WorkProcessTimeState.WORK_PROCESS_INTERRUPTED)
@@ -94,20 +94,70 @@ public class WorkProcessTimeStateMachine {
     }
     public Condition<Context> checkCondition() {
         return context -> {
-            System.out.println("Check condition : " + context);
+            //System.out.println("Check condition : " + context);
             return true;
         };
     }
+
 
     public Action<WorkProcessTimeState, WorkProcessTimeEvent, Context> doAction() {
         return (from, to, event, ctx) -> {
             if (ctx instanceof WorkProcessKeyTime) {
                 WorkProcessKeyTime keyTime = (WorkProcessKeyTime)ctx;
-                Instant now = Instant.now();
+                keyTime.changeState(to);
+            }
+            //log.info("ctx is {}",ctx);
+        };
+    }
+
+    public Action<WorkProcessTimeState, WorkProcessTimeEvent, Context> doLineChangedAction() {
+        return (from, to, event, ctx) -> {
+            if (ctx instanceof WorkProcessKeyTime) {
+                WorkProcessKeyTime keyTime = (WorkProcessKeyTime)ctx;
+                keyTime.changeState(to);
+            }
+            //log.info("ctx is {}",ctx);
+        };
+    }
+
+    public Condition<Context> checkProcessStartCondition() {
+        return context -> {
+            WorkProcessKeyTime keyTime = (WorkProcessKeyTime)context;
+            if (keyTime.getState().equals(WorkProcessTimeState.LINE_CHANGED)) {
+                return keyTime.getChangeLineSetTime() != null;
+            }
+            return  true;
+        };
+    }
+
+    public Action<WorkProcessTimeState, WorkProcessTimeEvent, Context> doProcessStartAction() {
+        return (from, to, event, ctx) -> {
+            if (ctx instanceof WorkProcessKeyTime && from.equals(WorkProcessTimeState.INIT)) {
+                WorkProcessKeyTime keyTime = (WorkProcessKeyTime)ctx;
+                keyTime.changeState(to);
+            }
+            if (ctx instanceof WorkProcessKeyTime && from.equals(WorkProcessTimeState.LINE_CHANGED)) {
+                WorkProcessKeyTime keyTime = (WorkProcessKeyTime)ctx;
+                Instant now = keyTime.getChangeLineSetTime();
                 keyTime.startProcess(now.plusSeconds(3600*2));
                 keyTime.changeState(to);
             }
-            log.info("ctx is {}",ctx);
+        };
+    }
+
+
+    public Condition<Context> checkProcessInterruptCondition() {
+        return context -> {
+            WorkProcessKeyTime keyTime = (WorkProcessKeyTime)context;
+            return keyTime.getStartTime() != null;
+        };
+    }
+
+    public Action<WorkProcessTimeState, WorkProcessTimeEvent, Context> doProcessInterruptAction(){
+        return (from, to, event, ctx) -> {
+            WorkProcessKeyTime keyTime = (WorkProcessKeyTime)ctx;
+            Instant startTime = keyTime.getStartTime();
+            keyTime.interrupt(startTime.plusSeconds(3600*2));
         };
     }
 }
