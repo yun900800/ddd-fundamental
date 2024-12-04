@@ -1,6 +1,7 @@
 package org.ddd.fundamental.workprocess.domain.model;
 
 import org.ddd.fundamental.core.AbstractEntity;
+import org.ddd.fundamental.infra.hibernate.comment.Comment;
 import org.ddd.fundamental.workprocess.value.quantity.WorkProcessQuantity;
 import org.ddd.fundamental.workprocess.value.quantity.WorkProcessQuantityId;
 

@@ -2,12 +2,10 @@ package org.ddd.fundamental.workprocess.value.time;
 
 import org.ddd.fundamental.core.ValueObject;
 import org.ddd.fundamental.core.machine.Context;
+import org.ddd.fundamental.infra.hibernate.comment.Comment;
 import org.ddd.fundamental.workprocess.enums.WorkProcessTimeState;
 
-import javax.persistence.Embeddable;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Objects;
@@ -23,11 +21,14 @@ public class WorkProcessKeyTime extends Context implements ValueObject, Cloneabl
     /**
      * 工序开始执行时间
      */
+    @Comment("工序开始执行时间")
+    @Column
     private Instant startTime;
 
     /**
      * 工序结束执行时间
      */
+    @Comment("工序结束执行时间")
     private Instant endTime;
 
     /**

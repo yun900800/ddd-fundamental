@@ -29,6 +29,11 @@ public class WorkProcessRecord extends AbstractAggregateRoot<WorkProcessId> {
     @Embedded
     private WorkProcessValue workProcessValue;
 
+    @OneToOne(fetch = FetchType.LAZY, orphanRemoval = true,
+            cascade = CascadeType.ALL)
+    @JoinColumn(name = "work_process_time_id")
+    private WorkProcessTimeEntity workProcessTime;
+
     @OneToOne(cascade = CascadeType.ALL,
             fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "quantity_id")
@@ -51,6 +56,14 @@ public class WorkProcessRecord extends AbstractAggregateRoot<WorkProcessId> {
 
     public void setQuantity(WorkProcessQuantityEntity quantity) {
         this.quantity = quantity;
+    }
+
+    public WorkProcessTimeEntity getWorkProcessTime() {
+        return workProcessTime;
+    }
+
+    public void setWorkProcessTime(WorkProcessTimeEntity workProcessTime) {
+        this.workProcessTime = workProcessTime;
     }
 
     public static WorkProcessRecord create(ChangeableInfo processInfo,

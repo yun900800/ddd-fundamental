@@ -28,6 +28,7 @@ import java.util.List;
 )
 @ComponentScan(basePackages = {
         "org.ddd.fundamental.creator",
+        "org.ddd.fundamental.infra.hibernate",
         "org.ddd.fundamental.workprocess",
         "org.ddd.fundamental.redis",
 })

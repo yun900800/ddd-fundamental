@@ -19,7 +19,8 @@
         @TypeDef(defaultForType = TenantId.class, typeClass = TenantIdType.class),
         @TypeDef(defaultForType = FactoryId.class, typeClass = FactoryIdType.class),
         @TypeDef(defaultForType = WorkProcessQuantityId.class, typeClass = WorkProcessQuantityIdType.class),
-        @TypeDef(defaultForType = WorkProcessId.class, typeClass = WorkProcessIdType.class)
+        @TypeDef(defaultForType = WorkProcessId.class, typeClass = WorkProcessIdType.class),
+        @TypeDef(defaultForType = WorkProcessTimeId.class, typeClass = WorkProcessTimeIdType.class)
 })
 
 
@@ -38,6 +39,7 @@ import org.ddd.fundamental.workorder.value.WorkOrderId;
 import org.ddd.fundamental.workprocess.value.CraftsmanShipId;
 import org.ddd.fundamental.workprocess.value.WorkProcessId;
 import org.ddd.fundamental.workprocess.value.WorkProcessTemplateId;
+import org.ddd.fundamental.workprocess.value.WorkProcessTimeId;
 import org.ddd.fundamental.workprocess.value.quantity.WorkProcessQuantityId;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
