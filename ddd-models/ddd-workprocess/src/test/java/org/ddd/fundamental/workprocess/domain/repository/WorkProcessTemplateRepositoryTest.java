@@ -6,7 +6,7 @@ import org.ddd.fundamental.factory.EquipmentId;
 import org.ddd.fundamental.factory.WorkStationId;
 import org.ddd.fundamental.utils.DateUtils;
 import org.ddd.fundamental.workprocess.WorkProcessAppTest;
-import org.ddd.fundamental.workprocess.application.WorkProcessCreator;
+import org.ddd.fundamental.workprocess.creator.WorkProcessTemplateAddable;
 import org.ddd.fundamental.workprocess.domain.model.WorkProcessTemplate;
 import org.ddd.fundamental.workprocess.domain.model.WorkProcessTemplateControlEntity;
 import org.ddd.fundamental.workprocess.enums.BatchManagable;
@@ -29,8 +29,8 @@ public class WorkProcessTemplateRepositoryTest extends WorkProcessAppTest {
                 ChangeableInfo.create("主板加工工序","这是用来加工新能源车的主板的工序"),
 //                create(),
                 WorkProcessBeat.create(1000,18),
-                WorkProcessCreator.createWorkProcessTemplateControl(),
-                WorkProcessCreator.createWorkProcessTemplateQuantity()
+                WorkProcessTemplateAddable.createWorkProcessTemplateControl(),
+                WorkProcessTemplateAddable.createWorkProcessTemplateQuantity()
         );
 
         EquipmentId id = EquipmentId.randomId(EquipmentId.class);
@@ -73,8 +73,8 @@ public class WorkProcessTemplateRepositoryTest extends WorkProcessAppTest {
                 ChangeableInfo.create("主板加工工序","这是用来加工新能源车的主板的工序"),
 //                create(),
                 WorkProcessBeat.create(1000,15),
-                WorkProcessCreator.createWorkProcessTemplateControl(),
-                WorkProcessCreator.createWorkProcessTemplateQuantity()
+                WorkProcessTemplateAddable.createWorkProcessTemplateControl(),
+                WorkProcessTemplateAddable.createWorkProcessTemplateQuantity()
         );
 
         EquipmentId id = EquipmentId.randomId(EquipmentId.class);
@@ -100,8 +100,8 @@ public class WorkProcessTemplateRepositoryTest extends WorkProcessAppTest {
                 ChangeableInfo.create("主板加工工序测试","这是用来加工新能源车的主板的工序1"),
 //                create(),
                 WorkProcessBeat.create(1000,15),
-                WorkProcessCreator.createWorkProcessTemplateControl(),
-                WorkProcessCreator.createWorkProcessTemplateQuantity()
+                WorkProcessTemplateAddable.createWorkProcessTemplateControl(),
+                WorkProcessTemplateAddable.createWorkProcessTemplateQuantity()
         );
 
         EquipmentId id = EquipmentId.randomId(EquipmentId.class);
