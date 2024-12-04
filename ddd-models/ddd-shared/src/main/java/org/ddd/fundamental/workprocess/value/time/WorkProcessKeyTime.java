@@ -1,8 +1,12 @@
 package org.ddd.fundamental.workprocess.value.time;
 
 import org.ddd.fundamental.core.ValueObject;
+import org.ddd.fundamental.core.machine.Context;
+import org.ddd.fundamental.workprocess.enums.WorkProcessTimeState;
 
 import javax.persistence.Embeddable;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.MappedSuperclass;
 import java.time.Duration;
 import java.time.Instant;
@@ -14,7 +18,7 @@ import java.util.Objects;
  */
 @MappedSuperclass
 @Embeddable
-public class WorkProcessKeyTime implements ValueObject, Cloneable {
+public class WorkProcessKeyTime extends Context implements ValueObject, Cloneable  {
 
     /**
      * 工序开始执行时间
@@ -58,6 +62,9 @@ public class WorkProcessKeyTime implements ValueObject, Cloneable {
 
     private String reason;
 
+    @Enumerated(EnumType.STRING)
+    private WorkProcessTimeState state;
+
     @SuppressWarnings("unused")
     private WorkProcessKeyTime(){}
 
@@ -65,12 +72,22 @@ public class WorkProcessKeyTime implements ValueObject, Cloneable {
                                Instant endTime,
                                Instant interruptTime,
                                String reason,
-                               Instant restartTime){
+                               Instant restartTime,
+                               Instant changeLineSetTime,
+                               Instant offlineTime,
+                               Instant startCheckTime,
+                               Instant transferTime
+                               ){
         this.startTime = startTime;
         this.endTime = endTime;
         this.interruptTime = interruptTime;
         this.restartTime = restartTime;
         this.reason = reason;
+        this.state = WorkProcessTimeState.INIT;
+        this.changeLineSetTime = changeLineSetTime;
+        this.offlineTime = offlineTime;
+        this.startCheckTime = startCheckTime;
+        this.transferTime = transferTime;
     }
 
     private WorkProcessKeyTime(Instant startTime, Instant changeLineSetTime){
@@ -81,6 +98,7 @@ public class WorkProcessKeyTime implements ValueObject, Cloneable {
         this.reason = "";
         this.offlineTime = null;
         this.transferTime = null;
+        this.state = WorkProcessTimeState.INIT;
     }
 
 
@@ -99,6 +117,13 @@ public class WorkProcessKeyTime implements ValueObject, Cloneable {
     public static WorkProcessKeyTime changeLineStart() {
         return new WorkProcessKeyTime(null,Instant.now());
     }
+
+    public WorkProcessKeyTime changeState(WorkProcessTimeState state){
+        this.state = state;
+        return this;
+    }
+
+
 
     /**
      * 开始检查工序
@@ -219,7 +244,8 @@ public class WorkProcessKeyTime implements ValueObject, Cloneable {
             throw new RuntimeException("工序结束时间不能早于工序运行中的重启时间");
         }
         this.endTime = endTime;
-        return new WorkProcessKeyTime(startTime,endTime,interruptTime,reason,restartTime);
+        return new WorkProcessKeyTime(startTime,endTime,interruptTime,reason,restartTime,changeLineSetTime,
+                offlineTime,startCheckTime,transferTime);
     }
 
     public WorkProcessKeyTime finish() {
@@ -237,12 +263,16 @@ public class WorkProcessKeyTime implements ValueObject, Cloneable {
             throw new RuntimeException("工序中断时间不能早于工序开始时间");
         }
         this.interruptTime = interruptTime;
-        return new WorkProcessKeyTime(this.startTime,this.endTime,interruptTime,reason,restartTime);
+        return new WorkProcessKeyTime(this.startTime,this.endTime,interruptTime,reason,restartTime
+                ,changeLineSetTime,
+                offlineTime,startCheckTime,transferTime);
     }
 
     public WorkProcessKeyTime changeReason(String reason) {
         this.reason = reason;
-        return new WorkProcessKeyTime(this.startTime,this.endTime,interruptTime,reason,restartTime);
+        return new WorkProcessKeyTime(this.startTime,this.endTime,interruptTime,reason,restartTime
+                ,changeLineSetTime,
+                offlineTime,startCheckTime,transferTime);
     }
 
     public WorkProcessKeyTime restart() {
@@ -261,7 +291,8 @@ public class WorkProcessKeyTime implements ValueObject, Cloneable {
             throw new RuntimeException("工序重启时间不能早于工序中断时间");
         }
         this.restartTime = restartTime;
-        return new WorkProcessKeyTime(this.startTime,this.endTime,interruptTime,reason,restartTime);
+        return new WorkProcessKeyTime(this.startTime,this.endTime,interruptTime,reason,restartTime,changeLineSetTime,
+                offlineTime,startCheckTime,transferTime);
     }
 
     public long interruptRange() {
@@ -301,6 +332,30 @@ public class WorkProcessKeyTime implements ValueObject, Cloneable {
     }
 
     @Override
+    public String toString() {
+        return "WorkProcessKeyTime{" +
+                "startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", interruptTime=" + interruptTime +
+                ", restartTime=" + restartTime +
+                ", changeLineSetTime=" + changeLineSetTime +
+                ", offlineTime=" + offlineTime +
+                ", transferTime=" + transferTime +
+                ", startCheckTime=" + startCheckTime +
+                ", reason='" + reason + '\'' +
+                ", state=" + state +
+                '}';
+    }
+
+    public Instant getStartCheckTime() {
+        return startCheckTime;
+    }
+
+    public WorkProcessTimeState getState() {
+        return state;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof WorkProcessKeyTime)) return false;
@@ -311,20 +366,6 @@ public class WorkProcessKeyTime implements ValueObject, Cloneable {
     @Override
     public int hashCode() {
         return Objects.hash(startTime, endTime, interruptTime, restartTime, changeLineSetTime, offlineTime, transferTime, reason);
-    }
-
-    @Override
-    public String toString() {
-        return "WorkProcessKeyTime{" +
-                "startTime=" + startTime +
-                ", endTime=" + endTime +
-                ", interruptTime=" + interruptTime +
-                ", restartTime=" + restartTime +
-                ", changeLineSetTime=" + changeLineSetTime +
-                ", offlineTime=" + offlineTime +
-                ", transferTime=" + transferTime +
-                ", reason='" + reason + '\'' +
-                '}';
     }
 
     @Override
