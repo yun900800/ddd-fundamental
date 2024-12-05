@@ -28,6 +28,10 @@ public class WorkProcessTimeEntity extends AbstractEntity<WorkProcessTimeId> {
         this.keyTime = keyTime;
     }
 
+    public static WorkProcessTimeEntity create(WorkProcessKeyTime keyTime){
+        return new WorkProcessTimeEntity(keyTime);
+    }
+
     public WorkProcessKeyTime getKeyTime() {
         return keyTime;
     }

@@ -1,11 +1,14 @@
 package org.ddd.fundamental.workprocess.domain.repository;
 
+import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.changeable.ChangeableInfo;
 import org.ddd.fundamental.workprocess.WorkProcessAppTest;
+import org.ddd.fundamental.workprocess.domain.model.WorkProcessTimeEntity;
 import org.ddd.fundamental.workprocess.value.WorkProcessId;
 import org.ddd.fundamental.workprocess.domain.model.WorkProcessQuantityEntity;
 import org.ddd.fundamental.workprocess.domain.model.WorkProcessRecord;
 import org.ddd.fundamental.workprocess.value.WorkProcessTemplateId;
+import org.ddd.fundamental.workprocess.value.WorkProcessTimeId;
 import org.ddd.fundamental.workprocess.value.WorkProcessValue;
 import org.ddd.fundamental.workprocess.value.quantity.WorkProcessQuantity;
 import org.ddd.fundamental.workprocess.value.resources.ProductResources;
@@ -18,10 +21,14 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.concurrent.TimeUnit;
 
+@Slf4j
 public class WorkProcessRecordRepositoryTest extends WorkProcessAppTest {
 
     @Autowired
     private WorkProcessRecordRepository repository;
+
+    @Autowired
+    private  WorkProcessTimeRepository timeRepository;
 
     @Test
     public void createWorkProcessRecord(){
@@ -203,6 +210,50 @@ public class WorkProcessRecordRepositoryTest extends WorkProcessAppTest {
         queryWorkProcess.interrupt(now.plusSeconds(180));
         queryWorkProcess.restart(now.plusSeconds(240));
         repository.save(queryWorkProcess);
+    }
+
+    @Test
+    public void testCreateRecordWithTime(){
+        WorkProcessRecord record = WorkProcessRecord.create(
+                ChangeableInfo.create("模切工序","打磨电路板测试删除时间"),
+                WorkProcessValue.create(
+                        WorkProcessKeyTime.start(),
+                        new ProductResources(new HashSet<>()),
+                        WorkProcessTemplateId.randomId(WorkProcessTemplateId.class)
+                )
+        );
+        WorkProcessTimeEntity time = WorkProcessTimeEntity.create(
+            WorkProcessKeyTime.start()
+        );
+        record.setWorkProcessTime(time);
+        repository.save(record);
+        WorkProcessId id = record.id();
+        WorkProcessRecord queryRecord = repository.findById(id).orElse(null);
+        queryRecord.setWorkProcessTime(null);
+        repository.save(queryRecord);
+
+    }
+
+    @Test
+    public void testUpdateTime(){
+        WorkProcessRecord record = WorkProcessRecord.create(
+                ChangeableInfo.create("模切工序","打磨电路板测试删除时间"),
+                WorkProcessValue.create(
+                        WorkProcessKeyTime.start(),
+                        new ProductResources(new HashSet<>()),
+                        WorkProcessTemplateId.randomId(WorkProcessTemplateId.class)
+                )
+        );
+        WorkProcessTimeEntity time = WorkProcessTimeEntity.create(
+                WorkProcessKeyTime.start()
+        );
+        record.setWorkProcessTime(time);
+        repository.save(record);
+        WorkProcessId id = record.id();
+        WorkProcessRecord queryRecord = repository.findById(id).orElse(null);
+        Instant startTime = queryRecord.getWorkProcessTime().getKeyTime().getStartTime();
+        queryRecord.getWorkProcessTime().getKeyTime().interrupt(startTime.plusSeconds(3600*2));
+        repository.save(queryRecord);
     }
 
 }
