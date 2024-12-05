@@ -3,6 +3,7 @@ package org.ddd.fundamental.material.domain.repository;
 import com.alibaba.fastjson.JSON;
 import org.ddd.fundamental.changeable.ChangeableInfo;
 import org.ddd.fundamental.day.Auditable;
+import org.ddd.fundamental.material.creator.MaterialAddable;
 import org.ddd.fundamental.material.value.MaterialId;
 import org.ddd.fundamental.material.MaterialMaster;
 import org.ddd.fundamental.material.MaterialAppTest;
@@ -12,7 +13,12 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +28,12 @@ public class MaterialRepositoryTest extends MaterialAppTest {
     @Autowired
     private MaterialRepository materialRepository;
 
+    @Autowired
+    private MaterialAddable addable;
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
     private Material createMaterial(){
         ChangeableInfo info = ChangeableInfo.create("螺纹钢","这是一种通用的钢材");
         MaterialMaster materialMaster = new MaterialMaster("XG-code","锡膏",
@@ -30,8 +42,16 @@ public class MaterialRepositoryTest extends MaterialAppTest {
         Map<String,String> json = new HashMap<>();
         json.put("name","rabbitMQ");
         material.changeJson(JSON.toJSONString(json));
-        materialRepository.save(material);
+        materialRepository.persist(material);
         return material;
+    }
+
+
+    @Test
+    public void testChangeName() {
+        Material material = createMaterial();
+        material.changeName("锡膏修改");
+        materialRepository.merge(material);
     }
     @Test
     public void testQueryMaterialById(){
@@ -69,6 +89,17 @@ public class MaterialRepositoryTest extends MaterialAppTest {
     public void testQueryByMaterialType () {
         List<Material> materials = materialRepository.getByMaterialType(MaterialType.PRODUCTION.name());
         Assert.assertTrue(materials.size() > 0);
+    }
+
+    @Test
+    public void testBatchInsertMaterials(){
+        List<Material> materials = MaterialAddable.createMaterials();
+        materialRepository.batchInsert(materials);
+    }
+
+    @Test
+    public void testBatchUpdateMaterials(){
+        materialRepository.batchUpdate(null);
     }
 
 }

@@ -9,7 +9,8 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface MaterialRepository extends BaseHibernateRepository<Material>,BaseRepository<Material, MaterialId> {
+public interface MaterialRepository extends BaseHibernateRepository<Material>,BaseRepository<Material, MaterialId>,
+    MaterialCustomRepository{
 
     @Query(value = "SELECT * FROM material WHERE material_json -> ?1 = ?2", nativeQuery = true)
     List<Material> findByAttribute(String key, String value);

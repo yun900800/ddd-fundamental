@@ -23,7 +23,8 @@ public class Material extends AbstractAggregateRoot<MaterialId> {
     })
     private ChangeableInfo changeableInfo;
 
-    @Embedded
+
+
     @AttributeOverrides({
             @AttributeOverride(name = "name", column = @Column(name = "master_name", nullable = false)),
             @AttributeOverride(name = "code", column = @Column(name = "master_code", nullable = false)),
@@ -37,6 +38,7 @@ public class Material extends AbstractAggregateRoot<MaterialId> {
     /**
      * 物料控制属性
      */
+    @Embedded
     private ControlProps materialControlProps;
 
     // MYSQL 执行json查询 SELECT * FROM material s WHERE s.material_props->'$.usage'='生产电路板' AND s.material_json->'$.name'='kafka';

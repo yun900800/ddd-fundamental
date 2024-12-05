@@ -39,27 +39,27 @@ public class BaseHibernateRepositoryImpl<T> implements BaseHibernateRepository<T
 
     @Override
     public List<T> findAll() {
-        return null;
+        throw new UnsupportedOperationException("findAll operation is not supported");
     }
 
     @Override
     public <S extends T> S save(S var1) {
-        return null;
+        throw new UnsupportedOperationException("save operation is not supported");
     }
 
     @Override
     public <S extends T> List<S> saveAll(Iterable<S> var1) {
-        return null;
+        throw new UnsupportedOperationException("saveAll operation is not supported");
     }
 
     @Override
     public <S extends T> S saveAndFlush(S var1) {
-        return null;
+        throw new UnsupportedOperationException("saveAndFlush operation is not supported");
     }
 
     @Override
     public <S extends T> List<S> saveAllAndFlush(Iterable<S> var1) {
-        return null;
+        throw new UnsupportedOperationException("saveAllAndFlush operation is not supported");
     }
 
     public <S extends T> S persist(S entity) {
