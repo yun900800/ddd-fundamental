@@ -64,6 +64,8 @@ public class WorkProcessKeyTime extends Context implements ValueObject, Cloneabl
 
     private String reason;
 
+    private Instant transferFinishTime;
+
     @Enumerated(EnumType.STRING)
     private WorkProcessTimeState state;
 
@@ -143,9 +145,6 @@ public class WorkProcessKeyTime extends Context implements ValueObject, Cloneabl
      * @return
      */
     public WorkProcessKeyTime startCheck(Instant startCheckTime){
-        if (this.endTime == null){
-            throw new RuntimeException("工序还没有结束,不能检查");
-        }
         this.startCheckTime = startCheckTime;
         return this;
     }
@@ -245,6 +244,17 @@ public class WorkProcessKeyTime extends Context implements ValueObject, Cloneabl
         this.startTransfer(Instant.now());
         return this;
     }
+
+    public WorkProcessKeyTime finishTransfer(Instant transferFinishTime){
+        this.transferFinishTime = transferFinishTime;
+        return this;
+    }
+
+    public WorkProcessKeyTime finishTransfer(){
+        this.finish(Instant.now());
+        return this;
+    }
+
 
     public WorkProcessKeyTime finish(Instant endTime){
         if (endTime.isBefore(this.startTime)) {

@@ -82,4 +82,18 @@ public class WorkProcessTimeRepositoryTest extends WorkProcessAppTest {
         Assert.assertEquals(queryTime.getKeyTime().getState(), WorkProcessTimeState.WORK_PROCESS_INTERRUPTED);
         timeRepository.merge(queryTime);
     }
+
+    @Test
+    public void testCheckAfterInterrupt(){
+        WorkProcessTimeId id = directStartProcess().first;
+        WorkProcessTimeEntity queryTime = timeRepository.findById(id).orElse(null);
+        queryTime.interruptProcess();
+        queryTime.checkAfterInterrupt();
+        Assert.assertNotNull(queryTime.getKeyTime().getStartTime());
+        Assert.assertNull(queryTime.getKeyTime().getChangeLineSetTime());
+        Assert.assertNotNull(queryTime.getKeyTime().getInterruptTime());
+        Assert.assertNotNull(queryTime.getKeyTime().getStartCheckTime());
+        Assert.assertEquals(queryTime.getKeyTime().getState(), WorkProcessTimeState.WORK_PROCESS_CHECKED);
+        timeRepository.merge(queryTime);
+    }
 }

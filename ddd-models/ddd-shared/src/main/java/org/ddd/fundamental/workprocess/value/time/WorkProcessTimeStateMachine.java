@@ -24,7 +24,7 @@ public class WorkProcessTimeStateMachine {
                 WorkProcessTimeState.INIT
         ).to(WorkProcessTimeState.LINE_CHANGED)
                 .on(WorkProcessTimeEvent.CHANGE_LINE_START_EVENT)
-                .when(checkCondition())
+                .when(checkLineChangedCondition())
                 .perform(doLineChangedAction());
 
         // 从init到运行或者从换线到运行
@@ -46,8 +46,8 @@ public class WorkProcessTimeStateMachine {
         builder.externalTransition().from(WorkProcessTimeState.WORK_PROCESS_INTERRUPTED)
                 .to(WorkProcessTimeState.WORK_PROCESS_CHECKED)
                 .on(WorkProcessTimeEvent.WORK_PROCESS_CHECK_EVENT)
-                .when(checkCondition())
-                .perform(doAction());
+                .when(checkAfterInterruptCondition())
+                .perform(doCheckAfterInterruptAction());
 
         // 从中断到运行或者从检查到运行
         builder.externalTransitions().fromAmong(
@@ -55,8 +55,8 @@ public class WorkProcessTimeStateMachine {
                 WorkProcessTimeState.WORK_PROCESS_INTERRUPTED
         ).to(WorkProcessTimeState.WORK_PROCESS_RUNNING)
                 .on(WorkProcessTimeEvent.WORK_PROCESS_RESTART_EVENT)
-                .when(checkCondition())
-                .perform(doAction());
+                .when(checkRestartCondition())
+                .perform(doRestartAction());
 
         // 从运行,中断,检查到结束
         builder.externalTransitions().fromAmong(
@@ -65,38 +65,35 @@ public class WorkProcessTimeStateMachine {
                 WorkProcessTimeState.WORK_PROCESS_RUNNING
         ).to(WorkProcessTimeState.WORK_PROCESS_FINISHED)
                 .on(WorkProcessTimeEvent.WORK_PROCESS_FINISH_EVENT)
-                .when(checkCondition())
-                .perform(doAction());
+                .when(checkFinishCondition())
+                .perform(doFinishAction());
 
         // 从结束到下线
         builder.externalTransition().from(WorkProcessTimeState.WORK_PROCESS_FINISHED)
                 .to(WorkProcessTimeState.WORK_PROCESS_OFFLINE)
                 .on(WorkProcessTimeEvent.WORK_PROCESS_OFFLINE_EVENT)
-                .when(checkCondition())
-                .perform(doAction());
+                .when(checkOfflineCondition())
+                .perform(doOfflineAction());
 
         // 从下线到运输
         builder.externalTransition().from(WorkProcessTimeState.WORK_PROCESS_OFFLINE)
                 .to(WorkProcessTimeState.WORK_PROCESS_TRANSFER)
                 .on(WorkProcessTimeEvent.WORK_PROCESS_TRANSFER_EVENT)
-                .when(checkCondition())
-                .perform(doAction());
+                .when(checkTransferCondition())
+                .perform(doTransferAction());
 
         // 从运输到运输结束
         builder.externalTransition().from(WorkProcessTimeState.WORK_PROCESS_TRANSFER)
                 .to(WorkProcessTimeState.WORK_PROCESS_TRANSFER_OVER)
                 .on(WorkProcessTimeEvent.WORK_PROCESS_TRANSFER_OVER_EVENT)
-                .when(checkCondition())
-                .perform(doAction());
+                .when(checkFinishTransferCondition())
+                .perform(doFinishTransferAction());
 
         StateMachine<WorkProcessTimeState, WorkProcessTimeEvent, Context> stateMachine = builder.build(WORK_PROCESS_TIME_ID);
         return stateMachine;
     }
     public Condition<Context> checkCondition() {
-        return context -> {
-            //System.out.println("Check condition : " + context);
-            return true;
-        };
+        return context -> true;
     }
 
 
@@ -106,7 +103,16 @@ public class WorkProcessTimeStateMachine {
                 WorkProcessKeyTime keyTime = (WorkProcessKeyTime)ctx;
                 keyTime.changeState(to);
             }
-            //log.info("ctx is {}",ctx);
+        };
+    }
+
+    public Condition<Context> checkLineChangedCondition() {
+        return context -> {
+            WorkProcessKeyTime keyTime = (WorkProcessKeyTime)context;
+            if (!keyTime.getState().equals(WorkProcessTimeState.INIT)) {
+                return false;
+            }
+            return true;
         };
     }
 
@@ -117,7 +123,6 @@ public class WorkProcessTimeStateMachine {
                 keyTime.directChangingLine();
                 keyTime.changeState(to);
             }
-            //log.info("ctx is {}",ctx);
         };
     }
 
@@ -162,4 +167,123 @@ public class WorkProcessTimeStateMachine {
             keyTime.changeState(to);
         };
     }
+
+    public Condition<Context> checkAfterInterruptCondition() {
+        return context -> {
+            WorkProcessKeyTime keyTime = (WorkProcessKeyTime)context;
+            if (!keyTime.getState().equals(WorkProcessTimeState.WORK_PROCESS_INTERRUPTED)){
+                return false;
+            }
+            return true;
+        };
+    }
+
+    public Action<WorkProcessTimeState, WorkProcessTimeEvent, Context> doCheckAfterInterruptAction(){
+        return (from, to, event, ctx) -> {
+            WorkProcessKeyTime keyTime = (WorkProcessKeyTime)ctx;
+            Instant startTime = keyTime.getInterruptTime();
+            keyTime.startCheck(startTime.plusSeconds(3600*2));
+            keyTime.changeState(to);
+        };
+    }
+
+    public Condition<Context> checkRestartCondition() {
+        return context -> {
+            WorkProcessKeyTime keyTime = (WorkProcessKeyTime)context;
+            if (!keyTime.getState().equals(WorkProcessTimeState.WORK_PROCESS_CHECKED) ||
+                    !keyTime.getState().equals(WorkProcessTimeState.WORK_PROCESS_INTERRUPTED)){
+                return false;
+            }
+            return true;
+        };
+    }
+
+    public Action<WorkProcessTimeState, WorkProcessTimeEvent, Context> doRestartAction(){
+        return (from, to, event, ctx) -> {
+            WorkProcessKeyTime keyTime = (WorkProcessKeyTime)ctx;
+            Instant startTime = keyTime.getInterruptTime();
+            keyTime.restart(startTime.plusSeconds(3600*2));
+            keyTime.changeState(to);
+        };
+    }
+
+    public Condition<Context> checkFinishCondition() {
+        return context -> {
+            WorkProcessKeyTime keyTime = (WorkProcessKeyTime)context;
+            if (!keyTime.getState().equals(WorkProcessTimeState.WORK_PROCESS_CHECKED)
+                    || !keyTime.getState().equals(WorkProcessTimeState.WORK_PROCESS_INTERRUPTED)
+                    || !keyTime.getState().equals(WorkProcessTimeState.WORK_PROCESS_FINISHED)){
+                return false;
+            }
+            return true;
+        };
+    }
+
+    public Action<WorkProcessTimeState, WorkProcessTimeEvent, Context> doFinishAction(){
+        return (from, to, event, ctx) -> {
+            WorkProcessKeyTime keyTime = (WorkProcessKeyTime)ctx;
+            Instant startTime = keyTime.getInterruptTime();
+            keyTime.finish(startTime.plusSeconds(3600*4));
+            keyTime.changeState(to);
+        };
+    }
+
+    public Condition<Context> checkOfflineCondition() {
+        return context -> {
+            WorkProcessKeyTime keyTime = (WorkProcessKeyTime)context;
+            if (!keyTime.getState().equals(WorkProcessTimeState.WORK_PROCESS_FINISHED)){
+                return false;
+            }
+            return true;
+        };
+    }
+
+    public Action<WorkProcessTimeState, WorkProcessTimeEvent, Context> doOfflineAction(){
+        return (from, to, event, ctx) -> {
+            WorkProcessKeyTime keyTime = (WorkProcessKeyTime)ctx;
+            Instant startTime = keyTime.getInterruptTime();
+            keyTime.startOffline(startTime.plusSeconds(3600*6));
+            keyTime.changeState(to);
+        };
+    }
+
+    public Condition<Context> checkTransferCondition() {
+        return context -> {
+            WorkProcessKeyTime keyTime = (WorkProcessKeyTime)context;
+            if (!keyTime.getState().equals(WorkProcessTimeState.WORK_PROCESS_OFFLINE)){
+                return false;
+            }
+            return true;
+        };
+    }
+
+    public Action<WorkProcessTimeState, WorkProcessTimeEvent, Context> doTransferAction(){
+        return (from, to, event, ctx) -> {
+            WorkProcessKeyTime keyTime = (WorkProcessKeyTime)ctx;
+            Instant startTime = keyTime.getInterruptTime();
+            keyTime.startTransfer(startTime.plusSeconds(3600*8));
+            keyTime.changeState(to);
+        };
+    }
+
+    public Condition<Context> checkFinishTransferCondition() {
+        return context -> {
+            WorkProcessKeyTime keyTime = (WorkProcessKeyTime)context;
+            if (!keyTime.getState().equals(WorkProcessTimeState.WORK_PROCESS_TRANSFER)){
+                return false;
+            }
+            return true;
+        };
+    }
+
+    public Action<WorkProcessTimeState, WorkProcessTimeEvent, Context> doFinishTransferAction(){
+        return (from, to, event, ctx) -> {
+            WorkProcessKeyTime keyTime = (WorkProcessKeyTime)ctx;
+            Instant startTime = keyTime.getInterruptTime();
+            keyTime.finishTransfer(startTime.plusSeconds(3600*9));
+            keyTime.changeState(to);
+        };
+    }
+
+
 }

@@ -122,6 +122,84 @@ public class WorkProcessTimeEntity extends AbstractEntity<WorkProcessTimeId> {
         return this;
     }
 
+    /**
+     * 中断后开始检查工序
+     * @return
+     */
+    public WorkProcessTimeEntity checkAfterInterrupt(){
+        if (WorkProcessTimeState.WORK_PROCESS_INTERRUPTED.equals(this.keyTime.getState())) {
+            WorkProcessKeyTime.getStateMachine()
+                    .fireEvent(WorkProcessTimeState.WORK_PROCESS_INTERRUPTED,
+                            WorkProcessTimeEvent.WORK_PROCESS_CHECK_EVENT,this.keyTime);
+        } else{
+            throw new RuntimeException("工序处于中断状态才能检查");
+        }
+        return this;
+    }
+
+    /**
+     * 重启工序
+     * @return
+     */
+    public WorkProcessTimeEntity restartProcess(){
+        if (WorkProcessTimeState.WORK_PROCESS_CHECKED.equals(this.keyTime.getState())
+        || WorkProcessTimeState.WORK_PROCESS_INTERRUPTED.equals(this.keyTime.getState())) {
+            WorkProcessKeyTime.getStateMachine()
+                    .fireEvent(this.keyTime.getState(),
+                            WorkProcessTimeEvent.WORK_PROCESS_RESTART_EVENT,this.keyTime);
+        } else {
+            throw new RuntimeException("只有处于检查或者中断状态才能重启");
+        }
+        return this;
+    }
+
+    public WorkProcessTimeEntity finishProcess(){
+        if (WorkProcessTimeState.WORK_PROCESS_CHECKED.equals(this.keyTime.getState())
+                || WorkProcessTimeState.WORK_PROCESS_INTERRUPTED.equals(this.keyTime.getState())
+                || WorkProcessTimeState.WORK_PROCESS_RUNNING.equals(this.keyTime.getState())) {
+            WorkProcessKeyTime.getStateMachine()
+                    .fireEvent(this.keyTime.getState(),
+                            WorkProcessTimeEvent.WORK_PROCESS_FINISH_EVENT,this.keyTime);
+        } else {
+            throw new RuntimeException("只有处于检查或者中断或者运行状态才能结束工序");
+        }
+        return this;
+    }
+
+    public WorkProcessTimeEntity offlineProcess(){
+        if (WorkProcessTimeState.WORK_PROCESS_FINISHED.equals(this.keyTime.getState())){
+            WorkProcessKeyTime.getStateMachine()
+                    .fireEvent(this.keyTime.getState(),
+                            WorkProcessTimeEvent.WORK_PROCESS_OFFLINE_EVENT,this.keyTime);
+        } else {
+            throw new RuntimeException("只有处于结束状态才能下线工序");
+        }
+        return this;
+    }
+
+    public WorkProcessTimeEntity transfer(){
+        if (WorkProcessTimeState.WORK_PROCESS_OFFLINE.equals(this.keyTime.getState())){
+            WorkProcessKeyTime.getStateMachine()
+                    .fireEvent(this.keyTime.getState(),
+                            WorkProcessTimeEvent.WORK_PROCESS_TRANSFER_EVENT,this.keyTime);
+        } else {
+            throw new RuntimeException("只有处于下线状态才能开始运输");
+        }
+        return this;
+    }
+
+    public WorkProcessTimeEntity finishTransfer(){
+        if (WorkProcessTimeState.WORK_PROCESS_TRANSFER.equals(this.keyTime.getState())){
+            WorkProcessKeyTime.getStateMachine()
+                    .fireEvent(this.keyTime.getState(),
+                            WorkProcessTimeEvent.WORK_PROCESS_TRANSFER_OVER_EVENT,this.keyTime);
+        } else {
+            throw new RuntimeException("只有处于下线状态才能开始运输");
+        }
+        return this;
+    }
+
+
     public WorkProcessKeyTime getKeyTime() {
         return keyTime;
     }
