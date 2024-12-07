@@ -3,16 +3,18 @@ package org.ddd.fundamental.workprocess.application;
 import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.changeable.ChangeableInfo;
 import org.ddd.fundamental.material.value.MaterialId;
+import org.ddd.fundamental.utils.CollectionUtils;
+import org.ddd.fundamental.workprocess.creator.WorkProcessTemplateAddable;
 import org.ddd.fundamental.workprocess.domain.model.CraftsmanShipTemplate;
 import org.ddd.fundamental.workprocess.domain.model.WorkProcessRecord;
 import org.ddd.fundamental.workprocess.domain.model.WorkProcessTemplate;
+import org.ddd.fundamental.workprocess.domain.model.WorkProcessTimeEntity;
 import org.ddd.fundamental.workprocess.domain.repository.CraftsmanShipRepository;
 import org.ddd.fundamental.workprocess.domain.repository.WorkProcessRecordRepository;
 import org.ddd.fundamental.workprocess.domain.repository.WorkProcessTemplateRepository;
 import org.ddd.fundamental.workprocess.value.CraftsmanShipId;
 import org.ddd.fundamental.workprocess.value.WorkProcessTemplateId;
 import org.ddd.fundamental.workprocess.value.WorkProcessValue;
-import org.ddd.fundamental.workprocess.value.resources.ProductResource;
 import org.ddd.fundamental.workprocess.value.resources.ProductResources;
 import org.ddd.fundamental.workprocess.value.time.WorkProcessKeyTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,11 +71,13 @@ public class WorkProcessRecordApplication {
         WorkProcessRecord record = WorkProcessRecord.create(
                 info,
                 WorkProcessValue.create(
-                        WorkProcessKeyTime.start(),
                         resources,
                         templateId
                 )
         );
+        WorkProcessTimeEntity workProcessTime = WorkProcessTimeEntity.init(
+                CollectionUtils.random(WorkProcessTemplateAddable.trueOrFalse()));
+        record.setWorkProcessTime(workProcessTime);
         return record;
     }
 }

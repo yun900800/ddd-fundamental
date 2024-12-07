@@ -92,7 +92,7 @@ public class WorkProcessTemplateAddable implements DataAddable {
         return workProcessInfo;
     }
 
-    private static List<Boolean> trueOrFalse(){
+    public static List<Boolean> trueOrFalse(){
         return Arrays.asList(true,false);
     }
 

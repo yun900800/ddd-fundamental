@@ -13,6 +13,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -61,18 +62,25 @@ public class MaterialRepositoryTest extends MaterialAppTest {
         Assert.assertEquals(queryData.name(),"螺纹钢");
 
         Material queryMaterial = new Material(material.getChangeableInfo(),null);
-        queryMaterial.changeId(null);
-        queryMaterial.resetRequiredProps();
-        queryMaterial.resetRequiredCharacter();
-        queryMaterial.resetOptionalCharacter();
-        queryMaterial.resetOptionalProps();
-        queryMaterial.resetMaterialJson();
+//        queryMaterial.changeId(null);
+//        queryMaterial.resetRequiredProps();
+//        queryMaterial.resetRequiredCharacter();
+//        queryMaterial.resetOptionalCharacter();
+//        queryMaterial.resetOptionalProps();
+//        queryMaterial.resetMaterialJson();
         //Example query 支持json查询吗
         //queryMaterial.changeJson(JSON.toJSONString(json));
         Auditable auditable = new Auditable(0L);
-        auditable.changeCreateTime(null).changeUpdateTime(null);
+        //auditable.changeCreateTime(null).changeUpdateTime(null);
         queryMaterial.changeAuditable(auditable);
-        Example<Material> example = Example.of(queryMaterial);
+        Example<Material> example = Example.of(
+                queryMaterial,
+                ExampleMatcher.matching()
+                        .withIgnorePaths("id","materialRequiredProps",
+                                "materialRequiredCharacteristics","materialOptionalCharacteristics",
+                                "materialOptionalProps","json","materialMaster","auditable.createTime",
+                                "auditable.updateTime")
+        );
         List<Material> dataList = materialRepository.findAll(example);
         Assert.assertEquals(dataList.size(),1);
     }

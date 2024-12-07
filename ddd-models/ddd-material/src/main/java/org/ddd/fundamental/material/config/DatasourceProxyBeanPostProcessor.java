@@ -12,7 +12,7 @@ import org.springframework.util.ReflectionUtils;
 import javax.sql.DataSource;
 import java.lang.reflect.Method;
 
-@Component
+//@Component
 public class DatasourceProxyBeanPostProcessor implements BeanPostProcessor {
 
     @Override

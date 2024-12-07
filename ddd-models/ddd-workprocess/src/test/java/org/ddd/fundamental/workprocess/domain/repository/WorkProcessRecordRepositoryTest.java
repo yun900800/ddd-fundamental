@@ -8,7 +8,6 @@ import org.ddd.fundamental.workprocess.value.WorkProcessId;
 import org.ddd.fundamental.workprocess.domain.model.WorkProcessQuantityEntity;
 import org.ddd.fundamental.workprocess.domain.model.WorkProcessRecord;
 import org.ddd.fundamental.workprocess.value.WorkProcessTemplateId;
-import org.ddd.fundamental.workprocess.value.WorkProcessTimeId;
 import org.ddd.fundamental.workprocess.value.WorkProcessValue;
 import org.ddd.fundamental.workprocess.value.quantity.WorkProcessQuantity;
 import org.ddd.fundamental.workprocess.value.resources.ProductResources;
@@ -35,7 +34,6 @@ public class WorkProcessRecordRepositoryTest extends WorkProcessAppTest {
         WorkProcessRecord record = WorkProcessRecord.create(
                 ChangeableInfo.create("模切工序","打磨电路板"),
                 WorkProcessValue.create(
-                        WorkProcessKeyTime.start(),
                         new ProductResources(new HashSet<>()),
                         WorkProcessTemplateId.randomId(WorkProcessTemplateId.class)
                 )
@@ -48,7 +46,6 @@ public class WorkProcessRecordRepositoryTest extends WorkProcessAppTest {
         WorkProcessRecord record = WorkProcessRecord.create(
                 ChangeableInfo.create("模切工序","打磨电路板"),
                 WorkProcessValue.create(
-                        WorkProcessKeyTime.start(),
                         new ProductResources(new HashSet<>()),
                         WorkProcessTemplateId.randomId(WorkProcessTemplateId.class)
                 )
@@ -69,7 +66,7 @@ public class WorkProcessRecordRepositoryTest extends WorkProcessAppTest {
         WorkProcessRecord record = WorkProcessRecord.create(
                 ChangeableInfo.create("模切工序","打磨电路板"),
                 WorkProcessValue.create(
-                        WorkProcessKeyTime.start(),
+
                         new ProductResources(new HashSet<>()),
                         WorkProcessTemplateId.randomId(WorkProcessTemplateId.class)
                 )
@@ -95,7 +92,6 @@ public class WorkProcessRecordRepositoryTest extends WorkProcessAppTest {
         WorkProcessRecord record = WorkProcessRecord.create(
                 ChangeableInfo.create("模切工序","打磨电路板"),
                 WorkProcessValue.create(
-                        WorkProcessKeyTime.start(),
                         new ProductResources(new HashSet<>()),
                         WorkProcessTemplateId.randomId(WorkProcessTemplateId.class)
                 )
@@ -114,116 +110,21 @@ public class WorkProcessRecordRepositoryTest extends WorkProcessAppTest {
         repository.save(record1);
     }
 
-    @Test
-    public void testChangeTime() {
-        WorkProcessRecord record = WorkProcessRecord.create(
-                ChangeableInfo.create("模切工序","打磨电路板"),
-                WorkProcessValue.create(
-                        WorkProcessKeyTime.start(),
-                        new ProductResources(new HashSet<>()),
-                        WorkProcessTemplateId.randomId(WorkProcessTemplateId.class)
-                )
-        );
-        try {
-            TimeUnit.SECONDS.sleep(1);
-        } catch (InterruptedException e){
 
-        }
-        Instant now = Instant.now();
-        record.start(now.plusSeconds(60));
-        repository.save(record);
-        WorkProcessId id = record.id();
-        WorkProcessRecord queryWorkProcess = repository.findById(id).orElse(null);
-        queryWorkProcess.start(now.minusSeconds(60));
-        repository.save(queryWorkProcess);
-    }
 
-    @Test
-    public void changeFinishTime() {
-        WorkProcessRecord record = WorkProcessRecord.create(
-                ChangeableInfo.create("模切工序","打磨电路板"),
-                WorkProcessValue.create(
-                        WorkProcessKeyTime.start(),
-                        new ProductResources(new HashSet<>()),
-                        WorkProcessTemplateId.randomId(WorkProcessTemplateId.class)
-                )
-        );
-        try {
-            TimeUnit.SECONDS.sleep(1);
-        } catch (InterruptedException e){
 
-        }
-        Instant now = Instant.now();
-        record.start(now.plusSeconds(60));
-        repository.save(record);
-        WorkProcessId id = record.id();
-        WorkProcessRecord queryWorkProcess = repository.findById(id).orElse(null);
-        queryWorkProcess.finish(now.plusSeconds(1600));
-        repository.save(queryWorkProcess);
-    }
-
-    @Test
-    public void testChangeInterruptTime(){
-        WorkProcessRecord record = WorkProcessRecord.create(
-                ChangeableInfo.create("模切工序","打磨电路板"),
-                WorkProcessValue.create(
-                        WorkProcessKeyTime.start(),
-                        new ProductResources(new HashSet<>()),
-                        WorkProcessTemplateId.randomId(WorkProcessTemplateId.class)
-                )
-        );
-        try {
-            TimeUnit.SECONDS.sleep(1);
-        } catch (InterruptedException e){
-
-        }
-        Instant now = Instant.now();
-        record.start(now.plusSeconds(60));
-        repository.save(record);
-        WorkProcessId id = record.id();
-        WorkProcessRecord queryWorkProcess = repository.findById(id).orElse(null);
-        queryWorkProcess.interrupt(now.plusSeconds(360));
-        queryWorkProcess.finish(now.plusSeconds(720));
-        repository.save(queryWorkProcess);
-    }
-
-    @Test
-    public void testChangeRestartTime() {
-        WorkProcessRecord record = WorkProcessRecord.create(
-                ChangeableInfo.create("模切工序","打磨电路板"),
-                WorkProcessValue.create(
-                        WorkProcessKeyTime.start(),
-                        new ProductResources(new HashSet<>()),
-                        WorkProcessTemplateId.randomId(WorkProcessTemplateId.class)
-                )
-        );
-        try {
-            TimeUnit.SECONDS.sleep(1);
-        } catch (InterruptedException e){
-
-        }
-        Instant now = Instant.now();
-        record.start(now.plusSeconds(60));
-        repository.save(record);
-        WorkProcessId id = record.id();
-        WorkProcessRecord queryWorkProcess = repository.findById(id).orElse(null);
-        queryWorkProcess.interrupt(now.plusSeconds(180));
-        queryWorkProcess.restart(now.plusSeconds(240));
-        repository.save(queryWorkProcess);
-    }
 
     @Test
     public void testCreateRecordWithTime(){
         WorkProcessRecord record = WorkProcessRecord.create(
                 ChangeableInfo.create("模切工序","打磨电路板测试删除时间"),
                 WorkProcessValue.create(
-                        WorkProcessKeyTime.start(),
                         new ProductResources(new HashSet<>()),
                         WorkProcessTemplateId.randomId(WorkProcessTemplateId.class)
                 )
         );
         WorkProcessTimeEntity time = WorkProcessTimeEntity.create(
-            WorkProcessKeyTime.start()
+            WorkProcessKeyTime.init()
         );
         record.setWorkProcessTime(time);
         repository.save(record);
@@ -239,13 +140,12 @@ public class WorkProcessRecordRepositoryTest extends WorkProcessAppTest {
         WorkProcessRecord record = WorkProcessRecord.create(
                 ChangeableInfo.create("模切工序","打磨电路板测试删除时间"),
                 WorkProcessValue.create(
-                        WorkProcessKeyTime.start(),
                         new ProductResources(new HashSet<>()),
                         WorkProcessTemplateId.randomId(WorkProcessTemplateId.class)
                 )
         );
         WorkProcessTimeEntity time = WorkProcessTimeEntity.create(
-                WorkProcessKeyTime.start()
+                WorkProcessKeyTime.init()
         );
         record.setWorkProcessTime(time);
         repository.save(record);

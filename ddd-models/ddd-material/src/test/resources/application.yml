@@ -55,4 +55,10 @@ spring:
           - 10.0.0.118:26379
           - 10.0.0.118:26380
           - 10.0.0.118:26381
+logging:
+  level:
+    net:
+      ttddyy:
+        dsproxy:
+          listener: debug
 

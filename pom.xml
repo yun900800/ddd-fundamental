@@ -19,7 +19,7 @@
       <module>ddd-redis-starter</module>
       <module>ddd-security</module>
       <module>ddd-authentication</module>
-      <module>ddd-conditional</module>
+<!--      <module>ddd-conditional</module>-->
       <module>ddd-repository</module>
       <module>ddd-core</module>
       <module>ddd-base</module>
@@ -27,9 +27,9 @@
       <module>ddd-datasource</module>
       <module>ddd-message-mq</module>
       <module>ddd-models</module>
-      <module>ddd-models/ddd-event</module>
-      <module>ddd-models/ddd-kafka-starter</module>
-      <module>ddd-models/ddd-redis-manager</module>
+<!--      <module>ddd-models/ddd-event</module>-->
+<!--      <module>ddd-models/ddd-kafka-starter</module>-->
+<!--      <module>ddd-models/ddd-redis-manager</module>-->
   </modules>
   <packaging>pom</packaging>
   <parent>

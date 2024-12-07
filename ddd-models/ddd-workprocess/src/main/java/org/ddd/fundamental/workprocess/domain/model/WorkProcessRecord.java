@@ -80,47 +80,6 @@ public class WorkProcessRecord extends AbstractAggregateRoot<WorkProcessId> {
         return workProcessValue.clone();
     }
 
-    public WorkProcessRecord start() {
-        this.workProcessValue = this.workProcessValue.start();
-        return this;
-    }
-
-    public WorkProcessRecord start(Instant startTime) {
-        this.workProcessValue = this.workProcessValue.start(startTime);
-        return this;
-    }
-
-
-    public WorkProcessRecord finish() {
-        this.workProcessValue = this.workProcessValue.finish();
-        return this;
-    }
-
-    public WorkProcessRecord finish(Instant endTime) {
-        this.workProcessValue = this.workProcessValue.finish(endTime);
-        return this;
-    }
-
-    public WorkProcessRecord interrupt(){
-        this.workProcessValue = this.workProcessValue.interrupt();
-        return this;
-    }
-
-    public WorkProcessRecord interrupt(Instant interruptTime) {
-        this.workProcessValue = this.workProcessValue.interrupt(interruptTime);
-        return this;
-    }
-
-    public WorkProcessRecord restart() {
-        this.workProcessValue = this.workProcessValue.restart();
-        return this;
-    }
-
-    public WorkProcessRecord restart(Instant restartTime) {
-        this.workProcessValue = this.workProcessValue.restart(restartTime);
-        return this;
-    }
-
     @Override
     public String toString() {
         return "WorkProcessRecord{" +

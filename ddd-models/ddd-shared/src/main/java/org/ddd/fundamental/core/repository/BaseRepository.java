@@ -9,7 +9,7 @@ import org.springframework.data.repository.NoRepositoryBean;
 
 import javax.validation.constraints.NotNull;
 
-@NoRepositoryBean
+@NoRepositoryBean 
 public interface BaseRepository<Aggregate extends AbstractAggregateRoot<ID>, ID extends DomainObjectId>
     extends JpaRepository<Aggregate,ID>, JpaSpecificationExecutor<Aggregate> {
 

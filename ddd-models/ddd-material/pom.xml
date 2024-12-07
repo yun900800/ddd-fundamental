@@ -87,5 +87,11 @@
             <version>1.10</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-jpamodelgen</artifactId>
+            <version>5.5.4.Final</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 </project>

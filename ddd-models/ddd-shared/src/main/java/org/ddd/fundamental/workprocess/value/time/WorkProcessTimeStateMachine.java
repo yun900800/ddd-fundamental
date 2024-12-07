@@ -32,8 +32,8 @@ public class WorkProcessTimeStateMachine {
                 WorkProcessTimeState.INIT, WorkProcessTimeState.LINE_CHANGED
         ).to(WorkProcessTimeState.WORK_PROCESS_RUNNING)
                 .on(WorkProcessTimeEvent.WORK_PROCESS_START_EVENT)
-                .when(checkProcessStartCondition())
-                .perform(doProcessStartAction());
+                .when(checkStartProcessCondition())
+                .perform(doStartProcessAction());
 
         // 从运行到中断
         builder.externalTransition().from(WorkProcessTimeState.WORK_PROCESS_RUNNING)
@@ -114,13 +114,14 @@ public class WorkProcessTimeStateMachine {
         return (from, to, event, ctx) -> {
             if (ctx instanceof WorkProcessKeyTime) {
                 WorkProcessKeyTime keyTime = (WorkProcessKeyTime)ctx;
+                keyTime.directChangingLine();
                 keyTime.changeState(to);
             }
             //log.info("ctx is {}",ctx);
         };
     }
 
-    public Condition<Context> checkProcessStartCondition() {
+    public Condition<Context> checkStartProcessCondition() {
         return context -> {
             WorkProcessKeyTime keyTime = (WorkProcessKeyTime)context;
             if (keyTime.getState().equals(WorkProcessTimeState.LINE_CHANGED)) {
@@ -130,17 +131,17 @@ public class WorkProcessTimeStateMachine {
         };
     }
 
-    public Action<WorkProcessTimeState, WorkProcessTimeEvent, Context> doProcessStartAction() {
+    public Action<WorkProcessTimeState, WorkProcessTimeEvent, Context> doStartProcessAction() {
         return (from, to, event, ctx) -> {
-            if (ctx instanceof WorkProcessKeyTime && from.equals(WorkProcessTimeState.INIT)) {
+            if (ctx instanceof WorkProcessKeyTime) {
                 WorkProcessKeyTime keyTime = (WorkProcessKeyTime)ctx;
                 keyTime.changeState(to);
-            }
-            if (ctx instanceof WorkProcessKeyTime && from.equals(WorkProcessTimeState.LINE_CHANGED)) {
-                WorkProcessKeyTime keyTime = (WorkProcessKeyTime)ctx;
-                Instant now = keyTime.getChangeLineSetTime();
-                keyTime.startProcess(now.plusSeconds(3600*2));
-                keyTime.changeState(to);
+                if (from.equals(WorkProcessTimeState.LINE_CHANGED)) {
+                    Instant now = keyTime.getChangeLineSetTime();
+                    keyTime.startProcess(now.plusSeconds(3600*2));
+                } else if (from.equals(WorkProcessTimeState.INIT)) {
+                    keyTime.directStartProcess(Instant.now());
+                }
             }
         };
     }
@@ -158,6 +159,7 @@ public class WorkProcessTimeStateMachine {
             WorkProcessKeyTime keyTime = (WorkProcessKeyTime)ctx;
             Instant startTime = keyTime.getStartTime();
             keyTime.interrupt(startTime.plusSeconds(3600*2));
+            keyTime.changeState(to);
         };
     }
 }

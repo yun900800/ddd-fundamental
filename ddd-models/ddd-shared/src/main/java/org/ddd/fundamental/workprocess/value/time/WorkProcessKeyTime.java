@@ -1,5 +1,6 @@
 package org.ddd.fundamental.workprocess.value.time;
 
+import com.alibaba.cola.statemachine.StateMachine;
 import org.ddd.fundamental.core.ValueObject;
 import org.ddd.fundamental.core.machine.Context;
 import org.ddd.fundamental.infra.hibernate.comment.Comment;
@@ -66,6 +67,10 @@ public class WorkProcessKeyTime extends Context implements ValueObject, Cloneabl
     @Enumerated(EnumType.STRING)
     private WorkProcessTimeState state;
 
+    @Transient
+    private static StateMachine<WorkProcessTimeState, WorkProcessTimeEvent, Context>
+        stateMachine = new WorkProcessTimeStateMachine().createMachine();;
+
     @SuppressWarnings("unused")
     private WorkProcessKeyTime(){}
 
@@ -77,14 +82,15 @@ public class WorkProcessKeyTime extends Context implements ValueObject, Cloneabl
                                Instant changeLineSetTime,
                                Instant offlineTime,
                                Instant startCheckTime,
-                               Instant transferTime
+                               Instant transferTime,
+                               WorkProcessTimeState state
                                ){
         this.startTime = startTime;
         this.endTime = endTime;
         this.interruptTime = interruptTime;
         this.restartTime = restartTime;
         this.reason = reason;
-        this.state = WorkProcessTimeState.INIT;
+        this.state = state;
         this.changeLineSetTime = changeLineSetTime;
         this.offlineTime = offlineTime;
         this.startCheckTime = startCheckTime;
@@ -94,29 +100,34 @@ public class WorkProcessKeyTime extends Context implements ValueObject, Cloneabl
     private WorkProcessKeyTime(Instant startTime, Instant changeLineSetTime){
         this.changeLineSetTime = changeLineSetTime;
         this.startTime = startTime;
-        this.endTime = null;
-        this.interruptTime = null;
-        this.reason = "";
-        this.offlineTime = null;
-        this.transferTime = null;
         this.state = WorkProcessTimeState.INIT;
     }
-
-
-
-    public static WorkProcessKeyTime start(){
-        return new WorkProcessKeyTime(Instant.now(),null);
+    public static WorkProcessKeyTime init(){
+        return new WorkProcessKeyTime(null,null);
     }
 
-    public static WorkProcessKeyTime start(Instant startTime){
-        return new WorkProcessKeyTime(startTime,null);
+    public static StateMachine<WorkProcessTimeState, WorkProcessTimeEvent, Context> getStateMachine() {
+        return stateMachine;
     }
 
-    public static WorkProcessKeyTime changeLineStart(Instant startTime) {
-        return new WorkProcessKeyTime(null,startTime);
+    public WorkProcessKeyTime directStartProcess(Instant startTime){
+        this.startTime = startTime;
+        return this;
     }
-    public static WorkProcessKeyTime changeLineStart() {
-        return new WorkProcessKeyTime(null,Instant.now());
+
+    public WorkProcessKeyTime directStartProcess(){
+        this.directStartProcess(Instant.now());
+        return this;
+    }
+
+    public WorkProcessKeyTime directChangingLine(Instant changeLineSetTime){
+        this.changeLineSetTime = changeLineSetTime;
+        return this;
+    }
+
+    public WorkProcessKeyTime directChangingLine(){
+        this.directChangingLine(Instant.now());
+        return this;
     }
 
     public WorkProcessKeyTime changeState(WorkProcessTimeState state){
@@ -177,6 +188,7 @@ public class WorkProcessKeyTime extends Context implements ValueObject, Cloneabl
             throw new RuntimeException("工序已经开始启动啦,不能再设置换线时间");
         }
         this.changeLineSetTime = setTime;
+
         return this;
     }
 
@@ -246,7 +258,7 @@ public class WorkProcessKeyTime extends Context implements ValueObject, Cloneabl
         }
         this.endTime = endTime;
         return new WorkProcessKeyTime(startTime,endTime,interruptTime,reason,restartTime,changeLineSetTime,
-                offlineTime,startCheckTime,transferTime);
+                offlineTime,startCheckTime,transferTime,state);
     }
 
     public WorkProcessKeyTime finish() {
@@ -266,14 +278,14 @@ public class WorkProcessKeyTime extends Context implements ValueObject, Cloneabl
         this.interruptTime = interruptTime;
         return new WorkProcessKeyTime(this.startTime,this.endTime,interruptTime,reason,restartTime
                 ,changeLineSetTime,
-                offlineTime,startCheckTime,transferTime);
+                offlineTime,startCheckTime,transferTime,state);
     }
 
     public WorkProcessKeyTime changeReason(String reason) {
         this.reason = reason;
         return new WorkProcessKeyTime(this.startTime,this.endTime,interruptTime,reason,restartTime
                 ,changeLineSetTime,
-                offlineTime,startCheckTime,transferTime);
+                offlineTime,startCheckTime,transferTime,state);
     }
 
     public WorkProcessKeyTime restart() {
@@ -293,7 +305,7 @@ public class WorkProcessKeyTime extends Context implements ValueObject, Cloneabl
         }
         this.restartTime = restartTime;
         return new WorkProcessKeyTime(this.startTime,this.endTime,interruptTime,reason,restartTime,changeLineSetTime,
-                offlineTime,startCheckTime,transferTime);
+                offlineTime,startCheckTime,transferTime,state);
     }
 
     public long interruptRange() {

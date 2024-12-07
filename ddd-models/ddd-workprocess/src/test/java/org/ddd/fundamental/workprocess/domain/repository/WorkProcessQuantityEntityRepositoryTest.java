@@ -38,7 +38,6 @@ public class WorkProcessQuantityEntityRepositoryTest extends WorkProcessAppTest 
         WorkProcessRecord record = WorkProcessRecord.create(
                 ChangeableInfo.create("模切工序","打磨电路板"),
                 WorkProcessValue.create(
-                        WorkProcessKeyTime.start(),
                         new ProductResources(new HashSet<>()),
                         WorkProcessTemplateId.randomId(WorkProcessTemplateId.class)
                 )

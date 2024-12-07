@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
+    <file url="file://$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-starter-parent/2.2.5.RELEASE/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ddd-algorithm/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ddd-app/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ddd-authentication/src/main/java" charset="UTF-8" />
@@ -19,17 +20,26 @@
     <file url="file://$PROJECT_DIR$/ddd-message-mq/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ddd-message-mq/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ddd-models/ddd-bom/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ddd-models/ddd-bom/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ddd-models/ddd-equipment/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ddd-models/ddd-equipment/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ddd-models/ddd-event/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ddd-models/ddd-factory/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ddd-models/ddd-factory/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ddd-models/ddd-kafka-starter/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ddd-models/ddd-material/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ddd-models/ddd-material/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ddd-models/ddd-model/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ddd-models/ddd-model/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ddd-models/ddd-redis-manager/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ddd-models/ddd-shared-api/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ddd-models/ddd-shared-api/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ddd-models/ddd-shared/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ddd-models/ddd-shared/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ddd-models/ddd-workorder/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ddd-models/ddd-workorder/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ddd-models/ddd-workprocess/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ddd-models/ddd-workprocess/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ddd-models/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ddd-models/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ddd-redis-starter/src/main/java" charset="UTF-8" />
