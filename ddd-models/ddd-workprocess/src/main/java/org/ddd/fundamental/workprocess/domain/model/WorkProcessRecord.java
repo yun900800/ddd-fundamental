@@ -29,9 +29,9 @@ public class WorkProcessRecord extends AbstractAggregateRoot<WorkProcessId> {
     @Embedded
     private WorkProcessValue workProcessValue;
 
-    @OneToOne(fetch = FetchType.LAZY, orphanRemoval = true,
-            cascade = CascadeType.ALL)
-    @JoinColumn(name = "work_process_time_id")
+    @OneToOne(mappedBy = "record", cascade = CascadeType.ALL,
+            optional = false,
+            fetch = FetchType.LAZY, orphanRemoval = true)
     private WorkProcessTimeEntity workProcessTime;
 
     @OneToOne(cascade = CascadeType.ALL,
@@ -63,6 +63,14 @@ public class WorkProcessRecord extends AbstractAggregateRoot<WorkProcessId> {
     }
 
     public void setWorkProcessTime(WorkProcessTimeEntity workProcessTime) {
+        if (workProcessTime == null) {
+            if (this.workProcessTime != null) {
+                this.workProcessTime.setRecord(null);
+            }
+        }
+        else {
+            workProcessTime.setRecord(this);
+        }
         this.workProcessTime = workProcessTime;
     }
 

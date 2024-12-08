@@ -7,9 +7,7 @@ import org.ddd.fundamental.workprocess.value.WorkProcessTimeId;
 import org.ddd.fundamental.workprocess.value.time.WorkProcessKeyTime;
 import org.ddd.fundamental.workprocess.value.time.WorkProcessTimeEvent;
 
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "w_work_process_time")
@@ -18,6 +16,11 @@ public class WorkProcessTimeEntity extends AbstractEntity<WorkProcessTimeId> {
 
     @Embedded
     private WorkProcessKeyTime keyTime;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
+    @JoinColumn(name = "id")
+    private WorkProcessRecord record;
 
     /**
      * 是否需要换线
@@ -54,6 +57,14 @@ public class WorkProcessTimeEntity extends AbstractEntity<WorkProcessTimeId> {
                             WorkProcessTimeEvent.WORK_PROCESS_START_EVENT,this.keyTime);
         }
         return this;
+    }
+
+    public WorkProcessRecord getRecord() {
+        return record;
+    }
+
+    public void setRecord(WorkProcessRecord record) {
+        this.record = record;
     }
 
     /**
