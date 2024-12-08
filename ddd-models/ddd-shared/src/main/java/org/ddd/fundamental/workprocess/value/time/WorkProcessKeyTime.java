@@ -354,6 +354,10 @@ public class WorkProcessKeyTime extends Context implements ValueObject, Cloneabl
         return transferTime;
     }
 
+    public Instant getTransferFinishTime() {
+        return transferFinishTime;
+    }
+
     @Override
     public String toString() {
         return "WorkProcessKeyTime{" +

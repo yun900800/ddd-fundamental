@@ -190,8 +190,8 @@ public class WorkProcessTimeStateMachine {
     public Condition<Context> checkRestartCondition() {
         return context -> {
             WorkProcessKeyTime keyTime = (WorkProcessKeyTime)context;
-            if (!keyTime.getState().equals(WorkProcessTimeState.WORK_PROCESS_CHECKED) ||
-                    !keyTime.getState().equals(WorkProcessTimeState.WORK_PROCESS_INTERRUPTED)){
+            if (!(keyTime.getState().equals(WorkProcessTimeState.WORK_PROCESS_CHECKED) ||
+                    keyTime.getState().equals(WorkProcessTimeState.WORK_PROCESS_INTERRUPTED))){
                 return false;
             }
             return true;
@@ -210,9 +210,9 @@ public class WorkProcessTimeStateMachine {
     public Condition<Context> checkFinishCondition() {
         return context -> {
             WorkProcessKeyTime keyTime = (WorkProcessKeyTime)context;
-            if (!keyTime.getState().equals(WorkProcessTimeState.WORK_PROCESS_CHECKED)
-                    || !keyTime.getState().equals(WorkProcessTimeState.WORK_PROCESS_INTERRUPTED)
-                    || !keyTime.getState().equals(WorkProcessTimeState.WORK_PROCESS_FINISHED)){
+            if (!(keyTime.getState().equals(WorkProcessTimeState.WORK_PROCESS_CHECKED)
+                    || keyTime.getState().equals(WorkProcessTimeState.WORK_PROCESS_INTERRUPTED)
+                    || keyTime.getState().equals(WorkProcessTimeState.WORK_PROCESS_RUNNING))){
                 return false;
             }
             return true;
@@ -222,7 +222,7 @@ public class WorkProcessTimeStateMachine {
     public Action<WorkProcessTimeState, WorkProcessTimeEvent, Context> doFinishAction(){
         return (from, to, event, ctx) -> {
             WorkProcessKeyTime keyTime = (WorkProcessKeyTime)ctx;
-            Instant startTime = keyTime.getInterruptTime();
+            Instant startTime = keyTime.getStartTime();
             keyTime.finish(startTime.plusSeconds(3600*4));
             keyTime.changeState(to);
         };

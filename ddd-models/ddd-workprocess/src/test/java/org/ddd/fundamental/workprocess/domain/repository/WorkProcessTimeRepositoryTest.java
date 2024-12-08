@@ -96,4 +96,143 @@ public class WorkProcessTimeRepositoryTest extends WorkProcessAppTest {
         Assert.assertEquals(queryTime.getKeyTime().getState(), WorkProcessTimeState.WORK_PROCESS_CHECKED);
         timeRepository.merge(queryTime);
     }
+
+    @Test
+    public void testRestartProcessFromInterrupt(){
+        WorkProcessTimeId id = directStartProcess().first;
+        WorkProcessTimeEntity queryTime = timeRepository.findById(id).orElse(null);
+        queryTime.interruptProcess();
+        queryTime.restartProcess();
+        Assert.assertNotNull(queryTime.getKeyTime().getStartTime());
+        Assert.assertNull(queryTime.getKeyTime().getChangeLineSetTime());
+        Assert.assertNotNull(queryTime.getKeyTime().getInterruptTime());
+        Assert.assertNull(queryTime.getKeyTime().getStartCheckTime());
+        Assert.assertNotNull(queryTime.getKeyTime().getRestartTime());
+        Assert.assertEquals(queryTime.getKeyTime().getState(), WorkProcessTimeState.WORK_PROCESS_RUNNING);
+        timeRepository.merge(queryTime);
+    }
+    @Test
+    public void testRestartProcessFromChecked(){
+        WorkProcessTimeId id = directStartProcess().first;
+        WorkProcessTimeEntity queryTime = timeRepository.findById(id).orElse(null);
+        queryTime.interruptProcess();
+        queryTime.checkAfterInterrupt();
+        queryTime.restartProcess();
+        Assert.assertNotNull(queryTime.getKeyTime().getStartTime());
+        Assert.assertNull(queryTime.getKeyTime().getChangeLineSetTime());
+        Assert.assertNotNull(queryTime.getKeyTime().getInterruptTime());
+        Assert.assertNotNull(queryTime.getKeyTime().getStartCheckTime());
+        Assert.assertNotNull(queryTime.getKeyTime().getRestartTime());
+        Assert.assertEquals(queryTime.getKeyTime().getState(), WorkProcessTimeState.WORK_PROCESS_RUNNING);
+        timeRepository.merge(queryTime);
+    }
+
+    @Test
+    public void testFinishProcessFromRunning(){
+        WorkProcessTimeId id = directStartProcess().first;
+        WorkProcessTimeEntity queryTime = timeRepository.findById(id).orElse(null);
+        queryTime.finishProcess();
+        Assert.assertNotNull(queryTime.getKeyTime().getStartTime());
+        Assert.assertNull(queryTime.getKeyTime().getChangeLineSetTime());
+        Assert.assertNull(queryTime.getKeyTime().getInterruptTime());
+        Assert.assertNull(queryTime.getKeyTime().getStartCheckTime());
+        Assert.assertNull(queryTime.getKeyTime().getRestartTime());
+        Assert.assertEquals(queryTime.getKeyTime().getState(), WorkProcessTimeState.WORK_PROCESS_FINISHED);
+        timeRepository.merge(queryTime);
+    }
+
+    @Test
+    public void testFinishProcessFromInterrupt(){
+        WorkProcessTimeId id = directStartProcess().first;
+        WorkProcessTimeEntity queryTime = timeRepository.findById(id).orElse(null);
+        queryTime.interruptProcess();
+        queryTime.finishProcess();
+        Assert.assertNotNull(queryTime.getKeyTime().getStartTime());
+        Assert.assertNull(queryTime.getKeyTime().getChangeLineSetTime());
+        Assert.assertNotNull(queryTime.getKeyTime().getInterruptTime());
+        Assert.assertNull(queryTime.getKeyTime().getStartCheckTime());
+        Assert.assertNull(queryTime.getKeyTime().getRestartTime());
+        Assert.assertEquals(queryTime.getKeyTime().getState(), WorkProcessTimeState.WORK_PROCESS_FINISHED);
+        timeRepository.merge(queryTime);
+    }
+
+    @Test
+    public void testFinishProcessFromChecked(){
+        WorkProcessTimeId id = directStartProcess().first;
+        WorkProcessTimeEntity queryTime = timeRepository.findById(id).orElse(null);
+        queryTime.interruptProcess();
+        queryTime.checkAfterInterrupt();
+        queryTime.finishProcess();
+        Assert.assertNotNull(queryTime.getKeyTime().getStartTime());
+        Assert.assertNull(queryTime.getKeyTime().getChangeLineSetTime());
+        Assert.assertNotNull(queryTime.getKeyTime().getInterruptTime());
+        Assert.assertNotNull(queryTime.getKeyTime().getStartCheckTime());
+        Assert.assertNull(queryTime.getKeyTime().getRestartTime());
+        Assert.assertEquals(queryTime.getKeyTime().getState(), WorkProcessTimeState.WORK_PROCESS_FINISHED);
+        timeRepository.merge(queryTime);
+    }
+
+    @Test
+    public void testOfflineFromFinished(){
+        WorkProcessTimeId id = directStartProcess().first;
+        WorkProcessTimeEntity queryTime = timeRepository.findById(id).orElse(null);
+        queryTime.interruptProcess();
+        queryTime.checkAfterInterrupt();
+        queryTime.finishProcess();
+        queryTime.offlineProcess();
+        Assert.assertNotNull(queryTime.getKeyTime().getStartTime());
+        Assert.assertNull(queryTime.getKeyTime().getChangeLineSetTime());
+        Assert.assertNotNull(queryTime.getKeyTime().getInterruptTime());
+        Assert.assertNotNull(queryTime.getKeyTime().getStartCheckTime());
+        Assert.assertNull(queryTime.getKeyTime().getRestartTime());
+        Assert.assertNotNull(queryTime.getKeyTime().getOfflineTime());
+        Assert.assertEquals(queryTime.getKeyTime().getState(), WorkProcessTimeState.WORK_PROCESS_OFFLINE);
+        timeRepository.merge(queryTime);
+    }
+
+    @Test
+    public void testTransferFromOffline(){
+        WorkProcessTimeId id = directStartProcess().first;
+        WorkProcessTimeEntity queryTime = timeRepository.findById(id).orElse(null);
+        queryTime.interruptProcess();
+        queryTime.checkAfterInterrupt();
+        queryTime.finishProcess();
+        queryTime.offlineProcess();
+        queryTime.transfer();
+        Assert.assertNotNull(queryTime.getKeyTime().getStartTime());
+        Assert.assertNull(queryTime.getKeyTime().getChangeLineSetTime());
+        Assert.assertNotNull(queryTime.getKeyTime().getInterruptTime());
+        Assert.assertNotNull(queryTime.getKeyTime().getStartCheckTime());
+        Assert.assertNull(queryTime.getKeyTime().getRestartTime());
+        Assert.assertNotNull(queryTime.getKeyTime().getOfflineTime());
+        Assert.assertNotNull(queryTime.getKeyTime().getTransferTime());
+        Assert.assertEquals(queryTime.getKeyTime().getState(), WorkProcessTimeState.WORK_PROCESS_TRANSFER);
+        timeRepository.merge(queryTime);
+    }
+
+    @Test
+    public void testFinishTransferFromTransfer(){
+        WorkProcessTimeId id = directStartProcess().first;
+        WorkProcessTimeEntity queryTime = timeRepository.findById(id).orElse(null);
+        queryTime.interruptProcess();
+        queryTime.checkAfterInterrupt();
+        queryTime.finishProcess();
+        queryTime.offlineProcess();
+        queryTime.transfer();
+        queryTime.finishTransfer();
+        Assert.assertNotNull(queryTime.getKeyTime().getStartTime());
+        Assert.assertNull(queryTime.getKeyTime().getChangeLineSetTime());
+        Assert.assertNotNull(queryTime.getKeyTime().getInterruptTime());
+        Assert.assertNotNull(queryTime.getKeyTime().getStartCheckTime());
+        Assert.assertNull(queryTime.getKeyTime().getRestartTime());
+        Assert.assertNotNull(queryTime.getKeyTime().getOfflineTime());
+        Assert.assertNotNull(queryTime.getKeyTime().getTransferTime());
+        Assert.assertNotNull(queryTime.getKeyTime().getTransferFinishTime());
+        Assert.assertEquals(queryTime.getKeyTime().getState(), WorkProcessTimeState.WORK_PROCESS_TRANSFER_OVER);
+        timeRepository.merge(queryTime);
+    }
+
+
+
+
 }
