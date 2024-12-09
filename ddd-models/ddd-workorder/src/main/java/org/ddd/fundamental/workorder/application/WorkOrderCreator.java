@@ -90,7 +90,7 @@ public class WorkOrderCreator implements SmartInitializingSingleton {
 
     private List<WorkOrderEvent> toEvents(List<WorkOrder> workOrders){
         return workOrders.stream().map(v->WorkOrderEvent.create(
-                    DomainEventType.EQUIPMENT, v.getOrder()
+                    DomainEventType.EQUIPMENT, v.getOrder(),v.id()
                 ))
                 .collect(Collectors.toList());
     }
@@ -100,7 +100,7 @@ public class WorkOrderCreator implements SmartInitializingSingleton {
         this.workOrderList = createWorkOrders();
         workOrderRepository.saveAll(workOrderList);
         //producer.sendWorkOrders(toEvents(workOrderList));
-        producer.sendWorkOrderByType(toEvents(workOrderList).get(0));
+        producer.sendWorkOrdersByType(toEvents(workOrderList));
         log.info("finish create workOrders");
     }
 

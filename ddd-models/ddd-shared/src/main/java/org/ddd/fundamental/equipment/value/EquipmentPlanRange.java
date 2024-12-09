@@ -21,7 +21,7 @@ public class EquipmentPlanRange implements ValueObject, Cloneable {
     private DateRangeValue dateRangeValue;
 
     @SuppressWarnings("unused")
-    protected EquipmentPlanRange(){}
+    public EquipmentPlanRange(){}
 
     private EquipmentPlanRange(DateRangeValue dateRangeValue,
                                WorkOrderId workOrderId,

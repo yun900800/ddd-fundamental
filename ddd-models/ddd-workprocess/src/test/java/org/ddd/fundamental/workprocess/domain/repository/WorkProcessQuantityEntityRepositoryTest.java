@@ -1,6 +1,7 @@
 package org.ddd.fundamental.workprocess.domain.repository;
 
 import org.ddd.fundamental.changeable.ChangeableInfo;
+import org.ddd.fundamental.workorder.value.WorkOrderId;
 import org.ddd.fundamental.workprocess.WorkProcessAppTest;
 import org.ddd.fundamental.workprocess.value.WorkProcessId;
 import org.ddd.fundamental.workprocess.domain.model.WorkProcessQuantityEntity;
@@ -40,7 +41,9 @@ public class WorkProcessQuantityEntityRepositoryTest extends WorkProcessAppTest 
                 WorkProcessValue.create(
                         new ProductResources(new HashSet<>()),
                         WorkProcessTemplateId.randomId(WorkProcessTemplateId.class)
-                )
+                ),
+                WorkOrderId.randomId(WorkOrderId.class),
+                null
         );
         workProcessRecordRepository.save(record);
         WorkProcessQuantityEntity entity = WorkProcessQuantityEntity.create(

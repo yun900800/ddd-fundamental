@@ -1,6 +1,7 @@
 package org.ddd.fundamental.core;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.AfterDomainEventPublication;
 import org.springframework.data.domain.DomainEvents;
 import org.springframework.lang.NonNull;
@@ -15,6 +16,7 @@ import java.util.*;
  * @param <ID> the aggregate root ID type.
  */
 @MappedSuperclass
+@Slf4j
 public abstract class AbstractAggregateRoot<ID extends DomainObjectId> extends AbstractEntity<ID> {
 
     @Transient

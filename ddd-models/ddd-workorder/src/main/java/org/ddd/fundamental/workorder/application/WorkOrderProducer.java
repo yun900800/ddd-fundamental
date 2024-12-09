@@ -28,6 +28,10 @@ public class WorkOrderProducer {
         multiTypeKafkaTemplate.send("work_order_topic",event);
     }
 
+    public void sendWorkOrdersByType(List<WorkOrderEvent> eventList){
+        multiTypeKafkaTemplate.send("work_order_topic",eventList);
+    }
+
     public void sendWorkOrder(WorkOrderEvent event) {
         String result = "";
         try {

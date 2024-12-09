@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
-@Component
+//@Component
 @Slf4j
 public class WorkOrderConsumer {
     @KafkaListener(topics = "work_order_topic", groupId = "material", containerFactory = "materialKafkaListenerContainerFactory")

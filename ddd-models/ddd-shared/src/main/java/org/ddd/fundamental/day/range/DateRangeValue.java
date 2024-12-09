@@ -46,7 +46,7 @@ public class DateRangeValue implements ValueObject,Cloneable, CalculateTime {
     @JsonIgnore
     private Range<Instant> range;
 
-    protected DateRangeValue(){}
+    public DateRangeValue(){}
 
     private DateRangeValue(Instant start, Instant end, String desc){
         this.start = start;

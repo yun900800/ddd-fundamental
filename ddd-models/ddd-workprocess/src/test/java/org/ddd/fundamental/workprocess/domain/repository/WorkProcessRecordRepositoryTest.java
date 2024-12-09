@@ -2,6 +2,7 @@ package org.ddd.fundamental.workprocess.domain.repository;
 
 import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.changeable.ChangeableInfo;
+import org.ddd.fundamental.workorder.value.WorkOrderId;
 import org.ddd.fundamental.workprocess.WorkProcessAppTest;
 import org.ddd.fundamental.workprocess.domain.model.WorkProcessTimeEntity;
 import org.ddd.fundamental.workprocess.value.WorkProcessId;
@@ -36,7 +37,9 @@ public class WorkProcessRecordRepositoryTest extends WorkProcessAppTest {
                 WorkProcessValue.create(
                         new ProductResources(new HashSet<>()),
                         WorkProcessTemplateId.randomId(WorkProcessTemplateId.class)
-                )
+                ),
+                WorkOrderId.randomId(WorkOrderId.class),
+                null
         );
         repository.save(record);
     }
@@ -48,7 +51,9 @@ public class WorkProcessRecordRepositoryTest extends WorkProcessAppTest {
                 WorkProcessValue.create(
                         new ProductResources(new HashSet<>()),
                         WorkProcessTemplateId.randomId(WorkProcessTemplateId.class)
-                )
+                ),
+                WorkOrderId.randomId(WorkOrderId.class),
+                null
         );
         WorkProcessQuantity quantity = WorkProcessQuantity.newBuilder()
                 .targetQuantity(1200)
@@ -69,7 +74,9 @@ public class WorkProcessRecordRepositoryTest extends WorkProcessAppTest {
 
                         new ProductResources(new HashSet<>()),
                         WorkProcessTemplateId.randomId(WorkProcessTemplateId.class)
-                )
+                ),
+                WorkOrderId.randomId(WorkOrderId.class),
+                null
         );
         WorkProcessQuantity quantity = WorkProcessQuantity.newBuilder()
                 .targetQuantity(1200)
@@ -94,7 +101,9 @@ public class WorkProcessRecordRepositoryTest extends WorkProcessAppTest {
                 WorkProcessValue.create(
                         new ProductResources(new HashSet<>()),
                         WorkProcessTemplateId.randomId(WorkProcessTemplateId.class)
-                )
+                ),
+                WorkOrderId.randomId(WorkOrderId.class),
+                null
         );
         WorkProcessQuantity quantity = WorkProcessQuantity.newBuilder()
                 .targetQuantity(1200)
@@ -121,7 +130,9 @@ public class WorkProcessRecordRepositoryTest extends WorkProcessAppTest {
                 WorkProcessValue.create(
                         new ProductResources(new HashSet<>()),
                         WorkProcessTemplateId.randomId(WorkProcessTemplateId.class)
-                )
+                ),
+                WorkOrderId.randomId(WorkOrderId.class),
+                null
         );
         WorkProcessTimeEntity time = WorkProcessTimeEntity.create(
             WorkProcessKeyTime.init()
@@ -142,7 +153,9 @@ public class WorkProcessRecordRepositoryTest extends WorkProcessAppTest {
                 WorkProcessValue.create(
                         new ProductResources(new HashSet<>()),
                         WorkProcessTemplateId.randomId(WorkProcessTemplateId.class)
-                )
+                ),
+                WorkOrderId.randomId(WorkOrderId.class),
+                null
         );
         WorkProcessTimeEntity time = WorkProcessTimeEntity.create(
                 WorkProcessKeyTime.init()

@@ -4,6 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.changeable.ChangeableInfo;
 import org.ddd.fundamental.material.value.MaterialId;
 import org.ddd.fundamental.utils.CollectionUtils;
+import org.ddd.fundamental.workorder.value.WorkOrderId;
+import org.ddd.fundamental.workorder.value.WorkOrderValue;
 import org.ddd.fundamental.workprocess.creator.WorkProcessTemplateAddable;
 import org.ddd.fundamental.workprocess.domain.model.CraftsmanShipTemplate;
 import org.ddd.fundamental.workprocess.domain.model.WorkProcessRecord;
@@ -45,7 +47,8 @@ public class WorkProcessRecordApplication {
     }
 
     @Transactional
-    public void createWorkProcessRecords(MaterialId productId, CraftsmanShipId craftsmanShipId){
+    public void createWorkProcessRecords(MaterialId productId, CraftsmanShipId craftsmanShipId, WorkOrderId id,
+                                         WorkOrderValue workOrderValue){
         CraftsmanShipTemplate craftsmanShip = craftsmanShipRepository.findById(craftsmanShipId).orElse(null);
         if (craftsmanShip == null) {
             return;
@@ -57,23 +60,25 @@ public class WorkProcessRecordApplication {
             WorkProcessTemplate template = entry.getValue();
             WorkProcessTemplateId templateId = entry.getKey();
             WorkProcessRecord record = createProcessRecord(template.getWorkProcessInfo(),template.getResources(),
-                    templateId);
+                    templateId,id,workOrderValue);
             recordList.add(record);
         }
         workProcessRecordRepository.saveAll(recordList);
         log.info("craftsmanShipAggragate is {}",craftsmanShipAggragate);
-
     }
 
     public WorkProcessRecord createProcessRecord(ChangeableInfo info,
                                                  ProductResources resources,
-                                                 WorkProcessTemplateId templateId) {
+                                                 WorkProcessTemplateId templateId,
+                                                 WorkOrderId id, WorkOrderValue workOrderValue) {
         WorkProcessRecord record = WorkProcessRecord.create(
                 info,
                 WorkProcessValue.create(
                         resources,
                         templateId
-                )
+                ),
+                id,
+                workOrderValue
         );
         WorkProcessTimeEntity workProcessTime = WorkProcessTimeEntity.init(
                 CollectionUtils.random(WorkProcessTemplateAddable.trueOrFalse()));
