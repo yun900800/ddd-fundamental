@@ -5,6 +5,7 @@ import org.ddd.fundamental.tuple.TwoTuple;
 import org.ddd.fundamental.workprocess.WorkProcessAppTest;
 import org.ddd.fundamental.workprocess.domain.model.WorkProcessTimeEntity;
 import org.ddd.fundamental.workprocess.enums.WorkProcessTimeState;
+import org.ddd.fundamental.workprocess.value.WorkProcessId;
 import org.ddd.fundamental.workprocess.value.WorkProcessTimeId;
 import org.junit.Assert;
 import org.junit.Rule;
@@ -20,14 +21,14 @@ public class WorkProcessTimeRepositoryTest extends WorkProcessAppTest {
     @Rule
     public ExpectedException expectedEx = ExpectedException.none();
 
-    private TwoTuple<WorkProcessTimeId,WorkProcessTimeEntity> directStartProcess(){
+    private TwoTuple<WorkProcessId,WorkProcessTimeEntity> directStartProcess(){
         WorkProcessTimeEntity workProcessTime =
                 WorkProcessTimeEntity.init(false).directStartProcess();
         timeRepository.persist(workProcessTime);
         return Tuple.tuple(workProcessTime.id(),workProcessTime);
     }
 
-    private TwoTuple<WorkProcessTimeId,WorkProcessTimeEntity> directChangingLine(){
+    private TwoTuple<WorkProcessId,WorkProcessTimeEntity> directChangingLine(){
         WorkProcessTimeEntity workProcessTime =
                 WorkProcessTimeEntity.init(true).directChangLine();
         timeRepository.persist(workProcessTime);
@@ -36,7 +37,7 @@ public class WorkProcessTimeRepositoryTest extends WorkProcessAppTest {
 
     @Test
     public void testDirectStartProcess(){
-        WorkProcessTimeId id = directStartProcess().first;
+        WorkProcessId id = directStartProcess().first;
         WorkProcessTimeEntity queryTime = timeRepository.findById(id).orElse(null);
         Assert.assertNotNull(queryTime.getKeyTime().getStartTime());
         Assert.assertNull(queryTime.getKeyTime().getChangeLineSetTime());
@@ -45,7 +46,7 @@ public class WorkProcessTimeRepositoryTest extends WorkProcessAppTest {
 
     @Test
     public void testDirectChangeLine() {
-        WorkProcessTimeId id = directChangingLine().first;
+        WorkProcessId id = directChangingLine().first;
         WorkProcessTimeEntity queryTime = timeRepository.findById(id).orElse(null);
         Assert.assertNull(queryTime.getKeyTime().getStartTime());
         Assert.assertNotNull(queryTime.getKeyTime().getChangeLineSetTime());
@@ -54,7 +55,7 @@ public class WorkProcessTimeRepositoryTest extends WorkProcessAppTest {
 
     @Test
     public void testStartProcessAfterChangingLine(){
-        WorkProcessTimeId id = directChangingLine().first;
+        WorkProcessId id = directChangingLine().first;
         WorkProcessTimeEntity queryTime = timeRepository.findById(id).orElse(null);
         queryTime.startProcessAfterChangingLine();
         Assert.assertNotNull(queryTime.getKeyTime().getStartTime());
@@ -64,7 +65,7 @@ public class WorkProcessTimeRepositoryTest extends WorkProcessAppTest {
     }
     @Test
     public void testStartProcessAfterChangingLineThrowException(){
-        WorkProcessTimeId id = directStartProcess().first;
+        WorkProcessId id = directStartProcess().first;
         WorkProcessTimeEntity queryTime = timeRepository.findById(id).orElse(null);
         expectedEx.expect(RuntimeException.class);
         expectedEx.expectMessage("请先启动换线后再启动工序");
@@ -73,7 +74,7 @@ public class WorkProcessTimeRepositoryTest extends WorkProcessAppTest {
 
     @Test
     public void testInterruptWorkProcess(){
-        WorkProcessTimeId id = directStartProcess().first;
+        WorkProcessId id = directStartProcess().first;
         WorkProcessTimeEntity queryTime = timeRepository.findById(id).orElse(null);
         queryTime.interruptProcess();
         Assert.assertNotNull(queryTime.getKeyTime().getStartTime());
@@ -85,7 +86,7 @@ public class WorkProcessTimeRepositoryTest extends WorkProcessAppTest {
 
     @Test
     public void testCheckAfterInterrupt(){
-        WorkProcessTimeId id = directStartProcess().first;
+        WorkProcessId id = directStartProcess().first;
         WorkProcessTimeEntity queryTime = timeRepository.findById(id).orElse(null);
         queryTime.interruptProcess();
         queryTime.checkAfterInterrupt();
@@ -99,7 +100,7 @@ public class WorkProcessTimeRepositoryTest extends WorkProcessAppTest {
 
     @Test
     public void testRestartProcessFromInterrupt(){
-        WorkProcessTimeId id = directStartProcess().first;
+        WorkProcessId id = directStartProcess().first;
         WorkProcessTimeEntity queryTime = timeRepository.findById(id).orElse(null);
         queryTime.interruptProcess();
         queryTime.restartProcess();
@@ -113,7 +114,7 @@ public class WorkProcessTimeRepositoryTest extends WorkProcessAppTest {
     }
     @Test
     public void testRestartProcessFromChecked(){
-        WorkProcessTimeId id = directStartProcess().first;
+        WorkProcessId id = directStartProcess().first;
         WorkProcessTimeEntity queryTime = timeRepository.findById(id).orElse(null);
         queryTime.interruptProcess();
         queryTime.checkAfterInterrupt();
@@ -129,7 +130,7 @@ public class WorkProcessTimeRepositoryTest extends WorkProcessAppTest {
 
     @Test
     public void testFinishProcessFromRunning(){
-        WorkProcessTimeId id = directStartProcess().first;
+        WorkProcessId id = directStartProcess().first;
         WorkProcessTimeEntity queryTime = timeRepository.findById(id).orElse(null);
         queryTime.finishProcess();
         Assert.assertNotNull(queryTime.getKeyTime().getStartTime());
@@ -143,7 +144,7 @@ public class WorkProcessTimeRepositoryTest extends WorkProcessAppTest {
 
     @Test
     public void testFinishProcessFromInterrupt(){
-        WorkProcessTimeId id = directStartProcess().first;
+        WorkProcessId id = directStartProcess().first;
         WorkProcessTimeEntity queryTime = timeRepository.findById(id).orElse(null);
         queryTime.interruptProcess();
         queryTime.finishProcess();
@@ -158,7 +159,7 @@ public class WorkProcessTimeRepositoryTest extends WorkProcessAppTest {
 
     @Test
     public void testFinishProcessFromChecked(){
-        WorkProcessTimeId id = directStartProcess().first;
+        WorkProcessId id = directStartProcess().first;
         WorkProcessTimeEntity queryTime = timeRepository.findById(id).orElse(null);
         queryTime.interruptProcess();
         queryTime.checkAfterInterrupt();
@@ -174,7 +175,7 @@ public class WorkProcessTimeRepositoryTest extends WorkProcessAppTest {
 
     @Test
     public void testOfflineFromFinished(){
-        WorkProcessTimeId id = directStartProcess().first;
+        WorkProcessId id = directStartProcess().first;
         WorkProcessTimeEntity queryTime = timeRepository.findById(id).orElse(null);
         queryTime.interruptProcess();
         queryTime.checkAfterInterrupt();
@@ -192,7 +193,7 @@ public class WorkProcessTimeRepositoryTest extends WorkProcessAppTest {
 
     @Test
     public void testTransferFromOffline(){
-        WorkProcessTimeId id = directStartProcess().first;
+        WorkProcessId id = directStartProcess().first;
         WorkProcessTimeEntity queryTime = timeRepository.findById(id).orElse(null);
         queryTime.interruptProcess();
         queryTime.checkAfterInterrupt();
@@ -212,7 +213,7 @@ public class WorkProcessTimeRepositoryTest extends WorkProcessAppTest {
 
     @Test
     public void testFinishTransferFromTransfer(){
-        WorkProcessTimeId id = directStartProcess().first;
+        WorkProcessId id = directStartProcess().first;
         WorkProcessTimeEntity queryTime = timeRepository.findById(id).orElse(null);
         queryTime.interruptProcess();
         queryTime.checkAfterInterrupt();

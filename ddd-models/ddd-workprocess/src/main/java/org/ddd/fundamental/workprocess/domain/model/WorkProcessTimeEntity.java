@@ -3,6 +3,7 @@ package org.ddd.fundamental.workprocess.domain.model;
 import org.ddd.fundamental.core.AbstractEntity;
 import org.ddd.fundamental.infra.hibernate.comment.Comment;
 import org.ddd.fundamental.workprocess.enums.WorkProcessTimeState;
+import org.ddd.fundamental.workprocess.value.WorkProcessId;
 import org.ddd.fundamental.workprocess.value.WorkProcessTimeId;
 import org.ddd.fundamental.workprocess.value.time.WorkProcessKeyTime;
 import org.ddd.fundamental.workprocess.value.time.WorkProcessTimeEvent;
@@ -12,7 +13,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "w_work_process_time")
 @Comment("这是一个管理时间的表")
-public class WorkProcessTimeEntity extends AbstractEntity<WorkProcessTimeId> {
+public class WorkProcessTimeEntity extends AbstractEntity<WorkProcessId> {
 
     @Embedded
     private WorkProcessKeyTime keyTime;
@@ -31,7 +32,7 @@ public class WorkProcessTimeEntity extends AbstractEntity<WorkProcessTimeId> {
     protected WorkProcessTimeEntity(){}
 
     private WorkProcessTimeEntity(WorkProcessKeyTime keyTime){
-        super(WorkProcessTimeId.randomId(WorkProcessTimeId.class));
+        super(WorkProcessId.randomId(WorkProcessId.class));
         this.keyTime = keyTime;
         this.isNeedChangeLine = false;
     }

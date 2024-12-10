@@ -2,6 +2,7 @@ package org.ddd.fundamental.workprocess.consumer;
 
 import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.event.workprocess.WorkProcessRecordCreated;
+import org.ddd.fundamental.event.workprocess.WorkProcessTimeEvent;
 import org.ddd.fundamental.workprocess.producer.WorkProcessRecordProducer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -17,8 +18,14 @@ public class WorkProcessRecordConsumer {
     private WorkProcessRecordProducer processRecordProducer;
 
     @TransactionalEventListener(phase = BEFORE_COMMIT)
-    public void OnWorkProcessRecordCreated(WorkProcessRecordCreated workProcessRecordCreated){
+    public void onWorkProcessRecordCreated(WorkProcessRecordCreated workProcessRecordCreated){
         log.info("workProcessRecordCreated is {}",workProcessRecordCreated);
         processRecordProducer.sendWorkOrderProcessCreated(workProcessRecordCreated);
+    }
+
+    @TransactionalEventListener(phase = BEFORE_COMMIT)
+    public void onWorkProcessTimeEvent(WorkProcessTimeEvent event){
+        log.info("WorkProcessTimeEvent is {} in workProcess.",event);
+        //
     }
 }

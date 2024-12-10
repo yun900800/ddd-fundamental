@@ -19,6 +19,10 @@ import java.util.Objects;
 @Embeddable
 public class WorkProcessKeyTime extends Context implements ValueObject, Cloneable  {
 
+    @Comment("初始化时间")
+    @Column
+    private Instant initTime;
+
     /**
      * 工序开始执行时间
      */
@@ -103,6 +107,7 @@ public class WorkProcessKeyTime extends Context implements ValueObject, Cloneabl
         this.changeLineSetTime = changeLineSetTime;
         this.startTime = startTime;
         this.state = WorkProcessTimeState.INIT;
+        this.initTime = Instant.now();
     }
     public static WorkProcessKeyTime init(){
         return new WorkProcessKeyTime(null,null);
@@ -404,5 +409,9 @@ public class WorkProcessKeyTime extends Context implements ValueObject, Cloneabl
         } catch (CloneNotSupportedException e) {
             throw new AssertionError();
         }
+    }
+
+    public Instant getInitTime() {
+        return initTime;
     }
 }

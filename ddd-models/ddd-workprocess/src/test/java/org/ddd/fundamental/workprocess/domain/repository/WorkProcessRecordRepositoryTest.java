@@ -164,9 +164,16 @@ public class WorkProcessRecordRepositoryTest extends WorkProcessAppTest {
         repository.save(record);
         WorkProcessId id = record.id();
         WorkProcessRecord queryRecord = repository.findById(id).orElse(null);
-        Instant startTime = queryRecord.getWorkProcessTime().getKeyTime().getStartTime();
-        queryRecord.getWorkProcessTime().getKeyTime().interrupt(startTime.plusSeconds(3600*2));
+        Instant startTime = queryRecord.getWorkProcessTime().getKeyTime().getInitTime();
+        queryRecord.getWorkProcessTime().getKeyTime().directStartProcess(startTime.plusSeconds(3600*2));
         repository.save(queryRecord);
+    }
+
+    @Test
+    public void testDirectStartProcess(){
+        WorkProcessRecord record = repository.findAll().get(0);
+        record.directStartProcess();
+        repository.save(record);
     }
 
 }

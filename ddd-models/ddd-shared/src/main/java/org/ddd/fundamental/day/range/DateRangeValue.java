@@ -1,10 +1,14 @@
 package org.ddd.fundamental.day.range;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.Range;
 import org.ddd.fundamental.core.ValueObject;
 import org.ddd.fundamental.day.CalculateTime;
+import org.ddd.fundamental.day.serializer.CustomInstantDeserializer;
+import org.ddd.fundamental.day.serializer.CustomInstantSerializer;
 import org.ddd.fundamental.tuple.ThreeTuple;
 import org.ddd.fundamental.tuple.Tuple;
 import org.ddd.fundamental.tuple.TwoTuple;
@@ -29,9 +33,13 @@ import java.util.Objects;
 @Slf4j
 public class DateRangeValue implements ValueObject,Cloneable, CalculateTime {
 
+    @JsonSerialize(using = CustomInstantSerializer.class)
+    @JsonDeserialize(using = CustomInstantDeserializer.class)
     @Column(name = "range_start" , nullable = false)
     private Instant start;
 
+    @JsonSerialize(using = CustomInstantSerializer.class)
+    @JsonDeserialize(using = CustomInstantDeserializer.class)
     @Column(name = "range_end" , nullable = false)
     private Instant end;
 

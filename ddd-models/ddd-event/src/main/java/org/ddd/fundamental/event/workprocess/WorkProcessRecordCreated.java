@@ -1,6 +1,5 @@
 package org.ddd.fundamental.event.workprocess;
 
-import org.ddd.fundamental.changeable.ChangeableInfo;
 import org.ddd.fundamental.core.DomainEvent;
 import org.ddd.fundamental.event.core.BaseDomainEvent;
 import org.ddd.fundamental.event.core.DomainEventType;
