@@ -1,5 +1,6 @@
 package org.ddd.fundamental.workprocess.value.quantity;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.ddd.fundamental.core.ValueObject;
 
 import javax.persistence.Embeddable;
@@ -11,6 +12,7 @@ import java.util.Objects;
  */
 @Embeddable
 @MappedSuperclass
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class WorkProcessTemplateQuantity implements ValueObject, Cloneable {
 
     /**
@@ -44,6 +46,14 @@ public class WorkProcessTemplateQuantity implements ValueObject, Cloneable {
         this.overCrossPercent = overCrossPercent;
         this.owePaymentPercent = owePaymentPercent;
         this.targetQualifiedRate = targetQualifiedRate;
+    }
+
+    public boolean isOverCross(){
+        return this.overCrossPercent != null;
+    }
+
+    public boolean isOwePayment(){
+        return this.owePaymentPercent != null;
     }
 
     public static TargetStep newBuilder(){
@@ -136,7 +146,7 @@ public class WorkProcessTemplateQuantity implements ValueObject, Cloneable {
         @Override
         public BuildStep owePaymentPercent(double owePaymentPercent) {
             this.owePaymentPercent = owePaymentPercent;
-            return null;
+            return this;
         }
 
         @Override

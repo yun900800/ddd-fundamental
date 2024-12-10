@@ -7,16 +7,14 @@ import org.ddd.fundamental.utils.CollectionUtils;
 import org.ddd.fundamental.workorder.value.WorkOrderId;
 import org.ddd.fundamental.workorder.value.WorkOrderValue;
 import org.ddd.fundamental.workprocess.creator.WorkProcessTemplateAddable;
-import org.ddd.fundamental.workprocess.domain.model.CraftsmanShipTemplate;
-import org.ddd.fundamental.workprocess.domain.model.WorkProcessRecord;
-import org.ddd.fundamental.workprocess.domain.model.WorkProcessTemplate;
-import org.ddd.fundamental.workprocess.domain.model.WorkProcessTimeEntity;
+import org.ddd.fundamental.workprocess.domain.model.*;
 import org.ddd.fundamental.workprocess.domain.repository.CraftsmanShipRepository;
 import org.ddd.fundamental.workprocess.domain.repository.WorkProcessRecordRepository;
 import org.ddd.fundamental.workprocess.domain.repository.WorkProcessTemplateRepository;
 import org.ddd.fundamental.workprocess.value.CraftsmanShipId;
 import org.ddd.fundamental.workprocess.value.WorkProcessTemplateId;
 import org.ddd.fundamental.workprocess.value.WorkProcessValue;
+import org.ddd.fundamental.workprocess.value.quantity.WorkProcessQuantity;
 import org.ddd.fundamental.workprocess.value.resources.ProductResources;
 import org.ddd.fundamental.workprocess.value.time.WorkProcessKeyTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +58,7 @@ public class WorkProcessRecordApplication {
             WorkProcessTemplate template = entry.getValue();
             WorkProcessTemplateId templateId = entry.getKey();
             WorkProcessRecord record = createProcessRecord(template.getWorkProcessInfo(),template.getResources(),
-                    templateId,id,workOrderValue);
+                    templateId,id,workOrderValue,template);
             recordList.add(record);
         }
         workProcessRecordRepository.saveAll(recordList);
@@ -70,7 +68,8 @@ public class WorkProcessRecordApplication {
     public WorkProcessRecord createProcessRecord(ChangeableInfo info,
                                                  ProductResources resources,
                                                  WorkProcessTemplateId templateId,
-                                                 WorkOrderId id, WorkOrderValue workOrderValue) {
+                                                 WorkOrderId id, WorkOrderValue workOrderValue,
+                                                 WorkProcessTemplate template) {
         WorkProcessRecord record = WorkProcessRecord.create(
                 info,
                 WorkProcessValue.create(
@@ -83,6 +82,14 @@ public class WorkProcessRecordApplication {
         WorkProcessTimeEntity workProcessTime = WorkProcessTimeEntity.init(
                 CollectionUtils.random(WorkProcessTemplateAddable.trueOrFalse()));
         record.setWorkProcessTime(workProcessTime);
+        WorkProcessQuantityEntity workProcessQuantity = WorkProcessQuantityEntity.create(
+                template.getWorkProcessTemplateQuantity().isOverCross() ?
+                        WorkProcessQuantity.buildOverCrossQuantity(template.getWorkProcessTemplateQuantity(),
+                                workOrderValue.getProductQty().intValue()) :
+                        WorkProcessQuantity.buildOwePaymentQuantity(template.getWorkProcessTemplateQuantity(),
+                                workOrderValue.getProductQty().intValue())
+        );
+        record.setQuantity(workProcessQuantity);
         return record;
     }
 }

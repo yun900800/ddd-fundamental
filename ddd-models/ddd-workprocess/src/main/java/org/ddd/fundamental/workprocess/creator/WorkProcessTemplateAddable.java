@@ -113,11 +113,20 @@ public class WorkProcessTemplateAddable implements DataAddable {
     }
 
     public static WorkProcessTemplateQuantity createWorkProcessTemplateQuantity(){
-        return WorkProcessTemplateQuantity.newBuilder().targetQualifiedRate(
-                        org.ddd.fundamental.utils.CollectionUtils.random(doubleList())
-                ).transferPercent(org.ddd.fundamental.utils.CollectionUtils.random(doubleList()))
-                .overCrossPercent(org.ddd.fundamental.utils.CollectionUtils.random(doubleList()))
-                .build();
+        if(org.ddd.fundamental.utils.CollectionUtils.random(trueOrFalse())){
+            return WorkProcessTemplateQuantity.newBuilder().targetQualifiedRate(
+                            org.ddd.fundamental.utils.CollectionUtils.random(doubleList())
+                    ).transferPercent(org.ddd.fundamental.utils.CollectionUtils.random(doubleList()))
+                    .overCrossPercent(org.ddd.fundamental.utils.CollectionUtils.random(doubleList()))
+                    .build();
+        } else{
+            return WorkProcessTemplateQuantity.newBuilder().targetQualifiedRate(
+                            org.ddd.fundamental.utils.CollectionUtils.random(doubleList())
+                    ).transferPercent(org.ddd.fundamental.utils.CollectionUtils.random(doubleList()))
+                    .owePaymentPercent(org.ddd.fundamental.utils.CollectionUtils.random(doubleList()))
+                    .build();
+        }
+
     }
 
     public WorkProcessTemplate createWorkProcessTemplate(){

@@ -64,6 +64,24 @@ public class WorkProcessQuantity implements ValueObject, Cloneable {
         ,overCrossQuantity,owePaymentQuantity);
     }
 
+    public static WorkProcessQuantity buildOverCrossQuantity(WorkProcessTemplateQuantity templateQuantity,
+                                                             int targetQuantity){
+        return WorkProcessQuantity.newBuilder().targetQuantity(targetQuantity)
+                .unQualifiedQuantity(0)
+                .transferQuantityWithOverCross(targetQuantity* templateQuantity.getTransferPercent().intValue()/100)
+                .overCrossQuantity(targetQuantity * templateQuantity.getOverCrossPercent().intValue()/100)
+                .build();
+    }
+
+    public static WorkProcessQuantity buildOwePaymentQuantity(WorkProcessTemplateQuantity templateQuantity,
+                                                             int targetQuantity){
+        return WorkProcessQuantity.newBuilder().targetQuantity(targetQuantity)
+                .unQualifiedQuantity(0)
+                .transferQuantityWithOverCross(targetQuantity* templateQuantity.getTransferPercent().intValue()/100)
+                .owePaymentQuantity(targetQuantity * templateQuantity.getOwePaymentPercent().intValue()/100)
+                .build();
+    }
+
     public WorkProcessQuantity changeTargetQuantity(int targetQuantity){
         return new WorkProcessQuantity(targetQuantity,unQualifiedQuantity,transferQuantity
                 ,overCrossQuantity,owePaymentQuantity);

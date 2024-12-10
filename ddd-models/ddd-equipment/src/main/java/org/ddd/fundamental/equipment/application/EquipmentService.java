@@ -7,6 +7,7 @@ import org.ddd.fundamental.equipment.creator.ToolingEquipmentAddable;
 import org.ddd.fundamental.equipment.domain.model.Equipment;
 import org.ddd.fundamental.equipment.domain.model.EquipmentPlan;
 import org.ddd.fundamental.equipment.domain.model.ToolingEquipment;
+import org.ddd.fundamental.equipment.domain.repository.EquipmentPlanRepository;
 import org.ddd.fundamental.equipment.domain.repository.EquipmentRepository;
 import org.ddd.fundamental.equipment.domain.repository.EquipmentResourceRepository;
 import org.ddd.fundamental.equipment.domain.repository.ToolingEquipmentRepository;
@@ -39,6 +40,9 @@ public class EquipmentService {
 
     @Autowired
     private EquipmentResourceRepository resourceRepository;
+
+    @Autowired
+    private EquipmentPlanRepository planRepository;
 
     @Autowired
     private ToolingEquipmentAddable creator;
@@ -86,6 +90,7 @@ public class EquipmentService {
     public void deleteAllEquipments() {
         resourceRepository.deleteAllEquipmentResources();
         equipmentRepository.deleteAllEquipments();
+        planRepository.deleteAllEquipmentPlans();
     }
 
     @Transactional(readOnly = true)
