@@ -1,18 +1,16 @@
 package org.ddd.fundamental.workprocess.consumer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.event.workorder.WorkOrderEvent;
-import org.ddd.fundamental.workprocess.application.WorkProcessRecordApplication;
+import org.ddd.fundamental.workprocess.application.query.WorkProcessRecordApplication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaHandler;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Component

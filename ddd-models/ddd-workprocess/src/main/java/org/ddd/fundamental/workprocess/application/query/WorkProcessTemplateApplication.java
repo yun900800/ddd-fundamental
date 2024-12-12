@@ -1,4 +1,4 @@
-package org.ddd.fundamental.workprocess.application;
+package org.ddd.fundamental.workprocess.application.query;
 
 import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.memoize.Memoize;
