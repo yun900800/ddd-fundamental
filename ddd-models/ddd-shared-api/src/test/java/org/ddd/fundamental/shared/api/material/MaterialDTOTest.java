@@ -1,9 +1,10 @@
 package org.ddd.fundamental.shared.api.material;
 
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.ddd.fundamental.material.MaterialMaster;
 import org.ddd.fundamental.material.value.MaterialId;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class MaterialDTOTest {
 
