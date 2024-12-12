@@ -200,6 +200,18 @@ public class WorkProcessTemplateControl implements ValueObject, Cloneable {
         return batchManagable;
     }
 
+    public boolean isCanSplit() {
+        return canSplit;
+    }
+
+    public boolean isAllowedChecked() {
+        return isAllowedChecked;
+    }
+
+    public double getNextProcessSyncMinutes() {
+        return nextProcessSyncMinutes;
+    }
+
     @Override
     public String toString() {
         return "WorkProcessControl{" +

@@ -5,10 +5,10 @@ import org.ddd.fundamental.shared.api.optemplate.CraftsmanShipTemplateDTO;
 import org.ddd.fundamental.shared.api.optemplate.WorkProcessTemplateDTO;
 import org.ddd.fundamental.workprocess.application.command.WorkProcessTemplateCommandService;
 import org.ddd.fundamental.workprocess.application.query.WorkProcessTemplateApplication;
+import org.ddd.fundamental.workprocess.value.WorkProcessBeat;
+import org.ddd.fundamental.workprocess.value.WorkProcessTemplateId;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -40,5 +40,10 @@ public class WorkProcessTemplateRest {
     @RequestMapping("/process/testMemoize")
     public void testMemoize(){
         service.testMemoize();
+    }
+
+    @PostMapping("/process/change_beat/{id}")
+    public void changeWorkProcessBeat(@RequestBody WorkProcessBeat beat, @PathVariable String id){
+        service.changeWorkProcessBeat(beat,new WorkProcessTemplateId(id));
     }
 }

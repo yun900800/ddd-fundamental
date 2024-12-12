@@ -3,8 +3,11 @@ package org.ddd.fundamental.workprocess.application.command;
 import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.shared.api.optemplate.WorkProcessTemplateDTO;
 import org.ddd.fundamental.workprocess.application.query.WorkProcessTemplateApplication;
+import org.ddd.fundamental.workprocess.domain.model.WorkProcess;
 import org.ddd.fundamental.workprocess.domain.model.WorkProcessTemplate;
 import org.ddd.fundamental.workprocess.domain.repository.WorkProcessTemplateRepository;
+import org.ddd.fundamental.workprocess.value.WorkProcessBeat;
+import org.ddd.fundamental.workprocess.value.WorkProcessTemplateId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +28,20 @@ public class WorkProcessTemplateCommandService {
                                              WorkProcessTemplateApplication application){
         this.templateRepository = templateRepository;
         this.application = application;
+    }
+
+    /**
+     * 修改工序模板的节拍
+     * @param beat
+     * @param templateId
+     */
+    @Transactional
+    public void changeWorkProcessBeat(WorkProcessBeat beat, WorkProcessTemplateId templateId){
+        WorkProcessTemplate processTemplate = templateRepository.findById(templateId).orElse(null);
+        if (null == processTemplate) {
+            return;
+        }
+        processTemplate.changeWorkProcessBeat(beat);
     }
 
     @Transactional

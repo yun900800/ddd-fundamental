@@ -1,0 +1,53 @@
+package org.ddd.fundamental.workprocess.schedule;
+
+
+import lombok.extern.slf4j.Slf4j;
+import org.ddd.fundamental.shared.api.optemplate.WorkProcessTemplateDTO;
+import org.ddd.fundamental.utils.CollectionUtils;
+import org.ddd.fundamental.workprocess.application.query.WorkProcessTemplateApplication;
+import org.ddd.fundamental.workprocess.value.WorkProcessBeat;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.Arrays;
+import java.util.List;
+
+@Service
+@Slf4j
+public class WorkProcessTemplateClient {
+
+    @Autowired
+    private WorkProcessTemplateApplication application;
+
+    private static final String CHANGE_BEAT = "http://localhost:9003/process/change_beat/%s";
+
+    public static List<Integer> numbersOfProducts(){
+        return Arrays.asList(10000,12000,14000,16000,18000,19000,25000,23000);
+    }
+
+    public static List<Integer> numbersOfProductsMinutes(){
+        return Arrays.asList(8,12,20,50,80,120,160,90,75);
+    }
+
+    private List<WorkProcessTemplateDTO> cache;
+
+    @Scheduled(cron = "*/30 * * * * ?")
+    public void changeWorkProcessTemplateBeat(){
+        if (org.springframework.util.CollectionUtils.isEmpty(cache)) {
+            cache = application.workProcessTemplates();
+        }
+        WorkProcessTemplateDTO templateDTO =  CollectionUtils.random(cache);
+        String id = templateDTO.id().toUUID();
+        String url = String.format(CHANGE_BEAT,id);
+        log.info("url is {}",url);
+        WorkProcessBeat beat = WorkProcessBeat.create(CollectionUtils.random(numbersOfProducts()),
+                CollectionUtils.random(numbersOfProductsMinutes()));
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.postForObject(url,beat,Void.class);
+        log.info("change workprocess beat finished");
+    }
+
+}

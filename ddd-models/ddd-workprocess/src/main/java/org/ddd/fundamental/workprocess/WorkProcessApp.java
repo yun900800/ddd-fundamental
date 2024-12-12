@@ -16,6 +16,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.util.StopWatch;
 
 import java.util.List;
@@ -43,6 +44,7 @@ import java.util.List;
 )
 @EnableFeignClients
 @Slf4j
+@EnableScheduling
 public class WorkProcessApp implements CommandLineRunner {
     public static void main(String[] args) {
         SpringApplication.run(WorkProcessApp.class);

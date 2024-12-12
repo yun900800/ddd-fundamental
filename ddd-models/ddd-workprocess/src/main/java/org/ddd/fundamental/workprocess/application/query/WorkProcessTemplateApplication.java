@@ -37,6 +37,11 @@ public class WorkProcessTemplateApplication {
     @Autowired
     private CraftsmanShipAddable craftsmanShipAddable;
 
+    public WorkProcessTemplate get(WorkProcessTemplateId id){
+        WorkProcessTemplate template = templateRepository.findById(id).orElse(null);
+        return template;
+    }
+
 
     public List<CraftsmanShipTemplateDTO> craftsmanShipTemplates(){
         List<CraftsmanShipTemplate> craftsmanShipTemplates =
@@ -51,7 +56,7 @@ public class WorkProcessTemplateApplication {
     }
 
 
-    @Memoize
+    //@Memoize
     public List<WorkProcessTemplateDTO> workProcessTemplates() {
         List<WorkProcessTemplate> workProcessTemplates = templateRepository.findAll();
         return entityToDTO(workProcessTemplates);
