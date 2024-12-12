@@ -10,6 +10,7 @@ import org.ddd.fundamental.workprocess.value.resources.ProductResources;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -100,11 +101,13 @@ public class WorkProcessTemplate extends AbstractAggregateRoot<WorkProcessTempla
 
     public WorkProcessTemplate setControl(WorkProcessTemplateControlEntity control){
         this.control = control;
+        changeUpdated();
         return this;
     }
 
     public WorkProcessTemplate changeName(String name){
         this.workProcessInfo = workProcessInfo.changeName(name);
+
         return this;
     }
 
@@ -118,13 +121,28 @@ public class WorkProcessTemplate extends AbstractAggregateRoot<WorkProcessTempla
         return this;
     }
 
+    private void changeUpdated(){
+        this.changeUpdateTime(LocalDateTime.now());
+        this.changeUpdated(created());
+    }
+
+    /**
+     * 注意,修改数量和节拍都是整体修改,粒度是比较粗的哈
+     * 可以增加更细粒度的API来进行修改
+     * 因此模型的精化是一步一步的迭代过程
+     * @param beat
+     * @return
+     */
     public WorkProcessTemplate changeWorkProcessBeat(WorkProcessBeat beat){
         this.workProcessBeat = beat;
+        changeUpdated();
         return this;
     }
 
+
     public WorkProcessTemplate changeQuantity(WorkProcessTemplateQuantity quantity) {
         this.workProcessTemplateQuantity = quantity;
+        changeUpdated();
         return this;
     }
 

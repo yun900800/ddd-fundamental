@@ -100,7 +100,7 @@ public class WorkProcessTemplateAddable implements DataAddable {
         return Arrays.asList(BatchManagable.values());
     }
 
-    private static List<Double> doubleList(){
+    public static List<Double> doubleList(){
         return Arrays.asList(95.2,99.5,99.6,96.4,98.8,97.6);
     }
 

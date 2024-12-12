@@ -7,6 +7,8 @@ import org.ddd.fundamental.workprocess.application.command.WorkProcessTemplateCo
 import org.ddd.fundamental.workprocess.application.query.WorkProcessTemplateApplication;
 import org.ddd.fundamental.workprocess.value.WorkProcessBeat;
 import org.ddd.fundamental.workprocess.value.WorkProcessTemplateId;
+import org.ddd.fundamental.workprocess.value.controller.WorkProcessTemplateControl;
+import org.ddd.fundamental.workprocess.value.quantity.WorkProcessTemplateQuantity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,5 +47,17 @@ public class WorkProcessTemplateRest {
     @PostMapping("/process/change_beat/{id}")
     public void changeWorkProcessBeat(@RequestBody WorkProcessBeat beat, @PathVariable String id){
         service.changeWorkProcessBeat(beat,new WorkProcessTemplateId(id));
+    }
+
+    @PostMapping("/process/change_quantity/{id}")
+    public void changeWorkProcessTemplateQuantity(@RequestBody WorkProcessTemplateQuantity quantity,
+                                                  @PathVariable String id){
+        service.changeWorkProcessTemplateQuantity(quantity,new WorkProcessTemplateId(id));
+    }
+
+    @PostMapping("/process/add_control/{id}")
+    public void addControlInfoToTemplate(@RequestBody WorkProcessTemplateControl control,
+                                         @PathVariable String id){
+        service.addControlInfoToTemplate(control,new WorkProcessTemplateId(id));
     }
 }
