@@ -27,13 +27,13 @@ public class WorkProcessTemplateRest {
 
     @RequestMapping("/process/process-templates")
     public List<WorkProcessTemplateDTO> workProcessTemplates() {
-        List<WorkProcessTemplateDTO> templateDTOS = application.workProcessTemplates();
-        List<String> ids = templateDTOS.stream().map(v->v.id().toUUID()).collect(Collectors.toList());
-        List<WorkProcessTemplate> template1 = application.queryByIds(ids);
-        List<WorkProcessTemplate> template2 = application.queryByIds(ids);
-        log.info("template1 is {}",template1);
-        log.info("template2 is {}",template2);
-        return templateDTOS;
+//        List<WorkProcessTemplateDTO> templateDTOS = application.workProcessTemplates();
+//        List<String> ids = templateDTOS.stream().map(v->v.id().toUUID()).collect(Collectors.toList());
+//        List<WorkProcessTemplate> template1 = application.queryByIds(ids);
+//        List<WorkProcessTemplate> template2 = application.queryByIds(ids);
+//        log.info("template1 is {}",template1);
+//        log.info("template2 is {}",template2);
+        return application.workProcessTemplates();
     }
 
     @RequestMapping("/process/process-templates-ids")
