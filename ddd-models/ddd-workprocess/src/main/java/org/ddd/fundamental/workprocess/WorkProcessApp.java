@@ -14,11 +14,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.util.StopWatch;
 
 import java.util.List;
 
+@EnableAspectJAutoProxy
 @SpringBootApplication
 @EntityScan(
         {
@@ -28,6 +30,7 @@ import java.util.List;
 )
 @ComponentScan(basePackages = {
         "org.ddd.fundamental.creator",
+        "org.ddd.fundamental.memoize",
         "org.ddd.fundamental.infra.hibernate",
         "org.ddd.fundamental.workprocess",
         "org.ddd.fundamental.redis",

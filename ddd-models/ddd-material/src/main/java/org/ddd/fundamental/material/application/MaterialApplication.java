@@ -67,11 +67,6 @@ public class MaterialApplication {
     private List<MaterialDTO> fetchMaterialsFromCache(List<String> ids) {
         return manager.fetchDataListFromCache(ids.stream().map(v->new MaterialId(v))
                 .collect(Collectors.toList()), MaterialDTO.class);
-//        List<Object> objects = newRedisTemplate.opsForValue().multiGet(ids);
-//        ObjectMapper mapper = new ObjectMapper();
-//        return mapper.convertValue(objects, new TypeReference<>() {
-//        });
-
     }
 
     /**
