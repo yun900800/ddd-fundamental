@@ -15,8 +15,8 @@ public class ChangeableInfo implements ValueObject,Cloneable {
     private boolean isUse;
 
     @SuppressWarnings("unused")
-    ChangeableInfo(){}
-    public ChangeableInfo(String name,String desc,boolean isUse){
+    protected ChangeableInfo(){}
+    private ChangeableInfo(String name,String desc,boolean isUse){
         this.name = name;
         this.desc = desc;
         this.isUse = isUse;
@@ -58,8 +58,19 @@ public class ChangeableInfo implements ValueObject,Cloneable {
         return desc;
     }
 
+
     public boolean isUse() {
         return isUse;
+    }
+
+
+    /**
+     * jackson 反序列化依赖于这个方法,
+     * 可以配置ObjectMapper反序列化不依赖于这个方法
+     * @param use
+     */
+    public void setUse(boolean use) {
+        this.isUse = use;
     }
 
     @Override

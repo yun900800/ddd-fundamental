@@ -27,6 +27,9 @@ public class MaterialDTO extends AbstractDTO<MaterialId> {
     }
 
     public MaterialMaster getMaterialMaster() {
+        if (null == materialMaster){
+           return null;
+        }
         return materialMaster.clone();
     }
 

@@ -1,5 +1,6 @@
 package org.ddd.fundamental.material.helper;
 
+import org.ddd.fundamental.material.domain.enums.MaterialLevel;
 import org.ddd.fundamental.material.value.MaterialType;
 import org.ddd.fundamental.utils.DateTimeUtils;
 import org.ddd.fundamental.utils.RandomNumberUtil;
@@ -19,6 +20,9 @@ public final class MaterialHelper {
         return Arrays.asList("rawMaterial","workInProgress","production");
     }
 
+    public static List<MaterialLevel> materialLevels(){
+        return Arrays.asList(MaterialLevel.values());
+    }
 
     public static List<Integer> numbers(){
         return Arrays.asList(1,2,3,4,5,6,7,8,9,10,12,15,18,30);

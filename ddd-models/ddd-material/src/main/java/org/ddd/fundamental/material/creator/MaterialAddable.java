@@ -21,6 +21,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static org.ddd.fundamental.material.helper.MaterialHelper.materialLevels;
+
 @Component
 @Slf4j
 @Order(1)
@@ -67,7 +69,7 @@ public class MaterialAddable implements DataAddable {
         MaterialMaster materialMaster = new MaterialMaster(code,materialName,
                 spec,unit);
 
-        ControlProps materialControlProps = ControlProps.create("默认等级",
+        ControlProps materialControlProps = ControlProps.create(CollectionUtils.random(materialLevels()),
                 type);
         Material material = new Material(info,materialMaster,requiredPropsContainer,optionalCharacterContainer,materialControlProps);
         return material;

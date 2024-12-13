@@ -14,12 +14,9 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,7 +58,7 @@ public class MaterialRepositoryTest extends MaterialAppTest {
         Material queryData = materialRepository.getById(id);
         Assert.assertEquals(queryData.name(),"螺纹钢");
 
-        Material queryMaterial = new Material(material.getChangeableInfo(),null);
+        Material queryMaterial = new Material(material.getMaterialInfo(),null);
 //        queryMaterial.changeId(null);
 //        queryMaterial.resetRequiredProps();
 //        queryMaterial.resetRequiredCharacter();

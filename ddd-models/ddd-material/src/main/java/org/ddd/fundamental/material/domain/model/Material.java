@@ -21,7 +21,7 @@ public class Material extends AbstractAggregateRoot<MaterialId> {
             @AttributeOverride(name = "name", column = @Column(name = "material_name", nullable = false)),
             @AttributeOverride(name = "desc", column = @Column(name = "material_desc", nullable = false))
     })
-    private ChangeableInfo changeableInfo;
+    private ChangeableInfo materialInfo;
 
 
 
@@ -84,7 +84,7 @@ public class Material extends AbstractAggregateRoot<MaterialId> {
                     PropsContainer characterContainer,
                     ControlProps materialControlProps){
         super(DomainObjectId.randomId(MaterialId.class));
-        this.changeableInfo = changeableInfo;
+        this.materialInfo = changeableInfo;
         this.materialMaster = materialMaster;
         if (null != propsContainer){
             this.materialRequiredProps = propsContainer.getRequiredMap();
@@ -101,12 +101,22 @@ public class Material extends AbstractAggregateRoot<MaterialId> {
         this(changeableInfo,materialMaster, null, null,null);
     }
 
-    public ChangeableInfo getChangeableInfo() {
-        return changeableInfo.clone();
+    public ChangeableInfo getMaterialInfo() {
+        return materialInfo.clone();
+    }
+
+    public Material changeMaterialInfo(ChangeableInfo info){
+        this.materialInfo = info;
+        return this;
     }
 
     public Material changeName(String name){
-        this.changeableInfo = changeableInfo.changeName(name);
+        this.materialInfo = materialInfo.changeName(name);
+        return this;
+    }
+
+    public Material changeDesc(String desc){
+        this.materialInfo = materialInfo.changeDesc(desc);
         return this;
     }
 
@@ -123,31 +133,6 @@ public class Material extends AbstractAggregateRoot<MaterialId> {
 
     public Material addOptionalCharacter(String key, String value){
         this.materialOptionalCharacteristics.put(key,value);
-        return this;
-    }
-
-    public Material resetMaterialJson(){
-        this.json = null;
-        return this;
-    }
-
-    public Material resetRequiredProps(){
-        this.materialRequiredProps = null;
-        return this;
-    }
-
-    public Material resetOptionalProps(){
-        this.materialOptionalProps = null;
-        return this;
-    }
-
-    public Material resetRequiredCharacter(){
-        this.materialRequiredCharacteristics = null;
-        return this;
-    }
-
-    public Material resetOptionalCharacter(){
-        this.materialOptionalCharacteristics = null;
         return this;
     }
 
@@ -185,17 +170,20 @@ public class Material extends AbstractAggregateRoot<MaterialId> {
     }
 
     public MaterialMaster getMaterialMaster() {
+        if (null== materialMaster){
+            return null;
+        }
         return materialMaster.clone();
     }
 
     public String name(){
-        return changeableInfo.getName();
+        return materialInfo.getName();
     }
 
     @Override
     public String toString() {
         return "Material{" +
-                "changeableInfo=" + changeableInfo +
+                "changeableInfo=" + materialInfo +
                 ", materialMaster=" + materialMaster +
                 ", json='" + json + '\'' +
                 ", materialRequiredProps=" + materialRequiredProps +

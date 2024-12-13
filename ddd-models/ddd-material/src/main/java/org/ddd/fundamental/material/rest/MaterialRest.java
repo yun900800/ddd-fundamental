@@ -1,16 +1,15 @@
 package org.ddd.fundamental.material.rest;
 
+import org.ddd.fundamental.changeable.ChangeableInfo;
 import org.ddd.fundamental.material.application.command.MaterialCommandService;
 import org.ddd.fundamental.material.application.query.MaterialQueryService;
 import org.ddd.fundamental.material.domain.model.Material;
+import org.ddd.fundamental.material.value.MaterialId;
 import org.ddd.fundamental.shared.api.material.MaterialDTO;
 import org.ddd.fundamental.material.value.MaterialType;
 import org.ddd.fundamental.shared.api.material.MaterialRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -41,5 +40,11 @@ public class MaterialRest {
     @PostMapping("/material/add_material")
     public void addMaterial(@RequestBody MaterialRequest request){
         commandService.addMaterial(request);
+    }
+
+    @PostMapping("/material/change_materialInfo/{id}")
+    public void changeMaterialInfo(@RequestBody ChangeableInfo info,
+                                   @PathVariable String id){
+        commandService.changeMaterialInfo(info,new MaterialId(id));
     }
 }
