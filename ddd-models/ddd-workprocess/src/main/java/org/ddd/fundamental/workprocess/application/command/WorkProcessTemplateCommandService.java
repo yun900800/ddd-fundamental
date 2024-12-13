@@ -2,8 +2,7 @@ package org.ddd.fundamental.workprocess.application.command;
 
 import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.shared.api.optemplate.WorkProcessTemplateDTO;
-import org.ddd.fundamental.workprocess.application.query.WorkProcessTemplateApplication;
-import org.ddd.fundamental.workprocess.domain.model.WorkProcess;
+import org.ddd.fundamental.workprocess.application.query.WorkProcessTemplateQueryService;
 import org.ddd.fundamental.workprocess.domain.model.WorkProcessTemplate;
 import org.ddd.fundamental.workprocess.domain.model.WorkProcessTemplateControlEntity;
 import org.ddd.fundamental.workprocess.domain.repository.WorkProcessTemplateRepository;
@@ -11,6 +10,7 @@ import org.ddd.fundamental.workprocess.value.WorkProcessBeat;
 import org.ddd.fundamental.workprocess.value.WorkProcessTemplateId;
 import org.ddd.fundamental.workprocess.value.controller.WorkProcessTemplateControl;
 import org.ddd.fundamental.workprocess.value.quantity.WorkProcessTemplateQuantity;
+import org.ddd.fundamental.workprocess.value.resources.ProductResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,11 +24,11 @@ public class WorkProcessTemplateCommandService {
 
     private final WorkProcessTemplateRepository templateRepository;
 
-    private final WorkProcessTemplateApplication application;
+    private final WorkProcessTemplateQueryService application;
 
     @Autowired
     public WorkProcessTemplateCommandService(WorkProcessTemplateRepository templateRepository,
-                                             WorkProcessTemplateApplication application){
+                                             WorkProcessTemplateQueryService application){
         this.templateRepository = templateRepository;
         this.application = application;
     }
@@ -63,7 +63,22 @@ public class WorkProcessTemplateCommandService {
             return;
         }
         processTemplate.setControl(WorkProcessTemplateControlEntity.create(control));
-        //templateRepository.save(processTemplate);
+    }
+
+
+    /**
+     * 添加生产资源
+     * @param resource
+     * @param templateId
+     */
+    public void addProductResource(ProductResource resource,WorkProcessTemplateId templateId){
+        WorkProcessTemplate processTemplate = templateRepository.findById(templateId).orElse(null);
+        if (null == processTemplate) {
+            return;
+        }
+        processTemplate.addResource(resource);
+        //为什么更新json数据的时候一定要调用save方法
+        templateRepository.save(processTemplate);
     }
 
     @Transactional

@@ -1,7 +1,7 @@
 package org.ddd.fundamental.equipment.value;
 
 import org.ddd.fundamental.changeable.ChangeableInfo;
-import org.ddd.fundamental.utils.DateUtils;
+import org.ddd.fundamental.utils.DateTimeUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -12,7 +12,7 @@ public class EquipmentMasterTest {
                 .assetNo("asset2085")
                 .info(ChangeableInfo.create("飞利浦车床","描述一下"))
                 .size(EquipmentSize.create(2.5,3.6,2.0))
-                .standard(MaintainStandard.create("需要人工维护", DateUtils.strToDate("2024-10-12","yyyy-MM-dd")))
+                .standard(MaintainStandard.create("需要人工维护", DateTimeUtils.strToDate("2024-10-12","yyyy-MM-dd")))
                 .personInfo(PersonInfo.create(2,"车床资质证书"))
                 .qualityInfo(QualityInfo.create("验证未通过","需要三方检测计划",false))
                 .build();

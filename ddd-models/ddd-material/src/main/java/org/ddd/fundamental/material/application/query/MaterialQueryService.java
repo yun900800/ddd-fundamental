@@ -1,6 +1,7 @@
-package org.ddd.fundamental.material.application;
+package org.ddd.fundamental.material.application.query;
 
 import lombok.extern.slf4j.Slf4j;
+import org.ddd.fundamental.material.application.MaterialConverter;
 import org.ddd.fundamental.material.creator.MaterialAddable;
 import org.ddd.fundamental.material.domain.model.Material;
 import org.ddd.fundamental.material.domain.repository.MaterialRepository;
@@ -22,7 +23,7 @@ import java.util.stream.Collectors;
 @Service
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @Slf4j
-public class MaterialApplication {
+public class MaterialQueryService {
 
     @Autowired
     private MaterialRepository materialRepository;
@@ -34,21 +35,12 @@ public class MaterialApplication {
     private RedisStoreManager manager;
 
 
-    public static List<MaterialDTO> entityToDTO(List<Material> materials){
-        if (CollectionUtils.isEmpty(materials)) {
-            return new ArrayList<>();
-        }
-        return materials.stream()
-                .map(v->new MaterialDTO(v.getMaterialMaster(),v.id()))
-                .collect(Collectors.toList());
-    }
-
     public List<MaterialDTO> materials() {
         List<Material> materials = null;
         materials = creator.getMaterialList();
         if (!CollectionUtils.isEmpty(materials)) {
             log.info("fetch data from local cache");
-            return entityToDTO(materials);
+            return MaterialConverter.entityToDTO(materials);
         }
         List<MaterialDTO> materialDTOS = manager.queryAllData(MaterialDTO.class);
         if (!CollectionUtils.isEmpty(materialDTOS)) {
@@ -56,7 +48,7 @@ public class MaterialApplication {
             return materialDTOS;
         }
         materials =  materialRepository.findAll();
-        return entityToDTO(materials);
+        return MaterialConverter.entityToDTO(materials);
     }
 
     /**
@@ -84,7 +76,7 @@ public class MaterialApplication {
                 ids.stream().map(v->new MaterialId(v)).collect(Collectors.toList())
         );
         log.info("fetch data from db cache");
-        return entityToDTO(materialList);
+        return MaterialConverter.entityToDTO(materialList);
     }
 
     /**
@@ -94,7 +86,7 @@ public class MaterialApplication {
      */
     public List<MaterialDTO> materialsByMaterialType(MaterialType materialType){
         List<Material> materialList = materialRepository.getByMaterialType(materialType.name());
-        return entityToDTO(materialList);
+        return MaterialConverter.entityToDTO(materialList);
     }
 
 }

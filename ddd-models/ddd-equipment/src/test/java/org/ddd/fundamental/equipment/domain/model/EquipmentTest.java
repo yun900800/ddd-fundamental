@@ -4,7 +4,7 @@ import org.ddd.fundamental.changeable.ChangeableInfo;
 import org.ddd.fundamental.day.YearModelValue;
 import org.ddd.fundamental.day.range.DateRange;
 import org.ddd.fundamental.equipment.value.*;
-import org.ddd.fundamental.utils.DateUtils;
+import org.ddd.fundamental.utils.DateTimeUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -60,11 +60,11 @@ public class EquipmentTest {
     public void testEquipmentActualWasteMinutes(){
         Equipment equipment = create();
         DateRange range = new DateRange(
-                DateUtils.strToDate("2024-10-01 12:58:12","yyyy-MM-dd HH:mm:ss"),
-                DateUtils.strToDate("2024-10-01 16:48:12","yyyy-MM-dd HH:mm:ss"),"机器维修");
+                DateTimeUtils.strToDate("2024-10-01 12:58:12","yyyy-MM-dd HH:mm:ss"),
+                DateTimeUtils.strToDate("2024-10-01 16:48:12","yyyy-MM-dd HH:mm:ss"),"机器维修");
         DateRange range1 = new DateRange(
-                DateUtils.strToDate("2024-09-29 12:58:12","yyyy-MM-dd HH:mm:ss"),
-                DateUtils.strToDate("2024-10-01 11:48:12","yyyy-MM-dd HH:mm:ss"),"工单排班不合理");
+                DateTimeUtils.strToDate("2024-09-29 12:58:12","yyyy-MM-dd HH:mm:ss"),
+                DateTimeUtils.strToDate("2024-10-01 11:48:12","yyyy-MM-dd HH:mm:ss"),"工单排班不合理");
         equipment.addDateRange(range)
                 .addDateRange(range1);
         Assert.assertEquals(equipment.actualWasteMinutes(),2318);

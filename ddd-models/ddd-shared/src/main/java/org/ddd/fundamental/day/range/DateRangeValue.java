@@ -12,7 +12,6 @@ import org.ddd.fundamental.day.serializer.CustomInstantSerializer;
 import org.ddd.fundamental.tuple.ThreeTuple;
 import org.ddd.fundamental.tuple.Tuple;
 import org.ddd.fundamental.tuple.TwoTuple;
-import org.ddd.fundamental.utils.DateUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;

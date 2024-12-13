@@ -7,6 +7,7 @@ import org.ddd.fundamental.material.MaterialMaster;
 import org.ddd.fundamental.material.domain.model.Material;
 import org.ddd.fundamental.material.domain.repository.MaterialRepository;
 import org.ddd.fundamental.material.domain.value.ControlProps;
+import org.ddd.fundamental.material.helper.MaterialHelper;
 import org.ddd.fundamental.material.value.MaterialType;
 import org.ddd.fundamental.material.value.PropsContainer;
 import org.ddd.fundamental.redis.config.RedisStoreManager;
@@ -43,55 +44,27 @@ public class MaterialAddable implements DataAddable {
         return new ArrayList<>(materialList);
     }
 
-    private static List<String> materialTypes(){
-        return Arrays.asList("rawMaterial","workInProgress","production");
-    }
 
-    private static List<String> units(){
-        return Arrays.asList("个","瓶","箱","颗","台","桶");
-    }
-
-    public static List<Integer> numbers(){
-        return Arrays.asList(1,2,3,4,5,6,7,8,9,10,12,15,18,30);
-    }
-
-    private static Map<MaterialType, List<String>> createMaterial(){
-        Map<MaterialType,List<String>> map = new HashMap<>();
-        map.put(MaterialType.RAW_MATERIAL, Arrays.asList(
-                "螺纹钢","锡膏","测试仪器","螺钉","纸张"
-        ));
-        map.put(MaterialType.WORKING_IN_PROGRESS,Arrays.asList(
-                "工序1的在制品","工序5的在制品","工序3的在制品","工序8的在制品","工序9的在制品"
-        ));
-        map.put(MaterialType.PRODUCTION,Arrays.asList(
-                "鼠标","主板","酒瓶塞子","电脑","玩具"
-        ));
-        return map;
-    }
-
-    private static Material createMaterial(String name, int index, Set<String> requiredSets,
+    public static Material createMaterial(String name, Set<String> requiredSets,
                                            Set<String> characterSets,
-                                           MaterialType type) {
+                                           MaterialType type,Map<String,String> requiredMap,
+                                           Map<String,String> characterMap) {
 
-        String unit = CollectionUtils.random(units());
-        String code = "XG-spec-" +index;
-        String spec = "XG-spec-00_" +index;
+        String unit = requiredMap.get("unit");
+        String code = requiredMap.get("code");
+        String spec = requiredMap.get("spec");
         PropsContainer requiredPropsContainer = new PropsContainer.Builder(requiredSets)
-                .addProperty("materialType", CollectionUtils.random(materialTypes()))
-                .addProperty("unit",unit)
-                .addProperty("code",code)
-                .addProperty("spec",spec)
+                .addMap(requiredMap)
                 .addProperty("optional","custom")
                 .build();
 
         PropsContainer optionalCharacterContainer = new PropsContainer.Builder(characterSets)
-                .addProperty("weight", CollectionUtils.random(numbers())+ "g")
-                .addProperty("width", CollectionUtils.random(numbers())+ "cm")
-                .addProperty("height",CollectionUtils.random(numbers())+ "cm")
+                .addMap(characterMap)
                 .build();
-
-        ChangeableInfo info = ChangeableInfo.create(name+"-"+index,"这是一种高级的材料——"+index);
-        MaterialMaster materialMaster = new MaterialMaster(code,name+"-"+index,
+        String materialName  = name+"-"+MaterialHelper.generateSerialNo(name,10);
+        String materialDesc = MaterialHelper.generateSerialNo("这是一种高级材料",10);
+        ChangeableInfo info = ChangeableInfo.create(materialName,materialDesc);
+        MaterialMaster materialMaster = new MaterialMaster(code,materialName,
                 spec,unit);
 
         ControlProps materialControlProps = ControlProps.create("默认等级",
@@ -100,13 +73,34 @@ public class MaterialAddable implements DataAddable {
         return material;
     }
 
+    public static Map<String,String> createRequiredMap(){
+        Map<String,String> requiredMap = new HashMap<>();
+        String unit = CollectionUtils.random(MaterialHelper.units());
+        String code = MaterialHelper.generateCode("XG-spec-code");
+        String spec = MaterialHelper.generateSerialNo("XG-spec-00_",10);
+        requiredMap.put("materialType",CollectionUtils.random(MaterialHelper.materialTypes()));
+        requiredMap.put("unit",unit);
+        requiredMap.put("code",code);
+        requiredMap.put("spec",spec);
+        return requiredMap;
+    }
+
+    public static Map<String,String> createCharacterMap(){
+        Map<String,String> characterMap = new HashMap<>();
+        characterMap.put("weight",CollectionUtils.random(MaterialHelper.numbers())+ "cm");
+        characterMap.put("width",CollectionUtils.random(MaterialHelper.numbers())+ "cm");
+        characterMap.put("height",CollectionUtils.random(MaterialHelper.numbers())+ "cm");
+        return characterMap;
+    }
+
     public static List<Material> createMaterials(){
         List<Material> materials = new ArrayList<>();
         for (int i = 0 ; i< 50;i++) {
             MaterialType type = CollectionUtils.random(Arrays.asList(MaterialType.values()));
-            String name = CollectionUtils.random(createMaterial().get(type));
-            materials.add(createMaterial(name,(i+1), Set.of("materialType","unit"),
-                    Set.of("weight","width"), type));
+            String name = CollectionUtils.random(MaterialHelper.createMaterial().get(type));
+            materials.add(createMaterial(name,Set.of("materialType","unit"),
+                    Set.of("weight","width"), type, createRequiredMap(),
+                    createCharacterMap()));
         }
         return materials;
     }

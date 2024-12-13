@@ -3,13 +3,11 @@ package org.ddd.fundamental.workprocess.application.command;
 import org.ddd.fundamental.shared.api.optemplate.WorkProcessTemplateDTO;
 import org.ddd.fundamental.utils.CollectionUtils;
 import org.ddd.fundamental.workprocess.WorkProcessAppTest;
-import org.ddd.fundamental.workprocess.application.query.WorkProcessTemplateApplication;
+import org.ddd.fundamental.workprocess.application.query.WorkProcessTemplateQueryService;
 import org.ddd.fundamental.workprocess.domain.model.WorkProcessTemplate;
 import org.ddd.fundamental.workprocess.value.WorkProcessBeat;
 import org.ddd.fundamental.workprocess.value.WorkProcessTemplateId;
 import org.junit.*;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -20,7 +18,7 @@ public class WorkProcessTemplateCommandServiceTest extends WorkProcessAppTest {
     private WorkProcessTemplateCommandService service;
 
     @Autowired
-    private WorkProcessTemplateApplication application;
+    private WorkProcessTemplateQueryService application;
 
     private List<WorkProcessTemplateDTO> templateDTOList;
 

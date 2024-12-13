@@ -32,7 +32,7 @@ public class MaterialMaster implements ValueObject, Cloneable{
     private String unit;
 
     @SuppressWarnings("unused")
-    MaterialMaster() {
+    protected MaterialMaster() {
     }
 
     public MaterialMaster(@NotNull String code, @NotNull String name

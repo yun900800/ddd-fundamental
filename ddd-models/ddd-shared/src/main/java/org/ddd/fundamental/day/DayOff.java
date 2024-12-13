@@ -2,7 +2,6 @@ package org.ddd.fundamental.day;
 
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import org.ddd.fundamental.core.ValueObject;
-import org.ddd.fundamental.utils.DateUtils;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 

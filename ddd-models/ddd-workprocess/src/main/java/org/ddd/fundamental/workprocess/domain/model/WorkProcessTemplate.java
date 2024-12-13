@@ -180,12 +180,14 @@ public class WorkProcessTemplate extends AbstractAggregateRoot<WorkProcessTempla
     }
 
     public WorkProcessTemplate addResource(ProductResource resource){
-        this.resources.addResource(resource);
+        this.resources = this.resources.addResource(resource);
+        changeUpdated();
         return this;
     }
 
     public WorkProcessTemplate removeResource(ProductResource resource){
-        this.resources.removeResource(resource);
+        this.resources = this.resources.removeResource(resource);
+        changeUpdated();
         return this;
     }
 

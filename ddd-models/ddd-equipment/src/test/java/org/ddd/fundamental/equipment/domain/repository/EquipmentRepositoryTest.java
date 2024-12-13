@@ -12,16 +12,13 @@ import org.ddd.fundamental.equipment.domain.model.ToolingEquipment;
 import org.ddd.fundamental.equipment.value.*;
 import org.ddd.fundamental.factory.EquipmentId;
 import org.ddd.fundamental.utils.CollectionUtils;
-import org.ddd.fundamental.utils.DateUtils;
+import org.ddd.fundamental.utils.DateTimeUtils;
 import org.ddd.fundamental.workorder.value.WorkOrderId;
 import org.ddd.fundamental.workprocess.enums.ProductResourceType;
 import org.ddd.fundamental.workprocess.value.WorkProcessId;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.Commit;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.util.Date;
@@ -67,17 +64,17 @@ public class EquipmentRepositoryTest extends EquipmentAppTest {
         EquipmentId id = randomEquipment.id();
         Equipment equipment = equipmentRepository.findById(id).get();
         DateRange range = new DateRange(
-                DateUtils.strToDate("2024-10-01 12:58:12","yyyy-MM-dd HH:mm:ss"),
-                DateUtils.strToDate("2024-10-01 16:48:12","yyyy-MM-dd HH:mm:ss"),"机器维修");
+                DateTimeUtils.strToDate("2024-10-01 12:58:12","yyyy-MM-dd HH:mm:ss"),
+                DateTimeUtils.strToDate("2024-10-01 16:48:12","yyyy-MM-dd HH:mm:ss"),"机器维修");
         DateRange range1 = new DateRange(
-                DateUtils.strToDate("2024-09-29 12:58:12","yyyy-MM-dd HH:mm:ss"),
-                DateUtils.strToDate("2024-10-01 11:48:12","yyyy-MM-dd HH:mm:ss"),"工单排班不合理");
+                DateTimeUtils.strToDate("2024-09-29 12:58:12","yyyy-MM-dd HH:mm:ss"),
+                DateTimeUtils.strToDate("2024-10-01 11:48:12","yyyy-MM-dd HH:mm:ss"),"工单排班不合理");
         DateRange range2 = new DateRange(
-                DateUtils.strToDate("2024-09-24 12:58:12","yyyy-MM-dd HH:mm:ss"),
-                DateUtils.strToDate("2024-10-25 11:48:12","yyyy-MM-dd HH:mm:ss"),"人员操作失误");
+                DateTimeUtils.strToDate("2024-09-24 12:58:12","yyyy-MM-dd HH:mm:ss"),
+                DateTimeUtils.strToDate("2024-10-25 11:48:12","yyyy-MM-dd HH:mm:ss"),"人员操作失误");
         DateRange range3 = new DateRange(
-                DateUtils.strToDate("2024-09-23 12:58:12","yyyy-MM-dd HH:mm:ss"),
-                DateUtils.strToDate("2024-10-24 11:48:12","yyyy-MM-dd HH:mm:ss"),"机器技术故障");
+                DateTimeUtils.strToDate("2024-09-23 12:58:12","yyyy-MM-dd HH:mm:ss"),
+                DateTimeUtils.strToDate("2024-10-24 11:48:12","yyyy-MM-dd HH:mm:ss"),"机器技术故障");
         equipment.addDateRange(range)
                 .addDateRange(range1)
                 .addDateRange(range2)
@@ -92,8 +89,8 @@ public class EquipmentRepositoryTest extends EquipmentAppTest {
         EquipmentId id = randomEquipment.id();
         Equipment equipment = equipmentRepository.findById(id).get();
         DateRange range = new DateRange(
-                DateUtils.strToDate("2024-10-01 12:58:12","yyyy-MM-dd HH:mm:ss"),
-                DateUtils.strToDate("2024-10-01 16:48:12","yyyy-MM-dd HH:mm:ss"),"机器维修");
+                DateTimeUtils.strToDate("2024-10-01 12:58:12","yyyy-MM-dd HH:mm:ss"),
+                DateTimeUtils.strToDate("2024-10-01 16:48:12","yyyy-MM-dd HH:mm:ss"),"机器维修");
         equipment.removeDateRange(range);
         equipmentRepository.save(equipment);
     }

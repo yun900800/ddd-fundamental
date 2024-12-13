@@ -26,7 +26,6 @@ public class ProductResources implements ValueObject {
     }
 
     public ProductResources(Set<ProductResource> resources){
-
         this.resources = resources;
     }
 

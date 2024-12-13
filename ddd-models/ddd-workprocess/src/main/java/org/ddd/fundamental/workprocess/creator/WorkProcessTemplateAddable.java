@@ -51,12 +51,29 @@ public class WorkProcessTemplateAddable implements DataAddable {
 
     private List<WorkProcessTemplate> workProcessTemplateList;
 
+    /**
+     * 存储更多设备信息
+     */
+    private List<EquipmentDTO> equipmentDTOS;
+
     private List<EquipmentId> equipmentIds;
 
+    /**
+     * 存储更多在制品信息
+     */
+    private List<MaterialDTO> workInProgressDTOS;
     private List<MaterialId> workInProgressIds;
 
+    /**
+     * 原材料信息
+     */
+    private List<MaterialDTO> rawMaterialDTOS;
     private List<MaterialId> rawMaterialIds;
 
+    /**
+     * 工装治具信息
+     */
+    private List<ToolingDTO> toolingDTOS;
     private List<EquipmentId> toolingEquipmentIds;
 
     @Autowired
@@ -145,7 +162,7 @@ public class WorkProcessTemplateAddable implements DataAddable {
 
     private List<EquipmentId> createEquipmentIds() {
         log.info("开始查询设备id");
-        List<EquipmentDTO> equipmentDTOS = equipmentClient.equipments();
+        this.equipmentDTOS = equipmentClient.equipments();
         log.info("结束查询设备id");
         equipmentIds =  equipmentDTOS.stream().map(v->v.id()).collect(Collectors.toList());
         return equipmentIds;
@@ -153,69 +170,72 @@ public class WorkProcessTemplateAddable implements DataAddable {
 
     private List<MaterialId> createWorkInProgressIds(){
         log.info("开始查询在制品id");
-        List<MaterialDTO> materialDTOS = client.materialsByMaterialType(MaterialType.WORKING_IN_PROGRESS);
+        this.workInProgressDTOS = client.materialsByMaterialType(MaterialType.WORKING_IN_PROGRESS);
         log.info("结束查询在制品id");
-        workInProgressIds = materialDTOS.stream().map(v->v.id()).collect(Collectors.toList());
+        workInProgressIds = workInProgressDTOS.stream().map(v->v.id()).collect(Collectors.toList());
         return workInProgressIds;
     }
 
     private List<MaterialId> createRawMaterialIds(){
         log.info("开始查询在制品id");
-        List<MaterialDTO> materialDTOS = client.materialsByMaterialType(MaterialType.RAW_MATERIAL);
+        this.rawMaterialDTOS = client.materialsByMaterialType(MaterialType.RAW_MATERIAL);
         log.info("结束查询在制品id");
-        rawMaterialIds = materialDTOS.stream().map(v->v.id()).collect(Collectors.toList());
+        rawMaterialIds = rawMaterialDTOS.stream().map(v->v.id()).collect(Collectors.toList());
         return rawMaterialIds;
     }
 
     private List<EquipmentId> createToolingIds(){
         log.info("开始查询工装id");
-        List<ToolingDTO> equipmentDTOS = equipmentClient.toolingList();
+        this.toolingDTOS= equipmentClient.toolingList();
         log.info("结束查询工装id");
-        this.toolingEquipmentIds =  equipmentDTOS.stream().map(v->v.id()).collect(Collectors.toList());
+        this.toolingEquipmentIds =  toolingDTOS.stream().map(v->v.id()).collect(Collectors.toList());
         return toolingEquipmentIds;
     }
 
     public List<ProductResource> createProductResource(){
-        if (org.springframework.util.CollectionUtils.isEmpty(equipmentIds)) {
+        if (org.springframework.util.CollectionUtils.isEmpty(this.equipmentDTOS)) {
             createEquipmentIds();
         }
-        EquipmentId equipmentId = org.ddd.fundamental.utils.CollectionUtils.random(equipmentIds);
-        if (org.springframework.util.CollectionUtils.isEmpty(toolingEquipmentIds)) {
+        EquipmentDTO equipmentDTO = org.ddd.fundamental.utils.CollectionUtils.random(equipmentDTOS);
+        if (org.springframework.util.CollectionUtils.isEmpty(this.toolingDTOS)) {
             createToolingIds();
         }
-        EquipmentId toolingId = org.ddd.fundamental.utils.CollectionUtils.random(toolingEquipmentIds);
-        if (org.springframework.util.CollectionUtils.isEmpty(workInProgressIds)) {
+        ToolingDTO toolingDTO = org.ddd.fundamental.utils.CollectionUtils.random(toolingDTOS);
+        if (org.springframework.util.CollectionUtils.isEmpty(this.workInProgressDTOS)) {
             createWorkInProgressIds();
         }
-        MaterialId workInProgressId = org.ddd.fundamental.utils.CollectionUtils.random(workInProgressIds);
-        if (org.springframework.util.CollectionUtils.isEmpty(rawMaterialIds)) {
+        MaterialDTO workInProgressDTO = org.ddd.fundamental.utils.CollectionUtils.random(workInProgressDTOS);
+        if (org.springframework.util.CollectionUtils.isEmpty(this.rawMaterialDTOS)) {
             createRawMaterialIds();
         }
-        MaterialId rawMaterialId = org.ddd.fundamental.utils.CollectionUtils.random(rawMaterialIds);
+        MaterialDTO rawMaterialDTO = org.ddd.fundamental.utils.CollectionUtils.random(rawMaterialDTOS);
         List<ProductResource> resources = new ArrayList<>();
-        if (null != equipmentId) {
-            ProductResource equipment = ProductResource.create(equipmentId, ProductResourceType.EQUIPMENT,ChangeableInfo.create(
-                    "设备生产资源","这是一个设备生产资源"
+        if (null != equipmentDTO) {
+            ProductResource equipment = ProductResource.create(equipmentDTO.id(), ProductResourceType.EQUIPMENT,ChangeableInfo.create(
+                    equipmentDTO.getMaster().getInfo().getName(),equipmentDTO.getMaster().getInfo().getDesc()
             ));
             resources.add(equipment);
         }
 
-        if (null != toolingId) {
-            ProductResource tooling = ProductResource.create(toolingId, ProductResourceType.TOOLING,ChangeableInfo.create(
-                    "工装生产资源","这是一个工装生产资源"
+        if (null != toolingDTO) {
+            ProductResource tooling = ProductResource.create(toolingDTO.id(), ProductResourceType.TOOLING,ChangeableInfo.create(
+                    toolingDTO.getToolingEquipmentValue().getToolingEquipment().getName(),
+                    toolingDTO.getToolingEquipmentValue().getToolingEquipment().getDesc()
             ));
             resources.add(tooling);
         }
-        if (workInProgressId !=null) {
-            ProductResource workInProgress = ProductResource.create(workInProgressId, ProductResourceType.MATERIAL,ChangeableInfo.create(
-                    "在制品生产资源","这是一个在制品生产资源"
+        if (workInProgressDTO !=null) {
+            ProductResource workInProgress = ProductResource.create(workInProgressDTO.id(), ProductResourceType.MATERIAL,ChangeableInfo.create(
+                    workInProgressDTO.getMaterialMaster().getName(),
+                    workInProgressDTO.getMaterialMaster().getSpec()
             ));
             resources.add(workInProgress);
         }
 
-        if (rawMaterialId != null) {
-            ProductResource rawMaterial = ProductResource.create(rawMaterialId, ProductResourceType.MATERIAL,ChangeableInfo.create(
-                    "原材料生产资源","这是一个原材料生产资源"
+        if (rawMaterialDTO != null) {
+            ProductResource rawMaterial = ProductResource.create(rawMaterialDTO.id(), ProductResourceType.MATERIAL,ChangeableInfo.create(
+                    rawMaterialDTO.getMaterialMaster().getName(),
+                    rawMaterialDTO.getMaterialMaster().getSpec()
             ));
             resources.add(rawMaterial);
         }

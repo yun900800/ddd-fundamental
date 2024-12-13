@@ -5,7 +5,7 @@ import org.ddd.fundamental.core.ValueObject;
 import org.ddd.fundamental.day.CalculateTime;
 import org.ddd.fundamental.tuple.Tuple;
 import org.ddd.fundamental.tuple.TwoTuple;
-import org.ddd.fundamental.utils.DateUtils;
+import org.ddd.fundamental.utils.DateTimeUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -45,11 +45,11 @@ public class DateRange implements ValueObject, Cloneable, CalculateTime {
     }
 
     public TwoTuple<Integer,Long> range(){
-        LocalDate dStart = DateUtils.dataToLocalDate(start);
-        LocalDate dEnd = DateUtils.dataToLocalDate(end);
+        LocalDate dStart = DateTimeUtils.dataToLocalDate(start);
+        LocalDate dEnd = DateTimeUtils.dataToLocalDate(end);
         int date = Period.between(dStart,dEnd).getDays();
-        LocalTime dStartTime = DateUtils.dataToLocalTime(start);
-        LocalTime dEndTime = DateUtils.dataToLocalTime(end);
+        LocalTime dStartTime = DateTimeUtils.dataToLocalTime(start);
+        LocalTime dEndTime = DateTimeUtils.dataToLocalTime(end);
         long minutes = Duration.between(dStartTime,dEndTime).toMinutes();
         if (!cache.containsKey(this)){
             log.info("data need calculate again");

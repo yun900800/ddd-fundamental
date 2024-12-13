@@ -8,6 +8,7 @@ import org.ddd.fundamental.material.domain.model.Material;
 import org.ddd.fundamental.material.domain.model.MaterialBatch;
 import org.ddd.fundamental.material.domain.repository.MaterialBatchRepository;
 import org.ddd.fundamental.material.domain.value.MaterialBatchValue;
+import org.ddd.fundamental.material.helper.MaterialHelper;
 import org.ddd.fundamental.material.value.MaterialId;
 import org.ddd.fundamental.redis.config.RedisStoreManager;
 import org.ddd.fundamental.utils.CollectionUtils;
@@ -68,7 +69,7 @@ public class MaterialBatchAddable implements DataAddable {
     private static MaterialBatch createMaterialBatch(String workProcessName,int index) {
         Material material = CollectionUtils.random(MaterialAddable.createMaterials());
         MaterialId materialId = material.id();
-        int batchNumber = CollectionUtils.random(MaterialAddable.numbers());
+        int batchNumber = CollectionUtils.random(MaterialHelper.numbers());
         BatchClassifyType batchClassifyType = CollectionUtils.random(Arrays.asList(
                 BatchClassifyType.PRODUCT_BATCH,
                 BatchClassifyType.ERP_BATCH

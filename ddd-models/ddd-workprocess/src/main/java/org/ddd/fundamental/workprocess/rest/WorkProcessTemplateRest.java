@@ -4,11 +4,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.shared.api.optemplate.CraftsmanShipTemplateDTO;
 import org.ddd.fundamental.shared.api.optemplate.WorkProcessTemplateDTO;
 import org.ddd.fundamental.workprocess.application.command.WorkProcessTemplateCommandService;
-import org.ddd.fundamental.workprocess.application.query.WorkProcessTemplateApplication;
+import org.ddd.fundamental.workprocess.application.query.WorkProcessTemplateQueryService;
 import org.ddd.fundamental.workprocess.value.WorkProcessBeat;
 import org.ddd.fundamental.workprocess.value.WorkProcessTemplateId;
 import org.ddd.fundamental.workprocess.value.controller.WorkProcessTemplateControl;
 import org.ddd.fundamental.workprocess.value.quantity.WorkProcessTemplateQuantity;
+import org.ddd.fundamental.workprocess.value.resources.ProductResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +20,7 @@ import java.util.List;
 public class WorkProcessTemplateRest {
 
     @Autowired
-    private WorkProcessTemplateApplication application;
+    private WorkProcessTemplateQueryService application;
 
     @Autowired
     private WorkProcessTemplateCommandService service;
@@ -59,5 +60,11 @@ public class WorkProcessTemplateRest {
     public void addControlInfoToTemplate(@RequestBody WorkProcessTemplateControl control,
                                          @PathVariable String id){
         service.addControlInfoToTemplate(control,new WorkProcessTemplateId(id));
+    }
+
+    @PostMapping("/process/add_resource/{id}")
+    public void addProductResource(@RequestBody ProductResource resource,
+                                   @PathVariable String id){
+        service.addProductResource(resource,new WorkProcessTemplateId(id));
     }
 }
