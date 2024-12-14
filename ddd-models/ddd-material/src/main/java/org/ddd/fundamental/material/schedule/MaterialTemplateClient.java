@@ -133,7 +133,7 @@ public class MaterialTemplateClient {
         log.info("change materialControl finished");
     }
 
-    @Scheduled(cron = "*/10 * * * * ?")
+    @Scheduled(cron = "*/1200 * * * * ?")
     public void addOptionalProps() {
         if (org.springframework.util.CollectionUtils.isEmpty(materialCache)){
             this.materialCache = materialQueryService.materials();
@@ -147,7 +147,7 @@ public class MaterialTemplateClient {
         log.info("add OptionalProps finished");
     }
 
-    @Scheduled(cron = "*/15 * * * * ?")
+    @Scheduled(cron = "*/1500 * * * * ?")
     public void addOptionalCharacter() {
         if (org.springframework.util.CollectionUtils.isEmpty(materialCache)){
             this.materialCache = materialQueryService.materials();

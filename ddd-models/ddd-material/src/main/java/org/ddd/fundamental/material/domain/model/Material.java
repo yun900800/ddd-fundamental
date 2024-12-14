@@ -151,11 +151,13 @@ public class Material extends AbstractAggregateRoot<MaterialId> {
 
     public Material addOptionalProps(String key, String value) {
         this.materialOptionalProps.put(key,value);
+        changeUpdated();
         return this;
     }
 
     public Material addOptionalCharacter(String key, String value){
         this.materialOptionalCharacteristics.put(key,value);
+        changeUpdated();
         return this;
     }
 
