@@ -13,6 +13,7 @@ import org.ddd.fundamental.material.value.MaterialId;
 import org.ddd.fundamental.material.value.MaterialType;
 import org.ddd.fundamental.shared.api.material.MaterialDTO;
 import org.ddd.fundamental.shared.api.material.MaterialRequest;
+import org.ddd.fundamental.shared.api.material.PropsContainer;
 import org.ddd.fundamental.utils.CollectionUtils;
 import org.ddd.fundamental.workprocess.value.WorkProcessBeat;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,10 @@ public class MaterialTemplateClient {
     private static final String CHANGE_MATERIAL_MASTER = "http://localhost:9001/material/change_materialMaster/%s";
 
     private static final String CHANGE_MATERIAL_CONTROL = "http://localhost:9001/material/change_materialControl/%s";
+
+    private static final String ADD_OPTIONAL_PROPS = "http://localhost:9001/material/add_optional_props/%s";
+
+    private static final String ADD_OPTIONAL_CHARACTER = "http://localhost:9001/material/add_optional_character/%s";
 
     @Autowired
     public MaterialTemplateClient(MaterialQueryService materialQueryService){
@@ -126,6 +131,34 @@ public class MaterialTemplateClient {
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.postForObject(url,controlProps,Void.class);
         log.info("change materialControl finished");
+    }
+
+    @Scheduled(cron = "*/10 * * * * ?")
+    public void addOptionalProps() {
+        if (org.springframework.util.CollectionUtils.isEmpty(materialCache)){
+            this.materialCache = materialQueryService.materials();
+        }
+        String id = CollectionUtils.random(materialCache).id().toUUID();
+        PropsContainer propsContainer = PropsContainer.create("testOptionalProps","testValue1");
+        String url = String.format(ADD_OPTIONAL_PROPS,id);
+        log.info("url is {}",url);
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.postForObject(url,propsContainer,Void.class);
+        log.info("add OptionalProps finished");
+    }
+
+    @Scheduled(cron = "*/15 * * * * ?")
+    public void addOptionalCharacter() {
+        if (org.springframework.util.CollectionUtils.isEmpty(materialCache)){
+            this.materialCache = materialQueryService.materials();
+        }
+        String id = CollectionUtils.random(materialCache).id().toUUID();
+        PropsContainer propsContainer = PropsContainer.create("testOptionalCharacter","testValue2");
+        String url = String.format(ADD_OPTIONAL_CHARACTER,id);
+        log.info("url is {}",url);
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.postForObject(url,propsContainer,Void.class);
+        log.info("add OptionalCharacter finished");
     }
 
 }

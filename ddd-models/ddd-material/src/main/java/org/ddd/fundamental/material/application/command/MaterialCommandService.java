@@ -11,6 +11,7 @@ import org.ddd.fundamental.material.value.MaterialId;
 import org.ddd.fundamental.redis.config.RedisStoreManager;
 import org.ddd.fundamental.shared.api.material.MaterialDTO;
 import org.ddd.fundamental.shared.api.material.MaterialRequest;
+import org.ddd.fundamental.shared.api.material.PropsContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -91,5 +92,31 @@ public class MaterialCommandService {
             return;
         }
         material.changeMaterialControl(controlProps);
+    }
+
+    /**
+     * 添加可选属性
+     * @param propsContainer
+     * @param id
+     */
+    public void addOptionalProps(PropsContainer propsContainer, MaterialId id){
+        Material material = materialRepository.findById(id).orElse(null);
+        if (null == material) {
+            return;
+        }
+        material.addOptionalProps(propsContainer.getKey(),propsContainer.getValue());
+    }
+
+    /**
+     *
+     * @param propsContainer
+     * @param id
+     */
+    public void addOptionalCharacter(PropsContainer propsContainer, MaterialId id){
+        Material material = materialRepository.findById(id).orElse(null);
+        if (null == material) {
+            return;
+        }
+        material.addOptionalCharacter(propsContainer.getKey(),propsContainer.getValue());
     }
 }

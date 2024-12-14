@@ -10,6 +10,7 @@ import org.ddd.fundamental.material.value.MaterialId;
 import org.ddd.fundamental.shared.api.material.MaterialDTO;
 import org.ddd.fundamental.material.value.MaterialType;
 import org.ddd.fundamental.shared.api.material.MaterialRequest;
+import org.ddd.fundamental.shared.api.material.PropsContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -60,5 +61,17 @@ public class MaterialRest {
     public void changeMaterialControl(@RequestBody ControlProps controlProps,
                                       @PathVariable String id){
         commandService.changeMaterialControl(controlProps,new MaterialId(id));
+    }
+
+    @PostMapping("/material/add_optional_props/{id}")
+    public void addOptionalProps(@RequestBody PropsContainer propsContainer,
+                                 @PathVariable String id){
+        commandService.addOptionalProps(propsContainer,new MaterialId(id));
+    }
+
+    @PostMapping("/material/add_optional_character/{id}")
+    public void addOptionalCharacter(@RequestBody PropsContainer propsContainer,
+                                 @PathVariable String id){
+        commandService.addOptionalCharacter(propsContainer,new MaterialId(id));
     }
 }
