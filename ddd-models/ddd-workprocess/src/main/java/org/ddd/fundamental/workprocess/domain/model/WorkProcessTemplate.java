@@ -121,11 +121,6 @@ public class WorkProcessTemplate extends AbstractAggregateRoot<WorkProcessTempla
         return this;
     }
 
-    private void changeUpdated(){
-        this.changeUpdateTime(LocalDateTime.now());
-        this.changeUpdated(created());
-    }
-
     /**
      * 注意,修改数量和节拍都是整体修改,粒度是比较粗的哈
      * 可以增加更细粒度的API来进行修改

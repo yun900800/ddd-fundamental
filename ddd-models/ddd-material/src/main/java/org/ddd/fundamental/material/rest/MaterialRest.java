@@ -1,9 +1,11 @@
 package org.ddd.fundamental.material.rest;
 
 import org.ddd.fundamental.changeable.ChangeableInfo;
+import org.ddd.fundamental.material.MaterialMaster;
 import org.ddd.fundamental.material.application.command.MaterialCommandService;
 import org.ddd.fundamental.material.application.query.MaterialQueryService;
 import org.ddd.fundamental.material.domain.model.Material;
+import org.ddd.fundamental.material.domain.value.ControlProps;
 import org.ddd.fundamental.material.value.MaterialId;
 import org.ddd.fundamental.shared.api.material.MaterialDTO;
 import org.ddd.fundamental.material.value.MaterialType;
@@ -46,5 +48,17 @@ public class MaterialRest {
     public void changeMaterialInfo(@RequestBody ChangeableInfo info,
                                    @PathVariable String id){
         commandService.changeMaterialInfo(info,new MaterialId(id));
+    }
+
+    @PostMapping("/material/change_materialMaster/{id}")
+    public void changeMaterialMaster(@RequestBody MaterialMaster materialMaster,
+                                     @PathVariable String id){
+        commandService.changeMaterialMaster(materialMaster,new MaterialId(id));
+    }
+
+    @PostMapping("/material/change_materialControl/{id}")
+    public void changeMaterialControl(@RequestBody ControlProps controlProps,
+                                      @PathVariable String id){
+        commandService.changeMaterialControl(controlProps,new MaterialId(id));
     }
 }

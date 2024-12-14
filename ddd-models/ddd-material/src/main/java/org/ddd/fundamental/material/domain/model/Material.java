@@ -13,6 +13,9 @@ import javax.persistence.*;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 一个聚合根中的属性太多,根据业务合理的进行分组,然后进行不同的API进行操作是一个好的设计方式
+ */
 @Entity
 @Table(name = "material")
 public class Material extends AbstractAggregateRoot<MaterialId> {
@@ -105,18 +108,38 @@ public class Material extends AbstractAggregateRoot<MaterialId> {
         return materialInfo.clone();
     }
 
+    public Material changeMaterialControl(ControlProps controlProps) {
+        this.materialControlProps = controlProps;
+        changeUpdated();
+        return this;
+    }
+
+    /**
+     * 修改主数据
+     * @param materialMaster
+     * @return
+     */
+    public Material changeMaterialMaster(MaterialMaster materialMaster){
+        this.materialMaster = materialMaster;
+        changeUpdated();
+        return this;
+    }
+
     public Material changeMaterialInfo(ChangeableInfo info){
         this.materialInfo = info;
+        changeUpdated();
         return this;
     }
 
     public Material changeName(String name){
         this.materialInfo = materialInfo.changeName(name);
+        changeUpdated();
         return this;
     }
 
     public Material changeDesc(String desc){
         this.materialInfo = materialInfo.changeDesc(desc);
+        changeUpdated();
         return this;
     }
 
@@ -141,7 +164,6 @@ public class Material extends AbstractAggregateRoot<MaterialId> {
      * @return
      */
     public Map<String, String> getMaterialRequiredProps() {
-
         if (null != materialRequiredProps){
             return new HashMap<>(materialRequiredProps);
         }

@@ -2,9 +2,11 @@ package org.ddd.fundamental.material.application.command;
 
 import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.changeable.ChangeableInfo;
+import org.ddd.fundamental.material.MaterialMaster;
 import org.ddd.fundamental.material.creator.MaterialAddable;
 import org.ddd.fundamental.material.domain.model.Material;
 import org.ddd.fundamental.material.domain.repository.MaterialRepository;
+import org.ddd.fundamental.material.domain.value.ControlProps;
 import org.ddd.fundamental.material.value.MaterialId;
 import org.ddd.fundamental.redis.config.RedisStoreManager;
 import org.ddd.fundamental.shared.api.material.MaterialDTO;
@@ -63,5 +65,31 @@ public class MaterialCommandService {
             return;
         }
         material.changeMaterialInfo(info);
+    }
+
+    /**
+     * 修改物料主数据
+     * @param materialMaster
+     * @param id
+     */
+    public void changeMaterialMaster(MaterialMaster materialMaster, MaterialId id){
+        Material material = materialRepository.findById(id).orElse(null);
+        if (null == material) {
+            return;
+        }
+        material.changeMaterialMaster(materialMaster);
+    }
+
+    /**
+     * 修改物料控制信息
+     * @param controlProps
+     * @param id
+     */
+    public void changeMaterialControl(ControlProps controlProps, MaterialId id){
+        Material material = materialRepository.findById(id).orElse(null);
+        if (null == material) {
+            return;
+        }
+        material.changeMaterialControl(controlProps);
     }
 }

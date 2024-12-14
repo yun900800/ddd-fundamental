@@ -100,6 +100,11 @@ public abstract class AbstractEntity<ID extends DomainObjectId> implements
         return this;
     }
 
+    public void changeUpdated(){
+        this.changeUpdateTime(LocalDateTime.now());
+        this.changeUpdated(created());
+    }
+
     @Override
     @NonNull
     public ID id() {

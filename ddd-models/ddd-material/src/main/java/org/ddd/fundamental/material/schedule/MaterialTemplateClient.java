@@ -5,7 +5,9 @@ import org.ddd.fundamental.changeable.ChangeableInfo;
 import org.ddd.fundamental.material.MaterialMaster;
 import org.ddd.fundamental.material.application.query.MaterialQueryService;
 import org.ddd.fundamental.material.creator.MaterialAddable;
+import org.ddd.fundamental.material.domain.enums.MaterialLevel;
 import org.ddd.fundamental.material.domain.model.Material;
+import org.ddd.fundamental.material.domain.value.ControlProps;
 import org.ddd.fundamental.material.helper.MaterialHelper;
 import org.ddd.fundamental.material.value.MaterialId;
 import org.ddd.fundamental.material.value.MaterialType;
@@ -34,6 +36,10 @@ public class MaterialTemplateClient {
     private static final String ADD_MATERIAL = "http://localhost:9001/material/add_material";
 
     private static final String CHANGE_MATERIAL = "http://localhost:9001/material/change_materialInfo/%s";
+
+    private static final String CHANGE_MATERIAL_MASTER = "http://localhost:9001/material/change_materialMaster/%s";
+
+    private static final String CHANGE_MATERIAL_CONTROL = "http://localhost:9001/material/change_materialControl/%s";
 
     @Autowired
     public MaterialTemplateClient(MaterialQueryService materialQueryService){
@@ -66,7 +72,7 @@ public class MaterialTemplateClient {
         log.info("add material finished");
     }
 
-    @Scheduled(cron = "*/5 * * * * ?")
+    @Scheduled(cron = "*/600 * * * * ?")
     public void changeMaterialInfo() {
         if (org.springframework.util.CollectionUtils.isEmpty(materialCache)){
             this.materialCache = materialQueryService.materials();
@@ -81,6 +87,45 @@ public class MaterialTemplateClient {
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.postForObject(url,info,Void.class);
         log.info("change materialInfo finished");
+    }
+
+    @Scheduled(cron = "*/600 * * * * ?")
+    public void changeMaterialMaster() {
+        if (org.springframework.util.CollectionUtils.isEmpty(materialCache)){
+            this.materialCache = materialQueryService.materials();
+        }
+        MaterialType type = CollectionUtils.random(Arrays.asList(MaterialType.values()));
+        String name = CollectionUtils.random(MaterialHelper.createMaterial().get(type));
+        Map<String,String> requiredMap = MaterialAddable.createRequiredMap();
+        String id = CollectionUtils.random(materialCache).id().toUUID();
+        MaterialMaster materialMaster = MaterialMaster.create(
+                requiredMap.get("code"),
+                name,
+                requiredMap.get("spec"),
+                requiredMap.get("unit")
+        );
+        String url = String.format(CHANGE_MATERIAL_MASTER,id);
+        log.info("url is {}",url);
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.postForObject(url,materialMaster,Void.class);
+        log.info("change materialMaster finished");
+    }
+
+    @Scheduled(cron = "*/600 * * * * ?")
+    public void changeMaterialControl() {
+        if (org.springframework.util.CollectionUtils.isEmpty(materialCache)){
+            this.materialCache = materialQueryService.materials();
+        }
+        String id = CollectionUtils.random(materialCache).id().toUUID();
+        ControlProps controlProps = ControlProps.create(
+                CollectionUtils.random(MaterialHelper.materialLevels()),
+                CollectionUtils.random(Arrays.asList(MaterialType.values()))
+        );
+        String url = String.format(CHANGE_MATERIAL_CONTROL,id);
+        log.info("url is {}",url);
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.postForObject(url,controlProps,Void.class);
+        log.info("change materialControl finished");
     }
 
 }
