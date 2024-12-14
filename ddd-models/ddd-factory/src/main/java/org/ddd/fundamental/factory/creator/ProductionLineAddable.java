@@ -61,7 +61,7 @@ public class ProductionLineAddable implements DataAddable {
     public void execute() {
         log.info("ProductionLineAddable execute add all ProductionLines");
         lines = createProductionLine("电路板产线",4,6);
-        repository.saveAll(lines);
+        repository.persistAll(lines);
         List<ProductLineDTO> productLineDTOS = lines.stream()
                 .map(v->ProductLineDTO.create(v.id(), v.getLine(),
                         v.getEquipmentIds(),v.getWorkStations().stream()

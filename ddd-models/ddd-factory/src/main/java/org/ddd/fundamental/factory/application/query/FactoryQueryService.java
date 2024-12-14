@@ -1,12 +1,14 @@
-package org.ddd.fundamental.factory.application;
+package org.ddd.fundamental.factory.application.query;
 
 import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.factory.MachineShopId;
 import org.ddd.fundamental.factory.ProductionLineId;
 import org.ddd.fundamental.factory.domain.model.MachineShop;
 import org.ddd.fundamental.factory.domain.model.ProductionLine;
+import org.ddd.fundamental.factory.domain.model.WorkStation;
 import org.ddd.fundamental.factory.domain.repository.MachineShopRepository;
 import org.ddd.fundamental.factory.domain.repository.ProductionLineRepository;
+import org.ddd.fundamental.factory.domain.repository.WorkStationRepository;
 import org.ddd.fundamental.redis.config.RedisStoreManager;
 import org.ddd.fundamental.shared.api.factory.MachineShopDTO;
 import org.ddd.fundamental.shared.api.factory.ProductLineDTO;
@@ -24,13 +26,16 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 @Transactional(readOnly = true)
-public class FactoryApplication {
+public class FactoryQueryService {
 
     @Autowired
     private MachineShopRepository machineShopRepository;
 
     @Autowired
     private ProductionLineRepository productionLineRepository;
+
+    @Autowired
+    private WorkStationRepository workStationRepository;
 
     @Autowired
     private RedisStoreManager manager;
@@ -102,6 +107,16 @@ public class FactoryApplication {
                         .collect(Collectors.toList())
         )).collect(Collectors.toList());
 
+    }
+
+    public List<WorkStationDTO> findByLineId(ProductionLineId id){
+        List<WorkStation> workStations = workStationRepository.findByLineId(id);
+        if (CollectionUtils.isEmpty(workStations)){
+            return new ArrayList<>();
+        }
+        return workStations.stream().map(
+                u-> WorkStationDTO.create(u.id(), u.getWorkStation())
+        ).collect(Collectors.toList());
     }
 
 }

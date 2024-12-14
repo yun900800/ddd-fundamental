@@ -2,13 +2,14 @@ package org.ddd.fundamental.factory.rest;
 
 import org.ddd.fundamental.factory.MachineShopId;
 import org.ddd.fundamental.factory.ProductionLineId;
-import org.ddd.fundamental.factory.application.FactoryApplication;
+import org.ddd.fundamental.factory.WorkStationId;
+import org.ddd.fundamental.factory.application.command.FactoryCommandService;
+import org.ddd.fundamental.factory.application.query.FactoryQueryService;
 import org.ddd.fundamental.shared.api.factory.MachineShopDTO;
 import org.ddd.fundamental.shared.api.factory.ProductLineDTO;
+import org.ddd.fundamental.shared.api.factory.WorkStationDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,7 +18,10 @@ import java.util.stream.Collectors;
 public class FactoryRest {
 
     @Autowired
-    private FactoryApplication application;
+    private FactoryQueryService application;
+
+    @Autowired
+    private FactoryCommandService commandService;
 
     @RequestMapping("/factory/machine-shops")
     public List<MachineShopDTO> machineShops() {
@@ -39,6 +43,19 @@ public class FactoryRest {
     public List<ProductLineDTO> productLinesByIds(@RequestBody List<String> ids){
         return application.productLinesByIds(ids.stream().map(v->new ProductionLineId(v))
                 .collect(Collectors.toList()));
+    }
+
+    @PostMapping("/factory/add-line")
+    public void addProductLine(@RequestBody ProductLineDTO productLineDTO){
+        commandService.addProductLine(productLineDTO.getLineInfo(),
+                productLineDTO.getEquipmentIds(),
+                productLineDTO.getWorkStations());
+    }
+
+    @PostMapping("/factory/delete_work_station/{lineId}/{workStationId}")
+    public void deleteWorkStation(@PathVariable String workStationId,
+                                  @PathVariable String lineId){
+        commandService.deleteWorkStation(new WorkStationId(workStationId),new ProductionLineId(lineId));
     }
 
 }
