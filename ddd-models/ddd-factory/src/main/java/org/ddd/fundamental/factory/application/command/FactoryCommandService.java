@@ -1,6 +1,7 @@
 package org.ddd.fundamental.factory.application.command;
 
 import lombok.extern.slf4j.Slf4j;
+import org.ddd.fundamental.changeable.ChangeableInfo;
 import org.ddd.fundamental.factory.EquipmentId;
 import org.ddd.fundamental.factory.ProductionLineId;
 import org.ddd.fundamental.factory.WorkStationId;
@@ -76,10 +77,7 @@ public class FactoryCommandService {
      */
     public void deleteWorkStation(WorkStationId workStationId, ProductionLineId lineId){
         ProductionLine line = queryService.findProductionLineById(lineId);
-        WorkStation station = workStationRepository.findById(workStationId).orElse(null);
-        if (null == station) {
-            return;
-        }
+        WorkStation station = queryService.findWorkStationById(workStationId);
         line.removeWorkStation(station);
     }
 
@@ -93,6 +91,16 @@ public class FactoryCommandService {
         WorkStation station = queryService.findWorkStationById(workStationId);
         station.changeWorkStation(stationDTO.getWorkStation().getWorkStation());
         workStationRepository.save(station);
+    }
+
+    /**
+     * 修改产线信息
+     * @param lineId
+     * @param lineInfo
+     */
+    public void changeProductLineInfo(ProductionLineId lineId, ChangeableInfo lineInfo){
+        ProductionLine line = queryService.findProductionLineById(lineId);
+        line.changeLineInfo(lineInfo);
     }
 
     /**

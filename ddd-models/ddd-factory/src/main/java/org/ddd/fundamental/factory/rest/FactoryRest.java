@@ -1,5 +1,6 @@
 package org.ddd.fundamental.factory.rest;
 
+import org.ddd.fundamental.changeable.ChangeableInfo;
 import org.ddd.fundamental.factory.MachineShopId;
 import org.ddd.fundamental.factory.ProductionLineId;
 import org.ddd.fundamental.factory.WorkStationId;
@@ -67,6 +68,12 @@ public class FactoryRest {
     public void updateWorkStation(@PathVariable String workStationId,
                                   @RequestBody WorkStationDTO stationDTO){
         commandService.updateWorkStation(new WorkStationId(workStationId),stationDTO);
+    }
+
+    @PostMapping("/factory/change_lineInfo/{lineId}")
+    public void changeProductLineInfo(@PathVariable String lineId,
+                                      @RequestBody ChangeableInfo lineInfo){
+        commandService.changeProductLineInfo(new ProductionLineId(lineId),lineInfo);
     }
 
 }

@@ -1,5 +1,6 @@
 package org.ddd.fundamental.factory.value;
 
+import org.apache.commons.lang.StringUtils;
 import org.ddd.fundamental.changeable.ChangeableInfo;
 import org.ddd.fundamental.core.ValueObject;
 
@@ -40,6 +41,23 @@ public class ProductionLineValue implements ValueObject,Cloneable {
 
     public ProductionLineValue disableLine() {
         this.productLine = this.productLine.disableUse();
+        return this;
+    }
+
+    public ProductionLineValue changeLineInfo(ChangeableInfo lineInfo){
+        if (!StringUtils.isBlank(lineInfo.getName())) {
+            this.changeName(lineInfo.getName());
+        }
+        if (!StringUtils.isBlank(lineInfo.getDesc())) {
+            this.changeDesc(lineInfo.getDesc());
+        }
+        if (lineInfo.isUse() != this.productLine.isUse()) {
+            if (lineInfo.isUse()){
+                this.enableLine();
+            } else {
+                this.disableLine();
+            }
+        }
         return this;
     }
 

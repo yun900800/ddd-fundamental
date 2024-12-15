@@ -37,6 +37,8 @@ public class FactoryTemplateClient {
 
     private static final String UPDATE_WORK_STATION = "http://localhost:9006/factory/update_station/%s";
 
+    private static final String CHANGE_PRODUCT_LINE = "http://localhost:9006/factory/change_lineInfo/%s";
+
     private List<ProductLineDTO> cacheLineDTOS;
 
     @Autowired
@@ -109,7 +111,7 @@ public class FactoryTemplateClient {
         log.info("delete line finished");
     }
 
-    @Scheduled(cron = "*/20 * * * * ?")
+    @Scheduled(cron = "*/3600 * * * * ?")
     public void updateWorkStation(){
         if (org.springframework.util.CollectionUtils.isEmpty(this.cacheLineDTOS)) {
             this.cacheLineDTOS = queryService.productLines();
@@ -126,5 +128,19 @@ public class FactoryTemplateClient {
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.postForObject(url, stationDTO,Void.class);
         log.info("update work_station finished");
+    }
+
+    @Scheduled(cron = "*/3600 * * * * ?")
+    public void changeProductLineInfo(){
+        if (org.springframework.util.CollectionUtils.isEmpty(this.cacheLineDTOS)) {
+            this.cacheLineDTOS = queryService.productLines();
+        }
+        ProductionLineId lineId = CollectionUtils.random(cacheLineDTOS).id();
+        String url = String.format(CHANGE_PRODUCT_LINE,lineId.toUUID());
+        log.info("url is {}",url);
+        String lineName = CollectionUtils.random(FactoryHelper.productLineNames());
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.postForObject(url, ChangeableInfo.create(lineName,"新的产线描述",true),Void.class);
+        log.info("change line finished");
     }
 }

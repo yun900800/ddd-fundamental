@@ -1,6 +1,7 @@
 package org.ddd.fundamental.factory.domain.model;
 
 import lombok.extern.slf4j.Slf4j;
+import org.ddd.fundamental.changeable.ChangeableInfo;
 import org.ddd.fundamental.core.AbstractAggregateRoot;
 import org.ddd.fundamental.factory.EquipmentId;
 import org.ddd.fundamental.factory.ProductionLineId;
@@ -57,6 +58,10 @@ public class ProductionLine extends AbstractAggregateRoot<ProductionLineId> {
 
     public ProductionLine disableLine() {
         this.line = this.line.disableLine();
+        return this;
+    }
+    public ProductionLine changeLineInfo(ChangeableInfo lineInfo){
+        this.line = this.line.changeLineInfo(lineInfo);
         return this;
     }
 

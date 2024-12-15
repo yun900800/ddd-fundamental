@@ -128,7 +128,7 @@ public class FactoryQueryService {
     public ProductionLine findProductionLineById(ProductionLineId lineId){
         ProductionLine line = productionLineRepository.findById(lineId).orElse(null);
         if (null == line) {
-            String msg = "id:{} 对应的ProductionLine 不存在";
+            String msg = "id:%s 对应的ProductionLine 不存在";
             throw new RuntimeException(String.format(msg,lineId.toUUID()));
         }
         return line;
@@ -137,7 +137,7 @@ public class FactoryQueryService {
     public WorkStation findWorkStationById(WorkStationId stationId){
         WorkStation station = workStationRepository.findById(stationId).orElse(null);
         if (null == station) {
-            String msg = "id:{} 对应的WorkStation 不存在";
+            String msg = "id:%s 对应的WorkStation 不存在";
             throw new RuntimeException(String.format(msg,stationId.toUUID()));
         }
         return station;
