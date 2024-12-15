@@ -1,10 +1,10 @@
 package org.ddd.fundamental.factory.application.command;
 
 import lombok.extern.slf4j.Slf4j;
-import org.ddd.fundamental.changeable.ChangeableInfo;
 import org.ddd.fundamental.factory.EquipmentId;
 import org.ddd.fundamental.factory.ProductionLineId;
 import org.ddd.fundamental.factory.WorkStationId;
+import org.ddd.fundamental.factory.application.query.FactoryQueryService;
 import org.ddd.fundamental.factory.domain.model.ProductionLine;
 import org.ddd.fundamental.factory.domain.model.WorkStation;
 import org.ddd.fundamental.factory.domain.repository.MachineShopRepository;
@@ -30,14 +30,18 @@ public class FactoryCommandService {
 
     private final WorkStationRepository workStationRepository;
 
+    private final FactoryQueryService queryService;
+
     @Autowired
     public FactoryCommandService(
             MachineShopRepository machineShopRepository,
             ProductionLineRepository productionLineRepository,
-            WorkStationRepository workStationRepository){
+            WorkStationRepository workStationRepository,
+            FactoryQueryService queryService){
         this.machineShopRepository = machineShopRepository;
         this.productionLineRepository = productionLineRepository;
         this.workStationRepository = workStationRepository;
+        this.queryService = queryService;
     }
 
     /**
@@ -71,15 +75,24 @@ public class FactoryCommandService {
      * @param lineId
      */
     public void deleteWorkStation(WorkStationId workStationId, ProductionLineId lineId){
-        ProductionLine line = productionLineRepository.findById(lineId).orElse(null);
-        if (null == line) {
-            return;
-        }
+        ProductionLine line = queryService.findProductionLineById(lineId);
         WorkStation station = workStationRepository.findById(workStationId).orElse(null);
         if (null == station) {
             return;
         }
         line.removeWorkStation(station);
+    }
+
+    /**
+     * 更新工位信息,这个方法没有使用领域模型的聚合进行修改
+     *
+     * @param workStationId
+     * @param stationDTO
+     */
+    public void updateWorkStation(WorkStationId workStationId, WorkStationDTO stationDTO){
+        WorkStation station = queryService.findWorkStationById(workStationId);
+        station.changeWorkStation(stationDTO.getWorkStation().getWorkStation());
+        workStationRepository.save(station);
     }
 
     /**

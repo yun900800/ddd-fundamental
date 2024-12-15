@@ -63,4 +63,10 @@ public class FactoryRest {
         commandService.deleteProductLine(new  ProductionLineId(lineId));
     }
 
+    @PostMapping("/factory/update_station/{workStationId}")
+    public void updateWorkStation(@PathVariable String workStationId,
+                                  @RequestBody WorkStationDTO stationDTO){
+        commandService.updateWorkStation(new WorkStationId(workStationId),stationDTO);
+    }
+
 }

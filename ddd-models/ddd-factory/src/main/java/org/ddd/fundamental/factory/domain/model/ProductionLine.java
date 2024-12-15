@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.core.AbstractAggregateRoot;
 import org.ddd.fundamental.factory.EquipmentId;
 import org.ddd.fundamental.factory.ProductionLineId;
+import org.ddd.fundamental.factory.WorkStationId;
 import org.ddd.fundamental.factory.value.ProductionLineValue;
 import org.hibernate.annotations.Type;
 

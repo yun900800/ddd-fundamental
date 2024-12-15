@@ -3,6 +3,7 @@ package org.ddd.fundamental.factory.application.query;
 import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.factory.MachineShopId;
 import org.ddd.fundamental.factory.ProductionLineId;
+import org.ddd.fundamental.factory.WorkStationId;
 import org.ddd.fundamental.factory.domain.model.MachineShop;
 import org.ddd.fundamental.factory.domain.model.ProductionLine;
 import org.ddd.fundamental.factory.domain.model.WorkStation;
@@ -117,6 +118,29 @@ public class FactoryQueryService {
         return workStations.stream().map(
                 u-> WorkStationDTO.create(u.id(), u.getWorkStation())
         ).collect(Collectors.toList());
+    }
+
+    /**
+     * 获取产线数据
+     * @param lineId
+     * @return
+     */
+    public ProductionLine findProductionLineById(ProductionLineId lineId){
+        ProductionLine line = productionLineRepository.findById(lineId).orElse(null);
+        if (null == line) {
+            String msg = "id:{} 对应的ProductionLine 不存在";
+            throw new RuntimeException(String.format(msg,lineId.toUUID()));
+        }
+        return line;
+    }
+
+    public WorkStation findWorkStationById(WorkStationId stationId){
+        WorkStation station = workStationRepository.findById(stationId).orElse(null);
+        if (null == station) {
+            String msg = "id:{} 对应的WorkStation 不存在";
+            throw new RuntimeException(String.format(msg,stationId.toUUID()));
+        }
+        return station;
     }
 
 }

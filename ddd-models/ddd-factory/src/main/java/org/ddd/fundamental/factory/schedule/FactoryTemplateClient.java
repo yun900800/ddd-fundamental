@@ -35,6 +35,8 @@ public class FactoryTemplateClient {
 
     private static final String DELETE_PRODUCT_LINE = "http://localhost:9006/factory/delete_line/%s";
 
+    private static final String UPDATE_WORK_STATION = "http://localhost:9006/factory/update_station/%s";
+
     private List<ProductLineDTO> cacheLineDTOS;
 
     @Autowired
@@ -62,7 +64,7 @@ public class FactoryTemplateClient {
         return result;
     }
 
-    @Scheduled(cron = "*/30 * * * * ?")
+    @Scheduled(cron = "*/3000 * * * * ?")
     public void addProductLine(){
         String lineName = CollectionUtils.random(FactoryHelper.productLineNames());
         ProductLineDTO productLineDTO = ProductLineDTO.create(
@@ -79,7 +81,7 @@ public class FactoryTemplateClient {
         log.info("add product line finished");
     }
 
-    @Scheduled(cron = "*/20 * * * * ?")
+    @Scheduled(cron = "*/3600 * * * * ?")
     public void deleteWorkStation(){
         if (org.springframework.util.CollectionUtils.isEmpty(this.cacheLineDTOS)) {
             this.cacheLineDTOS = queryService.productLines();
@@ -94,7 +96,7 @@ public class FactoryTemplateClient {
         log.info("delete workstation from line finished");
     }
 
-    @Scheduled(cron = "*/10 * * * * ?")
+    @Scheduled(cron = "*/3600 * * * * ?")
     public void deleteProductLine(){
         if (org.springframework.util.CollectionUtils.isEmpty(this.cacheLineDTOS)) {
             this.cacheLineDTOS = queryService.productLines();
@@ -105,5 +107,24 @@ public class FactoryTemplateClient {
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.postForObject(url, null,Void.class);
         log.info("delete line finished");
+    }
+
+    @Scheduled(cron = "*/20 * * * * ?")
+    public void updateWorkStation(){
+        if (org.springframework.util.CollectionUtils.isEmpty(this.cacheLineDTOS)) {
+            this.cacheLineDTOS = queryService.productLines();
+        }
+        WorkStationDTO station = CollectionUtils.random(cacheLineDTOS).getWorkStations().get(0);
+        WorkStationId stationId = station.id();
+        String workStationName = CollectionUtils.random(FactoryHelper.workStationNames());
+        WorkStationDTO stationDTO = WorkStationDTO.create(stationId,
+                new WorkStationValueObject(
+                        ChangeableInfo.create(workStationName,"新的描述",true)
+                ));
+        String url = String.format(UPDATE_WORK_STATION,stationId.toUUID());
+        log.info("url is {}",url);
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.postForObject(url, stationDTO,Void.class);
+        log.info("update work_station finished");
     }
 }
