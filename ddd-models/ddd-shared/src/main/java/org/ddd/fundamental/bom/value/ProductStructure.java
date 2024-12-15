@@ -72,6 +72,23 @@ public class ProductStructure<T> implements ValueObject {
                 spares,rawMaterials);
     }
 
+    public ProductStructure<T> searchById(MaterialId id){
+        List<ProductStructure<T>> result = new ArrayList<>();
+        traverse(this,id, result);
+        return CollectionUtils.isEmpty(result) ? null :result.get(0);
+    }
+
+    private void traverse(ProductStructure<T> root,MaterialId id,List<ProductStructure<T>> result){
+        if (root.id.equals(id)){
+            result.add(root);
+            return;
+        }
+        for (ProductStructure<T> structure: root.children) {
+            traverse(structure, id,result);
+        }
+        return;
+    }
+
     private void traverse(ProductStructure<T> structure, MaterialId parentId,
                           List<MaterialIdNode> spares, List<MaterialIdNode> rawMaterials,
                           MaterialId productId) {

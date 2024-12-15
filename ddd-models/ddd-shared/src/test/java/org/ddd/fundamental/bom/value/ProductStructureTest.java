@@ -5,6 +5,9 @@ import org.ddd.fundamental.bom.creator.BomCreator;
 import org.ddd.fundamental.material.MaterialMaster;
 import org.ddd.fundamental.material.value.MaterialId;
 import org.ddd.fundamental.material.value.MaterialType;
+import org.ddd.fundamental.tuple.ThreeTuple;
+import org.ddd.fundamental.tuple.Tuple;
+import org.ddd.fundamental.tuple.TwoTuple;
 import org.ddd.fundamental.utils.CollectionUtils;
 import org.junit.Assert;
 import org.junit.Test;
@@ -45,20 +48,41 @@ public class ProductStructureTest {
 
     @Test
     public void testFullStructureProducts(){
+        ProductStructure structure = createStructure().first;
+        System.out.println(structure);
+        List<MaterialIdNode> results = structure.toMaterialIdList();
+        System.out.println(results);
+    }
+
+    private ThreeTuple<ProductStructure,MaterialId,MaterialId> createStructure(){
         ProductStructure structure = CollectionUtils.random(new ArrayList<>(BomCreator.createProductStructures(5)));
         Set<ProductStructure> spares = BomCreator.createSparePartsStructures(10);
         Set<ProductStructure> rawMaterials = BomCreator.createRawMaterialStructures(20);
         log.info("spares size is {}",spares.size());
+        MaterialId spareId = null;
+        MaterialId rawId = null;
         for (int i = 0 ; i< 4; i++) {
             ProductStructure spare = CollectionUtils.random(new ArrayList<>(spares));
-            spare.addStructure(CollectionUtils.random(new ArrayList<>(rawMaterials)));
+            spareId = spare.getId();
+            ProductStructure rawMaterial = CollectionUtils.random(new ArrayList<>(rawMaterials));
+            rawId = rawMaterial.getId();
+            spare.addStructure(rawMaterial);
             spare.addStructure(CollectionUtils.random(new ArrayList<>(rawMaterials)));
             spare.addStructure(CollectionUtils.random(new ArrayList<>(rawMaterials)));
             structure.addStructure(spare);
         }
-        System.out.println(structure);
-        List<MaterialIdNode> results = structure.toMaterialIdList();
-        System.out.println(results);
+        return Tuple.tuple(structure,spareId,rawId);
+    }
+
+    @Test
+    public void testSearchById(){
+
+        ThreeTuple<ProductStructure,MaterialId,MaterialId> threeTuple = createStructure();
+        ProductStructure structure = threeTuple.first;
+        ProductStructure searchResult = structure.searchById(threeTuple.second);
+        ProductStructure searchResult1 = structure.searchById(threeTuple.third);
+        Assert.assertNotNull(searchResult);
+        Assert.assertNotNull(searchResult1);
     }
 
     @Test
