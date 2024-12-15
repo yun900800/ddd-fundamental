@@ -33,6 +33,8 @@ public class FactoryTemplateClient {
     private static final String ADD_PRODUCT_LINE = "http://localhost:9006/factory/add-line";
     private static final String DELETE_WORK_STATION = "http://localhost:9006/factory/delete_work_station/%s/%s";
 
+    private static final String DELETE_PRODUCT_LINE = "http://localhost:9006/factory/delete_line/%s";
+
     private List<ProductLineDTO> cacheLineDTOS;
 
     @Autowired
@@ -90,5 +92,18 @@ public class FactoryTemplateClient {
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.postForObject(url, null,Void.class);
         log.info("delete workstation from line finished");
+    }
+
+    @Scheduled(cron = "*/10 * * * * ?")
+    public void deleteProductLine(){
+        if (org.springframework.util.CollectionUtils.isEmpty(this.cacheLineDTOS)) {
+            this.cacheLineDTOS = queryService.productLines();
+        }
+        ProductionLineId lineId = CollectionUtils.random(cacheLineDTOS).id();
+        String url = String.format(DELETE_PRODUCT_LINE,lineId.toUUID());
+        log.info("url is {}",url);
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.postForObject(url, null,Void.class);
+        log.info("delete line finished");
     }
 }

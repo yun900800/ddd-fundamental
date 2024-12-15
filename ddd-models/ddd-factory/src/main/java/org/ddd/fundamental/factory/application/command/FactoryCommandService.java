@@ -81,4 +81,12 @@ public class FactoryCommandService {
         }
         line.removeWorkStation(station);
     }
+
+    /**
+     *
+     * @param lineId
+     */
+    public void deleteProductLine(ProductionLineId lineId){
+        productionLineRepository.deleteById(lineId);
+    }
 }
