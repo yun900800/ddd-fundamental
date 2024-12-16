@@ -3,6 +3,8 @@ package org.ddd.fundamental.factory.schedule;
 import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.changeable.ChangeableInfo;
 import org.ddd.fundamental.core.generator.Generators;
+import org.ddd.fundamental.equipment.client.EquipmentClient;
+import org.ddd.fundamental.factory.EquipmentId;
 import org.ddd.fundamental.factory.ProductionLineId;
 import org.ddd.fundamental.factory.WorkStationId;
 import org.ddd.fundamental.factory.application.command.FactoryCommandService;
@@ -11,6 +13,7 @@ import org.ddd.fundamental.factory.domain.model.WorkStation;
 import org.ddd.fundamental.factory.helper.FactoryHelper;
 import org.ddd.fundamental.factory.value.ProductionLineValue;
 import org.ddd.fundamental.factory.value.WorkStationValueObject;
+import org.ddd.fundamental.shared.api.equipment.EquipmentDTO;
 import org.ddd.fundamental.shared.api.factory.ProductLineDTO;
 import org.ddd.fundamental.shared.api.factory.WorkStationDTO;
 import org.ddd.fundamental.utils.CollectionUtils;
@@ -30,6 +33,8 @@ public class FactoryTemplateClient {
 
     private final FactoryQueryService queryService;
 
+    private final EquipmentClient equipmentClient;
+
     private static final String ADD_PRODUCT_LINE = "http://localhost:9006/factory/add-line";
     private static final String DELETE_WORK_STATION = "http://localhost:9006/factory/delete_work_station/%s/%s";
 
@@ -39,13 +44,19 @@ public class FactoryTemplateClient {
 
     private static final String CHANGE_PRODUCT_LINE = "http://localhost:9006/factory/change_lineInfo/%s";
 
+    private static final String ADD_EQUIPMENT_TO_LINE = "http://localhost:9006/factory/add_equipment_to_line/%s/%s";
+
     private List<ProductLineDTO> cacheLineDTOS;
+
+    private List<EquipmentDTO> cacheEquipmentDTOs;
 
     @Autowired
     public FactoryTemplateClient(FactoryCommandService service,
-                                 FactoryQueryService queryService){
+                                 FactoryQueryService queryService,
+                                 EquipmentClient equipmentClient){
         this.service = service;
         this.queryService = queryService;
+        this.equipmentClient = equipmentClient;
     }
 
     public List<WorkStationDTO> createWorkStationDTOs(){
@@ -96,6 +107,7 @@ public class FactoryTemplateClient {
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.postForObject(url, null,Void.class);
         log.info("delete workstation from line finished");
+        this.cacheLineDTOS.clear();
     }
 
     @Scheduled(cron = "*/3600 * * * * ?")
@@ -109,6 +121,7 @@ public class FactoryTemplateClient {
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.postForObject(url, null,Void.class);
         log.info("delete line finished");
+        this.cacheLineDTOS.clear();
     }
 
     @Scheduled(cron = "*/3600 * * * * ?")
@@ -142,5 +155,22 @@ public class FactoryTemplateClient {
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.postForObject(url, ChangeableInfo.create(lineName,"新的产线描述",true),Void.class);
         log.info("change line finished");
+    }
+
+    @Scheduled(cron = "*/20 * * * * ?")
+    public void addEquipmentIdToLine(){
+        if (org.springframework.util.CollectionUtils.isEmpty(this.cacheLineDTOS)) {
+            this.cacheLineDTOS = queryService.productLines();
+        }
+        if (org.springframework.util.CollectionUtils.isEmpty(this.cacheEquipmentDTOs)) {
+            this.cacheEquipmentDTOs = equipmentClient.equipments();
+        }
+        EquipmentId equipmentId = CollectionUtils.random(cacheEquipmentDTOs).id();
+        ProductionLineId lineId = CollectionUtils.random(cacheLineDTOS).id();
+        String url = String.format(ADD_EQUIPMENT_TO_LINE,lineId.toUUID(),equipmentId.toUUID());
+        log.info("url is {}",url);
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.postForObject(url, null,Void.class);
+        log.info("add equipment to line finished");
     }
 }

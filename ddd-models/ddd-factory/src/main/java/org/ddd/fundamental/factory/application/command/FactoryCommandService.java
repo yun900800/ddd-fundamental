@@ -2,6 +2,7 @@ package org.ddd.fundamental.factory.application.command;
 
 import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.changeable.ChangeableInfo;
+import org.ddd.fundamental.equipment.client.EquipmentClient;
 import org.ddd.fundamental.factory.EquipmentId;
 import org.ddd.fundamental.factory.ProductionLineId;
 import org.ddd.fundamental.factory.WorkStationId;
@@ -32,6 +33,7 @@ public class FactoryCommandService {
     private final WorkStationRepository workStationRepository;
 
     private final FactoryQueryService queryService;
+
 
     @Autowired
     public FactoryCommandService(
@@ -110,4 +112,16 @@ public class FactoryCommandService {
     public void deleteProductLine(ProductionLineId lineId){
         productionLineRepository.deleteById(lineId);
     }
+
+    /**
+     * 添加设备ID信息到产线
+     * @param lineId
+     * @param equipmentId
+     */
+    public void addEquipmentIdToLine(ProductionLineId lineId, EquipmentId equipmentId){
+        ProductionLine line = queryService.findProductionLineById(lineId);
+        line.addEquipment(equipmentId);
+    }
+
+
 }

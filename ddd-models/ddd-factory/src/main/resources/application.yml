@@ -20,4 +20,14 @@ logging:
       ttddyy:
         dsproxy:
           listener: debug
+feign:
+  hystrix:
+    enabled: true
+
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: false
 

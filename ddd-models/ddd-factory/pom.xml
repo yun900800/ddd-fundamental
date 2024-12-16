@@ -15,7 +15,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.release>11</maven.compiler.release>
+        <maven.compiler.release>17</maven.compiler.release>
     </properties>
 
 <!--    <dependencyManagement>-->
@@ -44,6 +44,12 @@
         <dependency>
             <groupId>org.ddd.fundamental</groupId>
             <artifactId>ddd-redis-manager</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.ddd.fundamental</groupId>
+            <artifactId>ddd-equipment-adapter</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
@@ -99,6 +105,26 @@
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.5</version>
+            </plugin>
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>3.4.0</version>
+                <configuration>
+
+                    <from>
+                        <image>openjdk:17-slim</image>
+                    </from>
+                    <to>
+                        <image>ddd-factory:from-jib</image>
+                    </to>
+                    <container>
+                        <mainClass>org.ddd.fundamental.factory.FactoryApp</mainClass>
+                        <ports>
+                            <port>8080</port>
+                        </ports>
+                    </container>
+                </configuration>
             </plugin>
         </plugins>
     </build>

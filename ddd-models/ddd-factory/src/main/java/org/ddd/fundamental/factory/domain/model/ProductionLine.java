@@ -115,6 +115,9 @@ public class ProductionLine extends AbstractAggregateRoot<ProductionLineId> {
 
     public ProductionLine addEquipment(EquipmentId id){
         defaultEquipmentIds();
+        if (this.equipmentIds.contains(id)){
+            return this;
+        }
         this.equipmentIds.add(id);
         return this;
     }
