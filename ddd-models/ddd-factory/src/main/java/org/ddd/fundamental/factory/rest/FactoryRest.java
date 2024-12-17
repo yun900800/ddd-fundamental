@@ -86,4 +86,34 @@ public class FactoryRest {
         );
     }
 
+    @PostMapping("/factory/add_machineShop")
+    public void addMachineShop(@RequestBody MachineShopDTO shopDTO){
+        commandService.addMachineShop(shopDTO);
+    }
+
+    @PostMapping("/factory/change_machineShop/{machineShopId}")
+    public void changeMachineShop(@PathVariable String machineShopId,
+                                  @RequestBody ChangeableInfo shopInfo){
+        commandService.changeMachineShop(new MachineShopId(machineShopId),shopInfo);
+    }
+
+    @PostMapping("/factory/add_line_to_machine/{shopId}/{lineId}")
+    public void addLineToMachine(@PathVariable String shopId,
+                                 @PathVariable String lineId){
+        commandService.addLineToMachine(new MachineShopId(shopId),
+                new ProductionLineId(lineId));
+    }
+
+    @PostMapping("/factory/remove_line_from_machine/{shopId}/{lineId}")
+    public void removeLineFromMachine(@PathVariable String shopId,
+                                 @PathVariable String lineId){
+        commandService.removeLineFromMachine(new MachineShopId(shopId),
+                new ProductionLineId(lineId));
+    }
+
+    @PostMapping("/factory/remove_machine/{shopId}")
+    public void deleteMachine(@PathVariable String shopId){
+        commandService.deleteMachine(new MachineShopId(shopId));
+    }
+
 }

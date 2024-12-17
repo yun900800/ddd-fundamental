@@ -5,15 +5,18 @@ import org.ddd.fundamental.changeable.ChangeableInfo;
 import org.ddd.fundamental.core.generator.Generators;
 import org.ddd.fundamental.equipment.client.EquipmentClient;
 import org.ddd.fundamental.factory.EquipmentId;
+import org.ddd.fundamental.factory.MachineShopId;
 import org.ddd.fundamental.factory.ProductionLineId;
 import org.ddd.fundamental.factory.WorkStationId;
 import org.ddd.fundamental.factory.application.command.FactoryCommandService;
 import org.ddd.fundamental.factory.application.query.FactoryQueryService;
 import org.ddd.fundamental.factory.domain.model.WorkStation;
 import org.ddd.fundamental.factory.helper.FactoryHelper;
+import org.ddd.fundamental.factory.value.MachineShopValueObject;
 import org.ddd.fundamental.factory.value.ProductionLineValue;
 import org.ddd.fundamental.factory.value.WorkStationValueObject;
 import org.ddd.fundamental.shared.api.equipment.EquipmentDTO;
+import org.ddd.fundamental.shared.api.factory.MachineShopDTO;
 import org.ddd.fundamental.shared.api.factory.ProductLineDTO;
 import org.ddd.fundamental.shared.api.factory.WorkStationDTO;
 import org.ddd.fundamental.utils.CollectionUtils;
@@ -46,9 +49,18 @@ public class FactoryTemplateClient {
 
     private static final String ADD_EQUIPMENT_TO_LINE = "http://localhost:9006/factory/add_equipment_to_line/%s/%s";
 
+    private static final String ADD_MACHINE_SHOP = "http://localhost:9006/factory/add_machineShop";
+    private static final String CHANGE_MACHINE_SHOP = "http://localhost:9006/factory/change_machineShop/%s";
+
+    private static final String ADD_LINE_TO_MACHINE = "http://localhost:9006/factory/add_line_to_machine/%s/%s";
+
+    private static final String REMOVE_LINE_FROM_MACHINE = "http://localhost:9006/factory/remove_line_from_machine/%s/%s";
+
     private List<ProductLineDTO> cacheLineDTOS;
 
     private List<EquipmentDTO> cacheEquipmentDTOs;
+
+    private List<MachineShopDTO> cacheMachineShopDTOs;
 
     @Autowired
     public FactoryTemplateClient(FactoryCommandService service,
@@ -157,7 +169,7 @@ public class FactoryTemplateClient {
         log.info("change line finished");
     }
 
-    @Scheduled(cron = "*/20 * * * * ?")
+    @Scheduled(cron = "*/3600 * * * * ?")
     public void addEquipmentIdToLine(){
         if (org.springframework.util.CollectionUtils.isEmpty(this.cacheLineDTOS)) {
             this.cacheLineDTOS = queryService.productLines();
@@ -172,5 +184,71 @@ public class FactoryTemplateClient {
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.postForObject(url, null,Void.class);
         log.info("add equipment to line finished");
+    }
+
+    @Scheduled(cron = "*/3600 * * * * ?")
+    public void addMachineShop(){
+        String shopName = CollectionUtils.random(FactoryHelper.machineShopNames());
+        MachineShopDTO machineShopDTO = MachineShopDTO.create(
+                new MachineShopId("0"),
+                new MachineShopValueObject(ChangeableInfo.create(
+                        shopName,shopName+":相关描述"
+                ))
+        );
+        log.info("url is {}",ADD_MACHINE_SHOP);
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.postForObject(ADD_MACHINE_SHOP,machineShopDTO,Void.class);
+        log.info("add machine shop finished");
+    }
+
+    @Scheduled(cron = "*/3600 * * * * ?")
+    public void changeMachineShop(){
+        if (org.springframework.util.CollectionUtils.isEmpty(this.cacheMachineShopDTOs)) {
+            this.cacheMachineShopDTOs = queryService.machineShops();
+        }
+        String shopName = CollectionUtils.random(FactoryHelper.machineShopNames());
+        MachineShopId shopId = CollectionUtils.random(cacheMachineShopDTOs).id();
+        ChangeableInfo shopInfo = ChangeableInfo.create(
+                shopName,shopName+":相关描述"
+        );
+        String url = String.format(CHANGE_MACHINE_SHOP,shopId.toUUID());
+        log.info("url is {}",url);
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.postForObject(url,shopInfo,Void.class);
+        log.info("change machine shop finished");
+    }
+
+    @Scheduled(cron = "*/30 * * * * ?")
+    public void removeLineFromMachine(){
+        if (org.springframework.util.CollectionUtils.isEmpty(this.cacheMachineShopDTOs)) {
+            this.cacheMachineShopDTOs = queryService.machineShops();
+        }
+        if (org.springframework.util.CollectionUtils.isEmpty(this.cacheLineDTOS)) {
+            this.cacheLineDTOS = queryService.productLines();
+        }
+        String shopId = CollectionUtils.random(cacheMachineShopDTOs).id().toUUID();
+        String lineId = CollectionUtils.random(cacheLineDTOS).id().toUUID();
+        String url = String.format(REMOVE_LINE_FROM_MACHINE,shopId,lineId);
+        log.info("url is {}",url);
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.postForObject(url,null,Void.class);
+        log.info("remove line from shop finished");
+    }
+
+    @Scheduled(cron = "*/20 * * * * ?")
+    public void addLineToMachine(){
+        if (org.springframework.util.CollectionUtils.isEmpty(this.cacheMachineShopDTOs)) {
+            this.cacheMachineShopDTOs = queryService.machineShops();
+        }
+        if (org.springframework.util.CollectionUtils.isEmpty(this.cacheLineDTOS)) {
+            this.cacheLineDTOS = queryService.productLines();
+        }
+        String shopId = CollectionUtils.random(cacheMachineShopDTOs).id().toUUID();
+        String lineId = CollectionUtils.random(cacheLineDTOS).id().toUUID();
+        String url = String.format(ADD_LINE_TO_MACHINE,shopId,lineId);
+        log.info("url is {}",url);
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.postForObject(url,null,Void.class);
+        log.info("add line to machine shop finished");
     }
 }

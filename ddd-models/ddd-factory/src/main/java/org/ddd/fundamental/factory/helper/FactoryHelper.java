@@ -2,6 +2,7 @@ package org.ddd.fundamental.factory.helper;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public final class FactoryHelper {
 
@@ -27,5 +28,27 @@ public final class FactoryHelper {
                 "工位6",
                 "工位7"
         );
+    }
+
+    public static List<String> machineShopNames(){
+        return Arrays.asList(
+                "铸造3车间",
+                "模切4车间",
+                "加工5车间",
+                "加工2车间",
+                "上料6车间",
+                "质检7车间",
+                "铸造4车间",
+                "铸造8车间"
+        );
+    }
+
+    public static void simulateCostCall(){
+        try {
+            TimeUnit.MILLISECONDS.sleep(500);
+        } catch (InterruptedException e){
+
+        }
+
     }
 }

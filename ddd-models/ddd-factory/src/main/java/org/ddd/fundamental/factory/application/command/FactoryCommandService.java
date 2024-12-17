@@ -4,15 +4,18 @@ import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.changeable.ChangeableInfo;
 import org.ddd.fundamental.equipment.client.EquipmentClient;
 import org.ddd.fundamental.factory.EquipmentId;
+import org.ddd.fundamental.factory.MachineShopId;
 import org.ddd.fundamental.factory.ProductionLineId;
 import org.ddd.fundamental.factory.WorkStationId;
 import org.ddd.fundamental.factory.application.query.FactoryQueryService;
+import org.ddd.fundamental.factory.domain.model.MachineShop;
 import org.ddd.fundamental.factory.domain.model.ProductionLine;
 import org.ddd.fundamental.factory.domain.model.WorkStation;
 import org.ddd.fundamental.factory.domain.repository.MachineShopRepository;
 import org.ddd.fundamental.factory.domain.repository.ProductionLineRepository;
 import org.ddd.fundamental.factory.domain.repository.WorkStationRepository;
 import org.ddd.fundamental.factory.value.ProductionLineValue;
+import org.ddd.fundamental.shared.api.factory.MachineShopDTO;
 import org.ddd.fundamental.shared.api.factory.WorkStationDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -123,5 +126,54 @@ public class FactoryCommandService {
         line.addEquipment(equipmentId);
     }
 
+    /**
+     * 更新车间信息
+     * @param shopId
+     * @param shopInfo
+     */
+    public void changeMachineShop(MachineShopId shopId,
+                                  ChangeableInfo shopInfo){
+        MachineShop shop = queryService.findMachineShopById(shopId);
+        shop.changeMachineShop(shopInfo);
+    }
+
+    /**
+     * 添加车间信息
+     * @param shopDTO
+     */
+    public void addMachineShop(MachineShopDTO shopDTO){
+        MachineShop shop = new MachineShop(
+                shopDTO.getMachineShopValue()
+        );
+        machineShopRepository.save(shop);
+    }
+
+    /**
+     * 添加产线到车间
+     * @param shopId
+     * @param lineId
+     */
+    public void addLineToMachine(MachineShopId shopId,ProductionLineId lineId){
+        MachineShop shop = queryService.findMachineShopById(shopId);
+        shop.addLines(lineId);
+    }
+
+    /**
+     * 从车间移除产线
+     * @param shopId
+     * @param lineId
+     */
+    public void removeLineFromMachine(MachineShopId shopId,ProductionLineId lineId){
+        MachineShop shop = queryService.findMachineShopById(shopId);
+        shop.removeLines(lineId);
+    }
+
+    /**
+     * 移除车间
+     * @param shopId
+     */
+    public void deleteMachine(MachineShopId shopId){
+        machineShopRepository.deleteById(shopId);
+    }
 
 }

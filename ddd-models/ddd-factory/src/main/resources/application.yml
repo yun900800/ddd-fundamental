@@ -6,13 +6,22 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: rootpassword
+#    禁用数据源的自动提交
+    hikari:
+      auto-commit: false
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: false
     properties:
       hibernate:
+        generate_statistics: false
         format_sql: false
+#        禁用hibernate的自动提交
+        connection:
+          provider_disables_autocommit: true
+#          handling_mode: DELAYED_ACQUISITION_AND_RELEASE_AFTER_TRANSACTION
+
     database-platform: org.hibernate.dialect.MySQLDialect
 logging:
   level:

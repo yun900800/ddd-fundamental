@@ -16,6 +16,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>17</maven.compiler.release>
+        <dropwizard.metrics.version>3.1.0</dropwizard.metrics.version>
     </properties>
 
 <!--    <dependencyManagement>-->
@@ -83,6 +84,11 @@
             <version>5.5.4.Final</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>io.dropwizard.metrics</groupId>
+            <artifactId>metrics-core</artifactId>
+            <version>${dropwizard.metrics.version}</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -90,6 +96,9 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>3.3.2</version>
+                <configuration>
+                    <mainClass>org.ddd.fundamental.factory.FactoryApp</mainClass>
+                </configuration>
                 <executions>
                     <execution>
                         <goals>

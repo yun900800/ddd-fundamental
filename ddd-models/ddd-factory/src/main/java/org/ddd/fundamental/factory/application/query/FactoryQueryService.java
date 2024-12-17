@@ -10,6 +10,8 @@ import org.ddd.fundamental.factory.domain.model.WorkStation;
 import org.ddd.fundamental.factory.domain.repository.MachineShopRepository;
 import org.ddd.fundamental.factory.domain.repository.ProductionLineRepository;
 import org.ddd.fundamental.factory.domain.repository.WorkStationRepository;
+import org.ddd.fundamental.factory.helper.FactoryHelper;
+import org.ddd.fundamental.factory.utils.SpringTransactionStatistics;
 import org.ddd.fundamental.redis.config.RedisStoreManager;
 import org.ddd.fundamental.shared.api.factory.MachineShopDTO;
 import org.ddd.fundamental.shared.api.factory.ProductLineDTO;
@@ -41,7 +43,9 @@ public class FactoryQueryService {
     @Autowired
     private RedisStoreManager manager;
 
+    @Transactional
     public List<MachineShopDTO> machineShops(){
+        simulateCostCall();
         List<MachineShop> machineShopList = machineShopRepository.findAll();
         if (CollectionUtils.isEmpty(machineShopList)) {
             return new ArrayList<>();
@@ -54,6 +58,14 @@ public class FactoryQueryService {
         MachineShopDTO firstMachineShop = manager.fetchDataFromCache(machineShopDTOS.get(0).id(), MachineShopDTO.class);
         log.info("firstMachineShop is {}",firstMachineShop);
         return machineShopDTOS;
+    }
+
+    private void simulateCostCall(){
+        long startNanos = System.nanoTime();
+        FactoryHelper.simulateCostCall();
+//        SpringTransactionStatistics.report().fxRateTime(
+//                System.nanoTime() - startNanos
+//        );
     }
 
     public List<MachineShopDTO> machineShopsByIds(List<MachineShopId> ids){
@@ -134,6 +146,11 @@ public class FactoryQueryService {
         return line;
     }
 
+    /**
+     * 获取工位信息
+     * @param stationId
+     * @return
+     */
     public WorkStation findWorkStationById(WorkStationId stationId){
         WorkStation station = workStationRepository.findById(stationId).orElse(null);
         if (null == station) {
@@ -141,6 +158,20 @@ public class FactoryQueryService {
             throw new RuntimeException(String.format(msg,stationId.toUUID()));
         }
         return station;
+    }
+
+    /**
+     * 获取车间信息
+     * @param shopId
+     * @return
+     */
+    public MachineShop findMachineShopById(MachineShopId shopId){
+        MachineShop machineShop = machineShopRepository.findById(shopId).orElse(null);
+        if (null == machineShop) {
+            String msg = "id:%s 对应的MachineShop 不存在";
+            throw new RuntimeException(String.format(msg,shopId.toUUID()));
+        }
+        return machineShop;
     }
 
 }
