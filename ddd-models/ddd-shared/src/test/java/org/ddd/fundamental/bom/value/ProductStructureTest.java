@@ -37,7 +37,7 @@ public class ProductStructureTest {
     @Test
     public void testCreateBuildProducts() {
         ProductStructure structure = CollectionUtils.random(new ArrayList<>(BomCreator.createProductStructures(5)));
-        Set<ProductStructure> spares = BomCreator.createSparePartsStructures(10);
+        Set<ProductStructure<ProductStructureNode>> spares = BomCreator.createSparePartsStructures(10);
         log.info("spares size is {}",spares.size());
         for (int i = 0 ; i< 4; i++) {
             structure.addStructure(CollectionUtils.random(new ArrayList<>(spares)));
@@ -48,16 +48,16 @@ public class ProductStructureTest {
 
     @Test
     public void testFullStructureProducts(){
-        ProductStructure structure = createStructure().first;
+        ProductStructure<ProductStructureNode> structure = createStructure().first;
         System.out.println(structure);
-        List<MaterialIdNode> results = structure.toMaterialIdList();
+        List<MaterialIdNode<ProductStructureNode>> results = structure.toMaterialIdList();
         System.out.println(results);
     }
 
-    private ThreeTuple<ProductStructure,MaterialId,MaterialId> createStructure(){
-        ProductStructure structure = CollectionUtils.random(new ArrayList<>(BomCreator.createProductStructures(5)));
-        Set<ProductStructure> spares = BomCreator.createSparePartsStructures(10);
-        Set<ProductStructure> rawMaterials = BomCreator.createRawMaterialStructures(20);
+    private ThreeTuple<ProductStructure<ProductStructureNode>,MaterialId,MaterialId> createStructure(){
+        ProductStructure<ProductStructureNode> structure = CollectionUtils.random(new ArrayList<>(BomCreator.createProductStructures(5)));
+        Set<ProductStructure<ProductStructureNode>> spares = BomCreator.createSparePartsStructures(10);
+        Set<ProductStructure<ProductStructureNode>> rawMaterials = BomCreator.createRawMaterialStructures(20);
         log.info("spares size is {}",spares.size());
         MaterialId spareId = null;
         MaterialId rawId = null;
@@ -77,19 +77,19 @@ public class ProductStructureTest {
     @Test
     public void testSearchById(){
 
-        ThreeTuple<ProductStructure,MaterialId,MaterialId> threeTuple = createStructure();
-        ProductStructure structure = threeTuple.first;
-        ProductStructure searchResult = structure.searchById(threeTuple.second);
-        ProductStructure searchResult1 = structure.searchById(threeTuple.third);
+        ThreeTuple<ProductStructure<ProductStructureNode>,MaterialId,MaterialId> threeTuple = createStructure();
+        ProductStructure<ProductStructureNode> structure = threeTuple.first;
+        ProductStructure<ProductStructureNode> searchResult = structure.searchById(threeTuple.second);
+        ProductStructure<ProductStructureNode> searchResult1 = structure.searchById(threeTuple.third);
         Assert.assertNotNull(searchResult);
         Assert.assertNotNull(searchResult1);
     }
 
     @Test
     public void testToProductStructureNodeList(){
-        ProductStructure structure = CollectionUtils.random(new ArrayList<>(BomCreator.createProductStructures(5)));
-        Set<ProductStructure> spares = BomCreator.createSparePartsStructures(10);
-        Set<ProductStructure> rawMaterials = BomCreator.createRawMaterialStructures(20);
+        ProductStructure<ProductStructureNode> structure = CollectionUtils.random(new ArrayList<>(BomCreator.createProductStructures(5)));
+        Set<ProductStructure<ProductStructureNode>> spares = BomCreator.createSparePartsStructures(10);
+        Set<ProductStructure<ProductStructureNode>> rawMaterials = BomCreator.createRawMaterialStructures(20);
         log.info("spares size is {}",spares.size());
         for (int i = 0 ; i< 4; i++) {
             ProductStructure spare = CollectionUtils.random(new ArrayList<>(spares));
@@ -99,9 +99,9 @@ public class ProductStructureTest {
             structure.addStructure(spare);
         }
         System.out.println(structure);
-        ProductStructureNodeList structureList = structure.toProductStructureNodeList();
+        ProductStructureNodeList<ProductStructureNode> structureList = structure.toProductStructureNodeList();
 
-        ProductStructure structure1 = structureList.toProductStructure();
+        ProductStructure<MaterialIdNode<ProductStructureNode>> structure1 = structureList.toProductStructure();
         System.out.println(structure1);
     }
 }

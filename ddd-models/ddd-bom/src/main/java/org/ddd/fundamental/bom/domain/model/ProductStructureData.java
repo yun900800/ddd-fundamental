@@ -43,4 +43,12 @@ public class ProductStructureData extends AbstractAggregateRoot<ProductStructure
     public MaterialId getProductId() {
         return materialIdNode.getProductId();
     }
+
+    @Override
+    public String toString() {
+        return "ProductStructureData{" +
+                "materialIdNode=" + materialIdNode +
+                "id =" + id() +
+                '}';
+    }
 }
