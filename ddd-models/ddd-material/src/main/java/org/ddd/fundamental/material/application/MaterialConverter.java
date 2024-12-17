@@ -17,7 +17,7 @@ public class MaterialConverter {
             return new ArrayList<>();
         }
         return materials.stream()
-                .map(v->new MaterialDTO(v.getMaterialMaster(),v.id()))
+                .map(v->new MaterialDTO(v.getMaterialMaster(),v.id(),v.getMaterialType()))
                 .collect(Collectors.toList());
     }
 }

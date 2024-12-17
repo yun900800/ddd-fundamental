@@ -112,7 +112,9 @@ public class MaterialAddable implements DataAddable {
             return new ArrayList<>();
         }
         return materials.stream().map(v->
-                MaterialDTO.create(v.getMaterialMaster(),v.id()))
+                MaterialDTO.create(v.getMaterialMaster(),v.id(),
+                        v.getMaterialType()
+                        ))
                 .collect(Collectors.toList());
     }
     @Override

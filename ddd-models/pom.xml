@@ -36,6 +36,7 @@
         <module>ddd-redis-manager</module>
         <module>ddd-kafka-starter</module>
         <module>ddd-equipment-adapter</module>
+        <module>ddd-material-adapter</module>
     </modules>
     <name>ddd-models</name>
 

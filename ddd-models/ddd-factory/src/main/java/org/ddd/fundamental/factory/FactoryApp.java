@@ -36,7 +36,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
                 "org.ddd.fundamental.equipment",
         }
 )
-
 public class FactoryApp implements CommandLineRunner {
 
     @Autowired

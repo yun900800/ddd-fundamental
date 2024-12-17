@@ -6,6 +6,7 @@ import org.ddd.fundamental.core.DomainObjectId;
 import org.ddd.fundamental.material.domain.value.ControlProps;
 import org.ddd.fundamental.material.value.MaterialId;
 import org.ddd.fundamental.material.MaterialMaster;
+import org.ddd.fundamental.material.value.MaterialType;
 import org.ddd.fundamental.material.value.PropsContainer;
 import org.hibernate.annotations.Type;
 
@@ -198,6 +199,20 @@ public class Material extends AbstractAggregateRoot<MaterialId> {
             return null;
         }
         return materialMaster.clone();
+    }
+
+    public MaterialType getMaterialType(){
+        if (null== materialControlProps){
+            return MaterialType.PRODUCTION;
+        }
+        return materialControlProps.getMaterialType();
+    }
+
+    public ControlProps getMaterialControlProps() {
+        if (null== materialControlProps){
+            return null;
+        }
+        return materialControlProps.clone();
     }
 
     public String name(){

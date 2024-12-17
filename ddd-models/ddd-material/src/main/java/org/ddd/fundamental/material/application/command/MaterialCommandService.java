@@ -50,7 +50,8 @@ public class MaterialCommandService {
         this.manager.storeDataToCache(
                 MaterialDTO.create(
                         material.getMaterialMaster(),
-                        material.id()
+                        material.id(),
+                        materialRequest.getMaterialType()
                 )
         );
     }

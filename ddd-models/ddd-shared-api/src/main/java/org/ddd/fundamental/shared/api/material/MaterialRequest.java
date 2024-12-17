@@ -20,7 +20,8 @@ public class MaterialRequest extends MaterialDTO {
 
     @SuppressWarnings("unused")
     protected MaterialRequest(){
-        super(null,new MaterialId("0"));
+        super(null,new MaterialId("0"),
+                MaterialType.PRODUCTION);
     }
 
     private MaterialRequest(MaterialMaster materialMaster, MaterialId id,
@@ -29,7 +30,7 @@ public class MaterialRequest extends MaterialDTO {
                             Set<String> characterSets,
                            Map<String,String> requiredMap,
                            Map<String,String> characterMap) {
-        super(materialMaster, id);
+        super(materialMaster, id,materialType);
         this.characterMap = characterMap;
         this.requiredMap = requiredMap;
         this.materialType = materialType;

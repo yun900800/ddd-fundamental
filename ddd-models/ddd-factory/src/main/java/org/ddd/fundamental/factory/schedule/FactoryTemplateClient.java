@@ -32,7 +32,6 @@ import java.util.List;
 @Slf4j
 public class FactoryTemplateClient {
 
-    private final FactoryCommandService service;
 
     private final FactoryQueryService queryService;
 
@@ -63,10 +62,8 @@ public class FactoryTemplateClient {
     private List<MachineShopDTO> cacheMachineShopDTOs;
 
     @Autowired
-    public FactoryTemplateClient(FactoryCommandService service,
-                                 FactoryQueryService queryService,
+    public FactoryTemplateClient(FactoryQueryService queryService,
                                  EquipmentClient equipmentClient){
-        this.service = service;
         this.queryService = queryService;
         this.equipmentClient = equipmentClient;
     }
