@@ -12,7 +12,7 @@ import java.util.*;
 
 public class BomCreator {
 
-    public static ProductStructure createProductStructure(String productName, MaterialType materialType){
+    public static ProductStructure<ProductStructureNode> createProductStructure(String productName, MaterialType materialType){
         ProductStructureNode node =
                 ProductStructureNode.create(MaterialMaster.create(
                         "dell-xmp",productName,"dell-xmp-1","台"
@@ -35,8 +35,8 @@ public class BomCreator {
         return Arrays.asList("螺丝","锡膏","铜线","电缆","铝箔","金箔","塑料壳","卡丝","塑料钉","螺帽");
     }
 
-    public static Set<ProductStructure> createProductStructures(int size){
-        Set<ProductStructure> productStructures = new HashSet<>();
+    public static Set<ProductStructure<ProductStructureNode>> createProductStructures(int size){
+        Set<ProductStructure<ProductStructureNode>> productStructures = new HashSet<>();
 
         for (int i = 0 ; i < size; i++) {
             productStructures.add(createProductStructure(CollectionUtils.random(productNames()),MaterialType.PRODUCTION));
@@ -44,8 +44,8 @@ public class BomCreator {
         return productStructures;
     }
 
-    public static Set<ProductStructure> createSparePartsStructures(int size){
-        Set<ProductStructure> productStructures = new HashSet<>();
+    public static Set<ProductStructure<ProductStructureNode>> createSparePartsStructures(int size){
+        Set<ProductStructure<ProductStructureNode>> productStructures = new HashSet<>();
 
         for (int i = 0 ; i < size; i++) {
             productStructures.add(createProductStructure(CollectionUtils.random(sparePartsNames()),MaterialType.WORKING_IN_PROGRESS));
@@ -53,8 +53,8 @@ public class BomCreator {
         return productStructures;
     }
 
-    public static Set<ProductStructure> createRawMaterialStructures(int size){
-        Set<ProductStructure> productStructures = new HashSet<>();
+    public static Set<ProductStructure<ProductStructureNode>> createRawMaterialStructures(int size){
+        Set<ProductStructure<ProductStructureNode>> productStructures = new HashSet<>();
 
         for (int i = 0 ; i < size; i++) {
             productStructures.add(createProductStructure(CollectionUtils.random(rawMaterialNames()),MaterialType.RAW_MATERIAL));

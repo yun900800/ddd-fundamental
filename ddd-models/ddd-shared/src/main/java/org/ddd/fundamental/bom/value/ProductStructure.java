@@ -43,32 +43,22 @@ public class ProductStructure<T> implements ValueObject {
         return new HashSet<>(children);
     }
 
-    public List<MaterialIdNode> toMaterialIdList() {
-        List<MaterialIdNode> materialIdNodes = new ArrayList<>();
+    public List<MaterialIdNode<T>> toMaterialIdList() {
+        List<MaterialIdNode<T>> materialIdNodes = new ArrayList<>();
         MaterialId productId = this.id;
         traverse(this, null,materialIdNodes,productId);
         return materialIdNodes;
     }
 
-    /**
-     * 根据产品bom的结构生成产品和配件，原材料相关数据
-     * @return
-     */
-    public ProductStructureList toProductStructureList(){
-        MaterialId productId = this.id;
-        List<MaterialId> spares = new ArrayList<>();
-        List<MaterialId> rawMaterials = new ArrayList<>();
-        traverse(this,spares,rawMaterials);
-        return ProductStructureList.create(productId,spares,rawMaterials);
-    }
 
-    public ProductStructureNodeList toProductStructureNodeList(){
+    public ProductStructureNodeList<T> toProductStructureNodeList(){
         MaterialId productId = this.id;
-        List<MaterialIdNode> spares = new ArrayList<>();
-        List<MaterialIdNode> rawMaterials = new ArrayList<>();
+        MaterialIdNode<T> node = MaterialIdNode.create(productId,null,productId,this.node);
+        List<MaterialIdNode<T>> spares = new ArrayList<>();
+        List<MaterialIdNode<T>> rawMaterials = new ArrayList<>();
         traverse(this,null,spares,rawMaterials, productId);
         return ProductStructureNodeList.create(
-                MaterialIdNode.create(productId,null,productId),
+                MaterialIdNode.create(productId,null,productId,node),
                 spares,rawMaterials);
     }
 
@@ -90,14 +80,15 @@ public class ProductStructure<T> implements ValueObject {
     }
 
     private void traverse(ProductStructure<T> structure, MaterialId parentId,
-                          List<MaterialIdNode> spares, List<MaterialIdNode> rawMaterials,
+                          List<MaterialIdNode<T>> spares, List<MaterialIdNode<T>> rawMaterials,
                           MaterialId productId) {
         MaterialId currentId = structure.getId();
+        T node = structure.getNode();
         if (structure.materialType.equals(MaterialType.WORKING_IN_PROGRESS)) {
-            spares.add(MaterialIdNode.create(currentId,parentId,productId));
+            spares.add(MaterialIdNode.create(currentId,parentId,productId,node));
         }
         if (structure.materialType.equals(MaterialType.RAW_MATERIAL)){
-            rawMaterials.add(MaterialIdNode.create(currentId,parentId,productId));
+            rawMaterials.add(MaterialIdNode.create(currentId,parentId,productId,node));
         }
         if (CollectionUtils.isEmpty(structure.children)){
             return;
@@ -107,29 +98,15 @@ public class ProductStructure<T> implements ValueObject {
         }
     }
 
-    private void traverse(ProductStructure<T> structure,
-                          List<MaterialId> spares, List<MaterialId> rawMaterials) {
-        if (structure.materialType.equals(MaterialType.WORKING_IN_PROGRESS)) {
-            spares.add(structure.getId());
-        }
-        if (structure.materialType.equals(MaterialType.RAW_MATERIAL)){
-            rawMaterials.add(structure.getId());
-        }
-        if (CollectionUtils.isEmpty(structure.children)){
-            return;
-        }
-        for (ProductStructure<T> temp: structure.getChildren()) {
-            traverse(temp,spares,rawMaterials);
-        }
-    }
 
 
 
     private void traverse(ProductStructure<T> structure, MaterialId parentId,
-                                          List<MaterialIdNode> materialIdNodes,
+                                          List<MaterialIdNode<T>> materialIdNodes,
                           MaterialId productId){
         MaterialId currentId = structure.getId();
-        materialIdNodes.add(MaterialIdNode.create(currentId,parentId,productId));
+        T node = structure.getNode();
+        materialIdNodes.add(MaterialIdNode.create(currentId,parentId,productId,node));
         if (CollectionUtils.isEmpty(structure.children)){
             return;
         }

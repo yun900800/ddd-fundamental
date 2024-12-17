@@ -9,7 +9,7 @@ import java.util.Objects;
 
 @MappedSuperclass
 @Embeddable
-public class MaterialIdNode implements ValueObject {
+public class MaterialIdNode<T> implements ValueObject {
 
     private MaterialId current;
 
@@ -17,22 +17,31 @@ public class MaterialIdNode implements ValueObject {
 
     private MaterialId productId;
 
+    private T data;
+
     @SuppressWarnings("unused")
     private MaterialIdNode(){
     }
 
     private MaterialIdNode(MaterialId current,
                            MaterialId parent,
-                           MaterialId productId){
+                           MaterialId productId,
+                           T data){
         this.current = current;
         this.parent = parent;
         this.productId = productId;
+        this.data = data;
     }
 
-    public static MaterialIdNode create(MaterialId current,
-                                        MaterialId parent,
-                                        MaterialId productId){
-        return new MaterialIdNode(current, parent,productId);
+    public T getData() {
+        return data;
+    }
+
+    public static <T> MaterialIdNode create(MaterialId current,
+                                            MaterialId parent,
+                                            MaterialId productId,
+                                            T data){
+        return new MaterialIdNode(current, parent,productId,data);
     }
 
     public MaterialId getCurrent() {
@@ -49,6 +58,7 @@ public class MaterialIdNode implements ValueObject {
                 "current=" + current +
                 ", parent=" + parent +
                 ", productId=" + productId +
+                ", data=" + data +
                 '}';
     }
 
