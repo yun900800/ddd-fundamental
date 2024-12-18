@@ -13,7 +13,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
-@Service
+//@Service
 @Slf4j
 public class BomTemplateClient {
 
