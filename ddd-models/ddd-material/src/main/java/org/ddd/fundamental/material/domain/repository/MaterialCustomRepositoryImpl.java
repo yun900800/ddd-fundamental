@@ -1,7 +1,12 @@
 package org.ddd.fundamental.material.domain.repository;
 
+import com.blazebit.persistence.CriteriaBuilder;
+import com.blazebit.persistence.CriteriaBuilderFactory;
+import com.blazebit.persistence.PagedList;
 import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.material.domain.model.Material;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +20,10 @@ import java.util.List;
 public class MaterialCustomRepositoryImpl implements MaterialCustomRepository{
     @PersistenceContext
     private EntityManager entityManager;
+
+
+    @Autowired
+    private CriteriaBuilderFactory criteriaBuilderFactory;
 
     private static final int BATCH_SIZE = 5;
 
@@ -43,5 +52,39 @@ public class MaterialCustomRepositoryImpl implements MaterialCustomRepository{
             Material material = materialList.get(i);
             entityManager.persist(material);
         }
+    }
+
+    @Override
+    public PagedList<Material> findTopN(Sort sortBy, int pageSize) {
+        return sortedCriteriaBuilder(sortBy)
+                .page(0, pageSize)
+                .withKeysetExtraction(true)
+                .getResultList();
+    }
+
+    @Override
+    public PagedList<Material> findNextN(Sort orderBy, PagedList<Material> previousPage) {
+        return sortedCriteriaBuilder(orderBy)
+                .page(
+                        previousPage.getKeysetPage(),
+                        previousPage.getPage() * previousPage.getMaxResults(),
+                        previousPage.getMaxResults()
+                )
+                .getResultList();
+    }
+
+    private CriteriaBuilder<Material> sortedCriteriaBuilder(
+            Sort sortBy) {
+        CriteriaBuilder<Material> criteriaBuilder = criteriaBuilderFactory
+                .create(entityManager, Material.class);
+
+        sortBy.forEach(order -> {
+            criteriaBuilder.orderBy(
+                    order.getProperty(),
+                    order.isAscending()
+            );
+        });
+
+        return criteriaBuilder;
     }
 }

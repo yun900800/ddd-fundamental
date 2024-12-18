@@ -17,6 +17,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>17</maven.compiler.release>
+        <blaze-persistence.version>1.6.6</blaze-persistence.version>
     </properties>
 
     <dependencyManagement>
@@ -92,6 +93,39 @@
             <artifactId>hibernate-jpamodelgen</artifactId>
             <version>5.5.4.Final</version>
             <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.blazebit</groupId>
+            <artifactId>blaze-persistence-core-impl-jar</artifactId>
+            <version>${blaze-persistence.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.blazebit</groupId>
+            <artifactId>blaze-persistence-jpa-criteria-api</artifactId>
+            <version>${blaze-persistence.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.blazebit</groupId>
+            <artifactId>blaze-persistence-jpa-criteria-impl</artifactId>
+            <version>${blaze-persistence.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.blazebit/blaze-persistence-entity-view-impl -->
+        <dependency>
+            <groupId>com.blazebit</groupId>
+            <artifactId>blaze-persistence-entity-view-impl</artifactId>
+            <version>1.6.6</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.blazebit</groupId>
+            <artifactId>blaze-persistence-integration-hibernate-5.5</artifactId>
+            <version>1.6.6</version>
+            <scope>runtime</scope>
         </dependency>
     </dependencies>
     <build>

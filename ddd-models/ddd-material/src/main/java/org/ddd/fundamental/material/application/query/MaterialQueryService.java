@@ -1,7 +1,9 @@
 package org.ddd.fundamental.material.application.query;
 
+import com.blazebit.persistence.PagedList;
 import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.material.application.MaterialConverter;
+import org.ddd.fundamental.material.domain.model.Material_;
 import org.ddd.fundamental.redis.cache.CacheStore;
 import org.ddd.fundamental.redis.cache.ICacheLoaderService;
 import org.ddd.fundamental.material.creator.MaterialAddable;
@@ -13,6 +15,7 @@ import org.ddd.fundamental.shared.api.material.MaterialDTO;
 import org.ddd.fundamental.material.value.MaterialType;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -131,5 +134,33 @@ public class MaterialQueryService implements ICacheLoaderService<MaterialDTO> {
     public MaterialDTO getBackendData(String key) {
         Material material = getMaterialFromDbById(new MaterialId(key));
         return MaterialConverter.entityToDTO(material);
+    }
+
+    public PagedList<Material> firstLatestPosts(
+            int pageSize) {
+        return materialRepository.findTopN(
+                Sort.by(
+                        Material_.AUDITABLE.toString()+".createTime"
+                ).descending().and(
+                        Sort.by(
+                                Material_.ID
+                        ).descending()
+                ),
+                pageSize
+        );
+    }
+
+    public PagedList<Material> findNextLatestPosts(
+            PagedList<Material> previousPage) {
+        return materialRepository.findNextN(
+                Sort.by(
+                        Material_.AUDITABLE.toString()+".createTime"
+                ).descending().and(
+                        Sort.by(
+                                Material_.ID
+                        ).descending()
+                ),
+                previousPage
+        );
     }
 }
