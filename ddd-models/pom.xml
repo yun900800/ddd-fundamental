@@ -37,6 +37,7 @@
         <module>ddd-kafka-starter</module>
         <module>ddd-equipment-adapter</module>
         <module>ddd-material-adapter</module>
+        <module>ddd-test-framework</module>
     </modules>
     <name>ddd-models</name>
 
