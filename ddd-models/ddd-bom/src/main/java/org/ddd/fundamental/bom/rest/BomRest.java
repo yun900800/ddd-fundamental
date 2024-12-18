@@ -7,6 +7,7 @@ import org.ddd.fundamental.bom.value.ProductStructure;
 import org.ddd.fundamental.bom.value.ProductStructureNode;
 import org.ddd.fundamental.material.value.MaterialId;
 import org.ddd.fundamental.shared.api.bom.BomIdDTO;
+import org.ddd.fundamental.shared.api.bom.ProductStructureDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,7 +44,7 @@ public class BomRest {
     }
 
     @RequestMapping("/bom/product_structure/{productId}")
-    public ProductStructure<MaterialIdNode<ProductStructureNode>> getProductStructure(@PathVariable String productId){
+    public ProductStructureDTO getProductStructure(@PathVariable String productId){
         return bomQueryService.getProductStructure(new MaterialId(productId));
     }
 

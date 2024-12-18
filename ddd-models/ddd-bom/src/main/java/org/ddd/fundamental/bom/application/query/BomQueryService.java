@@ -10,7 +10,9 @@ import org.ddd.fundamental.bom.value.ProductStructureNodeList;
 import org.ddd.fundamental.material.client.MaterialClient;
 import org.ddd.fundamental.material.value.MaterialId;
 import org.ddd.fundamental.material.value.MaterialType;
+import org.ddd.fundamental.redis.config.RedisStoreManager;
 import org.ddd.fundamental.shared.api.bom.BomIdDTO;
+import org.ddd.fundamental.shared.api.bom.ProductStructureDTO;
 import org.ddd.fundamental.shared.api.material.MaterialDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,11 +28,15 @@ public class BomQueryService {
     private final ProductStructureDataRepository structureDataRepository;
 
     private final MaterialClient materialClient;
+    
+    private final RedisStoreManager manager;
 
     public BomQueryService(ProductStructureDataRepository structureDataRepository,
-                             MaterialClient materialClient){
+                             MaterialClient materialClient,
+                           RedisStoreManager manager){
         this.structureDataRepository = structureDataRepository;
         this.materialClient = materialClient;
+        this.manager = manager;
     }
 
     public List<MaterialDTO> materialsByMaterialType(MaterialType materialType){
@@ -82,7 +88,12 @@ public class BomQueryService {
         return result;
     }
 
-    public ProductStructure<MaterialIdNode<ProductStructureNode>> getProductStructure(MaterialId productId){
+    public ProductStructureDTO getProductStructure(MaterialId productId){
+        ProductStructureDTO productStructureDTO = this.manager.fetchDataFromCache(productId,ProductStructureDTO.class);
+        if (null != productStructureDTO) {
+            log.info("fetch data from redis");
+            return productStructureDTO;
+        }
         List<ProductStructureData> productStructureData = structureDataRepository.findByProductId(productId);
         List<MaterialIdNode<ProductStructureNode>> nodeList = productStructureData
                 .stream().map(v->v.getMaterialIdNode()).collect(Collectors.toList());
@@ -93,7 +104,11 @@ public class BomQueryService {
                 ProductStructureNodeList.create(
                         productNode,spareNodes,rawNodes
                 );
-        return list.toProductStructure();
+        log.info("calculate structure from data");
+        ProductStructure<MaterialIdNode<ProductStructureNode>> productStructure = list.toProductStructure();
+        productStructureDTO = ProductStructureDTO.create(productStructure);
+        this.manager.storeDataToCache(productStructureDTO);
+        return productStructureDTO;
     }
 
 }

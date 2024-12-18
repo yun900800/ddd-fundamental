@@ -49,6 +49,11 @@
         </dependency>
         <dependency>
             <groupId>org.ddd.fundamental</groupId>
+            <artifactId>ddd-redis-manager</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.ddd.fundamental</groupId>
             <artifactId>ddd-material-adapter</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
