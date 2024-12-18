@@ -17,7 +17,11 @@ public class MaterialConverter {
             return new ArrayList<>();
         }
         return materials.stream()
-                .map(v->new MaterialDTO(v.getMaterialMaster(),v.id(),v.getMaterialType()))
+                .map(MaterialConverter::entityToDTO)
                 .collect(Collectors.toList());
+    }
+
+    public static MaterialDTO entityToDTO(Material v){
+        return new MaterialDTO(v.getMaterialMaster(),v.id(),v.getMaterialType());
     }
 }

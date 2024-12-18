@@ -1,7 +1,9 @@
 package org.ddd.fundamental.material.rest;
 
+import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.changeable.ChangeableInfo;
 import org.ddd.fundamental.material.MaterialMaster;
+import org.ddd.fundamental.material.application.cache.LoadingCacheStore;
 import org.ddd.fundamental.material.application.command.MaterialCommandService;
 import org.ddd.fundamental.material.application.query.MaterialQueryService;
 import org.ddd.fundamental.material.domain.model.Material;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@Slf4j
 public class MaterialRest {
 
     @Autowired
@@ -24,6 +27,9 @@ public class MaterialRest {
 
     @Autowired
     private MaterialCommandService commandService;
+
+    @Autowired
+    private LoadingCacheStore<MaterialDTO> materialDTOLoadingCacheStore;
 
     @RequestMapping("/material/materials")
     public List<MaterialDTO> materials() {
@@ -73,5 +79,15 @@ public class MaterialRest {
     public void addOptionalCharacter(@RequestBody PropsContainer propsContainer,
                                  @PathVariable String id){
         commandService.addOptionalCharacter(propsContainer,new MaterialId(id));
+    }
+
+    @RequestMapping("/material/getMaterialById/{id}")
+    public MaterialDTO getMaterialById(@PathVariable String id){
+        MaterialDTO materialDTO = materialDTOLoadingCacheStore.get(id);
+        if (null != materialDTO) {
+            log.info("fetch data by key:{} from Loading cache",id);
+            return materialDTO;
+        }
+        return application.getMaterialById(new MaterialId(id));
     }
 }
