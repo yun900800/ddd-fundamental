@@ -1,9 +1,9 @@
 package org.ddd.fundamental.material.config.cache;
 
 import lombok.extern.slf4j.Slf4j;
-import org.ddd.fundamental.material.application.cache.CacheStore;
-import org.ddd.fundamental.material.application.cache.ICacheLoaderService;
-import org.ddd.fundamental.material.application.cache.LoadingCacheStore;
+import org.ddd.fundamental.redis.cache.CacheStore;
+import org.ddd.fundamental.redis.cache.ICacheLoaderService;
+import org.ddd.fundamental.redis.cache.LoadingCacheStore;
 import org.ddd.fundamental.shared.api.material.MaterialDTO;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

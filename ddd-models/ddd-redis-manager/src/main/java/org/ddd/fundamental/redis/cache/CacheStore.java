@@ -1,4 +1,4 @@
-package org.ddd.fundamental.material.application.cache;
+package org.ddd.fundamental.redis.cache;
 
 
 import com.google.common.cache.Cache;

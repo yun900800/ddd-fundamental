@@ -2,8 +2,8 @@ package org.ddd.fundamental.material.application.query;
 
 import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.material.application.MaterialConverter;
-import org.ddd.fundamental.material.application.cache.CacheStore;
-import org.ddd.fundamental.material.application.cache.ICacheLoaderService;
+import org.ddd.fundamental.redis.cache.CacheStore;
+import org.ddd.fundamental.redis.cache.ICacheLoaderService;
 import org.ddd.fundamental.material.creator.MaterialAddable;
 import org.ddd.fundamental.material.domain.model.Material;
 import org.ddd.fundamental.material.domain.repository.MaterialRepository;
