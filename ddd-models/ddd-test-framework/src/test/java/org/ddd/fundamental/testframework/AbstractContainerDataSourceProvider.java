@@ -1,4 +1,4 @@
-package org.ddd.fundamental.test;
+package org.ddd.fundamental.testframework;
 
 import org.ddd.fundamental.enums.Database;
 import org.testcontainers.containers.JdbcDatabaseContainer;

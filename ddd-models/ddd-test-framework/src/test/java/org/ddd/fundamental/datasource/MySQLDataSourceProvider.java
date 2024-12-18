@@ -2,7 +2,7 @@ package org.ddd.fundamental.datasource;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
 import org.ddd.fundamental.enums.Database;
-import org.ddd.fundamental.test.AbstractContainerDataSourceProvider;
+import org.ddd.fundamental.testframework.AbstractContainerDataSourceProvider;
 
 import javax.sql.DataSource;
 
