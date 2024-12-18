@@ -77,7 +77,6 @@ public class MaterialCustomRepositoryImpl implements MaterialCustomRepository{
             Sort sortBy) {
         CriteriaBuilder<Material> criteriaBuilder = criteriaBuilderFactory
                 .create(entityManager, Material.class);
-
         sortBy.forEach(order -> {
             criteriaBuilder.orderBy(
                     order.getProperty(),

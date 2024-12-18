@@ -11,6 +11,9 @@ import javax.persistence.EntityManagerFactory;
 @Configuration
 public class HibernateConfig {
 
+    //这里配置blaze框架的keyset分页
+    //参考一下文章 https://vladmihalcea.com/keyset-pagination-jpa-hibernate/
+    // https://vladmihalcea.com/keyset-pagination-spring/
     @Bean
     public CriteriaBuilderFactory criteriaBuilderFactory(EntityManagerFactory entityManagerFactory){
         CriteriaBuilderConfiguration config = Criteria.getDefault();

@@ -97,34 +97,39 @@
 
         <dependency>
             <groupId>com.blazebit</groupId>
+            <artifactId>blaze-persistence-core-api</artifactId>
+            <version>${blaze-persistence.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.blazebit</groupId>
             <artifactId>blaze-persistence-core-impl-jar</artifactId>
             <version>${blaze-persistence.version}</version>
         </dependency>
+<!--测试哪些包不是必须得-->
+<!--        <dependency>-->
+<!--            <groupId>com.blazebit</groupId>-->
+<!--            <artifactId>blaze-persistence-jpa-criteria-api</artifactId>-->
+<!--            <version>${blaze-persistence.version}</version>-->
+<!--        </dependency>-->
 
-        <dependency>
-            <groupId>com.blazebit</groupId>
-            <artifactId>blaze-persistence-jpa-criteria-api</artifactId>
-            <version>${blaze-persistence.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.blazebit</groupId>
-            <artifactId>blaze-persistence-jpa-criteria-impl</artifactId>
-            <version>${blaze-persistence.version}</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.blazebit</groupId>-->
+<!--            <artifactId>blaze-persistence-jpa-criteria-impl</artifactId>-->
+<!--            <version>${blaze-persistence.version}</version>-->
+<!--        </dependency>-->
 
         <!-- https://mvnrepository.com/artifact/com.blazebit/blaze-persistence-entity-view-impl -->
-        <dependency>
-            <groupId>com.blazebit</groupId>
-            <artifactId>blaze-persistence-entity-view-impl</artifactId>
-            <version>1.6.6</version>
-            <scope>runtime</scope>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.blazebit</groupId>-->
+<!--            <artifactId>blaze-persistence-entity-view-impl</artifactId>-->
+<!--            <version>${blaze-persistence.version}</version>-->
+<!--            <scope>runtime</scope>-->
+<!--        </dependency>-->
 
         <dependency>
             <groupId>com.blazebit</groupId>
             <artifactId>blaze-persistence-integration-hibernate-5.5</artifactId>
-            <version>1.6.6</version>
+            <version>${blaze-persistence.version}</version>
             <scope>runtime</scope>
         </dependency>
     </dependencies>
