@@ -1,8 +1,7 @@
 package org.ddd.fundamental.equipment.consumer;
 
 import lombok.extern.slf4j.Slf4j;
-import org.ddd.fundamental.equipment.application.EquipmentService;
-import org.ddd.fundamental.equipment.domain.model.EquipmentPlan;
+import org.ddd.fundamental.equipment.application.command.EquipmentCommandService;
 import org.ddd.fundamental.event.workprocess.WorkProcessRecordCreated;
 import org.ddd.fundamental.factory.EquipmentId;
 import org.ddd.fundamental.workprocess.enums.ProductResourceType;
@@ -19,7 +18,7 @@ import org.springframework.stereotype.Component;
 public class WorkProcessRecordConsumer {
 
     @Autowired
-    private EquipmentService equipmentService;
+    private EquipmentCommandService equipmentService;
 
     @KafkaHandler
     public void handleWorkProcess(WorkProcessRecordCreated event) {

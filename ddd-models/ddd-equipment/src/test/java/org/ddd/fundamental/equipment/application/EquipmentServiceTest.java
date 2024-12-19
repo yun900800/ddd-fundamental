@@ -1,6 +1,7 @@
 package org.ddd.fundamental.equipment.application;
 
 import org.ddd.fundamental.equipment.EquipmentAppTest;
+import org.ddd.fundamental.equipment.application.command.EquipmentCommandService;
 import org.ddd.fundamental.equipment.creator.EquipmentAddable;
 import org.ddd.fundamental.equipment.creator.ToolingEquipmentAddable;
 import org.ddd.fundamental.equipment.domain.model.Equipment;
@@ -14,7 +15,7 @@ import java.util.List;
 public class EquipmentServiceTest extends EquipmentAppTest {
 
     @Autowired
-    private EquipmentService equipmentService;
+    private EquipmentCommandService equipmentService;
 
     @Autowired
     private ToolingEquipmentAddable creator;

@@ -1,30 +1,12 @@
-package org.ddd.fundamental.equipment.application;
+package org.ddd.fundamental.equipment.helper;
 
-import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.day.range.DateRange;
-import org.ddd.fundamental.equipment.domain.repository.EquipmentRepository;
-import org.ddd.fundamental.equipment.domain.repository.ToolingEquipmentRepository;
 import org.ddd.fundamental.utils.DateTimeUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-@Component
-@Slf4j
-public class ToolingEquipmentCreator {
-
-    @Autowired
-    private ToolingEquipmentRepository repository;
-
-    @Autowired
-    private EquipmentRepository equipmentRepository;
-
-
-    private List<DateRange> dateRanges = new ArrayList<>();
-
+public final class EquipmentHelper {
 
     public static List<DateRange> createDateRanges(){
         DateRange range0 = new DateRange(
@@ -40,15 +22,5 @@ public class ToolingEquipmentCreator {
                 DateTimeUtils.strToDate("2024-09-23 12:58:12","yyyy-MM-dd HH:mm:ss"),
                 DateTimeUtils.strToDate("2024-10-24 11:48:12","yyyy-MM-dd HH:mm:ss"),"机器技术故障");
         return Arrays.asList(range0,range1,range2,range3);
-    }
-
-    public List<DateRange> getDateRanges() {
-        return new ArrayList<>(dateRanges);
-    }
-
-    //@PostConstruct
-    public void init(){
-
-        this.dateRanges = createDateRanges();
     }
 }

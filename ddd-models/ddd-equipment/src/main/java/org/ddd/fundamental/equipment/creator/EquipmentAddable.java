@@ -4,41 +4,41 @@ import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.changeable.ChangeableInfo;
 import org.ddd.fundamental.creator.DataAddable;
 import org.ddd.fundamental.day.YearModelValue;
+import org.ddd.fundamental.equipment.application.EquipmentConverter;
+import org.ddd.fundamental.equipment.application.command.EquipmentCommandService;
 import org.ddd.fundamental.equipment.domain.model.Equipment;
 import org.ddd.fundamental.equipment.domain.model.EquipmentResource;
 import org.ddd.fundamental.equipment.domain.model.EquipmentType;
-import org.ddd.fundamental.equipment.domain.repository.EquipmentRepository;
-import org.ddd.fundamental.equipment.domain.repository.RPAccountRepository;
+
 import org.ddd.fundamental.equipment.value.*;
 import org.ddd.fundamental.redis.config.RedisStoreManager;
 import org.ddd.fundamental.shared.api.equipment.EquipmentDTO;
-import org.ddd.fundamental.shared.api.equipment.ToolingDTO;
+
 import org.ddd.fundamental.workprocess.enums.ProductResourceType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 @Slf4j
 @Order(2)
 public class EquipmentAddable implements DataAddable {
 
-    private final EquipmentRepository equipmentRepository;
+    private final EquipmentCommandService commandService;
     private final RedisStoreManager manager;
 
     private List<Equipment> equipments = new ArrayList<>();
 
-    public EquipmentAddable(@Autowired EquipmentRepository equipmentRepository,
-                            @Autowired RedisStoreManager manager){
-        this.equipmentRepository = equipmentRepository;
+    @Autowired
+    public EquipmentAddable(EquipmentCommandService commandService,
+                            RedisStoreManager manager){
+        this.commandService = commandService;
         this.manager = manager;
     }
 
@@ -118,15 +118,6 @@ public class EquipmentAddable implements DataAddable {
         return Arrays.asList(equipment0,equipment1,equipment2,equipment3,equipment4);
     }
 
-    private static List<EquipmentDTO> entityToDTO(List<Equipment> equipments){
-        if (CollectionUtils.isEmpty(equipments)) {
-            return new ArrayList<>();
-        }
-        return equipments.stream().map(v->EquipmentDTO.create(
-                v.id(), v.getMaster()
-        )).collect(Collectors.toList());
-    }
-
     public List<Equipment> getEquipments() {
         return new ArrayList<>(equipments);
     }
@@ -136,9 +127,9 @@ public class EquipmentAddable implements DataAddable {
     public void execute() {
         log.info("store all Equipments to db start");
         this.equipments = createEquipments();
-        this.equipmentRepository.saveAll(equipments);
+        this.commandService.saveAllEquipment(equipments);
         log.info("store all Equipments to db finished");
-        List<EquipmentDTO> toolingDTOS = entityToDTO(equipments);
+        List<EquipmentDTO> toolingDTOS = EquipmentConverter.entityToDTO(equipments);
         manager.storeDataListToCache(toolingDTOS);
     }
 }

@@ -59,7 +59,7 @@ public class MachineShopAddable implements DataAddable {
         log.info("MachineShopAddable execute add all machineShops");
         this.machineShops =  createMachineShop();
         addLineRandomToMachineShop();
-        machineShopRepository.saveAll(machineShops);
+        machineShopRepository.persistAll(machineShops);
         List<MachineShopDTO> machineShopDTOS = machineShops.stream()
                         .map(v->MachineShopDTO.create(v.id(),
                                 v.getMachineShop())).collect(Collectors.toList());

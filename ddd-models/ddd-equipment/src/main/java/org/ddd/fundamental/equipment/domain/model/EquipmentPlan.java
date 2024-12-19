@@ -1,8 +1,6 @@
 package org.ddd.fundamental.equipment.domain.model;
 
-import org.ddd.fundamental.core.AbstractAggregateRoot;
 import org.ddd.fundamental.core.AbstractEntity;
-import org.ddd.fundamental.day.range.DateRangeValue;
 import org.ddd.fundamental.equipment.value.EquipmentPlanRange;
 import org.ddd.fundamental.equipment.value.EquipmentPlanValue;
 import org.ddd.fundamental.factory.EquipmentId;

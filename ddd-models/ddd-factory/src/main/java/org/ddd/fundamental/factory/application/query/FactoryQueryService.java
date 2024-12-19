@@ -45,18 +45,18 @@ public class FactoryQueryService {
 
     @Transactional
     public List<MachineShopDTO> machineShops(){
+        List<MachineShopDTO> machineShopDTOS = manager.queryAllData(MachineShopDTO.class);
+        if (!CollectionUtils.isEmpty(machineShopDTOS)){
+            return machineShopDTOS;
+        }
         simulateCostCall();
         List<MachineShop> machineShopList = machineShopRepository.findAll();
         if (CollectionUtils.isEmpty(machineShopList)) {
             return new ArrayList<>();
         }
-
-        List<MachineShopDTO> machineShopDTOS =
+        machineShopDTOS =
         machineShopList.stream().map(v->MachineShopDTO.create(v.id(),v.getMachineShop()))
                 .collect(Collectors.toList());
-
-        MachineShopDTO firstMachineShop = manager.fetchDataFromCache(machineShopDTOS.get(0).id(), MachineShopDTO.class);
-        log.info("firstMachineShop is {}",firstMachineShop);
         return machineShopDTOS;
     }
 
@@ -82,25 +82,20 @@ public class FactoryQueryService {
     }
 
     public List<ProductLineDTO> productLines(){
+        List<ProductLineDTO>  productLineDTOS = manager.queryAllData(ProductLineDTO.class);
+        if (!CollectionUtils.isEmpty(productLineDTOS)){
+            return productLineDTOS;
+        }
+
         List<ProductionLine> productionLines = productionLineRepository.findAll();
         if (CollectionUtils.isEmpty(productionLines)) {
             return new ArrayList<>();
         }
-        List<ProductLineDTO>  productLineDTOS = productionLines.stream().map(v->ProductLineDTO.create(
+        productLineDTOS = productionLines.stream().map(v->ProductLineDTO.create(
                 v.id(),v.getLine(), v.getEquipmentIds(), v.getWorkStations().stream()
                         .map(u-> WorkStationDTO.create(u.id(), u.getWorkStation()))
                         .collect(Collectors.toList())
         )).collect(Collectors.toList());
-        //存储数据到缓存
-        manager.storeDataListToCache(productLineDTOS);
-        ProductLineDTO firstProductLineDTO = manager.fetchDataFromCache(productLineDTOS.get(0).id(), ProductLineDTO.class);
-        log.info("firstProductLineDTO is {}",firstProductLineDTO);
-        List<ProductionLineId> ids = Arrays.asList(
-                productLineDTOS.get(0).id(),
-                productLineDTOS.get(2).id()
-        );
-        List<ProductLineDTO> lineDTOS = manager.fetchDataListFromCache(ids,ProductLineDTO.class);
-        log.info("lineDTOS is {}",lineDTOS);
         return productLineDTOS;
     }
 

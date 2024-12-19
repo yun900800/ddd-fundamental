@@ -2,6 +2,7 @@ package org.ddd.fundamental.equipment.creator;
 
 import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.creator.DataAddable;
+import org.ddd.fundamental.equipment.application.EquipmentConverter;
 import org.ddd.fundamental.equipment.domain.model.RPAccount;
 import org.ddd.fundamental.equipment.domain.repository.RPAccountRepository;
 import org.ddd.fundamental.equipment.value.RPAccountValue;
@@ -77,15 +78,6 @@ public class RPAccountAddable implements DataAddable {
                 account9,account10,account11,account12);
     }
 
-    private static List<RPAccountDTO> entityToDTO(List<RPAccount> entities){
-        if (CollectionUtils.isEmpty(entities)){
-            return new ArrayList<>();
-        } else {
-            return entities.stream().map(v->RPAccountDTO.create(v.id(),v.getAccountValue()))
-                    .collect(Collectors.toList());
-        }
-    }
-
     @Override
     @Transactional
     public void execute() {
@@ -93,7 +85,7 @@ public class RPAccountAddable implements DataAddable {
         this.rpAccounts = createRpaAccount();
         this.accountRepository.saveAll(this.rpAccounts);
         log.info("store all RPAccounts from db finished");
-        List<RPAccountDTO> rpAccountDTOS = entityToDTO(rpAccounts);
+        List<RPAccountDTO> rpAccountDTOS = EquipmentConverter.entityToRPAccountDTO(rpAccounts);
         log.info("store all RPAccounts to cache start");
         this.manager.storeDataListToCache(rpAccountDTOS);
         log.info("store all RPAccounts to cache finished");

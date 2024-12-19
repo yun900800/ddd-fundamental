@@ -145,7 +145,7 @@ public class FactoryCommandService {
         MachineShop shop = new MachineShop(
                 shopDTO.getMachineShopValue()
         );
-        machineShopRepository.save(shop);
+        machineShopRepository.persist(shop);
     }
 
     /**

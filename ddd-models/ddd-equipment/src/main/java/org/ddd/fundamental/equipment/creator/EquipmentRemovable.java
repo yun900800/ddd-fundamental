@@ -2,9 +2,8 @@ package org.ddd.fundamental.equipment.creator;
 
 import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.creator.DataRemovable;
-import org.ddd.fundamental.equipment.application.EquipmentService;
+import org.ddd.fundamental.equipment.application.command.EquipmentCommandService;
 import org.ddd.fundamental.equipment.domain.repository.EquipmentRepository;
-import org.ddd.fundamental.equipment.value.EquipmentSize;
 import org.ddd.fundamental.redis.config.RedisStoreManager;
 import org.ddd.fundamental.shared.api.equipment.EquipmentDTO;
 
@@ -18,17 +17,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Order(3)
 public class EquipmentRemovable implements DataRemovable {
 
-    private EquipmentRepository equipmentRepository;
 
     private final RedisStoreManager manager;
 
-    private final EquipmentService service;
+    private final EquipmentCommandService service;
 
     @Autowired
-    public EquipmentRemovable(EquipmentRepository equipmentRepository,
-                                     RedisStoreManager manager,
-                              EquipmentService service){
-        this.equipmentRepository = equipmentRepository;
+    public EquipmentRemovable(RedisStoreManager manager,
+                              EquipmentCommandService service){
         this.manager = manager;
         this.service = service;
     }
