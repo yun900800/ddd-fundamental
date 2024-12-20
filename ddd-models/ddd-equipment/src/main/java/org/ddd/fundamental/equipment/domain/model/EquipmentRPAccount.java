@@ -1,27 +1,26 @@
 package org.ddd.fundamental.equipment.domain.model;
 
 import org.ddd.fundamental.core.AbstractAggregateRoot;
-import org.ddd.fundamental.equipment.domain.value.EquipmentAccountId;
-import org.ddd.fundamental.factory.EquipmentId;
+import org.ddd.fundamental.equipment.value.EquipmentRPAccountId;
 
 import javax.persistence.*;
 
 @Entity
 @Table( name = "equipment_rpa_account")
-public class EquipmentRPAccount extends AbstractAggregateRoot<EquipmentAccountId> {
+public class EquipmentRPAccount extends AbstractAggregateRoot<EquipmentRPAccountId> {
 
-    @EmbeddedId
-    private EquipmentAccountId id;
+    //@Embedded
+    //private EquipmentAccountId equipmentAccountId;
 
     @SuppressWarnings("unused")
     protected EquipmentRPAccount(){
     }
 
     public EquipmentRPAccount(Equipment equipment, RPAccount rpAccount){
-        super(EquipmentAccountId.randomId(EquipmentAccountId.class));
+        super(EquipmentRPAccountId.randomId(EquipmentRPAccountId.class));
         this.equipment = equipment;
         this.rpAccount = rpAccount;
-        this.id = new EquipmentAccountId(equipment.id(),rpAccount.id());
+        //this.equipmentAccountId = new EquipmentAccountId(equipment.id(),rpAccount.id());
     }
 
     public static EquipmentRPAccount create(Equipment equipment, RPAccount rpAccount){
@@ -29,16 +28,15 @@ public class EquipmentRPAccount extends AbstractAggregateRoot<EquipmentAccountId
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("equipmentId")
+    //@MapsId("equipmentId")
+    @JoinColumn(name = "equipmentId")
     private Equipment equipment;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("rpAccountId")
+    //@MapsId("rpAccountId")
+    @JoinColumn(name = "rpAccountId")
     private RPAccount rpAccount;
 
-    public EquipmentAccountId getId() {
-        return id;
-    }
 
     public Equipment getEquipment() {
         return equipment;

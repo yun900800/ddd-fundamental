@@ -120,6 +120,7 @@ public class EquipmentCommandService {
 
     @Transactional
     public void deleteAllRPAccount(){
+        this.equipmentRPAccountRepository.deleteAllAccounts();
         this.accountRepository.deleteAllRPAccounts();
     }
 
