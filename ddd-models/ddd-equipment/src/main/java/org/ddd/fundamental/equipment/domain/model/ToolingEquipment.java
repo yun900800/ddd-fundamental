@@ -1,6 +1,7 @@
 package org.ddd.fundamental.equipment.domain.model;
 
 import org.ddd.fundamental.core.AbstractEntity;
+import org.ddd.fundamental.equipment.enums.EquipmentType;
 import org.ddd.fundamental.equipment.value.ToolingEquipmentValue;
 import org.ddd.fundamental.factory.EquipmentId;
 

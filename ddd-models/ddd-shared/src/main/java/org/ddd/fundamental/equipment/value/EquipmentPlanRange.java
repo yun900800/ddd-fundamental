@@ -10,7 +10,7 @@ import javax.persistence.Embedded;
 import javax.persistence.MappedSuperclass;
 import java.util.Objects;
 
-@Embeddable
+//@Embeddable
 @MappedSuperclass
 public class EquipmentPlanRange implements ValueObject, Cloneable {
     private WorkOrderId workOrderId;

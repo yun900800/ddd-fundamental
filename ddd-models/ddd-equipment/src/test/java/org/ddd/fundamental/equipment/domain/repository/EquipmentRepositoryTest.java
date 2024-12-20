@@ -7,7 +7,7 @@ import org.ddd.fundamental.day.range.DateRangeValue;
 import org.ddd.fundamental.equipment.EquipmentAppTest;
 import org.ddd.fundamental.equipment.domain.model.Equipment;
 import org.ddd.fundamental.equipment.domain.model.EquipmentResource;
-import org.ddd.fundamental.equipment.domain.model.EquipmentType;
+import org.ddd.fundamental.equipment.enums.EquipmentType;
 import org.ddd.fundamental.equipment.domain.model.ToolingEquipment;
 import org.ddd.fundamental.equipment.value.*;
 import org.ddd.fundamental.factory.EquipmentId;

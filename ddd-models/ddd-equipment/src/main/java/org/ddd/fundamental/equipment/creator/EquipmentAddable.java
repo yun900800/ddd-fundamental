@@ -8,7 +8,7 @@ import org.ddd.fundamental.equipment.application.EquipmentConverter;
 import org.ddd.fundamental.equipment.application.command.EquipmentCommandService;
 import org.ddd.fundamental.equipment.domain.model.Equipment;
 import org.ddd.fundamental.equipment.domain.model.EquipmentResource;
-import org.ddd.fundamental.equipment.domain.model.EquipmentType;
+import org.ddd.fundamental.equipment.enums.EquipmentType;
 
 import org.ddd.fundamental.equipment.value.*;
 import org.ddd.fundamental.redis.config.RedisStoreManager;

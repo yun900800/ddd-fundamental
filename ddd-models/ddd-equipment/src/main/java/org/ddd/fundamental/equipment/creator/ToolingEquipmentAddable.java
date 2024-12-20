@@ -3,52 +3,44 @@ package org.ddd.fundamental.equipment.creator;
 import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.changeable.ChangeableInfo;
 import org.ddd.fundamental.creator.DataAddable;
+import org.ddd.fundamental.equipment.application.EquipmentConverter;
+import org.ddd.fundamental.equipment.application.command.EquipmentCommandService;
 import org.ddd.fundamental.equipment.domain.model.Equipment;
-import org.ddd.fundamental.equipment.domain.model.RPAccount;
 import org.ddd.fundamental.equipment.domain.model.ToolingEquipment;
-import org.ddd.fundamental.equipment.domain.repository.EquipmentRepository;
-import org.ddd.fundamental.equipment.domain.repository.ToolingEquipmentRepository;
 import org.ddd.fundamental.equipment.enums.ToolingType;
 import org.ddd.fundamental.equipment.value.MaintainStandard;
 import org.ddd.fundamental.equipment.value.ToolingEquipmentValue;
 import org.ddd.fundamental.redis.config.RedisStoreManager;
-import org.ddd.fundamental.shared.api.equipment.RPAccountDTO;
 import org.ddd.fundamental.shared.api.equipment.ToolingDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 @Slf4j
 @Order(3)
 public class ToolingEquipmentAddable implements DataAddable {
 
-    private final ToolingEquipmentRepository toolingEquipmentRepository;
+    private final EquipmentCommandService commandService;
 
     private final RedisStoreManager manager;
-
-    private final EquipmentRepository equipmentRepository;
 
     private List<ToolingEquipment> toolingEquipments = new ArrayList<>();
 
     private final EquipmentAddable equipmentAddable;
 
     @Autowired
-    public ToolingEquipmentAddable(ToolingEquipmentRepository toolingEquipmentRepository,
+    public ToolingEquipmentAddable(EquipmentCommandService commandService,
                                      RedisStoreManager manager,
-                                   EquipmentRepository equipmentRepository,
                                    EquipmentAddable equipmentAddable){
-        this.toolingEquipmentRepository = toolingEquipmentRepository;
+        this.commandService = commandService;
         this.manager = manager;
-        this.equipmentRepository = equipmentRepository;
         this.equipmentAddable = equipmentAddable;
     }
 
@@ -105,22 +97,6 @@ public class ToolingEquipmentAddable implements DataAddable {
                 toolingEquipment5,toolingEquipment6,toolingEquipment7);
     }
 
-    private static List<ToolingDTO> entityToDTO(List<ToolingEquipment> entities){
-        if (CollectionUtils.isEmpty(entities)){
-            return new ArrayList<>();
-        } else {
-            return entities.stream().map(v->{
-                        if (null == v.getEquipment()){
-                            return ToolingDTO.create(v.id(),v.getToolingEquipmentInfo(),null);
-                        } else {
-                            return ToolingDTO.create(v.id(),v.getToolingEquipmentInfo(),v.getEquipment().id());
-                        }
-
-                    })
-                    .collect(Collectors.toList());
-        }
-    }
-
     public List<ToolingEquipment> getToolingEquipments() {
         return new ArrayList<>(toolingEquipments);
     }
@@ -135,9 +111,9 @@ public class ToolingEquipmentAddable implements DataAddable {
         log.info("store all ToolingEquipments to db start");
         this.toolingEquipments = createToolingList();
         randomSetMasterEquipment();
-        this.toolingEquipmentRepository.persistAll(toolingEquipments);
+        this.commandService.saveAllTooling(toolingEquipments);
         log.info("store all ToolingEquipments to db finished");
-        List<ToolingDTO> toolingDTOS = entityToDTO(toolingEquipments);
+        List<ToolingDTO> toolingDTOS = EquipmentConverter.entityToToolingDTO(toolingEquipments);
         manager.storeDataListToCache(toolingDTOS);
     }
 }

@@ -3,6 +3,8 @@ package org.ddd.fundamental.equipment.creator;
 import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.creator.DataAddable;
 import org.ddd.fundamental.equipment.application.EquipmentConverter;
+import org.ddd.fundamental.equipment.application.command.EquipmentCommandService;
+import org.ddd.fundamental.equipment.application.query.EquipmentQueryService;
 import org.ddd.fundamental.equipment.domain.model.RPAccount;
 import org.ddd.fundamental.equipment.domain.repository.RPAccountRepository;
 import org.ddd.fundamental.equipment.value.RPAccountValue;
@@ -24,13 +26,14 @@ import java.util.stream.Collectors;
 @Order(1)
 public class RPAccountAddable implements DataAddable {
 
-    private final RPAccountRepository accountRepository;
+    private final EquipmentCommandService commandService;
 
     private final RedisStoreManager manager;
 
-    public RPAccountAddable(@Autowired RPAccountRepository accountRepository,
-                              @Autowired RedisStoreManager manager){
-        this.accountRepository = accountRepository;
+    @Autowired
+    public RPAccountAddable(EquipmentCommandService commandService,
+                             RedisStoreManager manager){
+        this.commandService = commandService;
         this.manager = manager;
     }
 
@@ -83,7 +86,7 @@ public class RPAccountAddable implements DataAddable {
     public void execute() {
         log.info("store all RPAccounts to db start");
         this.rpAccounts = createRpaAccount();
-        this.accountRepository.saveAll(this.rpAccounts);
+        this.commandService.saveAllRPAccount(this.rpAccounts);
         log.info("store all RPAccounts from db finished");
         List<RPAccountDTO> rpAccountDTOS = EquipmentConverter.entityToRPAccountDTO(rpAccounts);
         log.info("store all RPAccounts to cache start");

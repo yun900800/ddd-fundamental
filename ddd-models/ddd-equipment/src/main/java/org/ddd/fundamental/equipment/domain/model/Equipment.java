@@ -5,13 +5,10 @@ import org.ddd.fundamental.core.AbstractAggregateRoot;
 import org.ddd.fundamental.core.DomainObjectId;
 import org.ddd.fundamental.day.YearModelValue;
 import org.ddd.fundamental.day.range.DateRange;
+import org.ddd.fundamental.equipment.enums.EquipmentType;
 import org.ddd.fundamental.equipment.value.EquipmentMaster;
-import org.ddd.fundamental.equipment.value.EquipmentResourceValue;
 import org.ddd.fundamental.factory.EquipmentId;
 import org.ddd.fundamental.tuple.TwoTuple;
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -78,6 +75,11 @@ public class Equipment extends AbstractAggregateRoot<EquipmentId> {
         this.equipmentType = equipmentType;
         this.master = master;
         this.dateRanges = new HashSet<>();
+    }
+
+    public static Equipment create(YearModelValue model, EquipmentType equipmentType,
+                                   EquipmentMaster master){
+        return new Equipment(model,equipmentType,master);
     }
 
     public EquipmentPlan getEquipmentPlan() {

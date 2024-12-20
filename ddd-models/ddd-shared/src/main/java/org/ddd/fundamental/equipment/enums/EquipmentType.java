@@ -1,4 +1,4 @@
-package org.ddd.fundamental.equipment.domain.model;
+package org.ddd.fundamental.equipment.enums;
 
 public enum EquipmentType {
     RESOURCE_ONE,

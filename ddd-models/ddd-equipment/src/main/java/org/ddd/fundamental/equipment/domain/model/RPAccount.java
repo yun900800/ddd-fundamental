@@ -10,7 +10,7 @@ import java.util.Objects;
 
 
 @Entity
-@Table(name = "equipment_rpa_account")
+@Table(name = "rpa_account")
 public class RPAccount extends AbstractAggregateRoot<RPAccountId> {
 
     private RPAccountValue accountValue;

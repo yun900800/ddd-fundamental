@@ -2,6 +2,7 @@ package org.ddd.fundamental.equipment.creator;
 
 import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.creator.DataRemovable;
+import org.ddd.fundamental.equipment.application.command.EquipmentCommandService;
 import org.ddd.fundamental.equipment.domain.repository.RPAccountRepository;
 import org.ddd.fundamental.redis.config.RedisStoreManager;
 import org.ddd.fundamental.shared.api.equipment.RPAccountDTO;
@@ -15,13 +16,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Order(1)
 public class RPAccountRemovable implements DataRemovable {
 
-    private final RPAccountRepository accountRepository;
+    private final EquipmentCommandService commandService;
 
     private final RedisStoreManager manager;
 
-    public RPAccountRemovable(@Autowired RPAccountRepository accountRepository,
-                              @Autowired RedisStoreManager manager){
-        this.accountRepository = accountRepository;
+    @Autowired
+    public RPAccountRemovable(EquipmentCommandService commandService,
+                              RedisStoreManager manager){
+        this.commandService = commandService;
         this.manager = manager;
     }
 
@@ -29,7 +31,7 @@ public class RPAccountRemovable implements DataRemovable {
     @Transactional
     public void execute() {
         log.info("delete all RPAccounts from db start");
-        this.accountRepository.deleteAllRPAccounts();
+        this.commandService.deleteAllRPAccount();
         log.info("delete all RPAccounts from db finished");
         log.info("delete all RPAccounts from cache start");
         this.manager.deleteAllData(RPAccountDTO.class);

@@ -20,7 +20,8 @@
         @TypeDef(defaultForType = FactoryId.class, typeClass = FactoryIdType.class),
         @TypeDef(defaultForType = WorkProcessQuantityId.class, typeClass = WorkProcessQuantityIdType.class),
         @TypeDef(defaultForType = WorkProcessId.class, typeClass = WorkProcessIdType.class),
-        @TypeDef(defaultForType = WorkProcessTimeId.class, typeClass = WorkProcessTimeIdType.class)
+        @TypeDef(defaultForType = WorkProcessTimeId.class, typeClass = WorkProcessTimeIdType.class),
+        @TypeDef(defaultForType = EquipmentRPAccountId.class, typeClass = EquipmentRPAccountIdType.class)
 })
 
 
@@ -30,6 +31,7 @@ import io.hypersistence.utils.hibernate.type.json.JsonType;
 import org.ddd.fundamental.bom.ProductStructureDataId;
 import org.ddd.fundamental.core.tenant.FactoryId;
 import org.ddd.fundamental.core.tenant.TenantId;
+import org.ddd.fundamental.equipment.value.EquipmentRPAccountId;
 import org.ddd.fundamental.equipment.value.EquipmentResourceId;
 import org.ddd.fundamental.equipment.value.RPAccountId;
 import org.ddd.fundamental.factory.*;

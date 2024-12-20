@@ -3,9 +3,11 @@ package org.ddd.fundamental.equipment.application.query;
 import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.equipment.application.EquipmentConverter;
 import org.ddd.fundamental.equipment.domain.repository.EquipmentRepository;
+import org.ddd.fundamental.equipment.domain.repository.RPAccountRepository;
 import org.ddd.fundamental.equipment.domain.repository.ToolingEquipmentRepository;
 import org.ddd.fundamental.redis.config.RedisStoreManager;
 import org.ddd.fundamental.shared.api.equipment.EquipmentDTO;
+import org.ddd.fundamental.shared.api.equipment.RPAccountDTO;
 import org.ddd.fundamental.shared.api.equipment.ToolingDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,14 +26,18 @@ public class EquipmentQueryService {
 
     private final ToolingEquipmentRepository toolingRepository;
 
+    private final RPAccountRepository accountRepository;
+
     private final RedisStoreManager manager;
 
     @Autowired
     public EquipmentQueryService(EquipmentRepository equipmentRepository,
                                  ToolingEquipmentRepository toolingRepository,
+                                 RPAccountRepository accountRepository,
                                  RedisStoreManager manager){
         this.equipmentRepository = equipmentRepository;
         this.toolingRepository = toolingRepository;
+        this.accountRepository = accountRepository;
         this.manager = manager;
     }
 
@@ -59,5 +65,18 @@ public class EquipmentQueryService {
             return toolingDTOS;
         }
         return EquipmentConverter.entityToToolingDTO(toolingRepository.findAll());
+    }
+
+    /**
+     * 查询所有的RPA账号
+     * @return
+     */
+    public List<RPAccountDTO> rpAccountList(){
+        List<RPAccountDTO> rpAccountDTOS = manager.queryAllData(RPAccountDTO.class);
+        if (!CollectionUtils.isEmpty(rpAccountDTOS)){
+            log.info("rpAccountDTOS data from redis cache");
+            return rpAccountDTOS;
+        }
+        return EquipmentConverter.entityToRPAccountDTO(accountRepository.findAll());
     }
 }

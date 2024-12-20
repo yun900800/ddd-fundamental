@@ -1,21 +1,20 @@
 package org.ddd.fundamental.equipment.application.command;
 
 import lombok.extern.slf4j.Slf4j;
+import org.ddd.fundamental.changeable.ChangeableInfo;
+import org.ddd.fundamental.day.YearModelValue;
 import org.ddd.fundamental.day.range.DateRangeValue;
-import org.ddd.fundamental.equipment.creator.EquipmentAddable;
-import org.ddd.fundamental.equipment.creator.ToolingEquipmentAddable;
-import org.ddd.fundamental.equipment.domain.model.Equipment;
-import org.ddd.fundamental.equipment.domain.model.EquipmentPlan;
-import org.ddd.fundamental.equipment.domain.model.ToolingEquipment;
-import org.ddd.fundamental.equipment.domain.repository.EquipmentPlanRepository;
-import org.ddd.fundamental.equipment.domain.repository.EquipmentRepository;
-import org.ddd.fundamental.equipment.domain.repository.EquipmentResourceRepository;
-import org.ddd.fundamental.equipment.domain.repository.ToolingEquipmentRepository;
+import org.ddd.fundamental.equipment.domain.model.*;
+import org.ddd.fundamental.equipment.domain.repository.*;
+import org.ddd.fundamental.equipment.enums.EquipmentType;
+import org.ddd.fundamental.equipment.value.EquipmentMaster;
 import org.ddd.fundamental.equipment.value.EquipmentPlanRange;
 import org.ddd.fundamental.equipment.value.EquipmentPlanValue;
+import org.ddd.fundamental.equipment.value.EquipmentResourceValue;
 import org.ddd.fundamental.factory.EquipmentId;
 import org.ddd.fundamental.redis.config.RedisStoreManager;
 import org.ddd.fundamental.workorder.value.WorkOrderId;
+import org.ddd.fundamental.workprocess.enums.ProductResourceType;
 import org.ddd.fundamental.workprocess.value.WorkProcessId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,13 +40,23 @@ public class EquipmentCommandService {
     private EquipmentPlanRepository planRepository;
 
     @Autowired
-    private ToolingEquipmentAddable creator;
+    private RPAccountRepository accountRepository;
 
-    @Autowired
-    private EquipmentAddable equipmentAddable;
 
     @Autowired
     private RedisStoreManager manager;
+
+    @Transactional
+    public void createEquipment(EquipmentMaster master, YearModelValue model,
+                                EquipmentType type, ChangeableInfo resource,
+                                ProductResourceType resourceType){
+        Equipment equipment = Equipment.create(model, type, master);
+        EquipmentResource resource0 = EquipmentResource.create(EquipmentResourceValue.create(
+                equipment.id(), resourceType, resource
+        ));
+        equipment.setResource(resource0);
+        equipmentRepository.persist(equipment);
+    }
 
     @Transactional
     public void addToolingToEquipment(EquipmentId toolingId, EquipmentId equipmentId) {
@@ -94,4 +103,23 @@ public class EquipmentCommandService {
         this.equipmentRepository.persistAll(equipmentList);
     }
 
+    @Transactional
+    public void deleteAllTooling(){
+        toolingRepository.deleteAllTooling();
+    }
+
+    @Transactional
+    public void saveAllTooling(List<ToolingEquipment> toolingEquipments){
+        toolingRepository.persistAll(toolingEquipments);
+    }
+
+    @Transactional
+    public void deleteAllRPAccount(){
+        this.accountRepository.deleteAllRPAccounts();
+    }
+
+    @Transactional
+    public void saveAllRPAccount(List<RPAccount> rpAccounts){
+        this.accountRepository.persistAll(rpAccounts);
+    }
 }
