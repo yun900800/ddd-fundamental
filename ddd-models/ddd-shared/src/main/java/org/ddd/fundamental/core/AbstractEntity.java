@@ -112,7 +112,7 @@ public abstract class AbstractEntity<ID extends DomainObjectId> implements
     }
     @Override
     public ID getId() {
-        return id();
+        return id;
     }
 
     public void changeId(ID id){

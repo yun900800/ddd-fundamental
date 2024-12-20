@@ -4,13 +4,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.changeable.ChangeableInfo;
 import org.ddd.fundamental.day.YearModelValue;
 import org.ddd.fundamental.day.range.DateRangeValue;
+import org.ddd.fundamental.equipment.application.query.EquipmentQueryService;
 import org.ddd.fundamental.equipment.domain.model.*;
 import org.ddd.fundamental.equipment.domain.repository.*;
 import org.ddd.fundamental.equipment.enums.EquipmentType;
-import org.ddd.fundamental.equipment.value.EquipmentMaster;
-import org.ddd.fundamental.equipment.value.EquipmentPlanRange;
-import org.ddd.fundamental.equipment.value.EquipmentPlanValue;
-import org.ddd.fundamental.equipment.value.EquipmentResourceValue;
+import org.ddd.fundamental.equipment.value.*;
 import org.ddd.fundamental.factory.EquipmentId;
 import org.ddd.fundamental.redis.config.RedisStoreManager;
 import org.ddd.fundamental.workorder.value.WorkOrderId;
@@ -21,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -41,6 +40,12 @@ public class EquipmentCommandService {
 
     @Autowired
     private RPAccountRepository accountRepository;
+
+    @Autowired
+    private EquipmentRPAccountRepository equipmentRPAccountRepository;
+
+    @Autowired
+    private EquipmentQueryService equipmentQueryService;
 
 
     @Autowired
@@ -121,5 +126,18 @@ public class EquipmentCommandService {
     @Transactional
     public void saveAllRPAccount(List<RPAccount> rpAccounts){
         this.accountRepository.persistAll(rpAccounts);
+    }
+
+    @Transactional
+    public void addRpAccountToEquipment(EquipmentId equipmentId,
+                                          List<RPAccountId> accountIds){
+        Equipment equipment = equipmentQueryService.getProxyEquipment(equipmentId);
+        List<EquipmentRPAccount> rpAccountList = new ArrayList<>();
+        for (RPAccountId accountId: accountIds) {
+            RPAccount account = equipmentQueryService.getProxyRPAccount(accountId);
+            EquipmentRPAccount equipmentRPAccount = EquipmentRPAccount.create(equipment,account);
+            rpAccountList.add(equipmentRPAccount);
+        }
+        equipmentRPAccountRepository.persistAll(rpAccountList);
     }
 }

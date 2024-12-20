@@ -6,16 +6,15 @@ import org.ddd.fundamental.equipment.application.command.EquipmentCommandService
 import org.ddd.fundamental.equipment.application.query.EquipmentQueryService;
 import org.ddd.fundamental.equipment.enums.EquipmentType;
 import org.ddd.fundamental.equipment.value.EquipmentMaster;
+import org.ddd.fundamental.equipment.value.RPAccountId;
+import org.ddd.fundamental.factory.EquipmentId;
 import org.ddd.fundamental.shared.api.equipment.EquipmentDTO;
 import org.ddd.fundamental.shared.api.equipment.EquipmentRequest;
 import org.ddd.fundamental.shared.api.equipment.RPAccountDTO;
 import org.ddd.fundamental.shared.api.equipment.ToolingDTO;
 import org.ddd.fundamental.workprocess.enums.ProductResourceType;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -47,5 +46,11 @@ public class EquipmentRest {
         commandService.createEquipment(request.getMaster(),
                 request.getModel(),request.getType(),
                 request.getResource(),request.getResourceType());
+    }
+
+    @PostMapping("/equipment/add_account_to_equipment/{equipmentId}")
+    public void addRpAccountToEquipment(@PathVariable String equipmentId,
+                                          @RequestBody List<RPAccountId> accountIds){
+        commandService.addRpAccountToEquipment(new EquipmentId(equipmentId),accountIds);
     }
 }

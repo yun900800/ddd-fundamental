@@ -2,9 +2,13 @@ package org.ddd.fundamental.equipment.application.query;
 
 import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.equipment.application.EquipmentConverter;
+import org.ddd.fundamental.equipment.domain.model.Equipment;
+import org.ddd.fundamental.equipment.domain.model.RPAccount;
 import org.ddd.fundamental.equipment.domain.repository.EquipmentRepository;
 import org.ddd.fundamental.equipment.domain.repository.RPAccountRepository;
 import org.ddd.fundamental.equipment.domain.repository.ToolingEquipmentRepository;
+import org.ddd.fundamental.equipment.value.RPAccountId;
+import org.ddd.fundamental.factory.EquipmentId;
 import org.ddd.fundamental.redis.config.RedisStoreManager;
 import org.ddd.fundamental.shared.api.equipment.EquipmentDTO;
 import org.ddd.fundamental.shared.api.equipment.RPAccountDTO;
@@ -15,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -54,6 +57,15 @@ public class EquipmentQueryService {
         return EquipmentConverter.entityToDTO(equipmentRepository.findAll());
     }
 
+    public Equipment findById(EquipmentId equipmentId){
+        Equipment equipment = equipmentRepository.findById(equipmentId).orElse(null);
+        if (null == equipment){
+            String msg = "id:{} 对应的Equipment不存在.";
+            throw new RuntimeException(msg.formatted(msg,equipmentId.toUUID()));
+        }
+        return equipment;
+    }
+
     /**
      * 查询所有工装治具信息
      * @return
@@ -78,5 +90,17 @@ public class EquipmentQueryService {
             return rpAccountDTOS;
         }
         return EquipmentConverter.entityToRPAccountDTO(accountRepository.findAll());
+    }
+
+    public List<RPAccount> findByIdIn(List<RPAccountId> accountIds){
+        return accountRepository.findByIdIn(accountIds);
+    }
+
+    public RPAccount getProxyRPAccount(RPAccountId rpAccountId){
+        return accountRepository.getOne(rpAccountId);
+    }
+
+    public Equipment getProxyEquipment(EquipmentId equipmentId){
+        return equipmentRepository.getOne(equipmentId);
     }
 }

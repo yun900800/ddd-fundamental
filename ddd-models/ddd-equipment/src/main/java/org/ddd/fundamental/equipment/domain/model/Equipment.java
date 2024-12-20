@@ -70,7 +70,7 @@ public class Equipment extends AbstractAggregateRoot<EquipmentId> {
 
     public Equipment(YearModelValue model, EquipmentType equipmentType,
                      EquipmentMaster master){
-        super(DomainObjectId.randomId(EquipmentId.class));
+        super(EquipmentId.randomId(EquipmentId.class));
         this.model = model;
         this.equipmentType = equipmentType;
         this.master = master;

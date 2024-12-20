@@ -18,4 +18,6 @@ public interface RPAccountRepository extends BaseHibernateRepository<RPAccount>,
 
     @Query("from RPAccount")
     List<RPAccount> findAll();
+
+    List<RPAccount> findByIdIn(List<RPAccountId> ids);
 }

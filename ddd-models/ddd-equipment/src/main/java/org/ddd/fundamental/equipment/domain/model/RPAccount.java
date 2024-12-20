@@ -15,12 +15,14 @@ public class RPAccount extends AbstractAggregateRoot<RPAccountId> {
 
     private RPAccountValue accountValue;
 
+
+
     public RPAccount(RPAccountValue accountValue){
         super(RPAccountId.randomId(RPAccountId.class));
         this.accountValue = accountValue;
     }
 
-    private RPAccount(){}
+    protected RPAccount(){}
 
     @Override
     public long created() {
