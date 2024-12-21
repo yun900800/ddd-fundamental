@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.equipment.application.EquipmentConverter;
 import org.ddd.fundamental.equipment.domain.model.Equipment;
 import org.ddd.fundamental.equipment.domain.model.RPAccount;
+import org.ddd.fundamental.equipment.domain.model.ToolingEquipment;
 import org.ddd.fundamental.equipment.domain.repository.EquipmentRepository;
 import org.ddd.fundamental.equipment.domain.repository.RPAccountRepository;
 import org.ddd.fundamental.equipment.domain.repository.ToolingEquipmentRepository;
@@ -64,6 +65,15 @@ public class EquipmentQueryService {
             throw new RuntimeException(msg.formatted(msg,equipmentId.toUUID()));
         }
         return equipment;
+    }
+
+    public ToolingEquipment findToolingById(EquipmentId toolingId){
+        ToolingEquipment toolingEquipment = toolingRepository.findById(toolingId).orElse(null);
+        if (null == toolingEquipment){
+            String msg = "id:{} 对应的ToolingEquipment不存在.";
+            throw new RuntimeException(msg.formatted(msg,toolingId.toUUID()));
+        }
+        return toolingEquipment;
     }
 
     /**

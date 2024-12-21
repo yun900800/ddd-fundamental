@@ -65,11 +65,10 @@ public class EquipmentCommandService {
 
     @Transactional
     public void addToolingToEquipment(EquipmentId toolingId, EquipmentId equipmentId) {
-        ToolingEquipment toolingEquipment = toolingRepository.findById(toolingId).orElse(null);
-        Equipment equipment = equipmentRepository.getOne(equipmentId);
+        ToolingEquipment toolingEquipment = equipmentQueryService.findToolingById(toolingId);
+        Equipment equipment = equipmentQueryService.getProxyEquipment(equipmentId);
         toolingEquipment.setEquipment(equipment);
         toolingEquipment.enableUse();
-        toolingRepository.save(toolingEquipment);
     }
 
     @Transactional
@@ -78,11 +77,7 @@ public class EquipmentCommandService {
                     WorkOrderId workOrderId,
                     WorkProcessId workProcessId,
                     Instant start, Instant end){
-        Equipment equipment = equipmentRepository.findById(equipmentId).orElse(null);
-        if (null == equipment){
-            log.info("equipment not exists");
-            return;
-        }
+        Equipment equipment = equipmentQueryService.findById(equipmentId);
         DateRangeValue workPlan = DateRangeValue.create(start,end,"工单占用设备的时间");
         if (equipment.getEquipmentPlan() == null){
             EquipmentPlan equipmentPlan = EquipmentPlan.create(EquipmentPlanValue.create())
@@ -92,7 +87,7 @@ public class EquipmentCommandService {
             equipment.getEquipmentPlan()
                     .addEquipmentPlan(EquipmentPlanRange.create(workPlan,workOrderId,workProcessId));
         }
-        equipmentRepository.save(equipment);
+        //equipmentRepository.save(equipment);
 
     }
 
@@ -130,8 +125,8 @@ public class EquipmentCommandService {
     }
 
     @Transactional
-    public void addRpAccountToEquipment(EquipmentId equipmentId,
-                                          List<RPAccountId> accountIds){
+    public void addRpAccountsToEquipment(EquipmentId equipmentId,
+                                         List<RPAccountId> accountIds){
         Equipment equipment = equipmentQueryService.getProxyEquipment(equipmentId);
         List<EquipmentRPAccount> rpAccountList = new ArrayList<>();
         for (RPAccountId accountId: accountIds) {
@@ -140,5 +135,21 @@ public class EquipmentCommandService {
             rpAccountList.add(equipmentRPAccount);
         }
         equipmentRPAccountRepository.persistAll(rpAccountList);
+    }
+
+    /**
+     * 添加账户信息到设备
+     * @param equipmentId
+     * @param accountId
+     * @param value
+     */
+    @Transactional
+    public void addRpAccountToEquipment(EquipmentId equipmentId,
+                                        RPAccountId accountId,
+                                        EquipmentRPAccountValue value){
+        Equipment equipment = equipmentQueryService.getProxyEquipment(equipmentId);
+        RPAccount account = equipmentQueryService.getProxyRPAccount(accountId);
+        EquipmentRPAccount equipmentRPAccount = EquipmentRPAccount.create(equipment,account,value);
+        equipmentRPAccountRepository.persist(equipmentRPAccount);
     }
 }
