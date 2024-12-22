@@ -14,7 +14,7 @@ public final class ThreadSharedUtils {
     private static InheritableThreadLocal<TenantInfo> shared = new InheritableThreadLocal<>(){
         public TenantInfo initialValue() {
             return TenantInfo.create(
-                    TenantId.randomId(TenantId.class),
+                    new TenantId("bf0e30d6-1fc6-4874-91b3-af352404e50a"),
                     FactoryId.randomId(FactoryId.class));
         }
     };

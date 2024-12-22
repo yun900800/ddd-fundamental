@@ -4,6 +4,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.common.tenant.sql.LineLevelTenantSqlHandler;
 import org.hibernate.resource.jdbc.spi.StatementInspector;
+import org.springframework.stereotype.Component;
+
+import javax.persistence.Column;
 
 /**
  * SQL拦截器，用于为SQL语句添加租户条件。

@@ -15,6 +15,8 @@ spring:
     show-sql: false
     properties:
       hibernate:
+        session_factory:
+          statement_inspector: org.ddd.fundamental.common.tenant.hibernate.HibernateLineLevelTenantStatementInspector
         generate_statistics: false
         format_sql: false
 #        禁用hibernate的自动提交
@@ -39,4 +41,11 @@ hystrix:
       execution:
         timeout:
           enabled: false
+tenant:
+  interceptor:
+    enabled: true
+    tables[0]:
+      column: tenant_id
+      table-names: f_machine_shop, f_production_line, f_work_station
+
 

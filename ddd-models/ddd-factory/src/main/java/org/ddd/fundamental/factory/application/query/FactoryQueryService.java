@@ -1,6 +1,7 @@
 package org.ddd.fundamental.factory.application.query;
 
 import lombok.extern.slf4j.Slf4j;
+import org.ddd.fundamental.common.tenant.aop.TenantOperation;
 import org.ddd.fundamental.factory.MachineShopId;
 import org.ddd.fundamental.factory.ProductionLineId;
 import org.ddd.fundamental.factory.WorkStationId;
@@ -26,6 +27,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@TenantOperation
 @Service
 @Slf4j
 @Transactional(readOnly = true)
@@ -45,16 +47,16 @@ public class FactoryQueryService {
 
     @Transactional
     public List<MachineShopDTO> machineShops(){
-        List<MachineShopDTO> machineShopDTOS = manager.queryAllData(MachineShopDTO.class);
-        if (!CollectionUtils.isEmpty(machineShopDTOS)){
-            return machineShopDTOS;
-        }
-        simulateCostCall();
+//        List<MachineShopDTO> machineShopDTOS = manager.queryAllData(MachineShopDTO.class);
+//        if (!CollectionUtils.isEmpty(machineShopDTOS)){
+//            return machineShopDTOS;
+//        }
+        //simulateCostCall();
         List<MachineShop> machineShopList = machineShopRepository.findAll();
         if (CollectionUtils.isEmpty(machineShopList)) {
             return new ArrayList<>();
         }
-        machineShopDTOS =
+        List<MachineShopDTO> machineShopDTOS =
         machineShopList.stream().map(v->MachineShopDTO.create(v.id(),v.getMachineShop()))
                 .collect(Collectors.toList());
         return machineShopDTOS;

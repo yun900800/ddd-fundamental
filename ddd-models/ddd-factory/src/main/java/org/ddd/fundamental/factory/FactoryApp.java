@@ -21,6 +21,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @ComponentScan(basePackages = {
         "org.ddd.fundamental.equipment",
         "org.ddd.fundamental.creator",
+        "org.ddd.fundamental.common",
         "org.ddd.fundamental.factory",
         "org.ddd.fundamental.redis",
 })
