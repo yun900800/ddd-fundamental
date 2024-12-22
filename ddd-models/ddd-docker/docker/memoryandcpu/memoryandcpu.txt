@@ -1,0 +1,7 @@
+docker run -m 512m nginx
+docker run -m 512m --memory-reservation=256m nginx
+docker run -m 512m --memory-swap 1g nginx
+
+docker inspect 143024bc4f0f | grep MemorySwap "MemorySwap": 1073741824 "MemorySwappiness": null
+
+docker run --cpus=2 nginx

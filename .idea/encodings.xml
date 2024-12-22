@@ -21,12 +21,16 @@
     <file url="file://$PROJECT_DIR$/ddd-message-mq/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ddd-models/ddd-bom/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ddd-models/ddd-bom/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ddd-models/ddd-common/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ddd-models/ddd-docker/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ddd-models/ddd-equipment-adapter/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ddd-models/ddd-equipment/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ddd-models/ddd-equipment/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ddd-models/ddd-event/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ddd-models/ddd-factory/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ddd-models/ddd-factory/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ddd-models/ddd-kafka-starter/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ddd-models/ddd-material-adapter/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ddd-models/ddd-material/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ddd-models/ddd-material/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ddd-models/ddd-model/src/main/java" charset="UTF-8" />
@@ -36,6 +40,7 @@
     <file url="file://$PROJECT_DIR$/ddd-models/ddd-shared-api/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ddd-models/ddd-shared/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ddd-models/ddd-shared/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ddd-models/ddd-test-framework/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ddd-models/ddd-workorder/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ddd-models/ddd-workorder/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ddd-models/ddd-workprocess/src/main/java" charset="UTF-8" />

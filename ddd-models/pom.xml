@@ -39,6 +39,7 @@
         <module>ddd-material-adapter</module>
         <module>ddd-test-framework</module>
         <module>ddd-common</module>
+        <module>ddd-docker</module>
     </modules>
     <name>ddd-models</name>
 
