@@ -55,7 +55,7 @@ public class DateRangeValue implements ValueObject,Cloneable, CalculateTime {
 
     public DateRangeValue(){}
 
-    private DateRangeValue(Instant start, Instant end, String desc){
+    protected DateRangeValue(Instant start, Instant end, String desc){
         this.start = start;
         this.end = end;
         this.desc = desc;

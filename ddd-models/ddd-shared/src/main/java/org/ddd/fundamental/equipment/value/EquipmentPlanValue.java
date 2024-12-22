@@ -1,6 +1,7 @@
 package org.ddd.fundamental.equipment.value;
 
 import org.ddd.fundamental.core.ValueObject;
+import org.ddd.fundamental.equipment.value.business.WorkOrderComposable;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.Column;
@@ -16,38 +17,40 @@ import java.util.List;
 @Embeddable
 public class EquipmentPlanValue implements ValueObject, Cloneable {
 
+
     @Type(type = "json")
-    @Column(columnDefinition = "json", name = "equipment_plan_range")
-    private List<EquipmentPlanRange> equipmentPlans;
+    @Column(columnDefinition = "json", name = "equipment_plan_ranges")
+    private List<BusinessRange<WorkOrderComposable>> businessEquipmentPlans;
 
     @SuppressWarnings("unused")
     protected EquipmentPlanValue(){}
 
-    private EquipmentPlanValue(List<EquipmentPlanRange> equipmentPlans){
-        this.equipmentPlans = new ArrayList<>();
+    private EquipmentPlanValue(List<BusinessRange<WorkOrderComposable>> equipmentPlans){
+        this.businessEquipmentPlans = new ArrayList<>();
     }
 
     public static EquipmentPlanValue create(){
         return new EquipmentPlanValue(new ArrayList<>());
     }
 
-    public EquipmentPlanValue addEquipmentPlan(EquipmentPlanRange addedValue){
-        this.equipmentPlans.add(addedValue);
+    public EquipmentPlanValue addBusinessEquipmentPlan(BusinessRange<WorkOrderComposable> addedValue){
+        this.businessEquipmentPlans.add(addedValue);
         return this;
     }
 
-    public EquipmentPlanValue removeEquipmentPlan(EquipmentPlanRange addedValue){
-        this.equipmentPlans.remove(addedValue);
+    public EquipmentPlanValue removeBusinessEquipmentPlan(BusinessRange<WorkOrderComposable> addedValue){
+        this.businessEquipmentPlans.remove(addedValue);
         return this;
     }
 
-    public EquipmentPlanValue clearEquipmentPlan(){
-        this.equipmentPlans.clear();
+    public EquipmentPlanValue clearBusinessEquipmentPlan(){
+        this.businessEquipmentPlans.clear();
         return this;
     }
 
-    public List<EquipmentPlanRange> getDateRangeValues() {
-        return new ArrayList<>(equipmentPlans);
+
+    public List<BusinessRange<WorkOrderComposable>> getBusinessEquipmentPlans() {
+        return new ArrayList<>(businessEquipmentPlans);
     }
 
     @Override

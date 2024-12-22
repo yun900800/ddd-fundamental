@@ -11,6 +11,7 @@ import org.ddd.fundamental.equipment.domain.model.EquipmentResource;
 import org.ddd.fundamental.equipment.enums.EquipmentType;
 import org.ddd.fundamental.equipment.helper.EquipmentHelper;
 import org.ddd.fundamental.equipment.value.*;
+import org.ddd.fundamental.equipment.value.business.WorkOrderComposable;
 import org.ddd.fundamental.factory.EquipmentId;
 import org.ddd.fundamental.shared.api.equipment.EquipmentDTO;
 import org.ddd.fundamental.shared.api.equipment.EquipmentRequest;
@@ -45,6 +46,8 @@ public class EquipmentTemplateClient {
     private static final String ADD_ACCOUNT_TO_EQUIPMENT = "http://localhost:9004/equipment/add_account_to_equipment/%s/%s";
 
     private static final String ADD_TOOLING_TO_EQUIPMENT = "http://localhost:9004/equipment/add_tooling_to_equipment/%s/%s";
+
+    private static final String ADD_PLAN_TO_EQUIPMENT = "http://localhost:9004/equipment/add_plan_to_equipment/%s";
 
     @Autowired
     public EquipmentTemplateClient(EquipmentCommandService commandService,
@@ -106,18 +109,17 @@ public class EquipmentTemplateClient {
         RPAccountId rpAccountId = CollectionUtils.random(accounts).id();
         String url = String.format(ADD_ACCOUNT_TO_EQUIPMENT,equipmentId.toUUID(),rpAccountId.toUUID());
         Instant start = Instant.now();
-        EquipmentRPAccountValue value = EquipmentRPAccountValue.create(
-                WorkOrderId.randomId(WorkOrderId.class),
-                WorkProcessId.randomId(WorkProcessId.class),
+        BusinessRange<WorkOrderComposable> businessRange = new BusinessRange<>(
+                WorkOrderComposable.create(WorkOrderId.randomId(WorkOrderId.class),WorkProcessId.randomId(WorkProcessId.class)),
                 DateRangeValue.create(start, start.plusSeconds(3600*4),"测试不同的原因")
         );
         log.info("url is {}",url);
         RestTemplate restTemplate = new RestTemplate();
-        restTemplate.postForObject(url,value,Void.class);
+        restTemplate.postForObject(url,businessRange,Void.class);
         log.info("add rpaAccount to equipment finished");
     }
 
-    @Scheduled(cron = "*/20 * * * * ?")
+    @Scheduled(cron = "*/36000 * * * * ?")
     public void addToolingToEquipment(){
         List<EquipmentDTO> equipments = queryService.equipments();
         EquipmentId equipmentId = CollectionUtils.random(equipments).id();
@@ -127,6 +129,22 @@ public class EquipmentTemplateClient {
         log.info("url is {}",url);
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.postForObject(url,null,Void.class);
+        log.info("add tooling to equipment finished");
+    }
+
+    @Scheduled(cron = "*/20 * * * * ?")
+    public void addBusinessPlanRangeToEquipment(){
+        List<EquipmentDTO> equipments = queryService.equipments();
+        EquipmentId equipmentId = CollectionUtils.random(equipments).id();
+        String url = String.format(ADD_PLAN_TO_EQUIPMENT,equipmentId.toUUID());
+        Instant start = Instant.now();
+        BusinessRange<WorkOrderComposable> businessRange = new BusinessRange<>(
+                WorkOrderComposable.create(WorkOrderId.randomId(WorkOrderId.class),WorkProcessId.randomId(WorkProcessId.class)),
+                DateRangeValue.create(start, start.plusSeconds(3600*4),"测试不同的原因")
+        );
+        log.info("url is {}",url);
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.postForObject(url,businessRange,Void.class);
         log.info("add tooling to equipment finished");
     }
 

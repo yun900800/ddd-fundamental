@@ -2,8 +2,10 @@ package org.ddd.fundamental.equipment.rest;
 
 import org.ddd.fundamental.equipment.application.command.EquipmentCommandService;
 import org.ddd.fundamental.equipment.application.query.EquipmentQueryService;
+import org.ddd.fundamental.equipment.value.BusinessRange;
 import org.ddd.fundamental.equipment.value.EquipmentRPAccountValue;
 import org.ddd.fundamental.equipment.value.RPAccountId;
+import org.ddd.fundamental.equipment.value.business.WorkOrderComposable;
 import org.ddd.fundamental.factory.EquipmentId;
 import org.ddd.fundamental.shared.api.equipment.EquipmentDTO;
 import org.ddd.fundamental.shared.api.equipment.EquipmentRequest;
@@ -53,7 +55,7 @@ public class EquipmentRest {
     @PostMapping("/equipment/add_account_to_equipment/{equipmentId}/{accountId}")
     public void addRpAccountToEquipment(@PathVariable String equipmentId,
                                         @PathVariable String accountId,
-                                        @RequestBody EquipmentRPAccountValue value){
+                                        @RequestBody BusinessRange<WorkOrderComposable> value){
         commandService.addRpAccountToEquipment(new EquipmentId(equipmentId),
                 new RPAccountId(accountId),value);
     }
@@ -62,6 +64,12 @@ public class EquipmentRest {
     public void addToolingToEquipment(@PathVariable String toolingId,
                                       @PathVariable String equipmentId){
         commandService.addToolingToEquipment(new EquipmentId(toolingId),new EquipmentId(equipmentId));
+    }
+
+    @PostMapping("/equipment/add_plan_to_equipment/{equipmentId}")
+    public void addBusinessPlanRangeToEquipment(@PathVariable String equipmentId,
+                                                @RequestBody BusinessRange<WorkOrderComposable> addedValue){
+        commandService.addBusinessPlanRangeToEquipment(new EquipmentId(equipmentId), addedValue);
     }
 
 

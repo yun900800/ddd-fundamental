@@ -9,6 +9,7 @@ import org.ddd.fundamental.equipment.domain.model.*;
 import org.ddd.fundamental.equipment.domain.repository.*;
 import org.ddd.fundamental.equipment.enums.EquipmentType;
 import org.ddd.fundamental.equipment.value.*;
+import org.ddd.fundamental.equipment.value.business.WorkOrderComposable;
 import org.ddd.fundamental.factory.EquipmentId;
 import org.ddd.fundamental.redis.config.RedisStoreManager;
 import org.ddd.fundamental.workorder.value.WorkOrderId;
@@ -72,23 +73,16 @@ public class EquipmentCommandService {
     }
 
     @Transactional
-    public void addWorkOrderPlanToEquipment(
-                    EquipmentId equipmentId,
-                    WorkOrderId workOrderId,
-                    WorkProcessId workProcessId,
-                    Instant start, Instant end){
+    public void addBusinessPlanRangeToEquipment(EquipmentId equipmentId,BusinessRange<WorkOrderComposable> addedValue){
         Equipment equipment = equipmentQueryService.findById(equipmentId);
-        DateRangeValue workPlan = DateRangeValue.create(start,end,"工单占用设备的时间");
         if (equipment.getEquipmentPlan() == null){
             EquipmentPlan equipmentPlan = EquipmentPlan.create(EquipmentPlanValue.create())
-                    .addEquipmentPlan(EquipmentPlanRange.create(workPlan,workOrderId,workProcessId));
+                    .addBusinessEquipmentPlan(addedValue);
             equipment.setEquipmentPlan(equipmentPlan);
         } else {
             equipment.getEquipmentPlan()
-                    .addEquipmentPlan(EquipmentPlanRange.create(workPlan,workOrderId,workProcessId));
+                    .addBusinessEquipmentPlan(addedValue);
         }
-        //equipmentRepository.save(equipment);
-
     }
 
     @Transactional
@@ -146,7 +140,7 @@ public class EquipmentCommandService {
     @Transactional
     public void addRpAccountToEquipment(EquipmentId equipmentId,
                                         RPAccountId accountId,
-                                        EquipmentRPAccountValue value){
+                                        BusinessRange<WorkOrderComposable> value){
         Equipment equipment = equipmentQueryService.getProxyEquipment(equipmentId);
         RPAccount account = equipmentQueryService.getProxyRPAccount(accountId);
         EquipmentRPAccount equipmentRPAccount = EquipmentRPAccount.create(equipment,account,value);

@@ -1,8 +1,10 @@
 package org.ddd.fundamental.equipment.domain.model;
 
 import org.ddd.fundamental.core.AbstractEntity;
+import org.ddd.fundamental.equipment.value.BusinessRange;
 import org.ddd.fundamental.equipment.value.EquipmentPlanRange;
 import org.ddd.fundamental.equipment.value.EquipmentPlanValue;
+import org.ddd.fundamental.equipment.value.business.WorkOrderComposable;
 import org.ddd.fundamental.factory.EquipmentId;
 
 import javax.persistence.Entity;
@@ -26,21 +28,21 @@ public class EquipmentPlan extends AbstractEntity<EquipmentId> {
         return new EquipmentPlan(equipmentPlan);
     }
 
-
-    public EquipmentPlan addEquipmentPlan(EquipmentPlanRange addedValue){
-        this.equipmentPlan.addEquipmentPlan(addedValue);
+    public EquipmentPlan addBusinessEquipmentPlan(BusinessRange<WorkOrderComposable> addedValue){
+        this.equipmentPlan.addBusinessEquipmentPlan(addedValue);
         return this;
     }
 
-    public EquipmentPlan removeEquipmentPlan(EquipmentPlanRange addedValue){
-        this.equipmentPlan.removeEquipmentPlan(addedValue);
+    public EquipmentPlan removeBusinessEquipmentPlan(BusinessRange<WorkOrderComposable> addedValue){
+        this.equipmentPlan.removeBusinessEquipmentPlan(addedValue);
         return this;
     }
 
-    public EquipmentPlan clearEquipmentPlan(){
-        this.equipmentPlan.clearEquipmentPlan();
+    public EquipmentPlan clearBusinessEquipmentPlan(){
+        this.equipmentPlan.clearBusinessEquipmentPlan();
         return this;
     }
+
 
     public EquipmentPlanValue getEquipmentPlan() {
         return equipmentPlan.clone();

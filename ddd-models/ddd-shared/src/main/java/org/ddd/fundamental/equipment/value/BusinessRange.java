@@ -1,7 +1,10 @@
 package org.ddd.fundamental.equipment.value;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.ddd.fundamental.core.ValueObject;
 import org.ddd.fundamental.day.range.DateRangeValue;
+import org.ddd.fundamental.jackson.BusinessRangeDeserializer;
+import org.ddd.fundamental.jackson.ProductResourceDeserializer;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -13,10 +16,12 @@ import java.util.Objects;
  */
 @Embeddable
 @MappedSuperclass
+@JsonDeserialize(using = BusinessRangeDeserializer.class)
 public class BusinessRange<B> implements ValueObject, Cloneable {
 
     private B business;
 
+    @Transient
     private String clazz;
 
     @Embedded
@@ -31,11 +36,16 @@ public class BusinessRange<B> implements ValueObject, Cloneable {
     protected BusinessRange(){}
 
     @JsonCreator
-    private BusinessRange(B business,
+    public BusinessRange(B business,
                           DateRangeValue dateRangeValue){
         this.business = business;
         this.dateRangeValue = dateRangeValue;
         this.clazz = business.getClass().getSimpleName();
+    }
+
+    public static <B> BusinessRange create(B business,
+                                       DateRangeValue dateRangeValue){
+        return new BusinessRange(business,dateRangeValue);
     }
 
     public B getBusiness() {

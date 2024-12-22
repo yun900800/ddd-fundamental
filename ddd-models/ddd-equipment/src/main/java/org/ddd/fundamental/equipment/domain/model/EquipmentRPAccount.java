@@ -12,8 +12,8 @@ import javax.persistence.*;
 @Table( name = "equipment_rpa_account")
 public class EquipmentRPAccount extends AbstractAggregateRoot<EquipmentRPAccountId> {
 
-    @Embedded
-    private EquipmentRPAccountValue equipmentRPAccountValue;
+//    @Embedded
+//    private EquipmentRPAccountValue equipmentRPAccountValue;
 
     @Embedded
     private BusinessRange<WorkOrderComposable> businessRange;
@@ -26,25 +26,24 @@ public class EquipmentRPAccount extends AbstractAggregateRoot<EquipmentRPAccount
         super(EquipmentRPAccountId.randomId(EquipmentRPAccountId.class));
         this.equipment = equipment;
         this.rpAccount = rpAccount;
-        //this.equipmentAccountId = new EquipmentAccountId(equipment.id(),rpAccount.id());
+    }
+
+    public BusinessRange<WorkOrderComposable> getBusinessRange() {
+        if (null == businessRange){
+            return null;
+        }
+        return businessRange.clone();
     }
 
     private EquipmentRPAccount(Equipment equipment, RPAccount rpAccount,
-                               EquipmentRPAccountValue equipmentRPAccountValue){
+                               BusinessRange<WorkOrderComposable> businessRange){
         this(equipment,rpAccount);
-        this.equipmentRPAccountValue = equipmentRPAccountValue;
-    }
-
-    public EquipmentRPAccountValue getEquipmentRPAccountValue() {
-        if (null ==equipmentRPAccountValue) {
-            return null;
-        }
-        return equipmentRPAccountValue.clone();
+        this.businessRange = businessRange;
     }
 
     public static EquipmentRPAccount create(Equipment equipment, RPAccount rpAccount,
-                                            EquipmentRPAccountValue equipmentRPAccountValue){
-        return new EquipmentRPAccount(equipment, rpAccount,equipmentRPAccountValue);
+                                            BusinessRange<WorkOrderComposable> businessRange){
+        return new EquipmentRPAccount(equipment, rpAccount,businessRange);
     }
 
     public static EquipmentRPAccount create(Equipment equipment, RPAccount rpAccount){
