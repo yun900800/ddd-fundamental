@@ -1,7 +1,11 @@
 package org.ddd.fundamental.day;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import org.ddd.fundamental.core.ValueObject;
+import org.ddd.fundamental.jackson.LocalDateDeserializer;
+import org.ddd.fundamental.jackson.LocalDateSerializer;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 
@@ -24,21 +28,21 @@ public class DayOff implements ValueObject {
 
     @Type(type = "json")
     @Column(columnDefinition = "json" , name = "day_offs")
-    private List<LocalDate> dayOffs;
+    private List<DateOffWrapper> dayOffs;
 
-    public DayOff(List<LocalDate> dayOffs){
+    public DayOff(List<DateOffWrapper> dayOffs){
         this.dayOffs = dayOffs;
     }
 
     public static DayOff createDayOff() {
-        LocalDate date0 = LocalDate.parse("2024-10-01");
-        LocalDate date1 = LocalDate.parse("2024-10-02");
-        LocalDate date2 = LocalDate.parse("2024-10-03");
-        LocalDate date3 = LocalDate.parse("2024-10-04");
+        DateOffWrapper date0 = DateOffWrapper.valueOf(LocalDate.parse("2024-10-01")) ;
+        DateOffWrapper date1 = DateOffWrapper.valueOf(LocalDate.parse("2024-10-02"));
+        DateOffWrapper date2 = DateOffWrapper.valueOf(LocalDate.parse("2024-10-03"));
+        DateOffWrapper date3 = DateOffWrapper.valueOf(LocalDate.parse("2024-10-04"));
         return new DayOff(Arrays.asList(date0,date1,date2,date3));
     }
 
-    public List<LocalDate> getDayOffs() {
+    public List<DateOffWrapper> getDayOffs() {
         return new ArrayList<>(dayOffs);
     }
 
@@ -63,8 +67,8 @@ public class DayOff implements ValueObject {
     public String toString() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd");
         StringBuilder sb = new StringBuilder();
-        for (LocalDate date: dayOffs) {
-            String strDate = date.format(formatter);
+        for (DateOffWrapper date: dayOffs) {
+            String strDate = date.getOffDate().format(formatter);
             sb.append(strDate).append(",");
         }
         String result = sb.toString();

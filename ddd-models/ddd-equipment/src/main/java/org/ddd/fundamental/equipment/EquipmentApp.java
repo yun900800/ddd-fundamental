@@ -19,6 +19,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @ComponentScan(basePackages = {
         "org.ddd.fundamental.creator",
         "org.ddd.fundamental.equipment",
+        "org.ddd.fundamental.infra.hibernate",
         "org.ddd.fundamental.redis",
 })
 @EnableJpaRepositories(
