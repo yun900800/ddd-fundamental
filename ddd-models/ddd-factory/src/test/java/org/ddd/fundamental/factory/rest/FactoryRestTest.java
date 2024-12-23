@@ -1,8 +1,6 @@
 package org.ddd.fundamental.factory.rest;
 
 import org.ddd.fundamental.factory.FactoryAppTest;
-import org.ddd.fundamental.factory.value.MachineShopValueObject;
-import org.ddd.fundamental.shared.api.factory.MachineShopDTO;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;

@@ -25,13 +25,13 @@ import java.util.stream.Collectors;
 @Order(2)
 public class MachineShopAddable implements DataAddable {
 
-    @Autowired
+    @Autowired(required = false)
     private MachineShopRepository machineShopRepository;
 
-    @Autowired
+    @Autowired(required = false)
     private ProductionLineAddable productionLineAddable;
 
-    @Autowired
+    @Autowired(required = false)
     private RedisStoreManager manager;
 
     private List<MachineShop> machineShops = new ArrayList<>();

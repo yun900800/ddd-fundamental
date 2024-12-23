@@ -28,7 +28,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
+//@Service
 @Slf4j
 public class FactoryTemplateClient {
 
@@ -61,7 +61,7 @@ public class FactoryTemplateClient {
 
     private List<MachineShopDTO> cacheMachineShopDTOs;
 
-    @Autowired
+    @Autowired(required = false)
     public FactoryTemplateClient(FactoryQueryService queryService,
                                  EquipmentClient equipmentClient){
         this.queryService = queryService;

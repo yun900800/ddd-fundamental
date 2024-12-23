@@ -27,10 +27,10 @@ import java.util.stream.Collectors;
 @Order(1)
 public class ProductionLineAddable implements DataAddable {
 
-    @Autowired
+    @Autowired(required = false)
     private ProductionLineRepository repository;
 
-    @Autowired
+    @Autowired(required = false)
     private RedisStoreManager manager;
 
     private List<ProductionLine> lines = new ArrayList<>();

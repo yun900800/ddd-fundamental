@@ -24,12 +24,12 @@ import java.util.stream.Collectors;
 @Slf4j
 public class RedisStoreManager {
 
-    @Autowired
+    @Autowired(required = false)
     @Qualifier(value = "newRedisTemplate")
     private RedisTemplate<String,Object> newRedisTemplate;
 
-    @Autowired
-    private ObjectMapper mapper;
+    @Autowired(required = false)
+    private ObjectMapper mapper = new ObjectMapper();
 
     public <T extends AbstractDTO<ID>,ID extends DomainObjectId> void deleteData(String prefix,ID id, Class<T> clazz) {
         String key  = generateFetchKey(prefix, clazz,id);

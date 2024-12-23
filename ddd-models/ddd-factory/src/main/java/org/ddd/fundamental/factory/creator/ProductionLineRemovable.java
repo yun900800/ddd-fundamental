@@ -14,10 +14,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Order(1)
 public class ProductionLineRemovable implements DataRemovable {
 
-    @Autowired
+    @Autowired(required = false)
     private ProductionLineRepository repository;
 
-    @Autowired
+    @Autowired(required = false)
     private WorkStationRepository workStationRepository;
     @Override
     @Transactional

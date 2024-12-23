@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @Order(2)
 public class MachineShopRemovable implements DataRemovable {
-    @Autowired
+    @Autowired(required = false)
     private MachineShopRepository machineShopRepository;
 
     @Override

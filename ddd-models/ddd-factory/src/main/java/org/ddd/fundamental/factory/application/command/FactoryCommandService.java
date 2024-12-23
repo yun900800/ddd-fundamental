@@ -2,7 +2,6 @@ package org.ddd.fundamental.factory.application.command;
 
 import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.changeable.ChangeableInfo;
-import org.ddd.fundamental.equipment.client.EquipmentClient;
 import org.ddd.fundamental.factory.EquipmentId;
 import org.ddd.fundamental.factory.MachineShopId;
 import org.ddd.fundamental.factory.ProductionLineId;

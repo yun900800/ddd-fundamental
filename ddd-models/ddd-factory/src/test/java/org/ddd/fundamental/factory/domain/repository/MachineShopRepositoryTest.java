@@ -5,28 +5,52 @@ import org.ddd.fundamental.factory.FactoryAppTest;
 import org.ddd.fundamental.factory.MachineShopId;
 import org.ddd.fundamental.factory.domain.model.MachineShop;
 import org.ddd.fundamental.factory.domain.model.ProductionLine;
+import org.ddd.fundamental.factory.schedule.FactoryTemplateClient;
 import org.ddd.fundamental.factory.value.MachineShopValueObject;
 import org.ddd.fundamental.utils.CollectionUtils;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.Bean;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 
-public class MachineShopRepositoryTest extends FactoryAppTest {
+@RunWith(SpringRunner.class)
+@DataJpaTest
+@ActiveProfiles("test")
+//一下这个注解是测试的时候自动载入h2数据库
+@AutoConfigureTestDatabase
+public class MachineShopRepositoryTest{
 
+    @Autowired
+    private TestEntityManager entityManager;
     @Autowired
     private MachineShopRepository repository;
 
     @Autowired
     private ProductionLineRepository lineRepository;
 
+//    @TestConfiguration
+//    static class EmployeeServiceImplTestContextConfiguration {
+//        @Bean
+//        public FactoryTemplateClient factoryTemplateClient() {
+//            return new FactoryTemplateClient(null,null);
+//        }
+//    }
+
     @Test
     public void createMachineShop(){
         MachineShop machineShop = new MachineShop(new MachineShopValueObject(
                 ChangeableInfo.create("电路板三车间", "这是一个制作电路板的车间")
         ));
-        repository.persist(machineShop);
+        entityManager.persist(machineShop);
     }
 
     @Test
