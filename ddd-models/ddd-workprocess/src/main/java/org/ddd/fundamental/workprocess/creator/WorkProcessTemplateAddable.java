@@ -151,7 +151,7 @@ public class WorkProcessTemplateAddable implements DataAddable {
                 org.ddd.fundamental.utils.CollectionUtils.random(createWorkProcessInfo()),
 //                CollectionUtils.random(createAuxiliaryWorkTimes()),
                 WorkProcessBeat.create(1000,15),
-                createWorkProcessTemplateControl(),
+//                createWorkProcessTemplateControl(),
                 createWorkProcessTemplateQuantity()
         );
         for (ProductResource resource: createProductResource()) {

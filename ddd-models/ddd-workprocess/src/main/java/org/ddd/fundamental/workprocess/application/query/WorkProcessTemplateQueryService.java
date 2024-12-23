@@ -39,6 +39,10 @@ public class WorkProcessTemplateQueryService {
 
     public WorkProcessTemplate get(WorkProcessTemplateId id){
         WorkProcessTemplate template = templateRepository.findById(id).orElse(null);
+        if (null == template) {
+            String msg = "workProcessTemplateId: {} 对应的模板对象不存在.";
+            throw new RuntimeException(String.format(msg,id.toUUID()));
+        }
         return template;
     }
 

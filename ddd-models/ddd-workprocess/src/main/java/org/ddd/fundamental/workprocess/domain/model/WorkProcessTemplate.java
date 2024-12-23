@@ -10,7 +10,6 @@ import org.ddd.fundamental.workprocess.value.resources.ProductResources;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -57,8 +56,8 @@ public class WorkProcessTemplate extends AbstractAggregateRoot<WorkProcessTempla
     @Embedded
     private ProductResources resources = new ProductResources(new HashSet<>());
 
-    @Embedded
-    private WorkProcessTemplateControl workProcessTemplateControl;
+//    @Embedded
+//    private WorkProcessTemplateControl workProcessTemplateControl;
 
     @Embedded
     private WorkProcessTemplateQuantity workProcessTemplateQuantity;
@@ -77,12 +76,12 @@ public class WorkProcessTemplate extends AbstractAggregateRoot<WorkProcessTempla
 
     public WorkProcessTemplate(ChangeableInfo workProcessInfo,
                                WorkProcessBeat workProcessBeat,
-                               WorkProcessTemplateControl workProcessController,
+//                               WorkProcessTemplateControl workProcessController,
                                WorkProcessTemplateQuantity workProcessTemplateQuantity){
         super(WorkProcessTemplateId.randomId(WorkProcessTemplateId.class));
         this.workProcessInfo = workProcessInfo;
         this.workProcessBeat = workProcessBeat;
-        this.workProcessTemplateControl = workProcessController;
+        //this.workProcessTemplateControl = workProcessController;
         this.workProcessTemplateQuantity = workProcessTemplateQuantity;
     }
 
@@ -141,38 +140,38 @@ public class WorkProcessTemplate extends AbstractAggregateRoot<WorkProcessTempla
         return this;
     }
 
-    public WorkProcessTemplate changeWorkProcessTemplateControl(WorkProcessTemplateControl control){
-        this.workProcessTemplateControl = control;
-        return this;
-    }
+//    public WorkProcessTemplate changeWorkProcessTemplateControl(WorkProcessTemplateControl control){
+//        this.workProcessTemplateControl = control;
+//        return this;
+//    }
 
-    /**
-     * 禁止工序可以拆分
-     * @return
-     */
-    public WorkProcessTemplate disableSplit() {
-        this.workProcessTemplateControl.disableSplit();
-        return this;
-    }
-
-    /**
-     * 允许工序可以拆分
-     * @return
-     */
-    public WorkProcessTemplate enableSplit(){
-        this.workProcessTemplateControl.enableSplit();
-        return this;
-    }
-
-    public WorkProcessTemplate allowChecked(){
-        this.workProcessTemplateControl.allowChecked();
-        return this;
-    }
-
-    public WorkProcessTemplate notAllowChecked(){
-        this.workProcessTemplateControl.notAllowChecked();
-        return this;
-    }
+//    /**
+//     * 禁止工序可以拆分
+//     * @return
+//     */
+//    public WorkProcessTemplate disableSplit() {
+//        this.workProcessTemplateControl.disableSplit();
+//        return this;
+//    }
+//
+//    /**
+//     * 允许工序可以拆分
+//     * @return
+//     */
+//    public WorkProcessTemplate enableSplit(){
+//        this.workProcessTemplateControl.enableSplit();
+//        return this;
+//    }
+//
+//    public WorkProcessTemplate allowChecked(){
+//        this.workProcessTemplateControl.allowChecked();
+//        return this;
+//    }
+//
+//    public WorkProcessTemplate notAllowChecked(){
+//        this.workProcessTemplateControl.notAllowChecked();
+//        return this;
+//    }
 
     public WorkProcessTemplate addResource(ProductResource resource){
         this.resources = this.resources.addResource(resource);
@@ -192,21 +191,32 @@ public class WorkProcessTemplate extends AbstractAggregateRoot<WorkProcessTempla
         }
     }
 
-    public WorkProcessTemplate addPreId(WorkProcessTemplateId preId){
+    private void idIsNotValid(WorkProcessTemplateId id){
+        if (id.equals(this.id())) {
+            String msg = "不能添加与当前模板一致的id:{}";
+            throw new RuntimeException(String.format(msg,id.toUUID()));
+        }
+    }
+
+    public WorkProcessTemplate configurePreId(WorkProcessTemplateId preId){
         defaultPreIds();
+        idIsNotValid(preId);
         this.preWorkProcessIds.add(preId);
+        changeUpdated();
         return this;
     }
 
     public WorkProcessTemplate removePreId(WorkProcessTemplateId preId){
         defaultPreIds();
         this.preWorkProcessIds.remove(preId);
+        changeUpdated();
         return this;
     }
 
     public WorkProcessTemplate clearPreIds(){
         defaultPreIds();
         this.preWorkProcessIds.clear();
+        changeUpdated();
         return this;
     }
 
@@ -216,21 +226,25 @@ public class WorkProcessTemplate extends AbstractAggregateRoot<WorkProcessTempla
         }
     }
 
-    public WorkProcessTemplate addNextId(WorkProcessTemplateId preId){
+    public WorkProcessTemplate configureNextId(WorkProcessTemplateId nextId){
         defaultNextIds();
-        this.nextWorkProcessIds.add(preId);
+        idIsNotValid(nextId);
+        this.nextWorkProcessIds.add(nextId);
+        changeUpdated();
         return this;
     }
 
-    public WorkProcessTemplate removeNextId(WorkProcessTemplateId preId){
+    public WorkProcessTemplate removeNextId(WorkProcessTemplateId nextId){
         defaultNextIds();
-        this.nextWorkProcessIds.remove(preId);
+        this.nextWorkProcessIds.remove(nextId);
+        changeUpdated();
         return this;
     }
 
     public WorkProcessTemplate clearNextIds(){
         defaultNextIds();
         this.nextWorkProcessIds.clear();
+        changeUpdated();
         return this;
     }
 
@@ -282,9 +296,9 @@ public class WorkProcessTemplate extends AbstractAggregateRoot<WorkProcessTempla
         return resources;
     }
 
-    public WorkProcessTemplateControl getWorkProcessTemplateControl() {
-        return workProcessTemplateControl.clone();
-    }
+//    public WorkProcessTemplateControl getWorkProcessTemplateControl() {
+//        return workProcessTemplateControl.clone();
+//    }
 
     public WorkProcessTemplateQuantity getWorkProcessTemplateQuantity() {
         return workProcessTemplateQuantity.clone();

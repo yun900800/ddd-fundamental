@@ -43,7 +43,8 @@ public class MaterialClientFallback implements MaterialClient {
         log.info("MaterialClientFallback is execute");
         MaterialDTO materialDTO = new MaterialDTO(
                 MaterialMaster.create("default-code","默认产品","default-spec","个"),
-                MaterialId.randomId(MaterialId.class)
+                MaterialId.randomId(MaterialId.class),
+                materialType
         );
         List<MaterialDTO> materialDTOS = new ArrayList<>();
         materialDTOS.add(materialDTO);

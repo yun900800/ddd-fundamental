@@ -15,7 +15,7 @@ public class WorkProcessNewTest {
                 ChangeableInfo.create("主板加工工序","这是用来加工新能源车的主板的工序"),
 //                create(),
                 WorkProcessBeat.create(1000,15),
-                WorkProcessTemplateAddable.createWorkProcessTemplateControl(),
+//                WorkProcessTemplateAddable.createWorkProcessTemplateControl(),
                 WorkProcessTemplateAddable.createWorkProcessTemplateQuantity()
         );
         System.out.println(workProcessTemplate);

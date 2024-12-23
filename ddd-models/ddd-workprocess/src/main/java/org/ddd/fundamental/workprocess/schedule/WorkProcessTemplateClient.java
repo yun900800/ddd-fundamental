@@ -8,6 +8,7 @@ import org.ddd.fundamental.workprocess.application.query.WorkProcessTemplateQuer
 import org.ddd.fundamental.workprocess.creator.WorkProcessTemplateAddable;
 import org.ddd.fundamental.workprocess.enums.BatchManagable;
 import org.ddd.fundamental.workprocess.value.WorkProcessBeat;
+import org.ddd.fundamental.workprocess.value.WorkProcessTemplateId;
 import org.ddd.fundamental.workprocess.value.controller.ReportWorkControl;
 import org.ddd.fundamental.workprocess.value.controller.WorkProcessTemplateControl;
 import org.ddd.fundamental.workprocess.value.quantity.WorkProcessTemplateQuantity;
@@ -35,6 +36,14 @@ public class WorkProcessTemplateClient {
     private static final String ADD_CONTROL = "http://localhost:9003/process/add_control/%s";
     private static final String ADD_RESOURCE = "http://localhost:9003/process/add_resource/%s";
 
+    private static final String CONFIGURE_TEMPLATE_PRE_ID = "http://localhost:9003/process/configure_template_preId/%s/%s";
+
+    private static final String CONFIGURE_TEMPLATE_NEXT_ID = "http://localhost:9003/process/configure_template_nextId/%s/%s";
+
+    private static final String REMOVE_TEMPLATE_PRE_ID = "http://localhost:9003/process/remove_template_preId/%s/%s";
+
+    private static final String REMOVE_TEMPLATE_NEXT_ID = "http://localhost:9003/process/remove_template_nextId/%s/%s";
+
     public static List<Integer> numbersOfProducts(){
         return Arrays.asList(10000,12000,14000,16000,18000,19000,25000,23000);
     }
@@ -47,7 +56,7 @@ public class WorkProcessTemplateClient {
 
     private List<ProductResource> cacheResources;
 
-    @Scheduled(cron = "*/30 * * * * ?")
+    @Scheduled(cron = "*/30000 * * * * ?")
     public void changeWorkProcessTemplateBeat(){
         if (org.springframework.util.CollectionUtils.isEmpty(cache)) {
             cache = application.workProcessTemplates();
@@ -63,7 +72,7 @@ public class WorkProcessTemplateClient {
         log.info("change workprocess beat finished");
     }
 
-    @Scheduled(cron = "*/60 * * * * ?")
+    @Scheduled(cron = "*/60000 * * * * ?")
     public void changeWorkProcessTemplateQuantity(){
         if (org.springframework.util.CollectionUtils.isEmpty(cache)) {
             cache = application.workProcessTemplates();
@@ -94,7 +103,7 @@ public class WorkProcessTemplateClient {
         log.info("change workprocess quantity finished");
     }
 
-    @Scheduled(cron = "*/600 * * * * ?")
+    @Scheduled(cron = "*/60000 * * * * ?")
     public void addControlInfoToTemplate(){
         if (org.springframework.util.CollectionUtils.isEmpty(cache)) {
             cache = application.workProcessTemplates();
@@ -116,7 +125,7 @@ public class WorkProcessTemplateClient {
         log.info("add control to work_process_template finished");
     }
 
-    @Scheduled(cron = "*/600 * * * * ?")
+    @Scheduled(cron = "*/60000 * * * * ?")
     public void addProductResource(){
         if (org.springframework.util.CollectionUtils.isEmpty(cache)) {
             cache = application.workProcessTemplates();
@@ -135,6 +144,56 @@ public class WorkProcessTemplateClient {
         log.info("add resources to work_process_template finished");
     }
 
+    @Scheduled(cron = "*/2000 * * * * ?")
+    public void configurePreId(){
+        if (org.springframework.util.CollectionUtils.isEmpty(cache)) {
+            cache = application.workProcessTemplates();
+        }
+        WorkProcessTemplateId templateId = CollectionUtils.random(cache).id();
+        WorkProcessTemplateId preId = CollectionUtils.random(cache).id();
+        String url = String.format(CONFIGURE_TEMPLATE_PRE_ID,templateId.toUUID(),preId.toUUID());
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.postForObject(url,null,Void.class);
+        log.info("configure template with preId finished");
+    }
 
+    @Scheduled(cron = "*/2500 * * * * ?")
+    public void configureNextId(){
+        if (org.springframework.util.CollectionUtils.isEmpty(cache)) {
+            cache = application.workProcessTemplates();
+        }
+        WorkProcessTemplateId templateId = CollectionUtils.random(cache).id();
+        WorkProcessTemplateId nextId = CollectionUtils.random(cache).id();
+        String url = String.format(CONFIGURE_TEMPLATE_NEXT_ID,templateId.toUUID(),nextId.toUUID());
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.postForObject(url,null,Void.class);
+        log.info("configure template with nextId finished");
+    }
+
+    @Scheduled(cron = "*/2000 * * * * ?")
+    public void removePreId(){
+        if (org.springframework.util.CollectionUtils.isEmpty(cache)) {
+            cache = application.workProcessTemplates();
+        }
+        WorkProcessTemplateId templateId = CollectionUtils.random(cache).id();
+        WorkProcessTemplateId preId = CollectionUtils.random(cache).id();
+        String url = String.format(REMOVE_TEMPLATE_PRE_ID,templateId.toUUID(),preId.toUUID());
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.postForObject(url,null,Void.class);
+        log.info("remove template with preId finished");
+    }
+
+    @Scheduled(cron = "*/2500 * * * * ?")
+    public void removeNextId(){
+        if (org.springframework.util.CollectionUtils.isEmpty(cache)) {
+            cache = application.workProcessTemplates();
+        }
+        WorkProcessTemplateId templateId = CollectionUtils.random(cache).id();
+        WorkProcessTemplateId nextId = CollectionUtils.random(cache).id();
+        String url = String.format(REMOVE_TEMPLATE_NEXT_ID,templateId.toUUID(),nextId.toUUID());
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.postForObject(url,null,Void.class);
+        log.info("remove template with nextId finished");
+    }
 
 }

@@ -29,7 +29,7 @@ public class WorkProcessTemplateRepositoryTest extends WorkProcessAppTest {
                 ChangeableInfo.create("主板加工工序","这是用来加工新能源车的主板的工序"),
 //                create(),
                 WorkProcessBeat.create(1000,18),
-                WorkProcessTemplateAddable.createWorkProcessTemplateControl(),
+//                WorkProcessTemplateAddable.createWorkProcessTemplateControl(),
                 WorkProcessTemplateAddable.createWorkProcessTemplateQuantity()
         );
 
@@ -73,7 +73,7 @@ public class WorkProcessTemplateRepositoryTest extends WorkProcessAppTest {
                 ChangeableInfo.create("主板加工工序","这是用来加工新能源车的主板的工序"),
 //                create(),
                 WorkProcessBeat.create(1000,15),
-                WorkProcessTemplateAddable.createWorkProcessTemplateControl(),
+//                WorkProcessTemplateAddable.createWorkProcessTemplateControl(),
                 WorkProcessTemplateAddable.createWorkProcessTemplateQuantity()
         );
 
@@ -100,7 +100,7 @@ public class WorkProcessTemplateRepositoryTest extends WorkProcessAppTest {
                 ChangeableInfo.create("主板加工工序测试","这是用来加工新能源车的主板的工序1"),
 //                create(),
                 WorkProcessBeat.create(1000,15),
-                WorkProcessTemplateAddable.createWorkProcessTemplateControl(),
+//                WorkProcessTemplateAddable.createWorkProcessTemplateControl(),
                 WorkProcessTemplateAddable.createWorkProcessTemplateQuantity()
         );
 
@@ -139,35 +139,7 @@ public class WorkProcessTemplateRepositoryTest extends WorkProcessAppTest {
         Assert.assertEquals(template.getWorkProcessTemplateQuantity(),quantity);
     }
 
-    @Test
-    public void testChangeControl() {
-        WorkProcessTemplate template = createTemplate();
-        WorkProcessTemplateId id = template.id();
-        workProcessTemplateRepository.save(template);
-        WorkProcessTemplateControl control = new WorkProcessTemplateControl.Builder(
-                2, BatchManagable.SERIAL
-        ).canSplit(false).isAllowedChecked(true).nextProcessSyncMinutes(15)
-                .build();
-        template.changeWorkProcessTemplateControl(control);
-        workProcessTemplateRepository.save(template);
-        WorkProcessTemplate queryTemplate = workProcessTemplateRepository.getById(id);
-        Assert.assertEquals(queryTemplate.getWorkProcessTemplateControl(),control);
-    }
 
-    @Test
-    public void testChangeTemplateControl(){
-        WorkProcessTemplate template = createTemplate();
-        WorkProcessTemplateId id = template.id();
-        workProcessTemplateRepository.save(template);
-        template.enableSplit();
-        template.allowChecked();
-        template.changeName("测试修改名字哈哈");
-        workProcessTemplateRepository.save(template);
-        WorkProcessTemplate queryTemplate = workProcessTemplateRepository.getById(id);
-        Assert.assertEquals(queryTemplate.getWorkProcessTemplateControl().getCanSplit(), true);
-        Assert.assertEquals(queryTemplate.getWorkProcessTemplateControl().getAllowedChecked(), true);
-        Assert.assertEquals(queryTemplate.getWorkProcessInfo().getName(), "测试修改名字哈哈");
-    }
 
     @Test
     public void testAddControl() {
