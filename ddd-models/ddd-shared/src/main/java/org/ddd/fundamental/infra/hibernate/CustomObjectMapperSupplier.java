@@ -3,6 +3,7 @@ package org.ddd.fundamental.infra.hibernate;
 import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.hypersistence.utils.hibernate.type.util.ObjectMapperSupplier;
 import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.jackson.LocalDateDeserializer;
@@ -22,6 +23,7 @@ public class CustomObjectMapperSupplier implements ObjectMapperSupplier {
         objectMapper.setTimeZone(
                 TimeZone.getTimeZone("GMT")
         );
+        objectMapper.registerModule(new JavaTimeModule());
         SimpleModule simpleModule = new SimpleModule(
                 "SimpleModule",
                 new Version(1, 0, 0, null, null, null)

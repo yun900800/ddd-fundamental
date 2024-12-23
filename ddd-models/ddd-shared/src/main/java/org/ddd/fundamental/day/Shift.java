@@ -2,7 +2,11 @@ package org.ddd.fundamental.day;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.ddd.fundamental.core.ValueObject;
+import org.ddd.fundamental.jackson.LocalTimeDeserializer;
+import org.ddd.fundamental.jackson.LocalTimeSerializer;
 
 import javax.persistence.Embeddable;
 import javax.persistence.MappedSuperclass;
@@ -21,8 +25,13 @@ import java.util.Objects;
 @MappedSuperclass
 @Embeddable
 public class Shift implements ValueObject , CalculateTime{
+
+    @JsonSerialize(using = LocalTimeSerializer.class)
+    @JsonDeserialize(using = LocalTimeDeserializer.class)
     private LocalTime start;
 
+    @JsonSerialize(using = LocalTimeSerializer.class)
+    @JsonDeserialize(using = LocalTimeDeserializer.class)
     private LocalTime end;
 
     private String shiftName;

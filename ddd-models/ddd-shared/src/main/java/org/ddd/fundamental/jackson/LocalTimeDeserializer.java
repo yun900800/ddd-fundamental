@@ -4,25 +4,23 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
-import java.time.LocalDate;
+import java.time.LocalTime;
 
-@Slf4j
-public class LocalDateDeserializer extends StdDeserializer<LocalDate> {
+public class LocalTimeDeserializer extends StdDeserializer<LocalTime> {
 
     private static final long serialVersionUID = 1L;
 
-    public LocalDateDeserializer() {
-        super(LocalDate.class);
+    public LocalTimeDeserializer() {
+        super(LocalTime.class);
     }
 
 
     @Override
-    public LocalDate deserialize(JsonParser jp, DeserializationContext ctxt)
+    public LocalTime deserialize(JsonParser jp, DeserializationContext ctxt)
             throws IOException, JsonProcessingException {
-        return LocalDate.parse(jp.readValueAs(String.class));
+        return LocalTime.parse(jp.readValueAs(String.class));
     }
 
 }

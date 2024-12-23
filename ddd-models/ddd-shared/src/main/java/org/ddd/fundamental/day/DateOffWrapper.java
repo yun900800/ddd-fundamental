@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.ddd.fundamental.jackson.LocalDateDeserializer;
 import org.ddd.fundamental.jackson.LocalDateSerializer;
-import org.hibernate.annotations.Type;
 
 import java.time.LocalDate;
 
