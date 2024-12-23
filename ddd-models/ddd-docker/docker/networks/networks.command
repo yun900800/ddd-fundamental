@@ -20,6 +20,7 @@ docker inspect 1e630a998d45 --format '{{.NetworkSettings.Networks.network2.IPAdd
 
 打印容器中的hosts文件
 docker exec 488f5db94671 cat /etc/hosts
+这里可以看到容器2实际上对应2个网络
 
 进入docker容器中执行命令
 docker exec -it 488f5db94671 /bin/bash

@@ -1,9 +1,6 @@
 package org.ddd.fundamental.factory.rest;
 
-import org.ddd.fundamental.Thread.ThreadSharedUtils;
 import org.ddd.fundamental.changeable.ChangeableInfo;
-import org.ddd.fundamental.common.tenant.RequestUserContext;
-import org.ddd.fundamental.core.tenant.TenantInfo;
 import org.ddd.fundamental.factory.EquipmentId;
 import org.ddd.fundamental.factory.MachineShopId;
 import org.ddd.fundamental.factory.ProductionLineId;

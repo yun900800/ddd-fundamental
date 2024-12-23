@@ -1,4 +1,4 @@
-package org.ddd.fundamental.Thread;
+package org.ddd.fundamental.thread;
 
 import org.ddd.fundamental.core.tenant.FactoryId;
 import org.ddd.fundamental.core.tenant.TenantId;

@@ -2,7 +2,7 @@ package org.ddd.fundamental.core;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.extern.slf4j.Slf4j;
-import org.ddd.fundamental.Thread.ThreadSharedUtils;
+import org.ddd.fundamental.thread.ThreadSharedUtils;
 import org.ddd.fundamental.core.tenant.TenantInfo;
 import org.ddd.fundamental.day.Auditable;
 import org.springframework.data.domain.Persistable;

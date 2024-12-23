@@ -1,4 +1,4 @@
-package org.ddd.fundamental.common.tenant;
+package org.ddd.fundamental.thread;
 
 import lombok.AccessLevel;
 import lombok.Data;

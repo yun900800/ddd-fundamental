@@ -8,7 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.aopalliance.aop.Advice;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
-import org.ddd.fundamental.common.tenant.RequestUserContext;
+import org.ddd.fundamental.thread.RequestUserContext;
 import org.springframework.aop.Pointcut;
 import org.springframework.aop.PointcutAdvisor;
 import org.springframework.context.EmbeddedValueResolverAware;
