@@ -5,6 +5,8 @@ import org.ddd.fundamental.material.MaterialMaster;
 import org.ddd.fundamental.material.value.MaterialType;
 
 import javax.persistence.Embeddable;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.MappedSuperclass;
 import java.util.Objects;
 
@@ -19,19 +21,23 @@ public class ProductStructureNode implements ValueObject, Cloneable {
 
     private int qty;
 
+    @Enumerated(EnumType.STRING)
+    private MaterialType materialType;
+
 
     private ProductStructureNode(){
     }
 
     private ProductStructureNode(MaterialMaster materialMaster,
-                                 int qty){
+                                 int qty,MaterialType materialType){
         this.materialMaster = materialMaster;
         this.qty = qty;
+        this.materialType = materialType;
     }
 
     public static ProductStructureNode create(MaterialMaster materialMaster,
-                                              int qty){
-        return new ProductStructureNode(materialMaster,qty);
+                                              int qty,MaterialType materialType){
+        return new ProductStructureNode(materialMaster,qty,materialType);
     }
 
     public MaterialMaster getMaterialMaster() {
@@ -40,6 +46,10 @@ public class ProductStructureNode implements ValueObject, Cloneable {
 
     public int getQty() {
         return qty;
+    }
+
+    public MaterialType getMaterialType() {
+        return materialType;
     }
 
     @Override

@@ -16,7 +16,7 @@ public class BomCreator {
         ProductStructureNode node =
                 ProductStructureNode.create(MaterialMaster.create(
                         "dell-xmp",productName,"dell-xmp-1","台"
-                ),1);
+                ),1,materialType);
         MaterialId productId = MaterialId.randomId(MaterialId.class);
         return new ProductStructure<>(productId,node, materialType);
     }

@@ -26,7 +26,7 @@ public class ProductStructureTest {
         ProductStructureNode node =
                 ProductStructureNode.create(MaterialMaster.create(
                         "dell-xmp","戴尔电脑","dell-xmp-1","台"
-                ),1);
+                ),1, MaterialType.PRODUCTION);
         MaterialId productId = MaterialId.randomId(MaterialId.class);
         ProductStructure<ProductStructureNode> structure = new ProductStructure<>(productId,node,
                 MaterialType.PRODUCTION);

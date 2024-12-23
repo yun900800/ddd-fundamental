@@ -16,7 +16,7 @@ public final class BomHelper {
 
     public static ProductStructure<ProductStructureNode> createProductStructure(MaterialDTO materialDTO, MaterialType materialType){
         ProductStructureNode node =
-                ProductStructureNode.create(materialDTO.getMaterialMaster(),1);
+                ProductStructureNode.create(materialDTO.getMaterialMaster(),1,materialType);
         MaterialId productId = materialDTO.id();
         return new ProductStructure<>(productId,node, materialType);
     }

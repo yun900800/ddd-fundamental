@@ -19,7 +19,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.groupingBy;
 
 @Slf4j
 @Transactional(readOnly = true)
@@ -51,43 +54,6 @@ public class BomQueryService {
         return structureDataRepository.allBomIds();
     }
 
-    /**
-     * 获取产品节点
-     * @param nodeList
-     * @return
-     */
-    private MaterialIdNode<ProductStructureNode> productNode(List<MaterialIdNode<ProductStructureNode>> nodeList){
-        for (MaterialIdNode<ProductStructureNode> node:nodeList) {
-            if (node.getParent() == null) {
-                return node;
-            }
-        }
-        throw new RuntimeException("数据存在错误,bom树没有产品根节点");
-    }
-
-    private List<MaterialIdNode<ProductStructureNode>> spareNodes(List<MaterialIdNode<ProductStructureNode>> nodeList,
-                                                                  MaterialIdNode<ProductStructureNode> productNode){
-        List<MaterialIdNode<ProductStructureNode>> spares = new ArrayList<>();
-        for (MaterialIdNode<ProductStructureNode> node:nodeList) {
-            if (null != node.getParent() && node.getParent().equals(productNode.getCurrent())) {
-                spares.add(node);
-            }
-        }
-        return spares;
-    }
-
-    private List<MaterialIdNode<ProductStructureNode>> rawNodes(List<MaterialIdNode<ProductStructureNode>> nodeList,
-                                                                MaterialIdNode<ProductStructureNode> productNode,
-                                                                List<MaterialIdNode<ProductStructureNode>> spareNodes){
-        nodeList.remove(productNode);
-        nodeList.removeAll(spareNodes);
-        List<MaterialIdNode<ProductStructureNode>> result = new ArrayList<>();
-        for (MaterialIdNode<ProductStructureNode> node:nodeList) {
-            result.add(node);
-        }
-        return result;
-    }
-
     public ProductStructureDTO getProductStructure(MaterialId productId){
         ProductStructureDTO productStructureDTO = this.manager.fetchDataFromCache(productId,ProductStructureDTO.class);
         if (null != productStructureDTO) {
@@ -97,9 +63,10 @@ public class BomQueryService {
         List<ProductStructureData> productStructureData = structureDataRepository.findByProductId(productId);
         List<MaterialIdNode<ProductStructureNode>> nodeList = productStructureData
                 .stream().map(v->v.getMaterialIdNode()).collect(Collectors.toList());
-        MaterialIdNode<ProductStructureNode> productNode = productNode(nodeList);
-        List<MaterialIdNode<ProductStructureNode>> spareNodes = spareNodes(nodeList,productNode);
-        List<MaterialIdNode<ProductStructureNode>> rawNodes = rawNodes(nodeList,productNode,spareNodes);
+        Map<MaterialType, List<MaterialIdNode<ProductStructureNode>>> objMap = toMap(nodeList);
+        MaterialIdNode<ProductStructureNode> productNode = objMap.get(MaterialType.PRODUCTION).get(0);
+        List<MaterialIdNode<ProductStructureNode>> spareNodes = objMap.get(MaterialType.WORKING_IN_PROGRESS);
+        List<MaterialIdNode<ProductStructureNode>> rawNodes = objMap.get(MaterialType.RAW_MATERIAL);
         ProductStructureNodeList<ProductStructureNode> list =
                 ProductStructureNodeList.create(
                         productNode,spareNodes,rawNodes
@@ -109,6 +76,10 @@ public class BomQueryService {
         productStructureDTO = ProductStructureDTO.create(productStructure);
         this.manager.storeDataToCache(productStructureDTO);
         return productStructureDTO;
+    }
+
+    private Map<MaterialType, List<MaterialIdNode<ProductStructureNode>>> toMap(List<MaterialIdNode<ProductStructureNode>> dataList){
+        return dataList.stream().collect(groupingBy(v->v.getData().getMaterialType()));
     }
 
 }
