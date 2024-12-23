@@ -72,7 +72,7 @@ public class BomQueryService {
                         productNode,spareNodes,rawNodes
                 );
         log.info("calculate structure from data");
-        ProductStructure<MaterialIdNode<ProductStructureNode>> productStructure = list.toProductStructure();
+        ProductStructure<ProductStructureNode> productStructure = list.toProductStructures();
         productStructureDTO = ProductStructureDTO.create(productStructure);
         this.manager.storeDataToCache(productStructureDTO);
         return productStructureDTO;

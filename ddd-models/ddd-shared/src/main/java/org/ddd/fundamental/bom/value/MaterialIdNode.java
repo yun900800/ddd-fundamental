@@ -44,6 +44,11 @@ public class MaterialIdNode<T> implements ValueObject {
         return new MaterialIdNode(current, parent,productId,data);
     }
 
+    public MaterialIdNode<T> changeParent(MaterialId parent){
+        this.parent = parent;
+        return this;
+    }
+
     public MaterialId getCurrent() {
         return current;
     }

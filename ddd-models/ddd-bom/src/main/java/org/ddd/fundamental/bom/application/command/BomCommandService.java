@@ -1,5 +1,6 @@
 package org.ddd.fundamental.bom.application.command;
 
+import com.google.common.collect.Multimap;
 import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.bom.application.query.BomQueryService;
 import org.ddd.fundamental.bom.domain.model.ProductStructureData;
@@ -11,6 +12,7 @@ import org.ddd.fundamental.bom.value.ProductStructureNode;
 import org.ddd.fundamental.material.client.MaterialClient;
 import org.ddd.fundamental.material.value.MaterialId;
 import org.ddd.fundamental.material.value.MaterialType;
+import org.ddd.fundamental.shared.api.bom.ProductStructureDTO;
 import org.ddd.fundamental.shared.api.material.MaterialDTO;
 import org.ddd.fundamental.utils.CollectionUtils;
 import org.springframework.stereotype.Service;
@@ -35,6 +37,39 @@ public class BomCommandService {
                              BomQueryService bomQueryService){
         this.structureDataRepository = structureDataRepository;
         this.bomQueryService = bomQueryService;
+    }
+
+    /**
+     * 添加一个节点到bom树上
+     * @param productId
+     * @param node
+     */
+    public void addNodeToBom(MaterialId productId,
+                             MaterialIdNode<ProductStructureNode> node){
+        ProductStructureDTO dto = bomQueryService.getProductStructure(productId);
+        ProductStructure<ProductStructureNode> root = dto.getProductStructure();
+        Multimap<MaterialId, MaterialId> multimap = root.productIdToNodeId();
+
+        boolean flag = false;
+        while (!flag){
+            try {
+                MaterialId nodeId = CollectionUtils.random(new ArrayList<>(multimap.values()));
+                ProductStructure<ProductStructureNode> structureNode = root.searchById(nodeId);
+
+                structureNode.addStructure(new ProductStructure(node.getCurrent(),node,node.getData().getMaterialType()));
+                node.changeParent(structureNode.getId());
+                flag = true;
+            }catch (Exception e){
+                log.error("retry search node");
+            }
+        }
+        List<MaterialIdNode<ProductStructureNode>> list = root.toMaterialIdList();
+        List<ProductStructureData> structureDataList = list.stream().map(v->ProductStructureData.create(v)).collect(Collectors.toList());
+        ProductStructureData data = ProductStructureData.create(
+                node
+        );
+        log.info("node is {}",node);
+        structureDataRepository.persist(data);
     }
 
 

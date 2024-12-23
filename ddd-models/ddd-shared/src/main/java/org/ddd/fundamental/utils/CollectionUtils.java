@@ -1,7 +1,9 @@
 package org.ddd.fundamental.utils;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+import java.util.Stack;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class CollectionUtils {

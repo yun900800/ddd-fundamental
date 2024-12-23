@@ -1,5 +1,7 @@
 package org.ddd.fundamental.bom.value;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 import org.ddd.fundamental.core.ValueObject;
 import org.ddd.fundamental.material.value.MaterialId;
 import org.ddd.fundamental.material.value.MaterialType;
@@ -8,6 +10,7 @@ import org.springframework.util.CollectionUtils;
 import javax.persistence.Embeddable;
 import javax.persistence.MappedSuperclass;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @MappedSuperclass
 @Embeddable
@@ -48,6 +51,15 @@ public class ProductStructure<T> implements ValueObject {
         MaterialId productId = this.id;
         traverse(this, null,materialIdNodes,productId);
         return materialIdNodes;
+    }
+
+    public Multimap<MaterialId, MaterialId> productIdToNodeId(){
+        Multimap<MaterialId, MaterialId> multimap = ArrayListMultimap.create();
+        List<MaterialIdNode<T>> list = toMaterialIdList();
+        for (MaterialIdNode<T> node: list) {
+            multimap.put(node.getProductId(),node.getCurrent());
+        }
+        return multimap;
     }
 
 
@@ -167,6 +179,10 @@ public class ProductStructure<T> implements ValueObject {
                 ", materialType=" + materialType +
                 ", children=" + children +
                 '}';
+    }
+
+    public MaterialType getMaterialType() {
+        return materialType;
     }
 }
 

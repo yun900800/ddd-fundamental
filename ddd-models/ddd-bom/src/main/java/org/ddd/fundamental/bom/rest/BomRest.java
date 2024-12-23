@@ -9,10 +9,7 @@ import org.ddd.fundamental.material.value.MaterialId;
 import org.ddd.fundamental.shared.api.bom.BomIdDTO;
 import org.ddd.fundamental.shared.api.bom.ProductStructureDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -36,6 +33,12 @@ public class BomRest {
                                  @PathVariable int rawSize){
         bomCommandService.createProductBom(new MaterialId(productId),
                 spareSize,rawSize);
+    }
+
+    @PostMapping("/bom/add_node_to_bom/{productId}")
+    public void addNodeToBom(@PathVariable String productId,
+                             @RequestBody MaterialIdNode<ProductStructureNode> node){
+        bomCommandService.addNodeToBom(new MaterialId(productId),node);
     }
 
     @RequestMapping("/bom/all_bom_ids")

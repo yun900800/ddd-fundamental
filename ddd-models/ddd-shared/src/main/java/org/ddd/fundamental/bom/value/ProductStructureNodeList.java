@@ -46,6 +46,39 @@ public class ProductStructureNodeList<T> implements ValueObject,Cloneable{
         return new ProductStructureNodeList(productNode,sparePartNodes,rawMaterialNodes);
     }
 
+    public ProductStructure<T> toProductStructures(){
+        ProductStructure<T> root = new ProductStructure<>(
+                productNode.getProductId(), productNode.getData(), MaterialType.PRODUCTION
+        );
+        addChildNew(root);
+        return root;
+    }
+
+    private void addChildNew(ProductStructure<T> root){
+        MaterialId id = root.getId();
+        for (MaterialIdNode<T> node: sparePartNodes){
+            if (node.getParent().equals(id)) {
+                root.addStructure(
+                        new ProductStructure<>(
+                                node.getCurrent(), node.getData(), MaterialType.WORKING_IN_PROGRESS
+                        )
+                );
+            }
+        }
+        for (MaterialIdNode<T> node: rawMaterialNodes) {
+            if (node.getParent().equals(id)) {
+                root.addStructure(
+                        new ProductStructure<>(
+                                node.getCurrent(), node.getData(), MaterialType.RAW_MATERIAL
+                        )
+                );
+            }
+        }
+        for (ProductStructure<T> node: root.getChildren()) {
+            addChildNew(node);
+        }
+    }
+
     public ProductStructure<MaterialIdNode<T>> toProductStructure(){
         ProductStructure<MaterialIdNode<T>> root = new ProductStructure<>(
                 productNode.getProductId(), productNode, MaterialType.PRODUCTION

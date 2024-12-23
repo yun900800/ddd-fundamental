@@ -1,5 +1,6 @@
 package org.ddd.fundamental.bom.value;
 
+import com.google.common.collect.Multimap;
 import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.bom.creator.BomCreator;
 import org.ddd.fundamental.material.MaterialMaster;
@@ -52,6 +53,8 @@ public class ProductStructureTest {
         System.out.println(structure);
         List<MaterialIdNode<ProductStructureNode>> results = structure.toMaterialIdList();
         System.out.println(results);
+        Multimap<MaterialId, MaterialId> multimap = structure.productIdToNodeId();
+        System.out.println(multimap);
     }
 
     private ThreeTuple<ProductStructure<ProductStructureNode>,MaterialId,MaterialId> createStructure(){
@@ -103,5 +106,8 @@ public class ProductStructureTest {
 
         ProductStructure<MaterialIdNode<ProductStructureNode>> structure1 = structureList.toProductStructure();
         System.out.println(structure1);
+
+        ProductStructure<ProductStructureNode> structure2 = structureList.toProductStructures();
+        System.out.println(structure2);
     }
 }

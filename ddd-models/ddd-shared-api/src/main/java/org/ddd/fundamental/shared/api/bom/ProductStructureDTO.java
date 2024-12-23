@@ -9,16 +9,16 @@ import org.ddd.fundamental.material.value.MaterialId;
 
 public class ProductStructureDTO extends AbstractDTO<MaterialId> {
 
-    private ProductStructure<MaterialIdNode<ProductStructureNode>> productStructure;
+    private ProductStructure<ProductStructureNode> productStructure;
 
     protected ProductStructureDTO(){}
 
-    private ProductStructureDTO(ProductStructure<MaterialIdNode<ProductStructureNode>> productStructure){
+    private ProductStructureDTO(ProductStructure<ProductStructureNode> productStructure){
         super(productStructure.getId());
         this.productStructure = productStructure;
     }
 
-    public static ProductStructureDTO create(ProductStructure<MaterialIdNode<ProductStructureNode>> productStructure){
+    public static ProductStructureDTO create(ProductStructure<ProductStructureNode> productStructure){
         return new ProductStructureDTO(productStructure);
     }
 
@@ -27,7 +27,7 @@ public class ProductStructureDTO extends AbstractDTO<MaterialId> {
         return super.id;
     }
 
-    public ProductStructure<MaterialIdNode<ProductStructureNode>> getProductStructure() {
+    public ProductStructure<ProductStructureNode> getProductStructure() {
         return productStructure;
     }
 
