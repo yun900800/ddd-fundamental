@@ -26,7 +26,7 @@ public class MachineShopRepositoryTest extends FactoryAppTest {
         MachineShop machineShop = new MachineShop(new MachineShopValueObject(
                 ChangeableInfo.create("电路板三车间", "这是一个制作电路板的车间")
         ));
-        repository.save(machineShop);
+        repository.persist(machineShop);
     }
 
     @Test
@@ -37,7 +37,7 @@ public class MachineShopRepositoryTest extends FactoryAppTest {
         for (ProductionLine line: lines) {
             machineShop.addLines(line.id());
         }
-        repository.save(machineShop);
+        repository.merge(machineShop);
     }
 
     @Test
@@ -48,11 +48,11 @@ public class MachineShopRepositoryTest extends FactoryAppTest {
         for (ProductionLine line: lines) {
             machineShop.addLines(line.id());
         }
-        repository.save(machineShop);
+        repository.merge(machineShop);
         MachineShopId id = machineShop.id();
         MachineShop query = repository.findById(id).orElse(null);
         query.removeLines(query.getLines().get(0));
-        repository.save(query);
+        repository.merge(query);
 
 
     }
@@ -62,11 +62,11 @@ public class MachineShopRepositoryTest extends FactoryAppTest {
         MachineShop machineShop = new MachineShop(new MachineShopValueObject(
                 ChangeableInfo.create("电路板三车间", "这是一个制作电路板的车间")
         ));
-        repository.save(machineShop);
+        repository.persist(machineShop);
         MachineShopId id = machineShop.id();
         MachineShop query = repository.findById(id).orElse(null);
         query.changeName("测试车间修改").changeDesc("描述修改").enableUse();
-        repository.save(query);
+        repository.merge(query);
         MachineShop result = repository.findById(id).orElse(null);
         Assert.assertEquals(result.getMachineShop().name(),"测试车间修改");
         Assert.assertEquals(result.getMachineShop().desc(),"描述修改");

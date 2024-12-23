@@ -47,16 +47,16 @@ public class FactoryQueryService {
 
     @Transactional
     public List<MachineShopDTO> machineShops(){
-//        List<MachineShopDTO> machineShopDTOS = manager.queryAllData(MachineShopDTO.class);
-//        if (!CollectionUtils.isEmpty(machineShopDTOS)){
-//            return machineShopDTOS;
-//        }
+        List<MachineShopDTO> machineShopDTOS = manager.queryAllData(MachineShopDTO.class);
+        if (!CollectionUtils.isEmpty(machineShopDTOS)){
+            return machineShopDTOS;
+        }
         //simulateCostCall();
         List<MachineShop> machineShopList = machineShopRepository.findAll();
         if (CollectionUtils.isEmpty(machineShopList)) {
             return new ArrayList<>();
         }
-        List<MachineShopDTO> machineShopDTOS =
+        machineShopDTOS =
         machineShopList.stream().map(v->MachineShopDTO.create(v.id(),v.getMachineShop()))
                 .collect(Collectors.toList());
         return machineShopDTOS;
