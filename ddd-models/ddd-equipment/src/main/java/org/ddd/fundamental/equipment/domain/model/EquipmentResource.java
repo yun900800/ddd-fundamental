@@ -1,13 +1,13 @@
 package org.ddd.fundamental.equipment.domain.model;
 
 import org.ddd.fundamental.core.AbstractEntity;
-import org.ddd.fundamental.day.range.DateRangeValue;
 import org.ddd.fundamental.equipment.value.EquipmentPlanRange;
 import org.ddd.fundamental.equipment.value.EquipmentResourceValue;
 import org.ddd.fundamental.factory.EquipmentId;
-
-
+import org.ddd.fundamental.material.value.MaterialType;
+import org.ddd.fundamental.shared.api.material.MaterialDTO;
 import javax.persistence.*;
+
 
 /**
  * 设备资源对外提供的API
@@ -27,6 +27,8 @@ public class EquipmentResource extends AbstractEntity<EquipmentId> {
     @MapsId
     @JoinColumn(name = "id")
     private Equipment equipment;
+
+
 
     @SuppressWarnings("unused")
     protected EquipmentResource(){}
@@ -57,6 +59,32 @@ public class EquipmentResource extends AbstractEntity<EquipmentId> {
 
     public EquipmentResource removePlanDateRange(EquipmentPlanRange planDateRange){
         this.equipmentResourceValue.removeRange(planDateRange);
+        return this;
+    }
+
+    public EquipmentResource addMaterialInput(MaterialDTO input){
+        if (input.getMaterialType().equals(MaterialType.PRODUCTION)){
+            return this;
+        }
+        this.equipmentResourceValue.addMaterialInput(input.id());
+        return this;
+    }
+
+    public EquipmentResource removeMaterialInput(MaterialDTO input){
+        this.equipmentResourceValue.removeMaterialInput(input.id());
+        return this;
+    }
+
+    public EquipmentResource addMaterialOutput(MaterialDTO output){
+        if (output.getMaterialType().equals(MaterialType.RAW_MATERIAL)){
+            return this;
+        }
+        this.equipmentResourceValue.addMaterialOutput(output.id());
+        return this;
+    }
+
+    public EquipmentResource removeMaterialOutput(MaterialDTO output){
+        this.equipmentResourceValue.removeMaterialOutput(output.id());
         return this;
     }
 

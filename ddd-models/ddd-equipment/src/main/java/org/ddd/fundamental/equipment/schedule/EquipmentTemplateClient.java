@@ -13,10 +13,10 @@ import org.ddd.fundamental.equipment.helper.EquipmentHelper;
 import org.ddd.fundamental.equipment.value.*;
 import org.ddd.fundamental.equipment.value.business.WorkOrderComposable;
 import org.ddd.fundamental.factory.EquipmentId;
-import org.ddd.fundamental.shared.api.equipment.EquipmentDTO;
-import org.ddd.fundamental.shared.api.equipment.EquipmentRequest;
-import org.ddd.fundamental.shared.api.equipment.RPAccountDTO;
-import org.ddd.fundamental.shared.api.equipment.ToolingDTO;
+import org.ddd.fundamental.material.client.MaterialClient;
+import org.ddd.fundamental.material.value.MaterialType;
+import org.ddd.fundamental.shared.api.equipment.*;
+import org.ddd.fundamental.shared.api.material.MaterialDTO;
 import org.ddd.fundamental.utils.CollectionUtils;
 import org.ddd.fundamental.workorder.value.WorkOrderId;
 import org.ddd.fundamental.workprocess.enums.ProductResourceType;
@@ -27,8 +27,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,6 +40,8 @@ public class EquipmentTemplateClient {
     private final EquipmentCommandService commandService;
 
     private final EquipmentQueryService queryService;
+
+    private final MaterialClient materialClient;
 
     private static final String CREATE_EQUIPMENT = "http://localhost:9004/equipment/create_equipment";
 
@@ -49,11 +53,15 @@ public class EquipmentTemplateClient {
 
     private static final String ADD_PLAN_TO_EQUIPMENT = "http://localhost:9004/equipment/add_plan_to_equipment/%s";
 
-    @Autowired
+    private static final String CONFIGURE_MATERIAL_INPUT_OUTPUT = "http://localhost:9004/equipment/configure_material_input_output/%s";
+
+    @Autowired(required = false)
     public EquipmentTemplateClient(EquipmentCommandService commandService,
-                                   EquipmentQueryService queryService){
+                                   EquipmentQueryService queryService,
+                                   MaterialClient materialClient){
         this.commandService = commandService;
         this.queryService = queryService;
+        this.materialClient = materialClient;
     }
 
     @Scheduled(cron = "*/36000 * * * * ?")
@@ -132,7 +140,7 @@ public class EquipmentTemplateClient {
         log.info("add tooling to equipment finished");
     }
 
-    @Scheduled(cron = "*/20 * * * * ?")
+    @Scheduled(cron = "*/20000 * * * * ?")
     public void addBusinessPlanRangeToEquipment(){
         List<EquipmentDTO> equipments = queryService.equipments();
         EquipmentId equipmentId = CollectionUtils.random(equipments).id();
@@ -146,6 +154,39 @@ public class EquipmentTemplateClient {
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.postForObject(url,businessRange,Void.class);
         log.info("add tooling to equipment finished");
+    }
+
+    private static List<MaterialDTO> inputsOrOutput(List<MaterialDTO> rawMaterialList,
+                                            List<MaterialDTO> spareMaterialList){
+        int randomOneCount = new Random().nextInt(rawMaterialList.size()/2);
+        List<MaterialDTO> result = new ArrayList<>();
+        for (int i = 0 ; i< randomOneCount;i++ ) {
+            result.add(CollectionUtils.random(rawMaterialList));
+        }
+        int randomTwoCount = new Random().nextInt(spareMaterialList.size()/2);
+        for (int i = 0 ; i< randomTwoCount;i++ ) {
+            result.add(CollectionUtils.random(rawMaterialList));
+        }
+        return result;
+    }
+
+    @Scheduled(cron = "*/20 * * * * ?")
+    public void configureEquipmentInputAndOutput(){
+        List<MaterialDTO> rawMaterialList = materialClient.materialsByMaterialType(MaterialType.RAW_MATERIAL);
+        List<MaterialDTO> spareMaterialList = materialClient.materialsByMaterialType(MaterialType.WORKING_IN_PROGRESS);
+        List<MaterialDTO> productsList = materialClient.materialsByMaterialType(MaterialType.PRODUCTION);
+        List<EquipmentDTO> equipments = queryService.equipments();
+        EquipmentId equipmentId = CollectionUtils.random(equipments).id();
+        String url = String.format(CONFIGURE_MATERIAL_INPUT_OUTPUT,equipmentId.toUUID());
+        List<MaterialDTO> inputs = inputsOrOutput(rawMaterialList,spareMaterialList);
+        List<MaterialDTO> outputs = inputsOrOutput(spareMaterialList,productsList);
+        ConfigureMaterialDTO configureMaterialDTO = ConfigureMaterialDTO.create(equipmentId,
+                inputs,outputs);
+        log.info("url is {}",url);
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.postForObject(url,configureMaterialDTO,Void.class);
+        log.info("configure material input and output finished");
+
     }
 
 }

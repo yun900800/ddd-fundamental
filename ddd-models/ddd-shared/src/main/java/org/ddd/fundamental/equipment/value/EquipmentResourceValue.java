@@ -3,15 +3,14 @@ package org.ddd.fundamental.equipment.value;
 import org.ddd.fundamental.changeable.ChangeableInfo;
 import org.ddd.fundamental.day.range.DateRangeValue;
 import org.ddd.fundamental.factory.EquipmentId;
+import org.ddd.fundamental.material.value.MaterialId;
 import org.ddd.fundamental.workprocess.enums.ProductResourceType;
 import org.ddd.fundamental.workprocess.value.resources.ProductResource;
 import org.hibernate.annotations.Type;
 import org.springframework.util.CollectionUtils;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Embeddable
 @MappedSuperclass
@@ -28,6 +27,20 @@ public class EquipmentResourceValue extends ProductResource<EquipmentId> {
     @Type(type = "json")
     @Column(columnDefinition = "json", name = "equipment_date_range")
     private List<EquipmentPlanRange> planRanges = new ArrayList<>();
+
+    /**
+     * 设备能够处理的输入物料(可以是原材料或者在制品)
+     */
+    @Type(type = "json")
+    @Column(columnDefinition = "json", name = "equipment_inputs")
+    private Set<MaterialId> inputs = new HashSet<>();
+
+    /**
+     * 设备能够处理的输入物料(可以是在制品或者产品)
+     */
+    @Type(type = "json")
+    @Column(columnDefinition = "json", name = "equipment_outputs")
+    private Set<MaterialId> outputs = new HashSet<>();
 
     /**
      * 设备资源或者工装的使用时间段
@@ -62,6 +75,26 @@ public class EquipmentResourceValue extends ProductResource<EquipmentId> {
     public static EquipmentResourceValue create(EquipmentId id, ProductResourceType resourceType,
                                                 ChangeableInfo info){
         return new EquipmentResourceValue(id,resourceType,info,null);
+    }
+
+    public EquipmentResourceValue addMaterialInput(MaterialId input){
+        this.inputs.add(input);
+        return this;
+    }
+
+    public EquipmentResourceValue removeMaterialInput(MaterialId input){
+        this.inputs.remove(input);
+        return this;
+    }
+
+    public EquipmentResourceValue addMaterialOutput(MaterialId output){
+        this.outputs.add(output);
+        return this;
+    }
+
+    public EquipmentResourceValue removeMaterialOutput(MaterialId output){
+        this.outputs.remove(output);
+        return this;
     }
 
     public EquipmentResourceValue recordUseRange(EquipmentPlanRange value){

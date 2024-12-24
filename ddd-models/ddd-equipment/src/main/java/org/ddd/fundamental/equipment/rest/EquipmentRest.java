@@ -7,10 +7,8 @@ import org.ddd.fundamental.equipment.value.EquipmentRPAccountValue;
 import org.ddd.fundamental.equipment.value.RPAccountId;
 import org.ddd.fundamental.equipment.value.business.WorkOrderComposable;
 import org.ddd.fundamental.factory.EquipmentId;
-import org.ddd.fundamental.shared.api.equipment.EquipmentDTO;
-import org.ddd.fundamental.shared.api.equipment.EquipmentRequest;
-import org.ddd.fundamental.shared.api.equipment.RPAccountDTO;
-import org.ddd.fundamental.shared.api.equipment.ToolingDTO;
+import org.ddd.fundamental.shared.api.equipment.*;
+import org.ddd.fundamental.shared.api.material.MaterialDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -70,6 +68,14 @@ public class EquipmentRest {
     public void addBusinessPlanRangeToEquipment(@PathVariable String equipmentId,
                                                 @RequestBody BusinessRange<WorkOrderComposable> addedValue){
         commandService.addBusinessPlanRangeToEquipment(new EquipmentId(equipmentId), addedValue);
+    }
+
+    @PostMapping("/equipment/configure_material_input_output/{equipmentId}")
+    public void configureEquipmentInputAndOutput(@PathVariable String equipmentId,
+                                                 @RequestBody ConfigureMaterialDTO configureMaterialDTO){
+        commandService.configureEquipmentInputAndOutput(new EquipmentId(equipmentId),
+                configureMaterialDTO.getMaterialInputs(),
+                configureMaterialDTO.getMaterialOutputs());
     }
 
 

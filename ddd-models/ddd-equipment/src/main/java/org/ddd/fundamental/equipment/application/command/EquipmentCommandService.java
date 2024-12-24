@@ -12,6 +12,7 @@ import org.ddd.fundamental.equipment.value.*;
 import org.ddd.fundamental.equipment.value.business.WorkOrderComposable;
 import org.ddd.fundamental.factory.EquipmentId;
 import org.ddd.fundamental.redis.config.RedisStoreManager;
+import org.ddd.fundamental.shared.api.material.MaterialDTO;
 import org.ddd.fundamental.workorder.value.WorkOrderId;
 import org.ddd.fundamental.workprocess.enums.ProductResourceType;
 import org.ddd.fundamental.workprocess.value.WorkProcessId;
@@ -145,5 +146,19 @@ public class EquipmentCommandService {
         RPAccount account = equipmentQueryService.getProxyRPAccount(accountId);
         EquipmentRPAccount equipmentRPAccount = EquipmentRPAccount.create(equipment,account,value);
         equipmentRPAccountRepository.persist(equipmentRPAccount);
+    }
+
+    @Transactional
+    public void configureEquipmentInputAndOutput(EquipmentId equipmentId,
+                                                 List<MaterialDTO> materialInputs,
+                                                 List<MaterialDTO> materialOutputs){
+        Equipment equipment = equipmentQueryService.findById(equipmentId);
+        for (MaterialDTO materialInput: materialInputs) {
+            equipment.getEquipmentResource().addMaterialInput(materialInput);
+        }
+        for (MaterialDTO materialOutPut: materialOutputs) {
+            equipment.getEquipmentResource().addMaterialOutput(materialOutPut);
+        }
+        equipmentRepository.merge(equipment);
     }
 }

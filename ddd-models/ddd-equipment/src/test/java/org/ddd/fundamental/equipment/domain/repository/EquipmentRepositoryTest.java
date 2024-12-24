@@ -121,7 +121,7 @@ public class EquipmentRepositoryTest extends EquipmentAppTest {
                 EquipmentPlanRange.create(DateRangeValue.create(Instant.now(),Instant.now(),""),
                         WorkOrderId.randomId(WorkOrderId.class), WorkProcessId.randomId(WorkProcessId.class))
                 );
-        equipmentRepository.save(equipment);
+        equipmentRepository.merge(equipment);
         //resourceRepository.deleteById(id);
 
     }
@@ -165,11 +165,11 @@ public class EquipmentRepositoryTest extends EquipmentAppTest {
                         WorkOrderId.randomId(WorkOrderId.class), WorkProcessId.randomId(WorkProcessId.class))
 
         );
-        equipmentRepository.save(equipment);
+        equipmentRepository.merge(equipment);
         TimeUnit.SECONDS.sleep(1);
         equipment = equipmentRepository.findById(id).get();
         equipment.getEquipmentResource().finishUseRange();
-        equipmentRepository.save(equipment);
+        equipmentRepository.merge(equipment);
     }
 
     @Test
