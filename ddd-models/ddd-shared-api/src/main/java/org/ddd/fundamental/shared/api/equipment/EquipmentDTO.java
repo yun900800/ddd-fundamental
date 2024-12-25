@@ -9,9 +9,9 @@ public class EquipmentDTO extends AbstractDTO<EquipmentId> {
     private EquipmentMaster master;
 
     @SuppressWarnings("unused")
-    private EquipmentDTO(){}
+    protected EquipmentDTO(){}
 
-    private EquipmentDTO(EquipmentId id,EquipmentMaster master){
+    protected EquipmentDTO(EquipmentId id,EquipmentMaster master){
         super(id);
         this.master = master;
     }

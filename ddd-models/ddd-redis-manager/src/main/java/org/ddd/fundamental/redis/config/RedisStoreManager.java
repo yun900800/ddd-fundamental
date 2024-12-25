@@ -154,12 +154,13 @@ public class RedisStoreManager {
     public <T extends AbstractDTO<ID>,ID extends DomainObjectId> List<T> fetchDataListFromCache(List<ID> ids,Class<T> clazz,String prefix) {
         List<String> stringIds = ids.stream().map(v->generateFetchKey(prefix, clazz,v)).collect(Collectors.toList());
         List<Object> list = newRedisTemplate.opsForValue().multiGet(stringIds);
+        log.info("batch fetch list is {}",list);
         CollectionType javaType = mapper.getTypeFactory().constructCollectionType(List.class,clazz);
         List<T> result = new ArrayList<>();
         try {
             List<T> dataList = mapper.readValue(mapper.writeValueAsString(list),javaType);
             log.info("batch handle data is {}",dataList);
-            return dataList;
+            return dataList.stream().filter(v->null!=v).collect(Collectors.toList());
         }catch (IOException e){
             for (Object obj: list) {
                 T data = mapper.convertValue(obj,clazz);
@@ -167,7 +168,22 @@ public class RedisStoreManager {
             }
             log.info("single handle data is {}",result);
         }
-        return result;
+        return result.stream().filter(v->null!=v).collect(Collectors.toList());
+    }
 
+    /**
+     * 批量删除指定的id
+     * @param ids
+     * @param clazz
+     * @param <T>
+     * @param <ID>
+     */
+    public <T extends AbstractDTO<ID>,ID extends DomainObjectId> void deleteDataListFromCache(List<ID> ids,Class<T> clazz){
+        deleteDataListFromCache(ids,clazz,"");
+    }
+
+    public <T extends AbstractDTO<ID>,ID extends DomainObjectId> void deleteDataListFromCache(List<ID> ids,Class<T> clazz,String prefix){
+        List<String> stringIds = ids.stream().map(v->generateFetchKey(prefix, clazz,v)).collect(Collectors.toList());
+        newRedisTemplate.delete(stringIds);
     }
 }

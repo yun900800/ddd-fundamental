@@ -156,16 +156,32 @@ public class EquipmentTemplateClient {
         log.info("add tooling to equipment finished");
     }
 
+    private static int adjustInputCount(int inputCount){
+        if (inputCount > 2){
+            return 2;
+        }
+        if (inputCount < 1 ) {
+            return 1;
+        }
+        return 2;
+    }
+
+    private static int adjustOutputCount(int outputCount){
+        return 1;
+    }
+
     private static List<MaterialDTO> inputsOrOutput(List<MaterialDTO> rawMaterialList,
                                             List<MaterialDTO> spareMaterialList){
         int randomOneCount = new Random().nextInt(rawMaterialList.size()/2);
+        randomOneCount = adjustInputCount(randomOneCount);
         List<MaterialDTO> result = new ArrayList<>();
         for (int i = 0 ; i< randomOneCount;i++ ) {
             result.add(CollectionUtils.random(rawMaterialList));
         }
         int randomTwoCount = new Random().nextInt(spareMaterialList.size()/2);
+        randomTwoCount = adjustOutputCount(randomTwoCount);
         for (int i = 0 ; i< randomTwoCount;i++ ) {
-            result.add(CollectionUtils.random(rawMaterialList));
+            result.add(CollectionUtils.random(spareMaterialList));
         }
         return result;
     }
@@ -186,7 +202,6 @@ public class EquipmentTemplateClient {
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.postForObject(url,configureMaterialDTO,Void.class);
         log.info("configure material input and output finished");
-
     }
 
 }

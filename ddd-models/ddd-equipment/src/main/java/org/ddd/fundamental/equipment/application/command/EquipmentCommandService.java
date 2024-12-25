@@ -8,24 +8,24 @@ import org.ddd.fundamental.equipment.application.query.EquipmentQueryService;
 import org.ddd.fundamental.equipment.domain.model.*;
 import org.ddd.fundamental.equipment.domain.repository.*;
 import org.ddd.fundamental.equipment.enums.EquipmentType;
+import org.ddd.fundamental.equipment.helper.EquipmentHelper;
 import org.ddd.fundamental.equipment.value.*;
 import org.ddd.fundamental.equipment.value.business.WorkOrderComposable;
 import org.ddd.fundamental.factory.EquipmentId;
 import org.ddd.fundamental.redis.config.RedisStoreManager;
 import org.ddd.fundamental.shared.api.material.MaterialDTO;
-import org.ddd.fundamental.workorder.value.WorkOrderId;
+import org.ddd.fundamental.utils.CollectionUtils;
 import org.ddd.fundamental.workprocess.enums.ProductResourceType;
-import org.ddd.fundamental.workprocess.value.WorkProcessId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @Slf4j
+@Transactional
 public class EquipmentCommandService {
 
     @Autowired
@@ -53,7 +53,6 @@ public class EquipmentCommandService {
     @Autowired
     private RedisStoreManager manager;
 
-    @Transactional
     public void createEquipment(EquipmentMaster master, YearModelValue model,
                                 EquipmentType type, ChangeableInfo resource,
                                 ProductResourceType resourceType){
@@ -61,11 +60,11 @@ public class EquipmentCommandService {
         EquipmentResource resource0 = EquipmentResource.create(EquipmentResourceValue.create(
                 equipment.id(), resourceType, resource
         ));
+        resource0.configureEquipmentPositionType(CollectionUtils.random(EquipmentHelper.positionTypes()));
         equipment.setResource(resource0);
         equipmentRepository.persist(equipment);
     }
 
-    @Transactional
     public void addToolingToEquipment(EquipmentId toolingId, EquipmentId equipmentId) {
         ToolingEquipment toolingEquipment = equipmentQueryService.findToolingById(toolingId);
         Equipment equipment = equipmentQueryService.getProxyEquipment(equipmentId);
@@ -73,7 +72,6 @@ public class EquipmentCommandService {
         toolingEquipment.enableUse();
     }
 
-    @Transactional
     public void addBusinessPlanRangeToEquipment(EquipmentId equipmentId,BusinessRange<WorkOrderComposable> addedValue){
         Equipment equipment = equipmentQueryService.findById(equipmentId);
         if (equipment.getEquipmentPlan() == null){
@@ -86,40 +84,33 @@ public class EquipmentCommandService {
         }
     }
 
-    @Transactional
     public void deleteAllEquipments() {
         resourceRepository.deleteAllEquipmentResources();
         equipmentRepository.deleteAllEquipments();
         planRepository.deleteAllEquipmentPlans();
     }
 
-    @Transactional
     public void saveAllEquipment(List<Equipment> equipmentList){
         this.equipmentRepository.persistAll(equipmentList);
     }
 
-    @Transactional
     public void deleteAllTooling(){
         toolingRepository.deleteAllTooling();
     }
 
-    @Transactional
     public void saveAllTooling(List<ToolingEquipment> toolingEquipments){
         toolingRepository.persistAll(toolingEquipments);
     }
 
-    @Transactional
     public void deleteAllRPAccount(){
         this.equipmentRPAccountRepository.deleteAllAccounts();
         this.accountRepository.deleteAllRPAccounts();
     }
 
-    @Transactional
     public void saveAllRPAccount(List<RPAccount> rpAccounts){
         this.accountRepository.persistAll(rpAccounts);
     }
 
-    @Transactional
     public void addRpAccountsToEquipment(EquipmentId equipmentId,
                                          List<RPAccountId> accountIds){
         Equipment equipment = equipmentQueryService.getProxyEquipment(equipmentId);
@@ -138,7 +129,6 @@ public class EquipmentCommandService {
      * @param accountId
      * @param value
      */
-    @Transactional
     public void addRpAccountToEquipment(EquipmentId equipmentId,
                                         RPAccountId accountId,
                                         BusinessRange<WorkOrderComposable> value){
@@ -148,17 +138,31 @@ public class EquipmentCommandService {
         equipmentRPAccountRepository.persist(equipmentRPAccount);
     }
 
-    @Transactional
+    /**
+     * 为设备添加可以处理的输入和输出物料信息
+     * @param equipmentId
+     * @param materialInputs
+     * @param materialOutputs
+     */
     public void configureEquipmentInputAndOutput(EquipmentId equipmentId,
                                                  List<MaterialDTO> materialInputs,
                                                  List<MaterialDTO> materialOutputs){
         Equipment equipment = equipmentQueryService.findById(equipmentId);
-        for (MaterialDTO materialInput: materialInputs) {
-            equipment.getEquipmentResource().addMaterialInput(materialInput);
-        }
-        for (MaterialDTO materialOutPut: materialOutputs) {
-            equipment.getEquipmentResource().addMaterialOutput(materialOutPut);
-        }
-        equipmentRepository.merge(equipment);
+        equipment.getEquipmentResource().addMaterialPairs(materialInputs,materialOutputs);
     }
+
+    /**
+     * 移除设备的输入或者输出物料信息
+     * @param equipmentId
+     * @param materialInputs
+     * @param materialOutputs
+     */
+    public void removeEquipmentInputAndOutput(EquipmentId equipmentId,
+                                             List<MaterialDTO> materialInputs,
+                                             List<MaterialDTO> materialOutputs){
+        Equipment equipment = equipmentQueryService.findById(equipmentId);
+        equipment.getEquipmentResource().removeMaterialPairs(materialInputs, materialOutputs);
+    }
+
+
 }

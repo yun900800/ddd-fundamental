@@ -2,6 +2,7 @@ package org.ddd.fundamental.equipment.helper;
 
 import org.ddd.fundamental.day.YearModelValue;
 import org.ddd.fundamental.day.range.DateRange;
+import org.ddd.fundamental.equipment.enums.EquipmentPositionType;
 import org.ddd.fundamental.utils.DateTimeUtils;
 import org.ddd.fundamental.utils.RandomNumberUtil;
 
@@ -97,5 +98,11 @@ public final class EquipmentHelper {
                 209.0,510.0,
                 201.0,500.5,
                 200.0,500.0);
+    }
+
+    public static List<EquipmentPositionType> positionTypes(){
+        return Arrays.asList(
+                EquipmentPositionType.values()
+        );
     }
 }

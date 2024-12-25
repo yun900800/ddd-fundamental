@@ -3,7 +3,6 @@ package org.ddd.fundamental.equipment.rest;
 import org.ddd.fundamental.equipment.application.command.EquipmentCommandService;
 import org.ddd.fundamental.equipment.application.query.EquipmentQueryService;
 import org.ddd.fundamental.equipment.value.BusinessRange;
-import org.ddd.fundamental.equipment.value.EquipmentRPAccountValue;
 import org.ddd.fundamental.equipment.value.RPAccountId;
 import org.ddd.fundamental.equipment.value.business.WorkOrderComposable;
 import org.ddd.fundamental.factory.EquipmentId;
@@ -17,10 +16,17 @@ import java.util.List;
 @RestController
 public class EquipmentRest {
 
-    @Autowired
-    private EquipmentCommandService commandService;
+    private final EquipmentCommandService commandService;
 
-    private EquipmentQueryService queryService;
+
+    private final EquipmentQueryService queryService;
+
+    @Autowired(required = false)
+    public EquipmentRest(EquipmentCommandService commandService,
+                         EquipmentQueryService queryService){
+        this.commandService = commandService;
+        this.queryService = queryService;
+    }
 
     @RequestMapping("/equipment/equipments")
     public List<EquipmentDTO> equipments() {
@@ -33,50 +39,61 @@ public class EquipmentRest {
     }
 
     @RequestMapping("/equipment/rpAccountList")
-    public List<RPAccountDTO> rpAccountList(){
+    public List<RPAccountDTO> rpAccountList() {
         return queryService.rpAccountList();
     }
 
     @PostMapping("/equipment/create_equipment")
-    public void createEquipment(@RequestBody EquipmentRequest request){
+    public void createEquipment(@RequestBody EquipmentRequest request) {
         commandService.createEquipment(request.getMaster(),
-                request.getModel(),request.getType(),
-                request.getResource(),request.getResourceType());
+                request.getModel(), request.getType(),
+                request.getResource(), request.getResourceType());
     }
 
     @PostMapping("/equipment/add_accounts_to_equipment/{equipmentId}")
     public void addRpAccountsToEquipment(@PathVariable String equipmentId,
-                                          @RequestBody List<RPAccountId> accountIds){
-        commandService.addRpAccountsToEquipment(new EquipmentId(equipmentId),accountIds);
+                                         @RequestBody List<RPAccountId> accountIds) {
+        commandService.addRpAccountsToEquipment(new EquipmentId(equipmentId), accountIds);
     }
 
     @PostMapping("/equipment/add_account_to_equipment/{equipmentId}/{accountId}")
     public void addRpAccountToEquipment(@PathVariable String equipmentId,
                                         @PathVariable String accountId,
-                                        @RequestBody BusinessRange<WorkOrderComposable> value){
+                                        @RequestBody BusinessRange<WorkOrderComposable> value) {
         commandService.addRpAccountToEquipment(new EquipmentId(equipmentId),
-                new RPAccountId(accountId),value);
+                new RPAccountId(accountId), value);
     }
 
     @PostMapping("/equipment/add_tooling_to_equipment/{equipmentId}/{toolingId}")
     public void addToolingToEquipment(@PathVariable String toolingId,
-                                      @PathVariable String equipmentId){
-        commandService.addToolingToEquipment(new EquipmentId(toolingId),new EquipmentId(equipmentId));
+                                      @PathVariable String equipmentId) {
+        commandService.addToolingToEquipment(new EquipmentId(toolingId), new EquipmentId(equipmentId));
     }
 
     @PostMapping("/equipment/add_plan_to_equipment/{equipmentId}")
     public void addBusinessPlanRangeToEquipment(@PathVariable String equipmentId,
-                                                @RequestBody BusinessRange<WorkOrderComposable> addedValue){
+                                                @RequestBody BusinessRange<WorkOrderComposable> addedValue) {
         commandService.addBusinessPlanRangeToEquipment(new EquipmentId(equipmentId), addedValue);
     }
 
     @PostMapping("/equipment/configure_material_input_output/{equipmentId}")
     public void configureEquipmentInputAndOutput(@PathVariable String equipmentId,
-                                                 @RequestBody ConfigureMaterialDTO configureMaterialDTO){
+                                                 @RequestBody ConfigureMaterialDTO configureMaterialDTO) {
         commandService.configureEquipmentInputAndOutput(new EquipmentId(equipmentId),
                 configureMaterialDTO.getMaterialInputs(),
                 configureMaterialDTO.getMaterialOutputs());
     }
 
+    @PostMapping("/equipment/remove_material_input_output/{equipmentId}")
+    public void removeEquipmentInputAndOutput(@PathVariable String equipmentId,
+                                              @RequestBody ConfigureMaterialDTO configureMaterialDTO
+    ) {
+        commandService.removeEquipmentInputAndOutput(new EquipmentId(equipmentId),
+                configureMaterialDTO.getMaterialInputs(), configureMaterialDTO.getMaterialOutputs());
+    }
 
+    @GetMapping("/equipment/get_equipment_input_output/{equipmentId}")
+    public EquipmentInputOutputDTO getEquipmentInputOutput(@PathVariable String equipmentId) {
+        return queryService.getEquipmentInputOutput(new EquipmentId(equipmentId));
+    }
 }

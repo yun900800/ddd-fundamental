@@ -3,6 +3,7 @@ package org.ddd.fundamental.equipment.application.query;
 import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.equipment.application.EquipmentConverter;
 import org.ddd.fundamental.equipment.domain.model.Equipment;
+import org.ddd.fundamental.equipment.domain.model.EquipmentResource;
 import org.ddd.fundamental.equipment.domain.model.RPAccount;
 import org.ddd.fundamental.equipment.domain.model.ToolingEquipment;
 import org.ddd.fundamental.equipment.domain.repository.EquipmentRepository;
@@ -10,16 +11,18 @@ import org.ddd.fundamental.equipment.domain.repository.RPAccountRepository;
 import org.ddd.fundamental.equipment.domain.repository.ToolingEquipmentRepository;
 import org.ddd.fundamental.equipment.value.RPAccountId;
 import org.ddd.fundamental.factory.EquipmentId;
+import org.ddd.fundamental.material.client.MaterialClient;
+import org.ddd.fundamental.material.value.MaterialId;
 import org.ddd.fundamental.redis.config.RedisStoreManager;
-import org.ddd.fundamental.shared.api.equipment.EquipmentDTO;
-import org.ddd.fundamental.shared.api.equipment.RPAccountDTO;
-import org.ddd.fundamental.shared.api.equipment.ToolingDTO;
+import org.ddd.fundamental.shared.api.equipment.*;
+import org.ddd.fundamental.shared.api.material.MaterialDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -32,17 +35,21 @@ public class EquipmentQueryService {
 
     private final RPAccountRepository accountRepository;
 
+    private final MaterialClient materialClient;
+
     private final RedisStoreManager manager;
 
-    @Autowired
+    @Autowired(required = false)
     public EquipmentQueryService(EquipmentRepository equipmentRepository,
                                  ToolingEquipmentRepository toolingRepository,
                                  RPAccountRepository accountRepository,
-                                 RedisStoreManager manager){
+                                 RedisStoreManager manager,
+                                 MaterialClient materialClient){
         this.equipmentRepository = equipmentRepository;
         this.toolingRepository = toolingRepository;
         this.accountRepository = accountRepository;
         this.manager = manager;
+        this.materialClient = materialClient;
     }
 
     /**
@@ -56,6 +63,39 @@ public class EquipmentQueryService {
             return equipmentDTOS;
         }
         return EquipmentConverter.entityToDTO(equipmentRepository.findAll());
+    }
+
+    private Map<MaterialId,MaterialDTO> toMaterialMap(List<MaterialDTO> materialDTOS){
+        if (CollectionUtils.isEmpty(materialDTOS)){
+            return new HashMap<>();
+        }
+        return materialDTOS.stream().collect(Collectors.toMap(
+                v->v.id(),
+                v->v
+        ));
+    }
+
+    public EquipmentInputOutputDTO getEquipmentInputOutput(EquipmentId equipmentId){
+        Equipment equipment = findById(equipmentId);
+        EquipmentResource equipmentResource = equipment.getEquipmentResource();
+        Set<MaterialId> allInputAndOutputs = equipmentResource.allInputAndOutput();
+        List<MaterialDTO> materialDTOS = materialClient.materialsByIds(allInputAndOutputs.stream()
+                .map(v->v.toUUID()).collect(Collectors.toList()));
+        Map<MaterialId,MaterialDTO> materialDTOMap = toMaterialMap(materialDTOS);
+        List<MaterialDTO> inputs = equipmentResource.getEquipmentResourceValue().getInputs()
+                .stream().map(materialDTOMap::get).collect(Collectors.toList());
+        List<MaterialDTO> outputs = equipmentResource.getEquipmentResourceValue().getOutputs()
+                .stream().map(materialDTOMap::get).collect(Collectors.toList());
+        Set<ConfigureMaterialDTO> pairs = equipmentResource.getEquipmentResourceValue().getInputAndOutputPairs()
+                .stream().map(v->{
+                    List<MaterialDTO> inputsOfPairs = v.getMaterialInputs().stream()
+                            .map(materialDTOMap::get).collect(Collectors.toList());
+                    List<MaterialDTO> outputsOfPairs = v.getMaterialOutputs().stream()
+                            .map(materialDTOMap::get).collect(Collectors.toList());
+                    return ConfigureMaterialDTO.create(equipmentId,inputsOfPairs,outputsOfPairs);
+                }).collect(Collectors.toSet());
+        return EquipmentInputOutputDTO.create(equipmentId, equipment.getMaster(),
+                inputs,outputs,pairs);
     }
 
     public Equipment findById(EquipmentId equipmentId){

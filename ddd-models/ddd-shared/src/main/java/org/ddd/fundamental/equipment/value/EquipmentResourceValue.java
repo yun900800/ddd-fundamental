@@ -2,6 +2,7 @@ package org.ddd.fundamental.equipment.value;
 
 import org.ddd.fundamental.changeable.ChangeableInfo;
 import org.ddd.fundamental.day.range.DateRangeValue;
+import org.ddd.fundamental.equipment.value.resources.InputAndOutputValue;
 import org.ddd.fundamental.factory.EquipmentId;
 import org.ddd.fundamental.material.value.MaterialId;
 import org.ddd.fundamental.workprocess.enums.ProductResourceType;
@@ -42,6 +43,32 @@ public class EquipmentResourceValue extends ProductResource<EquipmentId> {
     @Column(columnDefinition = "json", name = "equipment_outputs")
     private Set<MaterialId> outputs = new HashSet<>();
 
+    public Set<MaterialId> getInputs() {
+        return new HashSet<>(inputs);
+    }
+
+    public Set<MaterialId> getOutputs() {
+        return new HashSet<>(outputs);
+    }
+
+    public Set<InputAndOutputValue> getInputAndOutputPairs() {
+        return new HashSet<>(inputAndOutputPairs);
+    }
+
+    public Set<MaterialId> allInputAndOutput(){
+        Set<MaterialId> results = new HashSet<>();
+        results.addAll(this.inputs);
+        results.addAll(this.outputs);
+        return results;
+    }
+
+    /**
+     * 设备能处理的输入和输出物料信息Pairs
+     */
+    @Type(type = "json")
+    @Column(columnDefinition = "json", name = "equipment_material_pairs")
+    private Set<InputAndOutputValue> inputAndOutputPairs = new HashSet<>();
+
     /**
      * 设备资源或者工装的使用时间段
      */
@@ -77,13 +104,51 @@ public class EquipmentResourceValue extends ProductResource<EquipmentId> {
         return new EquipmentResourceValue(id,resourceType,info,null);
     }
 
+    public int pairSize(){
+        return inputAndOutputPairs.size();
+    }
+
+    /**
+     * 添加设备能够处理的物料信息对
+     * @param pairs
+     * @return
+     */
+    public synchronized EquipmentResourceValue addMaterialPairs(InputAndOutputValue pairs) {
+        this.inputAndOutputPairs.add(pairs);
+        return this;
+    }
+
+    /**
+     * 移除设备能够处理的物料信息对
+     * @param pairs
+     * @return
+     */
+    public synchronized EquipmentResourceValue removeMaterialPairs(InputAndOutputValue pairs) {
+        this.inputAndOutputPairs.remove(pairs);
+        return this;
+    }
+
+    public EquipmentResourceValue recalculateInputAndOutput(){
+        this.clearMaterialInput();
+        this.clearMaterialOutput();
+        for (InputAndOutputValue inputAndOutputValue: inputAndOutputPairs) {
+            for (MaterialId materialId: inputAndOutputValue.getMaterialInputs()) {
+                addMaterialInput(materialId);
+            }
+            for (MaterialId materialId: inputAndOutputValue.getMaterialOutputs()) {
+                addMaterialOutput(materialId);
+            }
+        }
+        return this;
+    }
+
     public EquipmentResourceValue addMaterialInput(MaterialId input){
         this.inputs.add(input);
         return this;
     }
 
-    public EquipmentResourceValue removeMaterialInput(MaterialId input){
-        this.inputs.remove(input);
+    public EquipmentResourceValue clearMaterialInput(){
+        this.inputs.clear();
         return this;
     }
 
@@ -92,8 +157,8 @@ public class EquipmentResourceValue extends ProductResource<EquipmentId> {
         return this;
     }
 
-    public EquipmentResourceValue removeMaterialOutput(MaterialId output){
-        this.outputs.remove(output);
+    public EquipmentResourceValue clearMaterialOutput(){
+        this.outputs.clear();
         return this;
     }
 

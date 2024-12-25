@@ -10,10 +10,12 @@ import org.ddd.fundamental.equipment.domain.model.Equipment;
 import org.ddd.fundamental.equipment.domain.model.EquipmentResource;
 import org.ddd.fundamental.equipment.enums.EquipmentType;
 
+import org.ddd.fundamental.equipment.helper.EquipmentHelper;
 import org.ddd.fundamental.equipment.value.*;
 import org.ddd.fundamental.redis.config.RedisStoreManager;
 import org.ddd.fundamental.shared.api.equipment.EquipmentDTO;
 
+import org.ddd.fundamental.utils.CollectionUtils;
 import org.ddd.fundamental.workprocess.enums.ProductResourceType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
@@ -57,6 +59,7 @@ public class EquipmentAddable implements DataAddable {
         EquipmentResource resource0 = EquipmentResource.create(EquipmentResourceValue.create(
                 equipment0.id(), ProductResourceType.EQUIPMENT, ChangeableInfo.create("生产设备测试删除","这是一种生产设备,用于测试删除")
         ));
+        resource0.configureEquipmentPositionType(CollectionUtils.random(EquipmentHelper.positionTypes()));
         equipment0.setResource(resource0);
         Equipment equipment1 = new Equipment(
                 YearModelValue.createTwoShift("两班次年度模型"),
@@ -71,6 +74,7 @@ public class EquipmentAddable implements DataAddable {
         EquipmentResource resource1 = EquipmentResource.create(EquipmentResourceValue.create(
                 equipment1.id(), ProductResourceType.EQUIPMENT, ChangeableInfo.create("生产设备测试删除","这是一种生产设备,用于测试删除")
         ));
+        resource1.configureEquipmentPositionType(CollectionUtils.random(EquipmentHelper.positionTypes()));
         equipment1.setResource(resource1);
         Equipment equipment2 = new Equipment(
                 YearModelValue.createTwoShift("两班次年度模型"),
@@ -85,6 +89,7 @@ public class EquipmentAddable implements DataAddable {
         EquipmentResource resource2 = EquipmentResource.create(EquipmentResourceValue.create(
                 equipment2.id(), ProductResourceType.EQUIPMENT, ChangeableInfo.create("生产设备测试删除","这是一种生产设备,用于测试删除")
         ));
+        resource2.configureEquipmentPositionType(CollectionUtils.random(EquipmentHelper.positionTypes()));
         equipment2.setResource(resource2);
         Equipment equipment3 = new Equipment(
                 YearModelValue.createThreeShift("三班次年度模型"),
@@ -99,6 +104,7 @@ public class EquipmentAddable implements DataAddable {
         EquipmentResource resource3 = EquipmentResource.create(EquipmentResourceValue.create(
                 equipment3.id(), ProductResourceType.EQUIPMENT, ChangeableInfo.create("生产设备测试删除","这是一种生产设备,用于测试删除")
         ));
+        resource3.configureEquipmentPositionType(CollectionUtils.random(EquipmentHelper.positionTypes()));
         equipment3.setResource(resource3);
         Equipment equipment4 = new Equipment(
                 YearModelValue.createThreeShift("三班次年度模型"),
@@ -113,6 +119,7 @@ public class EquipmentAddable implements DataAddable {
         EquipmentResource resource4 = EquipmentResource.create(EquipmentResourceValue.create(
                 equipment4.id(), ProductResourceType.EQUIPMENT, ChangeableInfo.create("生产设备测试删除","这是一种生产设备,用于测试删除")
         ));
+        resource4.configureEquipmentPositionType(CollectionUtils.random(EquipmentHelper.positionTypes()));
         equipment4.setResource(resource4);
 
         return Arrays.asList(equipment0,equipment1,equipment2,equipment3,equipment4);

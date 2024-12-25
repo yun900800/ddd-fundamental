@@ -75,7 +75,8 @@ public class MaterialQueryService implements ICacheLoaderService<MaterialDTO> {
      */
     public List<MaterialDTO> materialsByIds(List<String> ids){
         List<MaterialDTO> materials = fetchMaterialsFromCache(ids);
-        if (!CollectionUtils.isEmpty(materials)) {
+        if (!CollectionUtils.isEmpty(materials) && materials.size() == ids.size()) {
+            // 如果批量从缓存中直接获取,那么直接返回,否则从数据库中查找
             log.info("fetch data from redis cache");
             return materials;
         }
@@ -83,7 +84,9 @@ public class MaterialQueryService implements ICacheLoaderService<MaterialDTO> {
                 ids.stream().map(v->new MaterialId(v)).collect(Collectors.toList())
         );
         log.info("fetch data from db cache");
-        return MaterialConverter.entityToDTO(materialList);
+        materials =  MaterialConverter.entityToDTO(materialList);
+        manager.storeDataListToCache(materials);
+        return materials;
     }
 
     private Material getMaterialFromDbById(MaterialId id){
