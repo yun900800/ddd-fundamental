@@ -22,5 +22,4 @@ public interface MaterialCustomRepository {
             PagedList<Material> previousPage
     );
 
-
 }

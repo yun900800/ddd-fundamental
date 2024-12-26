@@ -1,8 +1,12 @@
 package org.ddd.fundamental.material.domain.model;
 
+import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.changeable.ChangeableInfo;
 import org.ddd.fundamental.core.AbstractAggregateRoot;
 import org.ddd.fundamental.core.DomainObjectId;
+import org.ddd.fundamental.event.core.DomainEventType;
+import org.ddd.fundamental.event.material.ProductEventCreated;
+import org.ddd.fundamental.event.workprocess.WorkProcessRecordCreated;
 import org.ddd.fundamental.material.domain.value.ControlProps;
 import org.ddd.fundamental.material.value.MaterialId;
 import org.ddd.fundamental.material.MaterialMaster;
@@ -19,6 +23,7 @@ import java.util.Map;
  */
 @Entity
 @Table(name = "material")
+@Slf4j
 public class Material extends AbstractAggregateRoot<MaterialId> {
     @Embedded
     @AttributeOverrides({
@@ -99,6 +104,11 @@ public class Material extends AbstractAggregateRoot<MaterialId> {
             this.materialOptionalCharacteristics = characterContainer.getOptionalMap();
         }
         this.materialControlProps = materialControlProps;
+        if (MaterialType.PRODUCTION.equals(materialControlProps.getMaterialType())){
+            this.registerEvent(ProductEventCreated.create(DomainEventType.MATERIAL,
+                    materialMaster, materialControlProps.getMaterialType(), id()));
+        }
+
     }
 
     public Material(ChangeableInfo changeableInfo, MaterialMaster materialMaster){

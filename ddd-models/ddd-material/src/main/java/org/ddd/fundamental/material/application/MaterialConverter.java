@@ -1,5 +1,7 @@
 package org.ddd.fundamental.material.application;
 
+import org.ddd.fundamental.event.core.DomainEventType;
+import org.ddd.fundamental.event.material.ProductEventCreated;
 import org.ddd.fundamental.material.domain.model.Material;
 import org.ddd.fundamental.shared.api.material.MaterialDTO;
 import org.springframework.util.CollectionUtils;
@@ -23,5 +25,20 @@ public class MaterialConverter {
 
     public static MaterialDTO entityToDTO(Material v){
         return new MaterialDTO(v.getMaterialMaster(),v.id(),v.getMaterialType());
+    }
+
+    public static List<ProductEventCreated> entityToEvent(List<Material> materials){
+        if (CollectionUtils.isEmpty(materials)) {
+            return new ArrayList<>();
+        }
+        return materials.stream()
+                .map(MaterialConverter::entityToEvent)
+                .collect(Collectors.toList());
+    }
+
+    public static ProductEventCreated entityToEvent(Material v){
+        return ProductEventCreated.create(DomainEventType.MATERIAL,
+                v.getMaterialMaster(), v.getMaterialControlProps().getMaterialType(),
+                v.id());
     }
 }

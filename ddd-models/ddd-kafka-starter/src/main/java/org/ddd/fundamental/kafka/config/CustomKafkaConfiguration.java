@@ -55,7 +55,8 @@ public class CustomKafkaConfiguration {
         configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
         configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
-        configProps.put(JsonSerializer.TYPE_MAPPINGS, "workOrderEvent:org.ddd.fundamental.event.workorder.WorkOrderEvent ,workProcessRecordCreated:org.ddd.fundamental.event.workprocess.WorkProcessRecordCreated");
+        configProps.put(JsonSerializer.TYPE_MAPPINGS, "workOrderEvent:org.ddd.fundamental.event.workorder.WorkOrderEvent ,workProcessRecordCreated:org.ddd.fundamental.event.workprocess.WorkProcessRecordCreated ," +
+                "productEventCreated:org.ddd.fundamental.event.material.ProductEventCreated");
         return new DefaultKafkaProducerFactory<>(configProps);
     }
 
@@ -123,5 +124,10 @@ public class CustomKafkaConfiguration {
     @Bean
     public ConcurrentKafkaListenerContainerFactory<String, String> equipmentKafkaListenerContainerFactory() {
         return kafkaListenerContainerFactory("equipment");
+    }
+
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String, String> bomKafkaListenerContainerFactory() {
+        return kafkaListenerContainerFactory("bom");
     }
 }

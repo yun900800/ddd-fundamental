@@ -3,11 +3,14 @@ package org.ddd.fundamental.material.creator;
 import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.changeable.ChangeableInfo;
 import org.ddd.fundamental.creator.DataAddable;
+import org.ddd.fundamental.event.material.ProductEventCreated;
 import org.ddd.fundamental.material.MaterialMaster;
+import org.ddd.fundamental.material.application.MaterialConverter;
 import org.ddd.fundamental.material.domain.model.Material;
 import org.ddd.fundamental.material.domain.repository.MaterialRepository;
 import org.ddd.fundamental.material.domain.value.ControlProps;
 import org.ddd.fundamental.material.helper.MaterialHelper;
+import org.ddd.fundamental.material.producer.MaterialProducer;
 import org.ddd.fundamental.material.value.MaterialType;
 import org.ddd.fundamental.material.value.PropsContainer;
 import org.ddd.fundamental.redis.config.RedisStoreManager;
@@ -32,14 +35,19 @@ public class MaterialAddable implements DataAddable {
 
     private final RedisStoreManager manager;
 
+    private final MaterialProducer producer;
+
     private List<Material> materialList;
 
-    @Autowired
+
+    @Autowired(required = false)
     public MaterialAddable(MaterialRepository repository,
-                             RedisStoreManager manager
+                             RedisStoreManager manager,
+                           MaterialProducer producer
     ){
         this.repository = repository;
         this.manager = manager;
+        this.producer = producer;
     }
 
     public List<Material> getMaterialList() {
@@ -117,12 +125,21 @@ public class MaterialAddable implements DataAddable {
                         ))
                 .collect(Collectors.toList());
     }
+
+    private void sendEvent(){
+        List<ProductEventCreated> events = MaterialConverter.entityToEvent(materialList);
+        for  (ProductEventCreated event: events) {
+            producer.sendProductEventCreated(event);
+        }
+    }
     @Override
     @Transactional
     public void execute() {
         log.info("MaterialAddable execute create all materials start");
         materialList = createMaterials();
         repository.persistAll(materialList);
+        sendEvent();
+
         log.info("MaterialAddable execute create all materials finished");
         manager.storeDataListToCache(entityToDTO(materialList));
     }

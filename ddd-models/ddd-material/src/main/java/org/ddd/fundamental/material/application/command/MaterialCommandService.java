@@ -2,11 +2,14 @@ package org.ddd.fundamental.material.application.command;
 
 import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.changeable.ChangeableInfo;
+import org.ddd.fundamental.event.core.DomainEventType;
+import org.ddd.fundamental.event.material.ProductEventCreated;
 import org.ddd.fundamental.material.MaterialMaster;
 import org.ddd.fundamental.material.creator.MaterialAddable;
 import org.ddd.fundamental.material.domain.model.Material;
 import org.ddd.fundamental.material.domain.repository.MaterialRepository;
 import org.ddd.fundamental.material.domain.value.ControlProps;
+import org.ddd.fundamental.material.producer.MaterialProducer;
 import org.ddd.fundamental.material.value.MaterialId;
 import org.ddd.fundamental.redis.config.RedisStoreManager;
 import org.ddd.fundamental.shared.api.material.MaterialDTO;
@@ -24,13 +27,24 @@ public class MaterialCommandService {
 
     private final RedisStoreManager manager;
 
+    private final MaterialProducer materialProducer;
+
     @Autowired
     public MaterialCommandService(
             MaterialRepository materialRepository,
-            RedisStoreManager manager
+            RedisStoreManager manager,
+            MaterialProducer materialProducer
                                   ){
         this.manager = manager;
         this.materialRepository = materialRepository;
+        this.materialProducer = materialProducer;
+    }
+
+    public static ProductEventCreated toEvent(Material material){
+        return ProductEventCreated.create(DomainEventType.MATERIAL,
+                material.getMaterialMaster(),
+                material.getMaterialControlProps().getMaterialType(),
+                material.id());
     }
 
     /**
@@ -47,6 +61,7 @@ public class MaterialCommandService {
                 materialRequest.getCharacterMap()
         );
         this.materialRepository.persist(material);
+        this.materialProducer.sendProductEventCreated(toEvent(material));
         this.manager.storeDataToCache(
                 MaterialDTO.create(
                         material.getMaterialMaster(),

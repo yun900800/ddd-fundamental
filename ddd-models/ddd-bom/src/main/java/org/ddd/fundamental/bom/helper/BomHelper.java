@@ -7,6 +7,7 @@ import org.ddd.fundamental.material.value.MaterialType;
 import org.ddd.fundamental.shared.api.material.MaterialDTO;
 import org.ddd.fundamental.utils.CollectionUtils;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -31,6 +32,14 @@ public final class BomHelper {
             productStructures.add(createProductStructure(materialDTO,materialType));
         }
         return productStructures;
+    }
+
+    public static List<Integer> spareCount(){
+        return Arrays.asList(2,3,4,5);
+    }
+
+    public static List<Integer> rawCount(){
+        return Arrays.asList(4,5,6,8);
     }
 
 }
