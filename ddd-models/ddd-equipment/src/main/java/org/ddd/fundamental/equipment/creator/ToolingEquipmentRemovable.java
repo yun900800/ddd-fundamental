@@ -19,7 +19,7 @@ public class ToolingEquipmentRemovable implements DataRemovable {
 
     private final RedisStoreManager manager;
 
-    @Autowired
+    @Autowired(required = false)
     public ToolingEquipmentRemovable(EquipmentCommandService commandService,
                                      RedisStoreManager manager){
         this.commandService = commandService;

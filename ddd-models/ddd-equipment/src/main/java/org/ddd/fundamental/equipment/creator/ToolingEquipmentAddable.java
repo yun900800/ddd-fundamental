@@ -35,7 +35,7 @@ public class ToolingEquipmentAddable implements DataAddable {
 
     private final EquipmentAddable equipmentAddable;
 
-    @Autowired
+    @Autowired(required = false)
     public ToolingEquipmentAddable(EquipmentCommandService commandService,
                                      RedisStoreManager manager,
                                    EquipmentAddable equipmentAddable){

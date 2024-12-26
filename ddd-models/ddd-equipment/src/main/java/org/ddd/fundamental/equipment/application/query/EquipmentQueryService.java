@@ -101,8 +101,8 @@ public class EquipmentQueryService {
     public Equipment findById(EquipmentId equipmentId){
         Equipment equipment = equipmentRepository.findById(equipmentId).orElse(null);
         if (null == equipment){
-            String msg = "id:{} 对应的Equipment不存在.";
-            throw new RuntimeException(msg.formatted(msg,equipmentId.toUUID()));
+            String msg = "id:%s 对应的Equipment不存在.";
+            throw new RuntimeException(String.format(msg,equipmentId.toUUID()));
         }
         return equipment;
     }

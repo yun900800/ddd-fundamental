@@ -37,7 +37,7 @@ public class EquipmentAddable implements DataAddable {
 
     private List<Equipment> equipments = new ArrayList<>();
 
-    @Autowired
+    @Autowired(required = false)
     public EquipmentAddable(EquipmentCommandService commandService,
                             RedisStoreManager manager){
         this.commandService = commandService;

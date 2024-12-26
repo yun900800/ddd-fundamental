@@ -21,4 +21,6 @@ public interface ToolingEquipmentRepository extends BaseHibernateRepository<Tool
     @Query("from ToolingEquipment")
     @Override
     List<ToolingEquipment> findAll();
+
+    ToolingEquipment findByEquipment(Equipment equipment);
 }

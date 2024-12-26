@@ -3,7 +3,6 @@ package org.ddd.fundamental.equipment.application.command;
 import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.changeable.ChangeableInfo;
 import org.ddd.fundamental.day.YearModelValue;
-import org.ddd.fundamental.day.range.DateRangeValue;
 import org.ddd.fundamental.equipment.application.query.EquipmentQueryService;
 import org.ddd.fundamental.equipment.domain.model.*;
 import org.ddd.fundamental.equipment.domain.repository.*;
@@ -88,6 +87,30 @@ public class EquipmentCommandService {
         resourceRepository.deleteAllEquipmentResources();
         equipmentRepository.deleteAllEquipments();
         planRepository.deleteAllEquipmentPlans();
+    }
+
+    private void deleteToolingRelation(Equipment equipment){
+        ToolingEquipment toolingEquipment = toolingRepository.findByEquipment(equipment);
+        toolingEquipment.setEquipment(null);
+    }
+
+
+    /**
+     * 根据id删除设备信息
+     * @param equipmentId
+     */
+    public void deleteEquipmentById(EquipmentId equipmentId){
+        Equipment equipment = equipmentQueryService.findById(equipmentId);
+        EquipmentId planId = null;
+        if (null !=equipment.getEquipmentPlan()) {
+            planId = equipment.getEquipmentPlan().id();
+        }
+        equipmentRPAccountRepository.deleteAccountRelationByEquipmentId(equipmentId);
+        deleteToolingRelation(equipment);
+        equipmentRepository.deleteById(equipmentId);
+        if (null != planId ) {
+            planRepository.deleteById(planId);
+        }
     }
 
     public void saveAllEquipment(List<Equipment> equipmentList){

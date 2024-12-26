@@ -30,7 +30,7 @@ public class RPAccountAddable implements DataAddable {
 
     private final RedisStoreManager manager;
 
-    @Autowired
+    @Autowired(required = false)
     public RPAccountAddable(EquipmentCommandService commandService,
                              RedisStoreManager manager){
         this.commandService = commandService;

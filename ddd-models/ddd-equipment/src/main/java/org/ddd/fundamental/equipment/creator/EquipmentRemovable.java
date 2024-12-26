@@ -22,7 +22,7 @@ public class EquipmentRemovable implements DataRemovable {
 
     private final EquipmentCommandService service;
 
-    @Autowired
+    @Autowired(required = false)
     public EquipmentRemovable(RedisStoreManager manager,
                               EquipmentCommandService service){
         this.manager = manager;

@@ -6,8 +6,6 @@ import org.ddd.fundamental.day.YearModelValue;
 import org.ddd.fundamental.day.range.DateRangeValue;
 import org.ddd.fundamental.equipment.application.command.EquipmentCommandService;
 import org.ddd.fundamental.equipment.application.query.EquipmentQueryService;
-import org.ddd.fundamental.equipment.domain.model.Equipment;
-import org.ddd.fundamental.equipment.domain.model.EquipmentResource;
 import org.ddd.fundamental.equipment.enums.EquipmentType;
 import org.ddd.fundamental.equipment.helper.EquipmentHelper;
 import org.ddd.fundamental.equipment.value.*;

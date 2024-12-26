@@ -20,7 +20,7 @@ public class RPAccountRemovable implements DataRemovable {
 
     private final RedisStoreManager manager;
 
-    @Autowired
+    @Autowired(required = false)
     public RPAccountRemovable(EquipmentCommandService commandService,
                               RedisStoreManager manager){
         this.commandService = commandService;
