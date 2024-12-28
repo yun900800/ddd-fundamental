@@ -12,6 +12,7 @@ import org.ddd.fundamental.equipment.value.*;
 import org.ddd.fundamental.equipment.value.business.WorkOrderComposable;
 import org.ddd.fundamental.factory.EquipmentId;
 import org.ddd.fundamental.material.client.MaterialClient;
+import org.ddd.fundamental.material.value.MaterialId;
 import org.ddd.fundamental.material.value.MaterialType;
 import org.ddd.fundamental.shared.api.equipment.*;
 import org.ddd.fundamental.shared.api.material.MaterialDTO;
@@ -20,15 +21,15 @@ import org.ddd.fundamental.workorder.value.WorkOrderId;
 import org.ddd.fundamental.workprocess.enums.ProductResourceType;
 import org.ddd.fundamental.workprocess.value.WorkProcessId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -52,6 +53,8 @@ public class EquipmentTemplateClient {
     private static final String ADD_PLAN_TO_EQUIPMENT = "http://localhost:9004/equipment/add_plan_to_equipment/%s";
 
     private static final String CONFIGURE_MATERIAL_INPUT_OUTPUT = "http://localhost:9004/equipment/configure_material_input_output/%s";
+
+    private static final String QUERY_RESOURCES_INPUT_OUTPUT = "http://localhost:9004/equipment/resources_by_input_output";
 
     @Autowired(required = false)
     public EquipmentTemplateClient(EquipmentCommandService commandService,
@@ -184,7 +187,7 @@ public class EquipmentTemplateClient {
         return result;
     }
 
-    @Scheduled(cron = "*/20 * * * * ?")
+    @Scheduled(cron = "*/2000 * * * * ?")
     public void configureEquipmentInputAndOutput(){
         List<MaterialDTO> rawMaterialList = materialClient.materialsByMaterialType(MaterialType.RAW_MATERIAL);
         List<MaterialDTO> spareMaterialList = materialClient.materialsByMaterialType(MaterialType.WORKING_IN_PROGRESS);
@@ -200,6 +203,32 @@ public class EquipmentTemplateClient {
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.postForObject(url,configureMaterialDTO,Void.class);
         log.info("configure material input and output finished");
+    }
+
+    @Scheduled(cron = "*/20 * * * * ?")
+    public void queryResourcesByInputAndOutputIds(){
+        String url = QUERY_RESOURCES_INPUT_OUTPUT;
+        ConfigureMaterialDTO configureMaterialDTO =
+                ConfigureMaterialDTO.create(
+                        EquipmentId.randomId(EquipmentId.class),
+                        Arrays.asList(
+                                MaterialDTO.create(null,new MaterialId("68b95a96-e3ca-4e93-b2e3-d7b78cc4343e"),
+                                        MaterialType.RAW_MATERIAL),
+                                MaterialDTO.create(null,new MaterialId("608cdac8-d58c-47f2-a30d-1d9ec051ad03"),
+                                        MaterialType.RAW_MATERIAL)
+                        ),
+                        Arrays.asList(
+                                MaterialDTO.create(null,new MaterialId("c5ddab93-3f57-473e-bd2d-df825daab0af"),
+                                        MaterialType.RAW_MATERIAL),
+                                MaterialDTO.create(null,new MaterialId("0c16a03b-1e9a-4c41-8a29-800a26310719"),
+                                        MaterialType.RAW_MATERIAL)
+                        )
+                );
+        log.info("url is {}",url);
+        RestTemplate restTemplate = new RestTemplate(new CustomHttpComponentsClientHttpRequestFactory());
+        List<EquipmentResourceDTO> dtoList = restTemplate.exchange(url, HttpMethod.GET,
+                new HttpEntity<>(configureMaterialDTO), List.class).getBody();
+        log.info("dtoList is {}",dtoList);
     }
 
 }

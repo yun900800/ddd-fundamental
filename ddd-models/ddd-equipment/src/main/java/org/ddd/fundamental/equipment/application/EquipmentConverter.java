@@ -1,9 +1,11 @@
 package org.ddd.fundamental.equipment.application;
 
 import org.ddd.fundamental.equipment.domain.model.Equipment;
+import org.ddd.fundamental.equipment.domain.model.EquipmentResource;
 import org.ddd.fundamental.equipment.domain.model.RPAccount;
 import org.ddd.fundamental.equipment.domain.model.ToolingEquipment;
 import org.ddd.fundamental.shared.api.equipment.EquipmentDTO;
+import org.ddd.fundamental.shared.api.equipment.EquipmentResourceDTO;
 import org.ddd.fundamental.shared.api.equipment.RPAccountDTO;
 import org.ddd.fundamental.shared.api.equipment.ToolingDTO;
 import org.springframework.util.CollectionUtils;
@@ -53,6 +55,19 @@ public final class EquipmentConverter {
 
     public static RPAccountDTO entityToRPAccountDTO(RPAccount entity){
         return RPAccountDTO.create(entity.id(),entity.getAccountValue());
+    }
+
+    public static EquipmentResourceDTO entityToResourceDTO(EquipmentResource resource){
+        return EquipmentResourceDTO.create(resource.id(),resource.getEquipmentResourceValue());
+    }
+
+    public static List<EquipmentResourceDTO> entityToResourceDTO(List<EquipmentResource> resources){
+        if (CollectionUtils.isEmpty(resources)){
+            return new ArrayList<>();
+        } else {
+            return resources.stream().map(EquipmentConverter::entityToResourceDTO)
+                    .collect(Collectors.toList());
+        }
     }
 
 }

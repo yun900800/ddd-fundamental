@@ -7,8 +7,10 @@ import org.ddd.fundamental.equipment.domain.model.EquipmentResource;
 import org.ddd.fundamental.equipment.domain.model.RPAccount;
 import org.ddd.fundamental.equipment.domain.model.ToolingEquipment;
 import org.ddd.fundamental.equipment.domain.repository.EquipmentRepository;
+import org.ddd.fundamental.equipment.domain.repository.EquipmentResourceRepository;
 import org.ddd.fundamental.equipment.domain.repository.RPAccountRepository;
 import org.ddd.fundamental.equipment.domain.repository.ToolingEquipmentRepository;
+import org.ddd.fundamental.equipment.helper.EquipmentHelper;
 import org.ddd.fundamental.equipment.value.RPAccountId;
 import org.ddd.fundamental.factory.EquipmentId;
 import org.ddd.fundamental.material.client.MaterialClient;
@@ -35,6 +37,8 @@ public class EquipmentQueryService {
 
     private final RPAccountRepository accountRepository;
 
+    private final EquipmentResourceRepository resourceRepository;
+
     private final MaterialClient materialClient;
 
     private final RedisStoreManager manager;
@@ -43,11 +47,13 @@ public class EquipmentQueryService {
     public EquipmentQueryService(EquipmentRepository equipmentRepository,
                                  ToolingEquipmentRepository toolingRepository,
                                  RPAccountRepository accountRepository,
+                                 EquipmentResourceRepository resourceRepository,
                                  RedisStoreManager manager,
                                  MaterialClient materialClient){
         this.equipmentRepository = equipmentRepository;
         this.toolingRepository = toolingRepository;
         this.accountRepository = accountRepository;
+        this.resourceRepository = resourceRepository;
         this.manager = manager;
         this.materialClient = materialClient;
     }
@@ -153,4 +159,20 @@ public class EquipmentQueryService {
     public Equipment getProxyEquipment(EquipmentId equipmentId){
         return equipmentRepository.getOne(equipmentId);
     }
+
+    public List<EquipmentResourceDTO> queryResourcesByInputAndOutput(MaterialId inputId,MaterialId outputId){
+        List<EquipmentResource> resources =  resourceRepository.queryResourcesByInputAndOutput(inputId,outputId);
+        return EquipmentConverter.entityToResourceDTO(resources);
+    }
+
+    public List<EquipmentResourceDTO> queryResourcesByInputAndOutputByJPQL(MaterialId inputId,MaterialId outputId){
+        List<EquipmentResource> resources =  resourceRepository.queryResourcesByInputAndOutputByJPQL(inputId,outputId);
+        return EquipmentConverter.entityToResourceDTO(resources);
+    }
+
+    public List<EquipmentResourceDTO> queryResourcesByInputAndOutputIds(List<MaterialId> inputIds, List<MaterialId> outputIds){
+        List<EquipmentResource> resources =  resourceRepository.queryResourcesByInputAndOutputIds(inputIds,outputIds);
+        return EquipmentConverter.entityToResourceDTO(resources);
+    }
+
 }

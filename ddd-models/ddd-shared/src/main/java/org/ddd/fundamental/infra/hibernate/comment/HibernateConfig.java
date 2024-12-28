@@ -4,6 +4,7 @@ import io.hypersistence.utils.hibernate.type.json.JsonType;
 import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.day.DayOff;
 import org.ddd.fundamental.infra.hibernate.CustomObjectMapperSupplier;
+import org.ddd.fundamental.infra.hibernate.function.SqlFunctionsMetadataBuilderContributor;
 import org.hibernate.jpa.boot.spi.IntegratorProvider;
 import org.hibernate.jpa.boot.spi.TypeContributorList;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernatePropertiesCustomizer;
@@ -34,6 +35,10 @@ public class HibernateConfig implements HibernatePropertiesCustomizer {
                                         jsonType, "dayOff"
                                 )
                 )
+        );
+        hibernateProperties.put(
+                "hibernate.metadata_builder_contributor",
+                SqlFunctionsMetadataBuilderContributor.class
         );
     }
 }

@@ -2,16 +2,19 @@ package org.ddd.fundamental.equipment.rest;
 
 import org.ddd.fundamental.equipment.application.command.EquipmentCommandService;
 import org.ddd.fundamental.equipment.application.query.EquipmentQueryService;
+import org.ddd.fundamental.equipment.domain.model.EquipmentResource;
 import org.ddd.fundamental.equipment.value.BusinessRange;
 import org.ddd.fundamental.equipment.value.RPAccountId;
 import org.ddd.fundamental.equipment.value.business.WorkOrderComposable;
 import org.ddd.fundamental.factory.EquipmentId;
+import org.ddd.fundamental.material.value.MaterialId;
 import org.ddd.fundamental.shared.api.equipment.*;
 import org.ddd.fundamental.shared.api.material.MaterialDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class EquipmentRest {
@@ -95,5 +98,26 @@ public class EquipmentRest {
     @GetMapping("/equipment/get_equipment_input_output/{equipmentId}")
     public EquipmentInputOutputDTO getEquipmentInputOutput(@PathVariable String equipmentId) {
         return queryService.getEquipmentInputOutput(new EquipmentId(equipmentId));
+    }
+
+    @GetMapping("/equipment/resources_by_input_output/{inputId}/{outputId}")
+    public List<EquipmentResourceDTO> queryResourcesByInputAndOutput(@PathVariable String inputId,
+                                                                  @PathVariable String outputId){
+        return queryService.queryResourcesByInputAndOutput(new MaterialId(inputId),
+                new MaterialId(outputId));
+    }
+
+    @GetMapping("/equipment/resources_by_input_output_jpql/{inputId}/{outputId}")
+    public List<EquipmentResourceDTO> queryResourcesByInputAndOutputByJPQL(@PathVariable String inputId,
+                                                                     @PathVariable String outputId){
+        return queryService.queryResourcesByInputAndOutputByJPQL(new MaterialId(inputId),
+                new MaterialId(outputId));
+    }
+
+    @GetMapping("/equipment/resources_by_input_output")
+    public List<EquipmentResourceDTO> queryResourcesByInputAndOutputIds(@RequestBody ConfigureMaterialDTO configureMaterialDTO){
+        return queryService.queryResourcesByInputAndOutputIds(
+                configureMaterialDTO.getMaterialInputs().stream().map(v->v.id()).collect(Collectors.toList()),
+                configureMaterialDTO.getMaterialOutputs().stream().map(v->v.id()).collect(Collectors.toList()));
     }
 }
