@@ -23,7 +23,7 @@ public class SqlFunctionsMetadataBuilderContributor
         metadataBuilder.applySqlFunction(
                 "json_extract",
                 new SQLFunctionTemplate(
-                        StandardBasicTypes.TEXT,
+                        StandardBasicTypes.STRING,
                         "json_extract(?1,?2)"
                 )
         );

@@ -13,7 +13,7 @@ spring:
     properties:
       hibernate:
         format_sql: false
-    database-platform: org.hibernate.dialect.MySQLDialect
+    database-platform: org.ddd.fundamental.equipment.config.CustomMySQLDialect
   kafka:
     bootstrap-servers: localhost:29092
 

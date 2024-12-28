@@ -11,7 +11,7 @@ public interface CustomEquipmentResourceRepository {
             MaterialId outputId
     );
 
-    List<EquipmentResource> queryResourcesByInputAndOutputByJPQL(MaterialId inputId,
+    List<String> queryResourcesByInputAndOutputByJPQL(MaterialId inputId,
                                                                  MaterialId outputId);
 
     List<EquipmentResource> queryResourcesByInputAndOutputIds(List<MaterialId> inputIds,

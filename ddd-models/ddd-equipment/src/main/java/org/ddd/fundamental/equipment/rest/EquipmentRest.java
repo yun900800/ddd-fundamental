@@ -108,7 +108,7 @@ public class EquipmentRest {
     }
 
     @GetMapping("/equipment/resources_by_input_output_jpql/{inputId}/{outputId}")
-    public List<EquipmentResourceDTO> queryResourcesByInputAndOutputByJPQL(@PathVariable String inputId,
+    public List<String> queryResourcesByInputAndOutputByJPQL(@PathVariable String inputId,
                                                                      @PathVariable String outputId){
         return queryService.queryResourcesByInputAndOutputByJPQL(new MaterialId(inputId),
                 new MaterialId(outputId));

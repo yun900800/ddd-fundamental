@@ -165,9 +165,14 @@ public class EquipmentQueryService {
         return EquipmentConverter.entityToResourceDTO(resources);
     }
 
-    public List<EquipmentResourceDTO> queryResourcesByInputAndOutputByJPQL(MaterialId inputId,MaterialId outputId){
-        List<EquipmentResource> resources =  resourceRepository.queryResourcesByInputAndOutputByJPQL(inputId,outputId);
-        return EquipmentConverter.entityToResourceDTO(resources);
+    public List<String> queryResourcesByInputAndOutputByJPQL(MaterialId inputId,MaterialId outputId){
+
+        List<EquipmentResource> equipmentResources = resourceRepository.
+                queryResourcesById("76fadfb9-f2d7-4991-a45f-320916c15fb8");
+        log.info("equipmentResources is {}",EquipmentConverter.entityToResourceDTO(equipmentResources));
+        List<String> resources =  resourceRepository.queryResourcesByInputAndOutputByJPQL(inputId,outputId);
+//        return EquipmentConverter.entityToResourceDTO(resources);
+        return resources;
     }
 
     public List<EquipmentResourceDTO> queryResourcesByInputAndOutputIds(List<MaterialId> inputIds, List<MaterialId> outputIds){

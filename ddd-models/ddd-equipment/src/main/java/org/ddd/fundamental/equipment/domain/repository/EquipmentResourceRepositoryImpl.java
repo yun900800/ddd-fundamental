@@ -1,6 +1,7 @@
 package org.ddd.fundamental.equipment.domain.repository;
 
 import lombok.extern.slf4j.Slf4j;
+import org.ddd.fundamental.equipment.application.EquipmentConverter;
 import org.ddd.fundamental.equipment.domain.model.EquipmentResource;
 import org.ddd.fundamental.material.value.MaterialId;
 import org.springframework.stereotype.Component;
@@ -36,17 +37,35 @@ public class EquipmentResourceRepositoryImpl implements CustomEquipmentResourceR
     }
 
     @Override
-    public List<EquipmentResource> queryResourcesByInputAndOutputByJPQL(MaterialId inputId, MaterialId outputId) {
-        Query query = entityManager.createQuery("""
-                        select er from equipment_resource er where 
-                        :inputId MEMBER OF 
-                            json_extract(er.equipmentResourceValue.inputs,:jsonPath)
-                         AND :outputId MEMBER OF 
-                            json_extract(er.equipmentResourceValue.outputs,:jsonPath)                                        
+    public List<String> queryResourcesByInputAndOutputByJPQL(MaterialId inputId, MaterialId outputId) {
+//        Query query1 = entityManager.createQuery("""
+//                        select er from EquipmentResource er where
+//                        :inputId MEMBER OF function('json_extract',er.equipmentResourceValue.inputs,:jsonPath)
+//                         AND :outputId MEMBER OF function('json_extract',er.equipmentResourceValue.outputs,:jsonPath)
+//                        """)
+//                .setParameter("inputId",inputId.toUUID())
+//                .setParameter("jsonPath","$[*]")
+//                .setParameter("outputId", outputId.toUUID());
+//        List<EquipmentResource> equipmentResources = query1.getResultList();
+//        log.info("equipmentResources is ");
+
+
+        Query query1 = entityManager.createQuery("""
+                        select er  from EquipmentResource er 
+                        where :inputId in (
+                            json_extract(er.equipmentResourceValue.inputs,'$[*]')
+                        )
                         """)
-                .setParameter("inputId",inputId.toUUID())
-                .setParameter("jsonPath","$[*]")
-                .setParameter("outputId", outputId.toUUID());
+                .setParameter("inputId","76fadfb9-f2d7-4991-a45f-320916c15fb8");
+        List<EquipmentResource> equipmentResources = query1.getResultList();
+        log.info("equipmentResources is {}", EquipmentConverter.entityToResourceDTO(equipmentResources));
+
+
+        Query query = entityManager.createQuery("""
+                        select group_concat(er.equipmentResourceValue.resource.name) from EquipmentResource er where 
+                        1 = 1 
+                        group by er.positionType                                   
+                        """,String.class);
         return query.getResultList();
     }
 
