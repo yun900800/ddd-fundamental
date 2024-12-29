@@ -1,0 +1,43 @@
+server:
+  port: 9009
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/schedule?useSSL=false&pinGlobalTxToPhysicalConnection=true&allowPublicKeyRetrieval=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: rootpassword
+    #    禁用数据源的自动提交
+    hikari:
+      auto-commit: false
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        session_factory:
+#          statement_inspector: org.ddd.fundamental.common.tenant.hibernate.HibernateLineLevelTenantStatementInspector
+        generate_statistics: false
+        format_sql: false
+        #        禁用hibernate的自动提交
+        connection:
+          provider_disables_autocommit: true
+    #          handling_mode: DELAYED_ACQUISITION_AND_RELEASE_AFTER_TRANSACTION
+
+    database-platform: org.hibernate.dialect.MySQLDialect
+logging:
+  level:
+    net:
+      ttddyy:
+        dsproxy:
+          listener: debug
+feign:
+  hystrix:
+    enabled: true
+
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: false

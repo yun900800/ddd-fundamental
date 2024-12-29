@@ -1,4 +1,4 @@
-package org.ddd.fundamental.schedule;
+package org.ddd.fundamental.schedule.value;
 
 import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.bom.BomId;
@@ -6,7 +6,9 @@ import org.ddd.fundamental.core.ValueObject;
 import org.ddd.fundamental.material.value.MaterialId;
 import org.ddd.fundamental.workprocess.value.resources.ProductResource;
 import org.ddd.fundamental.workprocess.value.resources.ProductResources;
+import org.hibernate.annotations.Type;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.MappedSuperclass;
 import java.time.Instant;
@@ -25,6 +27,8 @@ public class MasterProductScheduleValue implements ValueObject, Cloneable{
     /**
      * 已经拥有的原材料或者零件(在制品)
      */
+    @Type(type = "json")
+    @Column(columnDefinition = "json", name = "exist_materials")
     private Set<MaterialId> existMaterials = new HashSet<>();
 
     /**
@@ -40,6 +44,8 @@ public class MasterProductScheduleValue implements ValueObject, Cloneable{
     /**
      * 原料需要的数量
      */
+    @Type(type = "json")
+    @Column(columnDefinition = "json", name = "raw_material_qty")
     private Map<MaterialId,Double> rawMaterialQty = new HashMap<>();
 
     /**

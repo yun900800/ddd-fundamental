@@ -32,7 +32,7 @@ public class BomTemplateClient {
         this.bomQueryService = bomQueryService;
     }
 
-    @Scheduled(cron = "*/36000 * * * * ?")
+    @Scheduled(cron = "*/60 * * * * ?")
     public void createProductBom(){
         List<MaterialDTO> products = bomQueryService.materialsByMaterialType(MaterialType.PRODUCTION);
         MaterialId productId = CollectionUtils.random(products).id();
