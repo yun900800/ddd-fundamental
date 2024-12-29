@@ -25,7 +25,7 @@ public class MaterialClientFallback implements MaterialClient{
     @Override
     public List<MaterialDTO> materialsByMaterialType(MaterialType materialType) {
         if (cause instanceof FeignException && ((FeignException) cause).status() == 404) {
-            log.error("404 error took place when getAlbums was called with userId: "
+            log.error("404 error took place when materialsByMaterialType was called with materialType: "
                     + materialType +  ". Error message: "
                     + cause.getLocalizedMessage());
         } else if (cause instanceof RetryableException && ((FeignException) cause).status() == -1) {

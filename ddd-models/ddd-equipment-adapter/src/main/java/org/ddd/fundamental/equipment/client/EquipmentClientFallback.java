@@ -9,7 +9,9 @@ import org.ddd.fundamental.equipment.value.EquipmentMaster;
 import org.ddd.fundamental.equipment.value.EquipmentSize;
 import org.ddd.fundamental.equipment.value.MaintainStandard;
 import org.ddd.fundamental.factory.EquipmentId;
+import org.ddd.fundamental.shared.api.equipment.ConfigureMaterialDTO;
 import org.ddd.fundamental.shared.api.equipment.EquipmentDTO;
+import org.ddd.fundamental.shared.api.equipment.EquipmentResourceDTO;
 import org.ddd.fundamental.shared.api.equipment.ToolingDTO;
 
 import java.util.ArrayList;
@@ -65,6 +67,12 @@ public class EquipmentClientFallback implements EquipmentClient {
 
     @Override
     public List<ToolingDTO> toolingList() {
+        log.error("error is:{}",cause);
+        return new ArrayList<>();
+    }
+
+    @Override
+    public List<EquipmentResourceDTO> queryResourcesByInputAndOutputIds(ConfigureMaterialDTO configureMaterialDTO) {
         log.error("error is:{}",cause);
         return new ArrayList<>();
     }

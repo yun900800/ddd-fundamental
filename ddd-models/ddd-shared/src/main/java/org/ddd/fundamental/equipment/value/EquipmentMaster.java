@@ -237,6 +237,37 @@ public class EquipmentMaster implements ValueObject, ProductResources, Cloneable
         }
     }
 
+    public EquipmentMaster changeInfo(ChangeableInfo info) {
+        this.info = info;
+        return this;
+    }
+
+    public EquipmentMaster changeEquipmentSize(EquipmentSize size) {
+        this.size = size;
+        return this;
+    }
+
+    public EquipmentMaster changeMaintainStandard(MaintainStandard standard){
+        this.standard = standard;
+        return this;
+    }
+
+    public EquipmentMaster changePersonInfo(PersonInfo personInfo){
+        this.personInfo = personInfo;
+        return this;
+    }
+
+    public EquipmentMaster changeQuantityInfo(QualityInfo qualityInfo){
+        this.qualityInfo = qualityInfo;
+        return this;
+    }
+
+    public EquipmentMaster changeAssetNo(String assetNo){
+        this.assetNo = assetNo;
+        return this;
+    }
+
+
     public ChangeableInfo getInfo() {
         return info.clone();
     }

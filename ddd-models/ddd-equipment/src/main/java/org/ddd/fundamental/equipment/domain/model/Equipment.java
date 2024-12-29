@@ -1,12 +1,13 @@
 package org.ddd.fundamental.equipment.domain.model;
 
 import lombok.extern.slf4j.Slf4j;
+import org.ddd.fundamental.changeable.ChangeableInfo;
 import org.ddd.fundamental.core.AbstractAggregateRoot;
 import org.ddd.fundamental.core.DomainObjectId;
 import org.ddd.fundamental.day.YearModelValue;
 import org.ddd.fundamental.day.range.DateRange;
 import org.ddd.fundamental.equipment.enums.EquipmentType;
-import org.ddd.fundamental.equipment.value.EquipmentMaster;
+import org.ddd.fundamental.equipment.value.*;
 import org.ddd.fundamental.factory.EquipmentId;
 import org.ddd.fundamental.tuple.TwoTuple;
 
@@ -124,6 +125,51 @@ public class Equipment extends AbstractAggregateRoot<EquipmentId> {
     public Equipment clearDateRange(){
         defaultDateRanges();
         this.dateRanges.clear();
+        return this;
+    }
+
+    public Equipment changeInfo(ChangeableInfo info) {
+        this.master.changeInfo(info);
+        return this;
+    }
+
+    public Equipment changeEquipmentSize(EquipmentSize size) {
+        this.master.changeEquipmentSize(size);
+        return this;
+    }
+
+    public Equipment changeMaintainStandard(MaintainStandard standard){
+        this.master.changeMaintainStandard(standard);
+        return this;
+    }
+
+    public Equipment changePersonInfo(PersonInfo personInfo){
+        this.master.changePersonInfo(personInfo);
+        return this;
+    }
+
+    public Equipment changeQuantityInfo(QualityInfo qualityInfo){
+        this.master.changeQuantityInfo(qualityInfo);
+        return this;
+    }
+
+    /**
+     * 修改资产编号
+     * @param assetNo
+     * @return
+     */
+    public Equipment changeAssetNo(String assetNo){
+        this.master.changeAssetNo(assetNo);
+        return this;
+    }
+
+    /**
+     * 修改资产设备的年度模型
+     * @param yearModel
+     * @return
+     */
+    public Equipment changeYearModel(YearModelValue yearModel){
+        this.model = yearModel;
         return this;
     }
 

@@ -187,5 +187,64 @@ public class EquipmentCommandService {
         equipment.getEquipmentResource().removeMaterialPairs(materialInputs, materialOutputs);
     }
 
+    /**
+     * 修改设备的名称信息等
+     * @param equipmentId
+     * @param info
+     */
+    public void changeInfo(EquipmentId equipmentId,ChangeableInfo info){
+        Equipment equipment = equipmentQueryService.findById(equipmentId);
+        equipment.changeInfo(info);
+    }
+
+    /**
+     * 修改设备的大小尺寸
+     * @param equipmentId
+     * @param size
+     */
+    public void changeEquipmentSize(EquipmentId equipmentId,EquipmentSize size){
+        Equipment equipment = equipmentQueryService.findById(equipmentId);
+        equipment.changeEquipmentSize(size);
+    }
+
+    /**
+     * 修改设备的维护标准
+     * @param equipmentId
+     * @param standard
+     */
+    public void changeMaintainStandard(EquipmentId equipmentId,MaintainStandard standard) {
+        Equipment equipment = equipmentQueryService.findById(equipmentId);
+        equipment.changeMaintainStandard(standard);
+    }
+
+    /**
+     * 修改设备的人员信息
+     * @param equipmentId
+     * @param personInfo
+     */
+    public void changePersonInfo(EquipmentId equipmentId,PersonInfo personInfo){
+        Equipment equipment = equipmentQueryService.findById(equipmentId);
+        equipment.changePersonInfo(personInfo);
+    }
+
+    /**
+     * 修改设备的质量信息
+     * @param equipmentId
+     * @param qualityInfo
+     */
+    public void changeQuantityInfo(EquipmentId equipmentId,QualityInfo qualityInfo){
+        Equipment equipment = equipmentQueryService.findById(equipmentId);
+        equipment.changeQuantityInfo(qualityInfo);
+    }
+
+    /**
+     * 修改设备的资产编号
+     * @param equipmentId
+     * @param assetNo
+     */
+    public void changeAssetNo(EquipmentId equipmentId,String assetNo) {
+        Equipment equipment = equipmentQueryService.findById(equipmentId);
+        equipment.changeAssetNo(assetNo);
+    }
 
 }
