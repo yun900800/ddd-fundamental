@@ -3,7 +3,9 @@ package org.ddd.fundamental.material.application;
 import org.ddd.fundamental.event.core.DomainEventType;
 import org.ddd.fundamental.event.material.ProductEventCreated;
 import org.ddd.fundamental.material.domain.model.Material;
+import org.ddd.fundamental.material.enums.MaterialInputOutputType;
 import org.ddd.fundamental.shared.api.material.MaterialDTO;
+import org.ddd.fundamental.utils.EnumsUtils;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
@@ -24,7 +26,10 @@ public class MaterialConverter {
     }
 
     public static MaterialDTO entityToDTO(Material v){
-        return new MaterialDTO(v.getMaterialMaster(),v.id(),v.getMaterialType());
+        return MaterialDTO.create(v.getMaterialMaster(),v.id(),v.getMaterialType(),
+                EnumsUtils.findEnumValue(MaterialInputOutputType.class,
+                        v.getMaterialRequiredProps().get("inputOrOutputType"))
+                );
     }
 
     public static List<ProductEventCreated> entityToEvent(List<Material> materials){

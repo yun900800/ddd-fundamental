@@ -42,7 +42,7 @@ public class BomCommandService {
 
     private final AsyncService asyncService;
 
-    private final ListeningExecutorService listenerxecService;
+    private final ListeningExecutorService listenerExecService;
 
     @Autowired(required = false)
     public BomCommandService(ProductStructureDataRepository structureDataRepository,
@@ -51,12 +51,12 @@ public class BomCommandService {
         this.structureDataRepository = structureDataRepository;
         this.bomQueryService = bomQueryService;
         this.asyncService = asyncService;
-        this.listenerxecService = MoreExecutors.listeningDecorator(Executors.newSingleThreadExecutor());
+        this.listenerExecService = MoreExecutors.listeningDecorator(Executors.newSingleThreadExecutor());
     }
 
     @PreDestroy
     public void destroy(){
-        this.listenerxecService.shutdown();
+        this.listenerExecService.shutdown();
     }
 
     /**
@@ -102,6 +102,8 @@ public class BomCommandService {
         Futures.addCallback(configsTask, new FutureCallback<List<List<MaterialDTO>>>() {
             @Override
             public void onSuccess(@Nullable List<List<MaterialDTO>> result) {
+                stopWatch.stop();
+                System.out.printf("异步执行时长：%d 毫秒.%n", stopWatch.getTotalTimeMillis());
                 List<MaterialDTO> products = result.get(0);
                 List<MaterialDTO> spares = result.get(1);
                 List<MaterialDTO> raw = result.get(2);
@@ -127,15 +129,13 @@ public class BomCommandService {
                 List<ProductStructureData> structureDataList = list.stream().map(v->ProductStructureData.create(v)).collect(Collectors.toList());
                 structureDataRepository.persistAll(structureDataList);
                 log.info("execute callback finished");
-                stopWatch.stop();
-                System.out.printf("异步执行时长：%d 毫秒.%n", stopWatch.getTotalTimeMillis());
             }
 
             @Override
             public void onFailure(Throwable t) {
                 log.error("throw exception {}",t);
             }
-        }, listenerxecService);
+        }, listenerExecService);
     }
 
 
@@ -156,6 +156,8 @@ public class BomCommandService {
                 .materialsByMaterialType(MaterialType.WORKING_IN_PROGRESS);
         List<MaterialDTO> rawMaterials = bomQueryService
                 .materialsByMaterialType(MaterialType.RAW_MATERIAL);
+        stopWatch1.stop();
+        System.out.printf("同步执行时长：%d 毫秒.%n", stopWatch1.getTotalTimeMillis());
         ProductStructure<ProductStructureNode> productStructure = BomHelper.createProductStructure(
                 products.get(0), MaterialType.PRODUCTION
         );
@@ -176,7 +178,5 @@ public class BomCommandService {
         List<MaterialIdNode<ProductStructureNode>> list = productStructure.toMaterialIdList();
         List<ProductStructureData> structureDataList = list.stream().map(v->ProductStructureData.create(v)).collect(Collectors.toList());
         structureDataRepository.persistAll(structureDataList);
-        stopWatch1.stop();
-        System.out.printf("同步执行时长：%d 毫秒.%n", stopWatch1.getTotalTimeMillis());
     }
 }

@@ -9,12 +9,14 @@ import org.ddd.fundamental.material.creator.MaterialAddable;
 import org.ddd.fundamental.material.domain.model.Material;
 import org.ddd.fundamental.material.domain.repository.MaterialRepository;
 import org.ddd.fundamental.material.domain.value.ControlProps;
+import org.ddd.fundamental.material.enums.MaterialInputOutputType;
 import org.ddd.fundamental.material.producer.MaterialProducer;
 import org.ddd.fundamental.material.value.MaterialId;
 import org.ddd.fundamental.redis.config.RedisStoreManager;
 import org.ddd.fundamental.shared.api.material.MaterialDTO;
 import org.ddd.fundamental.shared.api.material.MaterialRequest;
 import org.ddd.fundamental.shared.api.material.PropsContainer;
+import org.ddd.fundamental.utils.EnumsUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -66,7 +68,9 @@ public class MaterialCommandService {
                 MaterialDTO.create(
                         material.getMaterialMaster(),
                         material.id(),
-                        materialRequest.getMaterialType()
+                        materialRequest.getMaterialType(),
+                        EnumsUtils.findEnumValue(MaterialInputOutputType.class,
+                                material.getMaterialRequiredProps().get("inputOrOutputType"))
                 )
         );
     }

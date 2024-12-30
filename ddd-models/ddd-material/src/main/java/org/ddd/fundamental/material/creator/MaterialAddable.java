@@ -9,6 +9,7 @@ import org.ddd.fundamental.material.application.MaterialConverter;
 import org.ddd.fundamental.material.domain.model.Material;
 import org.ddd.fundamental.material.domain.repository.MaterialRepository;
 import org.ddd.fundamental.material.domain.value.ControlProps;
+import org.ddd.fundamental.material.enums.MaterialInputOutputType;
 import org.ddd.fundamental.material.helper.MaterialHelper;
 import org.ddd.fundamental.material.producer.MaterialProducer;
 import org.ddd.fundamental.material.value.MaterialType;
@@ -16,6 +17,7 @@ import org.ddd.fundamental.material.value.PropsContainer;
 import org.ddd.fundamental.redis.config.RedisStoreManager;
 import org.ddd.fundamental.shared.api.material.MaterialDTO;
 import org.ddd.fundamental.utils.CollectionUtils;
+import org.ddd.fundamental.utils.EnumsUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -88,10 +90,15 @@ public class MaterialAddable implements DataAddable {
         String unit = CollectionUtils.random(MaterialHelper.units());
         String code = MaterialHelper.generateCode("XG-spec-code");
         String spec = MaterialHelper.generateSerialNo("XG-spec-00_",10);
+        MaterialType type = CollectionUtils.random(Arrays.asList(MaterialType.values()));
         requiredMap.put("materialType",CollectionUtils.random(MaterialHelper.materialTypes()));
         requiredMap.put("unit",unit);
         requiredMap.put("code",code);
         requiredMap.put("spec",spec);
+        requiredMap.put("inputOrOutputType",CollectionUtils.random(
+                MaterialHelper.inputOutputTypes().get(type)
+        ).name());
+
         return requiredMap;
     }
 
@@ -108,7 +115,7 @@ public class MaterialAddable implements DataAddable {
         for (int i = 0 ; i< 50;i++) {
             MaterialType type = CollectionUtils.random(Arrays.asList(MaterialType.values()));
             String name = CollectionUtils.random(MaterialHelper.createMaterial().get(type));
-            materials.add(createMaterial(name,Set.of("materialType","unit"),
+            materials.add(createMaterial(name,Set.of("materialType","unit","inputOrOutputType"),
                     Set.of("weight","width"), type, createRequiredMap(),
                     createCharacterMap()));
         }
@@ -121,8 +128,9 @@ public class MaterialAddable implements DataAddable {
         }
         return materials.stream().map(v->
                 MaterialDTO.create(v.getMaterialMaster(),v.id(),
-                        v.getMaterialType()
-                        ))
+                        v.getMaterialType(),
+                        EnumsUtils.findEnumValue(MaterialInputOutputType.class,
+                                v.getMaterialRequiredProps().get("inputOrOutputType"))))
                 .collect(Collectors.toList());
     }
 

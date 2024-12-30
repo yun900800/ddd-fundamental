@@ -5,6 +5,7 @@ import feign.FeignException;
 import feign.RetryableException;
 import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.material.MaterialMaster;
+import org.ddd.fundamental.material.enums.MaterialInputOutputType;
 import org.ddd.fundamental.material.value.MaterialId;
 import org.ddd.fundamental.material.value.MaterialType;
 import org.ddd.fundamental.shared.api.material.MaterialDTO;
@@ -45,10 +46,11 @@ public class MaterialClientFallback implements MaterialClient{
     }
 
     private List<MaterialDTO> defaultMaterialDTOS(){
-        MaterialDTO materialDTO = new MaterialDTO(
+        MaterialDTO materialDTO = MaterialDTO.create(
                 MaterialMaster.create("default-code","默认产品","default-spec","个"),
                 MaterialId.randomId(MaterialId.class),
-                MaterialType.PRODUCTION
+                MaterialType.PRODUCTION,
+                MaterialInputOutputType.MATERIAL_BOTH
         );
         List<MaterialDTO> materialDTOS = new ArrayList<>();
         materialDTOS.add(materialDTO);

@@ -63,7 +63,7 @@ public class MaterialTemplateClient {
                 ),
                 new MaterialId("0"),
                 type,
-                Set.of("code","spec","unit"),
+                Set.of("code","spec","unit","inputOrOutputType"),
                 Set.of("width","height"),
                 requiredMap,
                 characterMap

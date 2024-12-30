@@ -12,6 +12,7 @@ import org.ddd.fundamental.equipment.value.*;
 import org.ddd.fundamental.equipment.value.business.WorkOrderComposable;
 import org.ddd.fundamental.factory.EquipmentId;
 import org.ddd.fundamental.material.client.MaterialClient;
+import org.ddd.fundamental.material.enums.MaterialInputOutputType;
 import org.ddd.fundamental.material.value.MaterialId;
 import org.ddd.fundamental.material.value.MaterialType;
 import org.ddd.fundamental.shared.api.equipment.*;
@@ -213,15 +214,15 @@ public class EquipmentTemplateClient {
                         EquipmentId.randomId(EquipmentId.class),
                         Arrays.asList(
                                 MaterialDTO.create(null,new MaterialId("68b95a96-e3ca-4e93-b2e3-d7b78cc4343e"),
-                                        MaterialType.RAW_MATERIAL),
+                                        MaterialType.RAW_MATERIAL, MaterialInputOutputType.MATERIAL_INPUT),
                                 MaterialDTO.create(null,new MaterialId("608cdac8-d58c-47f2-a30d-1d9ec051ad03"),
-                                        MaterialType.RAW_MATERIAL)
+                                        MaterialType.RAW_MATERIAL,MaterialInputOutputType.MATERIAL_INPUT)
                         ),
                         Arrays.asList(
                                 MaterialDTO.create(null,new MaterialId("c5ddab93-3f57-473e-bd2d-df825daab0af"),
-                                        MaterialType.RAW_MATERIAL),
+                                        MaterialType.RAW_MATERIAL,MaterialInputOutputType.MATERIAL_INPUT),
                                 MaterialDTO.create(null,new MaterialId("0c16a03b-1e9a-4c41-8a29-800a26310719"),
-                                        MaterialType.RAW_MATERIAL)
+                                        MaterialType.RAW_MATERIAL,MaterialInputOutputType.MATERIAL_INPUT)
                         )
                 );
         log.info("url is {}",url);

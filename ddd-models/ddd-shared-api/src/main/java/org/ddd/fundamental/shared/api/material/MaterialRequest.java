@@ -1,8 +1,10 @@
 package org.ddd.fundamental.shared.api.material;
 
 import org.ddd.fundamental.material.MaterialMaster;
+import org.ddd.fundamental.material.enums.MaterialInputOutputType;
 import org.ddd.fundamental.material.value.MaterialId;
 import org.ddd.fundamental.material.value.MaterialType;
+import org.ddd.fundamental.utils.EnumsUtils;
 
 import java.util.Map;
 import java.util.Set;
@@ -21,7 +23,7 @@ public class MaterialRequest extends MaterialDTO {
     @SuppressWarnings("unused")
     protected MaterialRequest(){
         super(null,new MaterialId("0"),
-                MaterialType.PRODUCTION);
+                MaterialType.PRODUCTION, MaterialInputOutputType.MATERIAL_BOTH);
     }
 
     private MaterialRequest(MaterialMaster materialMaster, MaterialId id,
@@ -30,7 +32,8 @@ public class MaterialRequest extends MaterialDTO {
                             Set<String> characterSets,
                            Map<String,String> requiredMap,
                            Map<String,String> characterMap) {
-        super(materialMaster, id,materialType);
+        super(materialMaster, id,materialType, EnumsUtils.findEnumValue(MaterialInputOutputType.class,
+                requiredMap.get("inputOrOutputType")));
         this.characterMap = characterMap;
         this.requiredMap = requiredMap;
         this.materialType = materialType;

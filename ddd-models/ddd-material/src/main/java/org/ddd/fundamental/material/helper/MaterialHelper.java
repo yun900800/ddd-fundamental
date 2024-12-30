@@ -1,14 +1,12 @@
 package org.ddd.fundamental.material.helper;
 
 import org.ddd.fundamental.material.domain.enums.MaterialLevel;
+import org.ddd.fundamental.material.enums.MaterialInputOutputType;
 import org.ddd.fundamental.material.value.MaterialType;
 import org.ddd.fundamental.utils.DateTimeUtils;
 import org.ddd.fundamental.utils.RandomNumberUtil;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public final class MaterialHelper {
 
@@ -47,6 +45,20 @@ public final class MaterialHelper {
         ));
         map.put(MaterialType.PRODUCTION,Arrays.asList(
                 "鼠标","主板","酒瓶塞子","电脑","玩具"
+        ));
+        return map;
+    }
+
+    public static Map<MaterialType,List<MaterialInputOutputType>> inputOutputTypes(){
+        Map<MaterialType,List<MaterialInputOutputType>> map = new HashMap<>();
+        map.put(MaterialType.RAW_MATERIAL, Arrays.asList(
+                MaterialInputOutputType.MATERIAL_INPUT
+        ));
+        map.put(MaterialType.WORKING_IN_PROGRESS,Arrays.asList(
+                MaterialInputOutputType.values()
+        ));
+        map.put(MaterialType.PRODUCTION,Arrays.asList(
+                MaterialInputOutputType.values()
         ));
         return map;
     }

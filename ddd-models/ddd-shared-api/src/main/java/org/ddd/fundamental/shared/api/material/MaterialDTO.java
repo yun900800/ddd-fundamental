@@ -3,6 +3,7 @@ package org.ddd.fundamental.shared.api.material;
 
 import org.ddd.fundamental.core.AbstractDTO;
 import org.ddd.fundamental.material.MaterialMaster;
+import org.ddd.fundamental.material.enums.MaterialInputOutputType;
 import org.ddd.fundamental.material.value.MaterialId;
 import org.ddd.fundamental.material.value.MaterialType;
 
@@ -19,17 +20,21 @@ public class MaterialDTO extends AbstractDTO<MaterialId> {
 
     private MaterialType materialType;
 
+    private MaterialInputOutputType inputOutputType;
+
 
     public MaterialDTO(MaterialMaster materialMaster, MaterialId id,
-                       MaterialType materialType) {
+                       MaterialType materialType,MaterialInputOutputType inputOutputType) {
         super(id);
         this.materialMaster = materialMaster;
         this.materialType = materialType;
+        this.inputOutputType = inputOutputType;
     }
 
     public static MaterialDTO create(MaterialMaster materialMaster, MaterialId id,
-                                     MaterialType materialType){
-        return new MaterialDTO(materialMaster,id,materialType);
+                                     MaterialType materialType,
+                                     MaterialInputOutputType inputOutputType){
+        return new MaterialDTO(materialMaster,id,materialType,inputOutputType);
     }
 
     public MaterialMaster getMaterialMaster() {
