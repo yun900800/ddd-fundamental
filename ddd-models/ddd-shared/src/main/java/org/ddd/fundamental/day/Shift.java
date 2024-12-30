@@ -100,7 +100,9 @@ public class Shift implements ValueObject , CalculateTime{
         if (this == o) return true;
         if (!(o instanceof Shift)) return false;
         Shift shift = (Shift) o;
-        return Objects.equals(formatStart(), shift.formatStart()) && Objects.equals(formatEnd(), shift.formatEnd()) && Objects.equals(shiftName, shift.shiftName);
+        return Objects.equals(formatStart(), shift.formatStart()) &&
+                Objects.equals(formatEnd(), shift.formatEnd()) &&
+                Objects.equals(shiftName, shift.shiftName);
     }
 
     @Override

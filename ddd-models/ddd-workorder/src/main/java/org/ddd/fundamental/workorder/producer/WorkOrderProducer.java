@@ -1,4 +1,4 @@
-package org.ddd.fundamental.workorder.application;
+package org.ddd.fundamental.workorder.producer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
