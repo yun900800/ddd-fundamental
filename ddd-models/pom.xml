@@ -41,6 +41,7 @@
         <module>ddd-common</module>
         <module>ddd-docker</module>
         <module>ddd-plan-schedule</module>
+        <module>ddd-workprocess-adapter</module>
     </modules>
     <name>ddd-models</name>
 

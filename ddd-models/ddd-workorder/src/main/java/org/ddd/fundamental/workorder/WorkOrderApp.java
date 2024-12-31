@@ -1,46 +1,61 @@
 package org.ddd.fundamental.workorder;
 
 import lombok.extern.slf4j.Slf4j;
-import org.ddd.fundamental.shared.api.material.MaterialDTO;
-import org.ddd.fundamental.shared.api.optemplate.CraftsmanShipTemplateDTO;
-import org.ddd.fundamental.workorder.client.EquipmentClient;
-import org.ddd.fundamental.workorder.client.MaterialClient;
-import org.ddd.fundamental.workorder.client.WorkProcessClient;
+import org.ddd.fundamental.creator.CreatorDataManager;
+import org.ddd.fundamental.equipment.client.EquipmentClient;
+import org.ddd.fundamental.material.client.MaterialClient;
+import org.ddd.fundamental.workprocess.client.WorkProcessClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.cloud.openfeign.EnableFeignClients;
-
-import java.util.Arrays;
-import java.util.List;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-@EnableFeignClients
+@ComponentScan(basePackages = {
+        "org.ddd.fundamental.equipment",
+        "org.ddd.fundamental.material",
+        "org.ddd.fundamental.workprocess",
+        "org.ddd.fundamental.creator",
+        "org.ddd.fundamental.common",
+        "org.ddd.fundamental.workorder",
+        "org.ddd.fundamental.redis",
+})
 @EntityScan(
         {
                 "org.ddd.fundamental.workorder",
                 "org.ddd.fundamental.infra.hibernate"
         }
 )
+@EnableJpaRepositories(
+        basePackages = {
+                "org.ddd.fundamental.core.repository",
+                "org.ddd.fundamental.workorder.domain.repository"
+        }
+)
+@EnableFeignClients(
+        basePackages = {
+                "org.ddd.fundamental.equipment",
+                "org.ddd.fundamental.material",
+                "org.ddd.fundamental.workprocess"
+        }
+)
 @Slf4j
 public class WorkOrderApp implements CommandLineRunner {
 
-    @Autowired
-    private MaterialClient materialClient;
+    @Autowired(required = false)
+    private CreatorDataManager manager;
 
-    @Autowired
-    private EquipmentClient equipmentClient;
-
-    @Autowired
-    private WorkProcessClient workProcessClient;
     public static void main(String[] args) {
         SpringApplication.run(WorkOrderApp.class,args);
     }
 
     @Override
     public void run(String... args) throws Exception {
+        manager.execute();
 //        List<MaterialDTO> materialDTOList = materialClient.materials();
 //        log.info("materials is {}", materialDTOList);
 //        log.info("equipments is {}", equipmentClient.equipments());
