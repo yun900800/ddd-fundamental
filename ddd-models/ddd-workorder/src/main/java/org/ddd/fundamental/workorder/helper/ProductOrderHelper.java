@@ -6,6 +6,7 @@ import org.ddd.fundamental.material.value.MaterialId;
 import org.ddd.fundamental.shared.api.material.MaterialDTO;
 import org.ddd.fundamental.utils.CollectionUtils;
 import org.ddd.fundamental.workorder.domain.model.ProductOrder;
+import org.ddd.fundamental.workorder.enums.WorkOrderType;
 import org.ddd.fundamental.workorder.value.OrderId;
 import org.ddd.fundamental.workorder.value.ProductOrderValue;
 
@@ -62,5 +63,21 @@ public final class ProductOrderHelper {
         return Arrays.asList(
                 12000.0,15000.0,25000.0,50000.0,8000.0,18000.0,100000.0
         );
+    }
+
+    public static List<WorkOrderType> workOrderTypes() {
+        return Arrays.asList(WorkOrderType.values());
+    }
+
+    public static List<Integer> days() {
+        return Arrays.asList(1,2,3,4,5,10,12,15);
+    }
+
+    public static List<Double> doubles(){
+        return Arrays.asList(1000.0,1200.0,1500.0,1250.0,1100.0);
+    }
+
+    public static List<String> productCompanyNames() {
+        return Arrays.asList("深圳市卓越科技有限公司","深圳市创新科技有限公司","深圳市梨子科技有限公司");
     }
 }

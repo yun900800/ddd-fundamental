@@ -1,7 +1,8 @@
-package org.ddd.fundamental.workorder.application;
+package org.ddd.fundamental.workorder.creator;
 
 import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.core.generator.Generators;
+import org.ddd.fundamental.creator.DataAddable;
 import org.ddd.fundamental.event.core.DomainEventType;
 import org.ddd.fundamental.event.workorder.WorkOrderEvent;
 import org.ddd.fundamental.material.value.MaterialId;
@@ -11,38 +12,42 @@ import org.ddd.fundamental.tuple.TwoTuple;
 import org.ddd.fundamental.utils.CollectionUtils;
 import org.ddd.fundamental.workorder.domain.model.WorkOrder;
 import org.ddd.fundamental.workorder.domain.repository.WorkOrderRepository;
-import org.ddd.fundamental.workorder.enums.WorkOrderType;
+import org.ddd.fundamental.workorder.helper.ProductOrderHelper;
 import org.ddd.fundamental.workorder.producer.WorkOrderProducer;
 import org.ddd.fundamental.workorder.value.WorkOrderValue;
 import org.ddd.fundamental.workprocess.client.WorkProcessClient;
 import org.ddd.fundamental.workprocess.value.CraftsmanShipId;
-import org.springframework.beans.factory.SmartInitializingSingleton;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Component
 @Slf4j
-public class WorkOrderCreator implements SmartInitializingSingleton {
+@Component
+public class WorkOrderAddable implements DataAddable {
 
-    @Autowired
-    private WorkProcessClient workProcessClient;
+    private final WorkOrderRepository workOrderRepository;
+
+    private final WorkProcessClient workProcessClient;
+
+    private final WorkOrderProducer producer;
 
     private List<WorkOrder> workOrderList;
 
-    @Autowired
-    private WorkOrderRepository workOrderRepository;
-
-    public static List<WorkOrderType> workOrderTypes() {
-        return Arrays.asList(WorkOrderType.values());
+    @Autowired(required = false)
+    public WorkOrderAddable(WorkOrderRepository workOrderRepository,
+                            WorkProcessClient workProcessClient,
+                            WorkOrderProducer producer){
+        this.workOrderRepository = workOrderRepository;
+        this.workProcessClient = workProcessClient;
+        this.producer = producer;
     }
 
-    public List<TwoTuple<CraftsmanShipId,MaterialId>> craftsmanShipIds(){
+    public List<TwoTuple<CraftsmanShipId, MaterialId>> craftsmanShipIds(){
         List<CraftsmanShipTemplateDTO> craftsmanShipTemplateDTOS = workProcessClient.craftsmanShipTemplates();
         List<TwoTuple<CraftsmanShipId,MaterialId>> twoTuples = new ArrayList<>();
         for (CraftsmanShipTemplateDTO craftsmanShipTemplateDTO: craftsmanShipTemplateDTOS) {
@@ -51,26 +56,13 @@ public class WorkOrderCreator implements SmartInitializingSingleton {
         return twoTuples;
     }
 
-    public List<Integer> days() {
-        return Arrays.asList(1,2,3,4,5,10,12,15);
-    }
-
-    public List<Double> doubles(){
-        return Arrays.asList(1000.0,1200.0,1500.0,1250.0,1100.0);
-    }
-
-    public List<String> productCompanyNames() {
-        return Arrays.asList("深圳市卓越科技有限公司","深圳市创新科技有限公司","深圳市梨子科技有限公司");
-    }
-
-
     public WorkOrder createWorkOrder(){
         Instant start = Instant.now();
-        Instant end = start.plusSeconds(3600*24*CollectionUtils.random(days()));
+        Instant end = start.plusSeconds(3600*24* CollectionUtils.random(ProductOrderHelper.days()));
         TwoTuple<CraftsmanShipId,MaterialId> tuple = CollectionUtils.random(craftsmanShipIds());
         WorkOrder workOrder = new WorkOrder(WorkOrderValue.create(
-                CollectionUtils.random(workOrderTypes()), tuple.second,
-                start, end,CollectionUtils.random(doubles()), CollectionUtils.random(productCompanyNames()),
+                CollectionUtils.random(ProductOrderHelper.workOrderTypes()), tuple.second,
+                start, end,CollectionUtils.random(ProductOrderHelper.doubles()), CollectionUtils.random(ProductOrderHelper.productCompanyNames()),
                 tuple.first
         ));
         return workOrder;
@@ -82,27 +74,20 @@ public class WorkOrderCreator implements SmartInitializingSingleton {
         return workOrders;
     }
 
-    @Autowired
-    private WorkOrderProducer producer;
-
     private List<WorkOrderEvent> toEvents(List<WorkOrder> workOrders){
         return workOrders.stream().map(v->WorkOrderEvent.create(
-                    DomainEventType.EQUIPMENT, v.getOrder(),v.id()
+                        DomainEventType.EQUIPMENT, v.getOrder(),v.id()
                 ))
                 .collect(Collectors.toList());
     }
-    public void init(){
-        log.info("start remove workOrders");
-        workOrderRepository.deleteAll();
+
+    @Transactional
+    @Override
+    public void execute() {
+        log.info("start create workOrders");
         this.workOrderList = createWorkOrders();
         workOrderRepository.saveAll(workOrderList);
-        //producer.sendWorkOrders(toEvents(workOrderList));
         producer.sendWorkOrdersByType(toEvents(workOrderList));
         log.info("finish create workOrders");
-    }
-
-    @Override
-    public void afterSingletonsInstantiated() {
-        init();
     }
 }
