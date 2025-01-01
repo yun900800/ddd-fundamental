@@ -2,11 +2,13 @@ package org.ddd.fundamental.workorder.rest;
 
 import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.shared.api.workorder.ProductOrderDTO;
+import org.ddd.fundamental.shared.api.workorder.ProductOrderRequest;
 import org.ddd.fundamental.workorder.application.command.WorkOrderCommandService;
 import org.ddd.fundamental.workorder.application.query.WorkOrderQueryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -50,5 +52,16 @@ public class WorkOrderRest {
     public Page<ProductOrderDTO> fetchProductOrderByAPI(@PathVariable int pageNumber,
                                                         @PathVariable int pageSize){
         return this.workOrderQueryService.fetchProductOrderByAPI(pageNumber,pageSize);
+    }
+
+    @RequestMapping("/work_order/create_product_order")
+    public void createProductOrder(@RequestBody ProductOrderRequest request){
+        this.workOrderCommandService.createProductOrder(
+                request.getMaterialDTO(),
+                request.getSaleOrderId(),
+                request.getProductCount(),
+                request.getOrganization(),
+                request.getDateTimeRange()
+        );
     }
 }

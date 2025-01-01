@@ -8,6 +8,7 @@ import org.ddd.fundamental.workorder.domain.model.ProductOrder;
 import org.ddd.fundamental.workorder.domain.model.ProductOrder_;
 import org.ddd.fundamental.workorder.domain.repository.ProductOrderRepository;
 import org.ddd.fundamental.workorder.domain.repository.WorkOrderRepository;
+import org.ddd.fundamental.workorder.value.OrderId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,15 @@ public class WorkOrderQueryService {
                                  WorkOrderRepository workOrderRepository){
         this.productOrderRepository = productOrderRepository;
         this.workOrderRepository = workOrderRepository;
+    }
+
+    public ProductOrder findProductOrderById(OrderId orderId){
+        ProductOrder productOrder = productOrderRepository.findById(orderId).orElse(null);
+        if (null == productOrder) {
+            String msg = "orderId : %s 对应的productOrder不存在";
+            throw new RuntimeException(String.format(msg,orderId.toUUID()));
+        }
+        return productOrder;
     }
 
     public Page<ProductOrderDTO> findAllByProductName(String productName,

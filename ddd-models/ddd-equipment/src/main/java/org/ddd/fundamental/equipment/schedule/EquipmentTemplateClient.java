@@ -37,7 +37,6 @@ import java.util.stream.Collectors;
 @Slf4j
 public class EquipmentTemplateClient {
 
-    private final EquipmentCommandService commandService;
 
     private final EquipmentQueryService queryService;
 
@@ -58,10 +57,8 @@ public class EquipmentTemplateClient {
     private static final String QUERY_RESOURCES_INPUT_OUTPUT = "http://localhost:9004/equipment/resources_by_input_output";
 
     @Autowired(required = false)
-    public EquipmentTemplateClient(EquipmentCommandService commandService,
-                                   EquipmentQueryService queryService,
+    public EquipmentTemplateClient(EquipmentQueryService queryService,
                                    MaterialClient materialClient){
-        this.commandService = commandService;
         this.queryService = queryService;
         this.materialClient = materialClient;
     }

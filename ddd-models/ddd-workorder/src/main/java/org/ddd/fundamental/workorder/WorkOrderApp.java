@@ -13,6 +13,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @ComponentScan(basePackages = {
@@ -43,6 +44,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
                 "org.ddd.fundamental.workprocess"
         }
 )
+@EnableScheduling
 @Slf4j
 public class WorkOrderApp implements CommandLineRunner {
 
