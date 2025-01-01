@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @Slf4j
 public class WorkOrderRest {
@@ -32,4 +34,21 @@ public class WorkOrderRest {
         return this.workOrderQueryService.findAllByProductName(productName, pageNumber,pageSize);
     }
 
+    @RequestMapping("/work_order/product_order/{pageNumber}/{pageSize}")
+    public Page<ProductOrderDTO> fetchProductOrder(@PathVariable int pageNumber,
+                                                   @PathVariable int pageSize){
+        return this.workOrderQueryService.fetchProductOrder(pageNumber,pageSize);
+    }
+
+    @RequestMapping("/work_order/product_order_id/{pageNumber}/{pageSize}")
+    public Page<ProductOrderDTO> fetchProductOrderByIds(@PathVariable int pageNumber,
+                                                        @PathVariable int pageSize){
+        return this.workOrderQueryService.fetchProductOrderByIds(pageNumber,pageSize);
+    }
+
+    @RequestMapping("/work_order/product_order_api/{pageNumber}/{pageSize}")
+    public Page<ProductOrderDTO> fetchProductOrderByAPI(@PathVariable int pageNumber,
+                                                        @PathVariable int pageSize){
+        return this.workOrderQueryService.fetchProductOrderByAPI(pageNumber,pageSize);
+    }
 }

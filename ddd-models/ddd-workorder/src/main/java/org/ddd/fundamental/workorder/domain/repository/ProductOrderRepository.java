@@ -10,7 +10,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 public interface ProductOrderRepository extends BaseHibernateRepository<ProductOrder>,
-        BaseRepository<ProductOrder, OrderId> {
+        BaseRepository<ProductOrder, OrderId> ,CustomProductOrderRepository{
 
     @Modifying
     @Query("delete from ProductOrder")

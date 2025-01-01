@@ -1,8 +1,8 @@
 package org.ddd.fundamental.workorder.application.query;
 
 import lombok.extern.slf4j.Slf4j;
-import org.ddd.fundamental.day.Auditable_;
 import org.ddd.fundamental.shared.api.workorder.ProductOrderDTO;
+import org.ddd.fundamental.tuple.TwoTuple;
 import org.ddd.fundamental.workorder.application.WorkOrderConverter;
 import org.ddd.fundamental.workorder.domain.model.ProductOrder;
 import org.ddd.fundamental.workorder.domain.model.ProductOrder_;
@@ -10,7 +10,6 @@ import org.ddd.fundamental.workorder.domain.repository.ProductOrderRepository;
 import org.ddd.fundamental.workorder.domain.repository.WorkOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
-import org.springframework.data.jpa.domain.JpaSort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,4 +46,30 @@ public class WorkOrderQueryService {
         );
         return new PageImpl<>(productOrderDTOS, pageable,pageData.getTotalElements());
     }
+
+    public Page<ProductOrderDTO> fetchProductOrder(int pageNumber,
+                                                   int pageSize){
+        long total = productOrderRepository.fetchProductOrderCount();
+        List<ProductOrder> productOrders =  productOrderRepository.fetchProductOrderList(pageNumber,pageSize);
+        List<ProductOrderDTO> productOrderDTOS =  WorkOrderConverter.entityToDTO(productOrders);
+        Pageable pageable = PageRequest.of(pageNumber-1,pageSize);
+        return new PageImpl<>(productOrderDTOS, pageable,total);
+    }
+
+    public Page<ProductOrderDTO> fetchProductOrderByIds(int pageNumber,
+                                                        int pageSize){
+        TwoTuple<Long,List<ProductOrder>> twoTuple = productOrderRepository.fetchProductOrderByIds(pageNumber,pageSize);
+        Pageable pageable = PageRequest.of(pageNumber-1,pageSize);
+        List<ProductOrder> productOrders = twoTuple.second;
+        return new PageImpl<>(WorkOrderConverter.entityToDTO(productOrders), pageable,twoTuple.first);
+    }
+
+    public Page<ProductOrderDTO> fetchProductOrderByAPI(int pageNumber,
+                                                     int pageSize){
+        TwoTuple<Long,List<ProductOrder>> twoTuple = productOrderRepository.fetchProductOrderByAPI(pageNumber,pageSize);
+        Pageable pageable = PageRequest.of(pageNumber-1,pageSize);
+        List<ProductOrder> productOrders = twoTuple.second;
+        return new PageImpl<>(WorkOrderConverter.entityToDTO(productOrders), pageable,twoTuple.first);
+    }
+
 }
