@@ -9,12 +9,17 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
+
 public interface ProductOrderRepository extends BaseHibernateRepository<ProductOrder>,
         BaseRepository<ProductOrder, OrderId> ,CustomProductOrderRepository{
 
     @Modifying
     @Query("delete from ProductOrder")
     void deleteAllProductOrders();
+
+    @Query("from ProductOrder")
+    List<ProductOrder> findAll();
 
     Page<ProductOrder> findAllByProductOrder_ProductName(String productName,
                                             Pageable pageable);

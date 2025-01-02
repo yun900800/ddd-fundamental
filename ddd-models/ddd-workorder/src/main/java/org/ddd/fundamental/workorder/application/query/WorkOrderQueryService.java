@@ -13,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -30,6 +32,14 @@ public class WorkOrderQueryService {
                                  WorkOrderRepository workOrderRepository){
         this.productOrderRepository = productOrderRepository;
         this.workOrderRepository = workOrderRepository;
+    }
+
+    public List<ProductOrderDTO> productOrders(){
+        List<ProductOrder> productOrders = productOrderRepository.findAll();
+        if (CollectionUtils.isEmpty(productOrders)) {
+            return new ArrayList<>();
+        }
+        return WorkOrderConverter.entityToDTO(productOrders);
     }
 
     public ProductOrder findProductOrderById(OrderId orderId){

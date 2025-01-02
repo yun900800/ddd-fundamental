@@ -3,14 +3,16 @@ package org.ddd.fundamental.workorder.rest;
 import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.shared.api.workorder.ProductOrderDTO;
 import org.ddd.fundamental.shared.api.workorder.ProductOrderRequest;
+import org.ddd.fundamental.utils.EnumsUtils;
+import org.ddd.fundamental.workorder.application.WorkOrderConverter;
 import org.ddd.fundamental.workorder.application.command.WorkOrderCommandService;
 import org.ddd.fundamental.workorder.application.query.WorkOrderQueryService;
+import org.ddd.fundamental.workorder.domain.model.ProductOrder;
+import org.ddd.fundamental.workorder.enums.OrderStatus;
+import org.ddd.fundamental.workorder.value.OrderId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -63,5 +65,27 @@ public class WorkOrderRest {
                 request.getOrganization(),
                 request.getDateTimeRange()
         );
+    }
+
+    @RequestMapping("/work_order/product_order/{orderId}")
+    public ProductOrderDTO findByProductOrderId(@PathVariable String orderId){
+        ProductOrder productOrder = workOrderQueryService.findProductOrderById(
+                new OrderId(orderId)
+        );
+        return WorkOrderConverter.entityToDTO(productOrder);
+    }
+
+    @PostMapping("/work_order/change_product_order_status/{orderId}/{status}")
+    public void changeProductOrderStatus(@PathVariable String orderId,
+                                         @PathVariable String status){
+        OrderStatus orderStatus = EnumsUtils.findEnumValue(OrderStatus.class,status);
+        this.workOrderCommandService.changeProductOrderStatus(new OrderId(orderId),
+                orderStatus);
+    }
+
+    @PostMapping("/work_order/change_product_order/{orderId}")
+    public void changeProductOrder(@PathVariable String orderId,
+                                   @RequestBody ProductOrderDTO productOrderDTO){
+        this.workOrderCommandService.changeProductOrder(new OrderId(orderId),productOrderDTO);
     }
 }

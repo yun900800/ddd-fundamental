@@ -5,30 +5,35 @@ import org.ddd.fundamental.creator.DataAddable;
 import org.ddd.fundamental.material.client.MaterialClient;
 import org.ddd.fundamental.material.value.MaterialType;
 import org.ddd.fundamental.shared.api.material.MaterialDTO;
+import org.ddd.fundamental.workorder.application.command.WorkOrderCommandService;
 import org.ddd.fundamental.workorder.domain.model.ProductOrder;
-import org.ddd.fundamental.workorder.domain.repository.ProductOrderRepository;
 import org.ddd.fundamental.workorder.helper.ProductOrderHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
 @Slf4j
 public class ProductOrderAddable implements DataAddable {
 
-    private final ProductOrderRepository productOrderRepository;
+    private final WorkOrderCommandService commandService;
 
     private final MaterialClient materialClient;
 
     private List<ProductOrder> productOrders;
 
     @Autowired(required = false)
-    public ProductOrderAddable(ProductOrderRepository productOrderRepository,
+    public ProductOrderAddable(WorkOrderCommandService commandService,
                                MaterialClient materialClient){
-        this.productOrderRepository = productOrderRepository;
+        this.commandService = commandService;
         this.materialClient = materialClient;
+    }
+
+    public List<ProductOrder> getProductOrders() {
+        return new ArrayList<>(productOrders);
     }
 
     private List<MaterialDTO> products(){
@@ -40,7 +45,7 @@ public class ProductOrderAddable implements DataAddable {
     public void execute() {
         log.info("start create productOrders");
         this.productOrders = ProductOrderHelper.createProductOrders(products());
-        this.productOrderRepository.persistAll(productOrders);
+        this.commandService.batchInsertProductOrder(productOrders);
         log.info("finish create productOrders");
     }
 }
