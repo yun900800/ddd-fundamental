@@ -2,10 +2,7 @@ package org.ddd.fundamental.equipment.application.query;
 
 import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.equipment.application.EquipmentConverter;
-import org.ddd.fundamental.equipment.domain.model.Equipment;
-import org.ddd.fundamental.equipment.domain.model.EquipmentResource;
-import org.ddd.fundamental.equipment.domain.model.RPAccount;
-import org.ddd.fundamental.equipment.domain.model.ToolingEquipment;
+import org.ddd.fundamental.equipment.domain.model.*;
 import org.ddd.fundamental.equipment.domain.repository.EquipmentRepository;
 import org.ddd.fundamental.equipment.domain.repository.EquipmentResourceRepository;
 import org.ddd.fundamental.equipment.domain.repository.RPAccountRepository;
@@ -19,12 +16,17 @@ import org.ddd.fundamental.redis.config.RedisStoreManager;
 import org.ddd.fundamental.shared.api.equipment.*;
 import org.ddd.fundamental.shared.api.material.MaterialDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static org.ddd.fundamental.equipment.application.query.specification.EquipmentSpecification.*;
 
 @Service
 @Slf4j
@@ -178,6 +180,27 @@ public class EquipmentQueryService {
     public List<EquipmentResourceDTO> queryResourcesByInputAndOutputIds(List<MaterialId> inputIds, List<MaterialId> outputIds){
         List<EquipmentResource> resources =  resourceRepository.queryResourcesByInputAndOutputIds(inputIds,outputIds);
         return EquipmentConverter.entityToResourceDTO(resources);
+    }
+
+    public List<EquipmentPlanDTO> fetchEquipmentPlan(){
+        return EquipmentConverter.entityToPlanDTO(
+                equipmentRepository.fetchEquipmentPlan()
+        );
+    }
+
+    public List<EquipmentDTO> fetchEquipment(String assetNo,String equipmentName){
+        Specification<Equipment> specification = assetNoLike(assetNo)
+                .and(equipmentNameEqual(equipmentName));
+        List<Equipment> equipmentList = equipmentRepository.findAll(specification);
+        return EquipmentConverter.entityToDTO(equipmentList);
+    }
+
+    public List<EquipmentDTO> fetchEquipmentWithJoin(String assetNo,String equipmentName){
+        Specification<Equipment> specification = assetNoLike(assetNo)
+                .and(equipmentNameEqual(equipmentName))
+                .and(planTimeEqual(LocalDateTime.now()));
+        List<Equipment> equipmentList = equipmentRepository.findAll(specification);
+        return EquipmentConverter.entityToDTO(equipmentList);
     }
 
 }

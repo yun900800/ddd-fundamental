@@ -1,8 +1,9 @@
-package org.ddd.fundamental.equipment.domain.repository;
+package org.ddd.fundamental.equipment.domain.repository.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.equipment.application.EquipmentConverter;
 import org.ddd.fundamental.equipment.domain.model.EquipmentResource;
+import org.ddd.fundamental.equipment.domain.repository.CustomEquipmentResourceRepository;
 import org.ddd.fundamental.material.value.MaterialId;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +14,7 @@ import java.util.List;
 
 @Component
 @Slf4j
-public class EquipmentResourceRepositoryImpl implements CustomEquipmentResourceRepository{
+public class EquipmentResourceRepositoryImpl implements CustomEquipmentResourceRepository {
 
     @PersistenceContext
     private EntityManager entityManager;

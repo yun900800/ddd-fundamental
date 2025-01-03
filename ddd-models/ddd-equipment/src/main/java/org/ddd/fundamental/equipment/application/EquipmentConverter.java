@@ -1,13 +1,7 @@
 package org.ddd.fundamental.equipment.application;
 
-import org.ddd.fundamental.equipment.domain.model.Equipment;
-import org.ddd.fundamental.equipment.domain.model.EquipmentResource;
-import org.ddd.fundamental.equipment.domain.model.RPAccount;
-import org.ddd.fundamental.equipment.domain.model.ToolingEquipment;
-import org.ddd.fundamental.shared.api.equipment.EquipmentDTO;
-import org.ddd.fundamental.shared.api.equipment.EquipmentResourceDTO;
-import org.ddd.fundamental.shared.api.equipment.RPAccountDTO;
-import org.ddd.fundamental.shared.api.equipment.ToolingDTO;
+import org.ddd.fundamental.equipment.domain.model.*;
+import org.ddd.fundamental.shared.api.equipment.*;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
@@ -66,6 +60,19 @@ public final class EquipmentConverter {
             return new ArrayList<>();
         } else {
             return resources.stream().map(EquipmentConverter::entityToResourceDTO)
+                    .collect(Collectors.toList());
+        }
+    }
+
+    public static EquipmentPlanDTO entityToPlanDTO(EquipmentPlan plan){
+        return EquipmentPlanDTO.create(plan.id(),plan.getEquipmentPlan());
+    }
+
+    public static List<EquipmentPlanDTO> entityToPlanDTO(List<EquipmentPlan> plans){
+        if (CollectionUtils.isEmpty(plans)){
+            return new ArrayList<>();
+        } else {
+            return plans.stream().map(EquipmentConverter::entityToPlanDTO)
                     .collect(Collectors.toList());
         }
     }

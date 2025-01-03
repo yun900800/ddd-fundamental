@@ -120,4 +120,22 @@ public class EquipmentRest {
                 configureMaterialDTO.getMaterialInputs().stream().map(v->v.id()).collect(Collectors.toList()),
                 configureMaterialDTO.getMaterialOutputs().stream().map(v->v.id()).collect(Collectors.toList()));
     }
+
+    @GetMapping("/equipment/equipment_plans")
+    public List<EquipmentPlanDTO> fetchEquipmentPlan(){
+        return queryService.fetchEquipmentPlan();
+    }
+
+    @GetMapping("/equipment/equipmentList")
+    public List<EquipmentDTO> fetchEquipment(@RequestParam("assetNo") String assetNo,
+                                             @RequestParam("equipmentName") String equipmentName){
+        return queryService.fetchEquipment(assetNo,equipmentName);
+    }
+
+    @GetMapping("/equipment/equipmentListJoin")
+    public List<EquipmentDTO> fetchEquipmentWithJoin(@RequestParam("assetNo") String assetNo,
+                                                     @RequestParam("equipmentName") String equipmentName){
+        return queryService.fetchEquipmentWithJoin(assetNo,equipmentName);
+    }
+
 }

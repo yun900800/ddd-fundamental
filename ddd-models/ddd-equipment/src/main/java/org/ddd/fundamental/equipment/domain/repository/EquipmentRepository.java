@@ -9,7 +9,8 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface EquipmentRepository extends BaseHibernateRepository<Equipment>, BaseRepository<Equipment, EquipmentId> {
+public interface EquipmentRepository extends BaseHibernateRepository<Equipment>,
+        BaseRepository<Equipment, EquipmentId>, CustomEquipmentRepository {
 
     @Query("select e from Equipment e where e.master.info.name like %?1%")
     List<Equipment> queryByName(String name);
