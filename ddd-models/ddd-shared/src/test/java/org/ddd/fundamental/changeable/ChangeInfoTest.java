@@ -11,6 +11,7 @@ public class ChangeInfoTest {
                 NameDescInfo.create("name","desc"),
                 false
         );
+        Assert.assertEquals(changeInfo.toString(),"{\"isUse\":false,\"nameDescInfo\":{\"desc\":\"desc\",\"name\":\"name\"}}");
         Assert.assertEquals(
                 changeInfo.getNameDescInfo().getName(),"name"
         );
