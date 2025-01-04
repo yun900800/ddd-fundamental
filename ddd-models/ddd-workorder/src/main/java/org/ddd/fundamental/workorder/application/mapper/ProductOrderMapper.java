@@ -8,6 +8,5 @@ import org.mapstruct.*;
 public interface ProductOrderMapper {
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    @Mapping(source = "productOrder", target = "productOrder")
     void updateProductFromDto(ProductOrderDTO dto, @MappingTarget ProductOrder entity);
 }

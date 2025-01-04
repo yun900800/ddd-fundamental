@@ -1,12 +1,15 @@
 package org.ddd.fundamental.changeable;
 
+import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.core.ValueObject;
 
 import javax.persistence.Embeddable;
+import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 @Embeddable
+@MappedSuperclass
 public class ChangeableInfo implements ValueObject,Cloneable {
     private String name;
 
@@ -90,13 +93,7 @@ public class ChangeableInfo implements ValueObject,Cloneable {
 
     @Override
     public @NotNull String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(name);
-        sb.append(", ");
-        sb.append(desc);
-        sb.append(", ");
-        sb.append(isUse);
-        return sb.toString();
+        return objToString();
     }
 
     @Override

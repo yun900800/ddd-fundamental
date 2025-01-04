@@ -141,6 +141,12 @@
                             <artifactId>mapstruct-processor</artifactId>
                             <version>${mapstruct.version}</version>
                         </path>
+<!--                        解决jpaModel yu mapstruct冲突问题-->
+                        <path>
+                            <groupId>org.hibernate</groupId>
+                            <artifactId>hibernate-jpamodelgen</artifactId>
+                            <version>5.4.6.Final</version>
+                        </path>
 <!--                        下面的两个配置解决lombok与mapstruct整合的问题-->
                         <path>
                             <groupId>org.projectlombok</groupId>

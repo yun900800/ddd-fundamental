@@ -3,11 +3,9 @@ package org.ddd.fundamental.workprocess.value;
 import org.ddd.fundamental.core.ValueObject;
 import org.ddd.fundamental.workprocess.value.resources.ProductResource;
 import org.ddd.fundamental.workprocess.value.resources.ProductResources;
-import org.ddd.fundamental.workprocess.value.time.WorkProcessKeyTime;
 
 import javax.persistence.Embeddable;
 import javax.persistence.MappedSuperclass;
-import java.time.Instant;
 import java.util.Objects;
 
 @MappedSuperclass
