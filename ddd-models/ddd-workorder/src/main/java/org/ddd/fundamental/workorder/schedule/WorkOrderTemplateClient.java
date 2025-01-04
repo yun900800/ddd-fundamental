@@ -4,17 +4,21 @@ import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.material.client.MaterialClient;
 import org.ddd.fundamental.material.value.MaterialType;
 import org.ddd.fundamental.shared.api.material.MaterialDTO;
+import org.ddd.fundamental.shared.api.workorder.ProductOrderDTO;
 import org.ddd.fundamental.shared.api.workorder.ProductOrderRequest;
 import org.ddd.fundamental.utils.CollectionUtils;
 import org.ddd.fundamental.workorder.application.query.WorkOrderQueryService;
 import org.ddd.fundamental.workorder.creator.ProductOrderAddable;
 import org.ddd.fundamental.workorder.helper.ProductOrderHelper;
 import org.ddd.fundamental.workorder.value.OrderId;
+import org.ddd.fundamental.workorder.value.ProductOrderValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
@@ -29,6 +33,8 @@ public class WorkOrderTemplateClient {
 
     private static final String CREATE_PRODUCT_ORDER = "http://localhost:9005/work_order/create_product_order";
     private static final String CHANGE_PRODUCT_ORDER_STATUS = "http://localhost:9005/work_order/change_product_order_status/%s/%s";
+
+    private static final String CHANGE_PRODUCT_ORDER = "http://localhost:9005/work_order/change_product_order/%s";
 
     @Autowired(required = false)
     public WorkOrderTemplateClient(MaterialClient materialClient,
@@ -63,5 +69,20 @@ public class WorkOrderTemplateClient {
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.postForObject(url,null,Void.class);
         log.info("change productOrder status finished");
+    }
+
+    @Scheduled(cron = "*/30 * * * * ?")
+    public void changeProductOrder(){
+        List<MaterialDTO> products = materialClient.materialsByMaterialType(MaterialType.PRODUCTION);
+        MaterialDTO materialDTO = CollectionUtils.random(products);
+        OrderId orderId = CollectionUtils.random(queryService.productOrders()).id();
+        String url = String.format(CHANGE_PRODUCT_ORDER,orderId.toUUID());
+        ProductOrderDTO productOrderDTO = ProductOrderDTO.create(
+                new ProductOrderValue.Builder(materialDTO.id(),10000, LocalDate.now())
+                        .build(),orderId
+        );
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.postForObject(url,productOrderDTO,Void.class);
+        log.info("change productOrder finished");
     }
 }

@@ -5,6 +5,7 @@ import org.ddd.fundamental.core.ValueObject;
 import org.ddd.fundamental.material.value.MaterialId;
 import org.ddd.fundamental.workorder.enums.OrderStatus;
 import org.ddd.fundamental.workorder.enums.Urgency;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.Embeddable;
 import javax.persistence.EnumType;

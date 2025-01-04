@@ -27,6 +27,10 @@ public class ProductOrder extends AbstractAggregateRoot<OrderId> {
         this.productOrder = productOrder;
     }
 
+    public static ProductOrder create(){
+        return new ProductOrder();
+    }
+
     public static ProductOrder create(ProductOrderValue productOrder){
         return new ProductOrder(productOrder);
     }
@@ -41,7 +45,7 @@ public class ProductOrder extends AbstractAggregateRoot<OrderId> {
     }
 
     public ProductOrder changeStatus(OrderStatus orderStatus){
-        changeUpdated();
+        //changeUpdated();
         this.productOrder.changeStatus(orderStatus);
         return this;
     }
@@ -79,5 +83,12 @@ public class ProductOrder extends AbstractAggregateRoot<OrderId> {
     @Override
     public long created() {
         return 0;
+    }
+
+    @Override
+    public String toString() {
+        return "ProductOrder{" +
+                "productOrder=" + productOrder +
+                '}';
     }
 }

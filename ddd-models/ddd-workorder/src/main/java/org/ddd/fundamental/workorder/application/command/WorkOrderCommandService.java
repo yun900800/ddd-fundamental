@@ -2,10 +2,9 @@ package org.ddd.fundamental.workorder.application.command;
 
 import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.day.range.DateTimeRange;
-import org.ddd.fundamental.material.MaterialMaster;
 import org.ddd.fundamental.shared.api.material.MaterialDTO;
 import org.ddd.fundamental.shared.api.workorder.ProductOrderDTO;
-import org.ddd.fundamental.utils.CollectionUtils;
+import org.ddd.fundamental.workorder.application.mapper.ProductOrderMapper;
 import org.ddd.fundamental.workorder.application.query.WorkOrderQueryService;
 import org.ddd.fundamental.workorder.domain.model.ProductOrder;
 import org.ddd.fundamental.workorder.domain.repository.ProductOrderRepository;
@@ -34,13 +33,17 @@ public class WorkOrderCommandService {
 
     private final WorkOrderQueryService queryService;
 
+    private final ProductOrderMapper mapper;
+
     @Autowired(required = false)
     public WorkOrderCommandService(ProductOrderRepository productOrderRepository,
                                  WorkOrderRepository workOrderRepository,
-                                   WorkOrderQueryService queryService){
+                                   WorkOrderQueryService queryService,
+                                   ProductOrderMapper mapper){
         this.productOrderRepository = productOrderRepository;
         this.workOrderRepository = workOrderRepository;
         this.queryService = queryService;
+        this.mapper = mapper;
     }
 
     /**
