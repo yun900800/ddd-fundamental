@@ -6,6 +6,7 @@ import org.ddd.fundamental.material.value.MaterialId;
 import org.ddd.fundamental.utils.CollectionUtils;
 import org.ddd.fundamental.workorder.value.WorkOrderId;
 import org.ddd.fundamental.workorder.value.WorkOrderValue;
+import org.ddd.fundamental.workprocess.WorkProcessHelper;
 import org.ddd.fundamental.workprocess.creator.WorkProcessTemplateAddable;
 import org.ddd.fundamental.workprocess.domain.model.*;
 import org.ddd.fundamental.workprocess.domain.repository.CraftsmanShipRepository;
@@ -80,7 +81,7 @@ public class WorkProcessRecordApplication {
                 workOrderValue
         );
         WorkProcessTimeEntity workProcessTime = WorkProcessTimeEntity.init(
-                CollectionUtils.random(WorkProcessTemplateAddable.trueOrFalse()));
+                CollectionUtils.random(WorkProcessHelper.trueOrFalse()));
         record.setWorkProcessTime(workProcessTime);
         WorkProcessQuantityEntity workProcessQuantity = WorkProcessQuantityEntity.create(
                 template.getWorkProcessTemplateQuantity().isOverCross() ?

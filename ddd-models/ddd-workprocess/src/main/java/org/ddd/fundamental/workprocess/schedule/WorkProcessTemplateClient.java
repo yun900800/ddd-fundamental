@@ -4,6 +4,7 @@ package org.ddd.fundamental.workprocess.schedule;
 import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.shared.api.optemplate.WorkProcessTemplateDTO;
 import org.ddd.fundamental.utils.CollectionUtils;
+import org.ddd.fundamental.workprocess.WorkProcessHelper;
 import org.ddd.fundamental.workprocess.application.query.WorkProcessTemplateQueryService;
 import org.ddd.fundamental.workprocess.creator.WorkProcessTemplateAddable;
 import org.ddd.fundamental.workprocess.enums.BatchManagable;
@@ -86,19 +87,19 @@ public class WorkProcessTemplateClient {
         String url = String.format(CHANGE_QUANTITY,id);
         log.info("url is {}",url);
         WorkProcessTemplateQuantity quantity = null;
-        if (CollectionUtils.random(WorkProcessTemplateAddable.trueOrFalse())){
+        if (CollectionUtils.random(WorkProcessHelper.trueOrFalse())){
             quantity = WorkProcessTemplateQuantity.newBuilder()
                     .targetQualifiedRate(
-                            CollectionUtils.random(WorkProcessTemplateAddable.doubleList())
-                    ).transferPercent(CollectionUtils.random(WorkProcessTemplateAddable.doubleList()))
-                    .overCrossPercent(CollectionUtils.random(WorkProcessTemplateAddable.doubleList()))
+                            CollectionUtils.random(WorkProcessHelper.doubleList())
+                    ).transferPercent(CollectionUtils.random(WorkProcessHelper.doubleList()))
+                    .overCrossPercent(CollectionUtils.random(WorkProcessHelper.doubleList()))
                     .build();
         } else {
             quantity = WorkProcessTemplateQuantity.newBuilder()
                     .targetQualifiedRate(
-                            CollectionUtils.random(WorkProcessTemplateAddable.doubleList())
-                    ).transferPercent(CollectionUtils.random(WorkProcessTemplateAddable.doubleList()))
-                    .owePaymentPercent(CollectionUtils.random(WorkProcessTemplateAddable.doubleList()))
+                            CollectionUtils.random(WorkProcessHelper.doubleList())
+                    ).transferPercent(CollectionUtils.random(WorkProcessHelper.doubleList()))
+                    .owePaymentPercent(CollectionUtils.random(WorkProcessHelper.doubleList()))
                     .build();
         }
 
@@ -118,10 +119,10 @@ public class WorkProcessTemplateClient {
         log.info("url is {}",url);
         WorkProcessTemplateControlValue control = new WorkProcessTemplateControlValue.Builder(
                 1, CollectionUtils.random(Arrays.asList(BatchManagable.values()))
-        ).canSplit(CollectionUtils.random(WorkProcessTemplateAddable.trueOrFalse()))
-                .isAllowedChecked(CollectionUtils.random(WorkProcessTemplateAddable.trueOrFalse()))
+        ).canSplit(CollectionUtils.random(WorkProcessHelper.trueOrFalse()))
+                .isAllowedChecked(CollectionUtils.random(WorkProcessHelper.trueOrFalse()))
                 .reportWorkControl(ReportingControl.create(
-                        CollectionUtils.random(WorkProcessTemplateAddable.trueOrFalse()), ""
+                        CollectionUtils.random(WorkProcessHelper.trueOrFalse()), ""
         )).nextProcessSyncMinutes(CollectionUtils.random(numbersOfProductsMinutes()))
                 .build();
         RestTemplate restTemplate = new RestTemplate();

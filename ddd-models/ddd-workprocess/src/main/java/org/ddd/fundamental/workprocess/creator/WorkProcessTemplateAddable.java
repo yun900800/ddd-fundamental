@@ -12,9 +12,11 @@ import org.ddd.fundamental.shared.api.equipment.EquipmentDTO;
 import org.ddd.fundamental.shared.api.equipment.ToolingDTO;
 import org.ddd.fundamental.shared.api.material.MaterialDTO;
 import org.ddd.fundamental.shared.api.optemplate.WorkProcessTemplateDTO;
+import org.ddd.fundamental.workprocess.WorkProcessHelper;
 import org.ddd.fundamental.workprocess.client.EquipmentClient;
 import org.ddd.fundamental.workprocess.client.MaterialClient;
 import org.ddd.fundamental.workprocess.domain.model.WorkProcessTemplate;
+import org.ddd.fundamental.workprocess.domain.model.WorkProcessTemplateControl;
 import org.ddd.fundamental.workprocess.domain.repository.WorkProcessTemplateRepository;
 import org.ddd.fundamental.workprocess.enums.BatchManagable;
 import org.ddd.fundamental.workprocess.enums.ProductResourceType;
@@ -43,11 +45,9 @@ public class WorkProcessTemplateAddable implements DataAddable {
 
     private final RedisStoreManager manager;
 
-    @Autowired
-    private MaterialClient client;
+    private final MaterialClient client;
 
-    @Autowired
-    private EquipmentClient equipmentClient;
+    private final EquipmentClient equipmentClient;
 
     private List<WorkProcessTemplate> workProcessTemplateList;
 
@@ -76,11 +76,14 @@ public class WorkProcessTemplateAddable implements DataAddable {
     private List<ToolingDTO> toolingDTOS;
     private List<EquipmentId> toolingEquipmentIds;
 
-    @Autowired
+    @Autowired(required = false)
     public WorkProcessTemplateAddable(WorkProcessTemplateRepository templateRepository,
-                                        RedisStoreManager manager){
+                                        RedisStoreManager manager,
+                                      MaterialClient client, EquipmentClient equipmentClient){
         this.templateRepository = templateRepository;
         this.manager = manager;
+        this.client = client;
+        this.equipmentClient = equipmentClient;
     }
 
     public List<WorkProcessTemplate> createWorkProcessList() {
@@ -109,38 +112,30 @@ public class WorkProcessTemplateAddable implements DataAddable {
         return workProcessInfo;
     }
 
-    public static List<Boolean> trueOrFalse(){
-        return Arrays.asList(true,false);
-    }
-
-    private static List<BatchManagable> batchManagables() {
-        return Arrays.asList(BatchManagable.values());
-    }
-
-    public static List<Double> doubleList(){
-        return Arrays.asList(95.2,99.5,99.6,96.4,98.8,97.6);
-    }
 
     public static WorkProcessTemplateControlValue createWorkProcessTemplateControl(){
-        return new WorkProcessTemplateControlValue.Builder(1, org.ddd.fundamental.utils.CollectionUtils.random(batchManagables()))
-                .canSplit(org.ddd.fundamental.utils.CollectionUtils.random(trueOrFalse())).isAllowedChecked(org.ddd.fundamental.utils.CollectionUtils.random(trueOrFalse()))
+        return new WorkProcessTemplateControlValue.Builder(org.ddd.fundamental.utils.CollectionUtils.random(WorkProcessHelper.numberRange(1,20)),
+                org.ddd.fundamental.utils.CollectionUtils.random(WorkProcessHelper.batchManagables()))
+                .canSplit(org.ddd.fundamental.utils.CollectionUtils.random(WorkProcessHelper.trueOrFalse()))
+                .isAllowedChecked(org.ddd.fundamental.utils.CollectionUtils.random(WorkProcessHelper.trueOrFalse()))
                 .nextProcessSyncMinutes(20.0)
-                .reportWorkControl(ReportingControl.create(org.ddd.fundamental.utils.CollectionUtils.random(trueOrFalse()),"测试报工规则"))
+                .reportWorkControl(ReportingControl.create(org.ddd.fundamental.utils.CollectionUtils.random(WorkProcessHelper.trueOrFalse()),
+                        "测试报工规则"))
                 .build();
     }
 
     public static WorkProcessTemplateQuantity createWorkProcessTemplateQuantity(){
-        if(org.ddd.fundamental.utils.CollectionUtils.random(trueOrFalse())){
+        if(org.ddd.fundamental.utils.CollectionUtils.random(WorkProcessHelper.trueOrFalse())){
             return WorkProcessTemplateQuantity.newBuilder().targetQualifiedRate(
-                            org.ddd.fundamental.utils.CollectionUtils.random(doubleList())
-                    ).transferPercent(org.ddd.fundamental.utils.CollectionUtils.random(doubleList()))
-                    .overCrossPercent(org.ddd.fundamental.utils.CollectionUtils.random(doubleList()))
+                            org.ddd.fundamental.utils.CollectionUtils.random(WorkProcessHelper.doubleList())
+                    ).transferPercent(org.ddd.fundamental.utils.CollectionUtils.random(WorkProcessHelper.doubleList()))
+                    .overCrossPercent(org.ddd.fundamental.utils.CollectionUtils.random(WorkProcessHelper.doubleList()))
                     .build();
         } else{
             return WorkProcessTemplateQuantity.newBuilder().targetQualifiedRate(
-                            org.ddd.fundamental.utils.CollectionUtils.random(doubleList())
-                    ).transferPercent(org.ddd.fundamental.utils.CollectionUtils.random(doubleList()))
-                    .owePaymentPercent(org.ddd.fundamental.utils.CollectionUtils.random(doubleList()))
+                            org.ddd.fundamental.utils.CollectionUtils.random(WorkProcessHelper.doubleList())
+                    ).transferPercent(org.ddd.fundamental.utils.CollectionUtils.random(WorkProcessHelper.doubleList()))
+                    .owePaymentPercent(org.ddd.fundamental.utils.CollectionUtils.random(WorkProcessHelper.doubleList()))
                     .build();
         }
 
@@ -149,14 +144,14 @@ public class WorkProcessTemplateAddable implements DataAddable {
     public WorkProcessTemplate createWorkProcessTemplate(){
         WorkProcessTemplate workProcessTemplate = new WorkProcessTemplate(
                 org.ddd.fundamental.utils.CollectionUtils.random(createWorkProcessInfo()),
-//                CollectionUtils.random(createAuxiliaryWorkTimes()),
                 WorkProcessBeat.create(1000,15),
-//                createWorkProcessTemplateControl(),
                 createWorkProcessTemplateQuantity()
         );
         for (ProductResource resource: createProductResource()) {
             workProcessTemplate.addResource(resource);
         }
+        WorkProcessTemplateControl control = WorkProcessTemplateControl.create(createWorkProcessTemplateControl());
+        workProcessTemplate.setControl(control);
         return workProcessTemplate;
     }
 
