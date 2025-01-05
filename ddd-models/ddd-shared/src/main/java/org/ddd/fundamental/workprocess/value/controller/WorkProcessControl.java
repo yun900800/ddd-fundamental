@@ -369,25 +369,7 @@ public class WorkProcessControl implements ValueObject, Cloneable {
 
     @Override
     public String toString() {
-        return "WorkProcessControl{" +
-                "autoSchedule=" + autoSchedule +
-                ", workOrderType=" + workOrderType +
-                ", processOrder=" + processOrder +
-                ", isReportWork=" + isReportWork +
-                ", reportWorkType=" + reportWorkType +
-                ", reportData='" + reportData + '\'' +
-                ", isBatchReport=" + isBatchReport +
-                ", batchQty=" + batchQty +
-                ", isUploadERP=" + isUploadERP +
-                ", canSplit=" + canSplit +
-                ", batchManagable=" + batchManagable +
-                ", isOverOrOweManagable=" + isOverOrOweManagable +
-                ", percent=" + percent +
-                ", fullAutoOver=" + fullAutoOver +
-                ", recordReason=" + recordReason +
-                ", nextProcessSyncMinutes=" + nextProcessSyncMinutes +
-                ", isForceChecked=" + isForceChecked +
-                '}';
+        return objToString();
     }
 
     @Override

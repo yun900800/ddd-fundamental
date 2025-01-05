@@ -11,7 +11,11 @@ import java.util.Objects;
 
 /**
  * 工序控制 属性设置为基本类型会导致数据库生成不为空的检查
- *
+ * 哪些工序属性可以提取到工序模板?
+ * 1、工序拆分
+ * 2、是否进行报工控制
+ * 3、工序输出是否检验
+ * 4、后工序同步间隔分钟数
  * 一个对象属性太多怎么设置好的api
  */
 @MappedSuperclass
@@ -42,6 +46,7 @@ public class WorkProcessTemplateControlValue implements ValueObject, Cloneable {
     /**
      * 批次管理
      */
+    @Enumerated(EnumType.STRING)
     private BatchManagable batchManagable;
 
     /**
@@ -90,8 +95,7 @@ public class WorkProcessTemplateControlValue implements ValueObject, Cloneable {
         /**
          * 批次管理
          */
-        @Enumerated(EnumType.STRING)
-        private BatchManagable batchManagable;
+        private final BatchManagable batchManagable;
 
         /**
          * 后工序同步间隔分钟数
