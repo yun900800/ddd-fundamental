@@ -3,7 +3,6 @@ package org.ddd.fundamental.workprocess.domain.model;
 import org.ddd.fundamental.changeable.ChangeableInfo;
 import org.ddd.fundamental.core.AbstractAggregateRoot;
 import org.ddd.fundamental.workprocess.value.*;
-import org.ddd.fundamental.workprocess.value.controller.WorkProcessTemplateControl;
 import org.ddd.fundamental.workprocess.value.quantity.WorkProcessTemplateQuantity;
 import org.ddd.fundamental.workprocess.value.resources.ProductResource;
 import org.ddd.fundamental.workprocess.value.resources.ProductResources;
@@ -56,18 +55,15 @@ public class WorkProcessTemplate extends AbstractAggregateRoot<WorkProcessTempla
     @Embedded
     private ProductResources resources = new ProductResources(new HashSet<>());
 
-//    @Embedded
-//    private WorkProcessTemplateControl workProcessTemplateControl;
-
     @Embedded
     private WorkProcessTemplateQuantity workProcessTemplateQuantity;
 
     @OneToOne(cascade = CascadeType.ALL,
             fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "template_id")
-    private WorkProcessTemplateControlEntity control;
+    private WorkProcessTemplateControl control;
 
-    public WorkProcessTemplateControlEntity getControl() {
+    public WorkProcessTemplateControl getControl() {
         return control;
     }
 
@@ -76,37 +72,32 @@ public class WorkProcessTemplate extends AbstractAggregateRoot<WorkProcessTempla
 
     public WorkProcessTemplate(ChangeableInfo workProcessInfo,
                                WorkProcessBeat workProcessBeat,
-//                               WorkProcessTemplateControl workProcessController,
                                WorkProcessTemplateQuantity workProcessTemplateQuantity){
         super(WorkProcessTemplateId.randomId(WorkProcessTemplateId.class));
         this.workProcessInfo = workProcessInfo;
         this.workProcessBeat = workProcessBeat;
-        //this.workProcessTemplateControl = workProcessController;
         this.workProcessTemplateQuantity = workProcessTemplateQuantity;
     }
 
-//    public WorkProcessTemplate setControl(WorkProcessTemplateControlEntity control) {
-//        if (control == null) {
-//            if (this.control != null) {
-//                this.control.setTemplate(null);
-//            }
-//        }
-//        else {
-//            control.setTemplate(this);
-//        }
-//        this.control = control;
-//        return this;
-//    }
 
-    public WorkProcessTemplate setControl(WorkProcessTemplateControlEntity control){
+    public WorkProcessTemplate setControl(WorkProcessTemplateControl control){
         this.control = control;
         changeUpdated();
         return this;
     }
 
+    /**
+     * 修改工序模版的name,desc,isUse信息
+     * @param info
+     * @return
+     */
+    public WorkProcessTemplate changeInfo(ChangeableInfo info){
+        this.workProcessInfo = info;
+        return this;
+    }
+
     public WorkProcessTemplate changeName(String name){
         this.workProcessInfo = workProcessInfo.changeName(name);
-
         return this;
     }
 
@@ -139,39 +130,6 @@ public class WorkProcessTemplate extends AbstractAggregateRoot<WorkProcessTempla
         changeUpdated();
         return this;
     }
-
-//    public WorkProcessTemplate changeWorkProcessTemplateControl(WorkProcessTemplateControl control){
-//        this.workProcessTemplateControl = control;
-//        return this;
-//    }
-
-//    /**
-//     * 禁止工序可以拆分
-//     * @return
-//     */
-//    public WorkProcessTemplate disableSplit() {
-//        this.workProcessTemplateControl.disableSplit();
-//        return this;
-//    }
-//
-//    /**
-//     * 允许工序可以拆分
-//     * @return
-//     */
-//    public WorkProcessTemplate enableSplit(){
-//        this.workProcessTemplateControl.enableSplit();
-//        return this;
-//    }
-//
-//    public WorkProcessTemplate allowChecked(){
-//        this.workProcessTemplateControl.allowChecked();
-//        return this;
-//    }
-//
-//    public WorkProcessTemplate notAllowChecked(){
-//        this.workProcessTemplateControl.notAllowChecked();
-//        return this;
-//    }
 
     public WorkProcessTemplate addResource(ProductResource resource){
         this.resources = this.resources.addResource(resource);
@@ -295,10 +253,6 @@ public class WorkProcessTemplate extends AbstractAggregateRoot<WorkProcessTempla
     public ProductResources getResources() {
         return resources;
     }
-
-//    public WorkProcessTemplateControl getWorkProcessTemplateControl() {
-//        return workProcessTemplateControl.clone();
-//    }
 
     public WorkProcessTemplateQuantity getWorkProcessTemplateQuantity() {
         return workProcessTemplateQuantity.clone();

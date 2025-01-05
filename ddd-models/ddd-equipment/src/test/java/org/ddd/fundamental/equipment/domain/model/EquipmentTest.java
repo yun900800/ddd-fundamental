@@ -5,7 +5,6 @@ import org.ddd.fundamental.day.YearModelValue;
 import org.ddd.fundamental.day.range.DateRange;
 import org.ddd.fundamental.equipment.enums.EquipmentType;
 import org.ddd.fundamental.equipment.value.*;
-import org.ddd.fundamental.utils.DateTimeUtils;
 import org.junit.Assert;
 import org.junit.Test;
 

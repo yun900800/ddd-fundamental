@@ -11,8 +11,6 @@ import org.ddd.fundamental.equipment.enums.EquipmentType;
 import org.ddd.fundamental.equipment.domain.model.ToolingEquipment;
 import org.ddd.fundamental.equipment.value.*;
 import org.ddd.fundamental.factory.EquipmentId;
-import org.ddd.fundamental.utils.CollectionUtils;
-import org.ddd.fundamental.utils.DateTimeUtils;
 import org.ddd.fundamental.workorder.value.WorkOrderId;
 import org.ddd.fundamental.workprocess.enums.ProductResourceType;
 import org.ddd.fundamental.workprocess.value.WorkProcessId;

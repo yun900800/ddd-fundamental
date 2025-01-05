@@ -8,7 +8,6 @@ import org.ddd.fundamental.material.value.MaterialId;
 import org.ddd.fundamental.material.value.MaterialType;
 import org.ddd.fundamental.tuple.ThreeTuple;
 import org.ddd.fundamental.tuple.Tuple;
-import org.ddd.fundamental.tuple.TwoTuple;
 import org.ddd.fundamental.utils.CollectionUtils;
 import org.junit.Assert;
 import org.junit.Test;

@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.creator.DataRemovable;
 import org.ddd.fundamental.redis.config.RedisStoreManager;
 import org.ddd.fundamental.shared.api.optemplate.WorkProcessTemplateDTO;
-import org.ddd.fundamental.workprocess.domain.model.WorkProcessTemplateControlEntity;
 import org.ddd.fundamental.workprocess.domain.repository.WorkProcessTemplateControlRepository;
 import org.ddd.fundamental.workprocess.domain.repository.WorkProcessTemplateRepository;
 import org.springframework.beans.factory.annotation.Autowired;

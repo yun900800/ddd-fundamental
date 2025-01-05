@@ -4,12 +4,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.shared.api.optemplate.WorkProcessTemplateDTO;
 import org.ddd.fundamental.workprocess.application.query.WorkProcessTemplateQueryService;
 import org.ddd.fundamental.workprocess.domain.model.WorkProcessTemplate;
-import org.ddd.fundamental.workprocess.domain.model.WorkProcessTemplateControlEntity;
+import org.ddd.fundamental.workprocess.domain.model.WorkProcessTemplateControl;
 import org.ddd.fundamental.workprocess.domain.repository.WorkProcessTemplateRepository;
 import org.ddd.fundamental.workprocess.enums.PreOrNextType;
 import org.ddd.fundamental.workprocess.value.WorkProcessBeat;
 import org.ddd.fundamental.workprocess.value.WorkProcessTemplateId;
-import org.ddd.fundamental.workprocess.value.controller.WorkProcessTemplateControl;
+import org.ddd.fundamental.workprocess.value.controller.WorkProcessTemplateControlValue;
 import org.ddd.fundamental.workprocess.value.quantity.WorkProcessTemplateQuantity;
 import org.ddd.fundamental.workprocess.value.resources.ProductResource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,9 +53,9 @@ public class WorkProcessTemplateCommandService {
     }
 
     @Transactional
-    public void addControlInfoToTemplate(WorkProcessTemplateControl control,WorkProcessTemplateId templateId){
+    public void addControlInfoToTemplate(WorkProcessTemplateControlValue control, WorkProcessTemplateId templateId){
         WorkProcessTemplate processTemplate = queryService.get(templateId);
-        processTemplate.setControl(WorkProcessTemplateControlEntity.create(control));
+        processTemplate.setControl(WorkProcessTemplateControl.create(control));
     }
 
 

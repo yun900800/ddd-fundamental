@@ -9,8 +9,8 @@ import org.ddd.fundamental.workprocess.creator.WorkProcessTemplateAddable;
 import org.ddd.fundamental.workprocess.enums.BatchManagable;
 import org.ddd.fundamental.workprocess.value.WorkProcessBeat;
 import org.ddd.fundamental.workprocess.value.WorkProcessTemplateId;
-import org.ddd.fundamental.workprocess.value.controller.ReportWorkControl;
-import org.ddd.fundamental.workprocess.value.controller.WorkProcessTemplateControl;
+import org.ddd.fundamental.workprocess.value.controller.ReportingControl;
+import org.ddd.fundamental.workprocess.value.controller.WorkProcessTemplateControlValue;
 import org.ddd.fundamental.workprocess.value.quantity.WorkProcessTemplateQuantity;
 import org.ddd.fundamental.workprocess.value.resources.ProductResource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +21,10 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * 测试一些定时执行的任务
+ * 适用的例子来自于 https://www.baeldung.com/cron-expressions
+ */
 @Service
 @Slf4j
 public class WorkProcessTemplateClient {
@@ -56,7 +60,7 @@ public class WorkProcessTemplateClient {
 
     private List<ProductResource> cacheResources;
 
-    @Scheduled(cron = "*/30000 * * * * ?")
+    @Scheduled(cron = "0 0/5 * * * ?")
     public void changeWorkProcessTemplateBeat(){
         if (org.springframework.util.CollectionUtils.isEmpty(cache)) {
             cache = application.workProcessTemplates();
@@ -69,10 +73,10 @@ public class WorkProcessTemplateClient {
                 CollectionUtils.random(numbersOfProductsMinutes()));
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.postForObject(url,beat,Void.class);
-        log.info("change workprocess beat finished");
+        log.info("change workProcess beat finished");
     }
 
-    @Scheduled(cron = "*/60000 * * * * ?")
+    @Scheduled(cron = "0 0/2 * * * ?")
     public void changeWorkProcessTemplateQuantity(){
         if (org.springframework.util.CollectionUtils.isEmpty(cache)) {
             cache = application.workProcessTemplates();
@@ -103,7 +107,7 @@ public class WorkProcessTemplateClient {
         log.info("change workprocess quantity finished");
     }
 
-    @Scheduled(cron = "*/60000 * * * * ?")
+    @Scheduled(cron = "0 0/10 * * * ?")
     public void addControlInfoToTemplate(){
         if (org.springframework.util.CollectionUtils.isEmpty(cache)) {
             cache = application.workProcessTemplates();
@@ -112,11 +116,11 @@ public class WorkProcessTemplateClient {
         String id = templateDTO.id().toUUID();
         String url = String.format(ADD_CONTROL,id);
         log.info("url is {}",url);
-        WorkProcessTemplateControl control = new WorkProcessTemplateControl.Builder(
+        WorkProcessTemplateControlValue control = new WorkProcessTemplateControlValue.Builder(
                 1, CollectionUtils.random(Arrays.asList(BatchManagable.values()))
         ).canSplit(CollectionUtils.random(WorkProcessTemplateAddable.trueOrFalse()))
                 .isAllowedChecked(CollectionUtils.random(WorkProcessTemplateAddable.trueOrFalse()))
-                .reportWorkControl(ReportWorkControl.create(
+                .reportWorkControl(ReportingControl.create(
                         CollectionUtils.random(WorkProcessTemplateAddable.trueOrFalse()), ""
         )).nextProcessSyncMinutes(CollectionUtils.random(numbersOfProductsMinutes()))
                 .build();
@@ -125,7 +129,7 @@ public class WorkProcessTemplateClient {
         log.info("add control to work_process_template finished");
     }
 
-    @Scheduled(cron = "*/60000 * * * * ?")
+    @Scheduled(cron = "0 0/8 * * * ?")
     public void addProductResource(){
         if (org.springframework.util.CollectionUtils.isEmpty(cache)) {
             cache = application.workProcessTemplates();
@@ -144,7 +148,7 @@ public class WorkProcessTemplateClient {
         log.info("add resources to work_process_template finished");
     }
 
-    @Scheduled(cron = "*/2000 * * * * ?")
+    @Scheduled(cron = "0 0/6 * * * ?")
     public void configurePreId(){
         if (org.springframework.util.CollectionUtils.isEmpty(cache)) {
             cache = application.workProcessTemplates();
@@ -183,7 +187,7 @@ public class WorkProcessTemplateClient {
         log.info("remove template with preId finished");
     }
 
-    @Scheduled(cron = "*/2500 * * * * ?")
+    @Scheduled(cron = "0 0/20 * * * ?")
     public void removeNextId(){
         if (org.springframework.util.CollectionUtils.isEmpty(cache)) {
             cache = application.workProcessTemplates();

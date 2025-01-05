@@ -16,7 +16,7 @@ import java.util.Objects;
  */
 @MappedSuperclass
 @Embeddable
-public class WorkProcessTemplateControl implements ValueObject, Cloneable {
+public class WorkProcessTemplateControlValue implements ValueObject, Cloneable {
 
 
     /**
@@ -27,7 +27,7 @@ public class WorkProcessTemplateControl implements ValueObject, Cloneable {
     /**
      * 报工控制
      */
-    private ReportWorkControl reportWorkControl;
+    private ReportingControl reportWorkControl;
 
     /**
      * 工序的输出是否需要检验
@@ -51,12 +51,12 @@ public class WorkProcessTemplateControl implements ValueObject, Cloneable {
 
 
     @SuppressWarnings("unused")
-    private WorkProcessTemplateControl(){}
+    private WorkProcessTemplateControlValue(){}
 
-    private WorkProcessTemplateControl(boolean canSplit, double nextProcessSyncMinutes,
-                                       boolean isAllowedChecked,
-                                       Integer processOrder, BatchManagable batchManagable,
-                                       ReportWorkControl reportWorkControl) {
+    private WorkProcessTemplateControlValue(boolean canSplit, double nextProcessSyncMinutes,
+                                            boolean isAllowedChecked,
+                                            Integer processOrder, BatchManagable batchManagable,
+                                            ReportingControl reportWorkControl) {
         this.canSplit = canSplit;
         this.isAllowedChecked = isAllowedChecked;
         this.processOrder = processOrder;
@@ -74,7 +74,7 @@ public class WorkProcessTemplateControl implements ValueObject, Cloneable {
         /**
          * 报工控制
          */
-        private ReportWorkControl reportWorkControl;
+        private ReportingControl reportWorkControl;
 
 
         /**
@@ -109,7 +109,7 @@ public class WorkProcessTemplateControl implements ValueObject, Cloneable {
         }
 
 
-        public Builder reportWorkControl(ReportWorkControl reportWorkControl){
+        public Builder reportWorkControl(ReportingControl reportWorkControl){
             this.reportWorkControl = reportWorkControl;
             return this;
         }
@@ -124,8 +124,8 @@ public class WorkProcessTemplateControl implements ValueObject, Cloneable {
             return this;
         }
 
-        public WorkProcessTemplateControl build() {
-            return new WorkProcessTemplateControl(
+        public WorkProcessTemplateControlValue build() {
+            return new WorkProcessTemplateControlValue(
                     canSplit, nextProcessSyncMinutes,
                     isAllowedChecked,processOrder,
                     batchManagable, reportWorkControl
@@ -136,8 +136,8 @@ public class WorkProcessTemplateControl implements ValueObject, Cloneable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof WorkProcessTemplateControl)) return false;
-        WorkProcessTemplateControl that = (WorkProcessTemplateControl) o;
+        if (!(o instanceof WorkProcessTemplateControlValue)) return false;
+        WorkProcessTemplateControlValue that = (WorkProcessTemplateControlValue) o;
         return Objects.equals(canSplit, that.canSplit) &&
                 Objects.equals(reportWorkControl, that.reportWorkControl) &&
                 Objects.equals(isAllowedChecked, that.isAllowedChecked) &&
@@ -156,7 +156,7 @@ public class WorkProcessTemplateControl implements ValueObject, Cloneable {
      * 禁止工序可以拆分
      * @return
      */
-    public WorkProcessTemplateControl disableSplit() {
+    public WorkProcessTemplateControlValue disableSplit() {
         this.canSplit = false;
         return this;
     }
@@ -165,17 +165,17 @@ public class WorkProcessTemplateControl implements ValueObject, Cloneable {
      * 允许工序可以拆分
      * @return
      */
-    public WorkProcessTemplateControl enableSplit(){
+    public WorkProcessTemplateControlValue enableSplit(){
         this.canSplit = true;
         return this;
     }
 
-    public WorkProcessTemplateControl allowChecked(){
+    public WorkProcessTemplateControlValue allowChecked(){
         this.isAllowedChecked = true;
         return this;
     }
 
-    public WorkProcessTemplateControl notAllowChecked(){
+    public WorkProcessTemplateControlValue notAllowChecked(){
         this.isAllowedChecked = false;
         return this;
     }
@@ -184,7 +184,7 @@ public class WorkProcessTemplateControl implements ValueObject, Cloneable {
         return canSplit;
     }
 
-    public ReportWorkControl getReportWorkControl() {
+    public ReportingControl getReportWorkControl() {
         return reportWorkControl;
     }
 
@@ -224,9 +224,9 @@ public class WorkProcessTemplateControl implements ValueObject, Cloneable {
     }
 
     @Override
-    public WorkProcessTemplateControl clone() {
+    public WorkProcessTemplateControlValue clone() {
         try {
-            WorkProcessTemplateControl clone = (WorkProcessTemplateControl) super.clone();
+            WorkProcessTemplateControlValue clone = (WorkProcessTemplateControlValue) super.clone();
             // TODO: copy mutable state here, so the clone can't change the internals of the original
             return clone;
         } catch (CloneNotSupportedException e) {

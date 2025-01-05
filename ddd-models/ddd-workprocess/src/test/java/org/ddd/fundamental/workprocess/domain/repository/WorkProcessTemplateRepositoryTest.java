@@ -4,16 +4,15 @@ import org.ddd.fundamental.changeable.ChangeableInfo;
 import org.ddd.fundamental.day.range.DateRange;
 import org.ddd.fundamental.factory.EquipmentId;
 import org.ddd.fundamental.factory.WorkStationId;
-import org.ddd.fundamental.utils.DateTimeUtils;
 import org.ddd.fundamental.workprocess.WorkProcessAppTest;
 import org.ddd.fundamental.workprocess.creator.WorkProcessTemplateAddable;
 import org.ddd.fundamental.workprocess.domain.model.WorkProcessTemplate;
-import org.ddd.fundamental.workprocess.domain.model.WorkProcessTemplateControlEntity;
+import org.ddd.fundamental.workprocess.domain.model.WorkProcessTemplateControl;
 import org.ddd.fundamental.workprocess.enums.BatchManagable;
 import org.ddd.fundamental.workprocess.enums.ProductResourceType;
 import org.ddd.fundamental.workprocess.value.WorkProcessTemplateId;
-import org.ddd.fundamental.workprocess.value.controller.ReportWorkControl;
-import org.ddd.fundamental.workprocess.value.controller.WorkProcessTemplateControl;
+import org.ddd.fundamental.workprocess.value.controller.ReportingControl;
+import org.ddd.fundamental.workprocess.value.controller.WorkProcessTemplateControlValue;
 import org.ddd.fundamental.workprocess.value.quantity.WorkProcessTemplateQuantity;
 import org.ddd.fundamental.workprocess.value.time.AuxiliaryWorkTime;
 import org.ddd.fundamental.workprocess.value.resources.ProductResource;
@@ -144,9 +143,9 @@ public class WorkProcessTemplateRepositoryTest extends WorkProcessAppTest {
     @Test
     public void testAddControl() {
         WorkProcessTemplate template = createTemplate();
-        template.setControl(WorkProcessTemplateControlEntity.create(
-              new WorkProcessTemplateControl.Builder(5,BatchManagable.SERIAL).canSplit(true)
-                      .reportWorkControl(ReportWorkControl.create(true,""))
+        template.setControl(WorkProcessTemplateControl.create(
+              new WorkProcessTemplateControlValue.Builder(5,BatchManagable.SERIAL).canSplit(true)
+                      .reportWorkControl(ReportingControl.create(true,""))
                       .nextProcessSyncMinutes(15).build()
         ));
         workProcessTemplateRepository.save(template);
@@ -156,9 +155,9 @@ public class WorkProcessTemplateRepositoryTest extends WorkProcessAppTest {
     public void testRemoveControl() {
         WorkProcessTemplate template = createTemplate();
         WorkProcessTemplateId id = template.id();
-        template.setControl(WorkProcessTemplateControlEntity.create(
-                new WorkProcessTemplateControl.Builder(5,BatchManagable.SERIAL).canSplit(true)
-                        .reportWorkControl(ReportWorkControl.create(true,""))
+        template.setControl(WorkProcessTemplateControl.create(
+                new WorkProcessTemplateControlValue.Builder(5,BatchManagable.SERIAL).canSplit(true)
+                        .reportWorkControl(ReportingControl.create(true,""))
                         .nextProcessSyncMinutes(15).build()
         ));
         template = workProcessTemplateRepository.save(template);

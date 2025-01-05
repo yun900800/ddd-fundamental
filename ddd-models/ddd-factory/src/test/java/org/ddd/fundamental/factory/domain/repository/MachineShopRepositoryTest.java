@@ -1,13 +1,10 @@
 package org.ddd.fundamental.factory.domain.repository;
 
 import org.ddd.fundamental.changeable.ChangeableInfo;
-import org.ddd.fundamental.factory.FactoryAppTest;
 import org.ddd.fundamental.factory.MachineShopId;
 import org.ddd.fundamental.factory.domain.model.MachineShop;
 import org.ddd.fundamental.factory.domain.model.ProductionLine;
-import org.ddd.fundamental.factory.schedule.FactoryTemplateClient;
 import org.ddd.fundamental.factory.value.MachineShopValueObject;
-import org.ddd.fundamental.utils.CollectionUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,8 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 

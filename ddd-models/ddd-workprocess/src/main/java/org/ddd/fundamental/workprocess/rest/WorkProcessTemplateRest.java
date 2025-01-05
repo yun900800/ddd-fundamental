@@ -8,7 +8,7 @@ import org.ddd.fundamental.workprocess.application.query.WorkProcessTemplateQuer
 import org.ddd.fundamental.workprocess.enums.PreOrNextType;
 import org.ddd.fundamental.workprocess.value.WorkProcessBeat;
 import org.ddd.fundamental.workprocess.value.WorkProcessTemplateId;
-import org.ddd.fundamental.workprocess.value.controller.WorkProcessTemplateControl;
+import org.ddd.fundamental.workprocess.value.controller.WorkProcessTemplateControlValue;
 import org.ddd.fundamental.workprocess.value.quantity.WorkProcessTemplateQuantity;
 import org.ddd.fundamental.workprocess.value.resources.ProductResource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +58,7 @@ public class WorkProcessTemplateRest {
     }
 
     @PostMapping("/process/add_control/{id}")
-    public void addControlInfoToTemplate(@RequestBody WorkProcessTemplateControl control,
+    public void addControlInfoToTemplate(@RequestBody WorkProcessTemplateControlValue control,
                                          @PathVariable String id){
         service.addControlInfoToTemplate(control,new WorkProcessTemplateId(id));
     }

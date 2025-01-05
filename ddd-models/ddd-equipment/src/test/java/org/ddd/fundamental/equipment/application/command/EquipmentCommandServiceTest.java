@@ -8,7 +8,6 @@ import org.ddd.fundamental.equipment.domain.model.Equipment;
 import org.ddd.fundamental.equipment.domain.model.ToolingEquipment;
 import org.ddd.fundamental.factory.EquipmentId;
 import org.ddd.fundamental.shared.api.equipment.EquipmentDTO;
-import org.ddd.fundamental.utils.CollectionUtils;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

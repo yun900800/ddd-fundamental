@@ -8,7 +8,6 @@ import org.ddd.fundamental.bom.value.MaterialIdNode;
 import org.ddd.fundamental.bom.value.ProductStructure;
 import org.ddd.fundamental.bom.value.ProductStructureNode;
 import org.ddd.fundamental.shared.api.bom.BomIdDTO;
-import org.ddd.fundamental.utils.CollectionUtils;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

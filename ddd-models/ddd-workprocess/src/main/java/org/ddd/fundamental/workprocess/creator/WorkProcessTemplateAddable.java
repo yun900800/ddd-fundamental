@@ -19,8 +19,8 @@ import org.ddd.fundamental.workprocess.domain.repository.WorkProcessTemplateRepo
 import org.ddd.fundamental.workprocess.enums.BatchManagable;
 import org.ddd.fundamental.workprocess.enums.ProductResourceType;
 import org.ddd.fundamental.workprocess.value.WorkProcessBeat;
-import org.ddd.fundamental.workprocess.value.controller.ReportWorkControl;
-import org.ddd.fundamental.workprocess.value.controller.WorkProcessTemplateControl;
+import org.ddd.fundamental.workprocess.value.controller.ReportingControl;
+import org.ddd.fundamental.workprocess.value.controller.WorkProcessTemplateControlValue;
 import org.ddd.fundamental.workprocess.value.quantity.WorkProcessTemplateQuantity;
 import org.ddd.fundamental.workprocess.value.resources.ProductResource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -121,11 +121,11 @@ public class WorkProcessTemplateAddable implements DataAddable {
         return Arrays.asList(95.2,99.5,99.6,96.4,98.8,97.6);
     }
 
-    public static WorkProcessTemplateControl createWorkProcessTemplateControl(){
-        return new WorkProcessTemplateControl.Builder(1, org.ddd.fundamental.utils.CollectionUtils.random(batchManagables()))
+    public static WorkProcessTemplateControlValue createWorkProcessTemplateControl(){
+        return new WorkProcessTemplateControlValue.Builder(1, org.ddd.fundamental.utils.CollectionUtils.random(batchManagables()))
                 .canSplit(org.ddd.fundamental.utils.CollectionUtils.random(trueOrFalse())).isAllowedChecked(org.ddd.fundamental.utils.CollectionUtils.random(trueOrFalse()))
                 .nextProcessSyncMinutes(20.0)
-                .reportWorkControl(ReportWorkControl.create(org.ddd.fundamental.utils.CollectionUtils.random(trueOrFalse()),"测试报工规则"))
+                .reportWorkControl(ReportingControl.create(org.ddd.fundamental.utils.CollectionUtils.random(trueOrFalse()),"测试报工规则"))
                 .build();
     }
 

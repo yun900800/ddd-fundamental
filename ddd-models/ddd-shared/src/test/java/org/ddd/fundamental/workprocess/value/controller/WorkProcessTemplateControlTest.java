@@ -8,15 +8,15 @@ public class WorkProcessTemplateControlTest {
 
     @Test
     public void testCreateWorkProcessTemplateControl(){
-        WorkProcessTemplateControl control = new WorkProcessTemplateControl.Builder(1, BatchManagable.BATCH_YES)
+        WorkProcessTemplateControlValue control = new WorkProcessTemplateControlValue.Builder(1, BatchManagable.BATCH_YES)
                 .canSplit(false).isAllowedChecked(true).build();
         Assert.assertNull(control.getReportWorkControl());
         Assert.assertEquals(control.getProcessOrder(),1,0);
 
-        WorkProcessTemplateControl control1 = new WorkProcessTemplateControl.Builder(1,BatchManagable.BATCH_YES)
+        WorkProcessTemplateControlValue control1 = new WorkProcessTemplateControlValue.Builder(1,BatchManagable.BATCH_YES)
                 .canSplit(false).isAllowedChecked(true)
-                .reportWorkControl(ReportWorkControl.create(true,"测试报工规则"))
+                .reportWorkControl(ReportingControl.create(true,"测试报工规则"))
                 .build();
-        Assert.assertEquals(control1.getReportWorkControl(),ReportWorkControl.create(true,"测试报工规则"));
+        Assert.assertEquals(control1.getReportWorkControl(), ReportingControl.create(true,"测试报工规则"));
     }
 }
