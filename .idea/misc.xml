@@ -11,6 +11,8 @@
     <option name="ignoredFiles">
       <set>
         <option value="$PROJECT_DIR$/ddd-base/ddd-model/pom.xml" />
+        <option value="$PROJECT_DIR$/ddd-models/ddd-plan-shcedule/pom.xml" />
+        <option value="$PROJECT_DIR$/ddd-models/ddd-planing/pom.xml" />
       </set>
     </option>
   </component>

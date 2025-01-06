@@ -3,6 +3,7 @@ package org.ddd.fundamental.day;
 import org.junit.Assert;
 import org.junit.Test;
 import java.time.LocalTime;
+import java.util.List;
 
 
 public class ShiftTest {
@@ -67,5 +68,15 @@ public class ShiftTest {
         Shift shift = Shift.createFromEnd(LocalTime.parse("12:00:00"),4,"创建一个中班");
         Assert.assertEquals(shift.minutes(),240);
         Assert.assertEquals("{\"start\":\"08:00:00\",\"end\":\"12:00:00\",\"shiftName\":\"创建一个中班\"}",shift.toString());
+    }
+
+    @Test
+    public void testCreateRandomShiftList(){
+        List<Shift> shiftList = Shift.createRandomShiftList(
+                LocalTime.of(6,0),
+                LocalTime.of(22,0),
+                300,260
+        );
+        Assert.assertTrue(shiftList.size()>2);
     }
 }

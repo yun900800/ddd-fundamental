@@ -5,6 +5,7 @@ import org.ddd.fundamental.core.ValueObject;
 
 import javax.persistence.*;
 import javax.validation.OverridesAttribute;
+import java.time.LocalTime;
 import java.util.Objects;
 
 @MappedSuperclass
@@ -50,6 +51,15 @@ public class YearModelValue implements ValueObject, CalculateTime, Cloneable {
 
     public boolean isHasWeekend() {
         return hasWeekend;
+    }
+
+    public static YearModelValue createRandomShiftModel(String modelName, int year,
+                                                   String dayTypeName,
+                                                   LocalTime start, LocalTime end,
+                                                   int maxMinutes, int minMinutes ){
+        return new YearModelValue(CalendarTypeValue.createRandomShift(dayTypeName,
+                start,end,maxMinutes,minMinutes),
+                DayOff.createDayOff(year),modelName,year);
     }
 
     public static YearModelValue createTwoShift(String modelName, int year){
@@ -103,11 +113,9 @@ public class YearModelValue implements ValueObject, CalculateTime, Cloneable {
         //休息的日期,包括节假期和周末
         long vocation = dayOff.getDays();
         if (hasWeekend) {
-            log.info("has weekend days is {}",(total - vocation));
             return total - vocation;
         } else {
             long weekend = DayOff.getWeekends(dayOff.getYear()).size();
-            log.info("no weekend days is {}",(total - vocation + weekend));
             return total - vocation + weekend;
         }
     }
@@ -118,7 +126,6 @@ public class YearModelValue implements ValueObject, CalculateTime, Cloneable {
     }
 
     public double hours(){
-        log.info("day hour is {}",calendarType.hours());
         return days() * calendarType.hours();
     }
 

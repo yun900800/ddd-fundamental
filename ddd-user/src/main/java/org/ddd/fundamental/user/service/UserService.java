@@ -95,10 +95,10 @@ public class UserService {
     }
 
     public void threadSpanTest() {
-        LOGGER.info("在线程外部的追踪信息是: new Thread");
+        LOGGER.info("在线程外部的追踪信息是: new thread");
         executor.execute(()->{
-            LOGGER.info("在线程内部的追踪信息是: new Thread run");
+            LOGGER.info("在线程内部的追踪信息是: new thread run");
         });
-        LOGGER.info("在线程外部的追踪信息是: new Thread finished");
+        LOGGER.info("在线程外部的追踪信息是: new thread finished");
     }
 }

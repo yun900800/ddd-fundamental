@@ -16,9 +16,7 @@ import javax.persistence.Transient;
 import java.time.Duration;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * 班次
@@ -64,6 +62,31 @@ public class Shift implements ValueObject , CalculateTime{
     public static Shift createFromEnd(LocalTime end, int hour, String shiftName){
         LocalTime startTime = end.plusHours(-hour);
         return create(startTime,end,shiftName);
+    }
+
+    public static List<Shift> createRandomShiftList(LocalTime start,LocalTime end, int maxMinutes,int minMinutes){
+        List<Shift> result = new ArrayList<>();
+        LocalTime currentDate = start;
+        Random random = new Random();
+        LocalTime endTime = start;
+        int startHour = start.getHour();
+        int endHour = end.getHour();
+        int currentStartHour = currentDate.getHour();
+        int currentEndHour = endTime.getHour();
+        int index = 0;
+        while (currentStartHour >=startHour && currentEndHour>=startHour
+                && currentStartHour < endHour && currentEndHour< endHour){
+            int randomMinutes = random.nextInt(maxMinutes - minMinutes + 1) + minMinutes;
+            endTime = currentDate.plusMinutes(randomMinutes);
+            Shift shift = create(currentDate,endTime,"第"+ (index+1)+"班次");
+            result.add(shift);
+            currentDate = endTime.plusMinutes(10);
+            index++;
+            currentStartHour = currentDate.getHour();
+            currentEndHour = endTime.getHour();
+        }
+        result.remove(result.get(result.size()-1));
+        return result;
     }
 
 

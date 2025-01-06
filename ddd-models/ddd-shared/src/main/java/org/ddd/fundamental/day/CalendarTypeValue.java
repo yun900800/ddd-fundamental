@@ -3,12 +3,14 @@ package org.ddd.fundamental.day;
 
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import org.ddd.fundamental.core.ValueObject;
+import org.ddd.fundamental.day.range.DateTimeRange;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.MappedSuperclass;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -42,6 +44,21 @@ public class CalendarTypeValue implements ValueObject, CalculateTime {
 
     public static CalendarTypeValue create(List<Shift> shiftList, String dayTypeName){
         return new CalendarTypeValue(shiftList,dayTypeName);
+    }
+
+    /**
+     * 生成某段时间内的随机班次
+     * @param dayTypeName
+     * @param start
+     * @param end
+     * @param maxMinutes
+     * @param minMinutes
+     * @return
+     */
+    public static CalendarTypeValue createRandomShift(String dayTypeName,
+                                                      LocalTime start, LocalTime end,
+                                                      int maxMinutes, int minMinutes ){
+        return new CalendarTypeValue(Shift.createRandomShiftList(start,end,maxMinutes,minMinutes),dayTypeName);
     }
 
     public static CalendarTypeValue createTwoShiftDateType(String dayTypeName) {

@@ -1,5 +1,6 @@
 package org.ddd.fundamental.day;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -8,6 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 
 
+@Slf4j
 public class CalendarTypeTest {
 
     private static List<Shift> createShiftList() {
@@ -58,6 +60,18 @@ public class CalendarTypeTest {
         CalendarTypeValue dayType1 = CalendarTypeValue.createThreeShiftDateType("三班制");
         Assert.assertEquals("DayType{dayTypeName=三班制, shiftList=[Shift{第一班次早班 = 06:00 - 12:00}, Shift{第二班次中班 = 12:00 - 18:00}, Shift{第三班次晚班 = 18:00 - 23:59}]}",
                 dayType1.toString());
+    }
+
+    @Test
+    public void testCreateRandomShift(){
+        CalendarTypeValue calendarTypeValue = CalendarTypeValue.createRandomShift(
+                "随机班次",
+                LocalTime.of(6,0),
+                LocalTime.of(22,0),
+                300,260
+        );
+        Assert.assertTrue(calendarTypeValue.getShiftList().size()>2);
+        log.info("calendarTypeValue hour is {} ",calendarTypeValue.hours());
     }
     
 }
