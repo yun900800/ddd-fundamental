@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 
-public class DayTypeTest {
+public class CalendarTypeTest {
 
     private static List<Shift> createShiftList() {
         LocalTime start = LocalTime.parse("08:00:00");

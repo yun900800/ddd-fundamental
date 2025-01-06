@@ -47,7 +47,7 @@ public class EquipmentAddable implements DataAddable {
     public static List<Equipment> createEquipments(){
 
         Equipment equipment0 = new Equipment(
-                YearModelValue.createThreeShift("三班次年度模型"),
+                YearModelValue.createThreeShift("三班次年度模型",2024),
                 EquipmentType.RESOURCE_ONE, EquipmentMaster.newBuilder().assetNo("CQ_1024")
                 .info(ChangeableInfo.create("车床一号","这是加工使用的车床"))
                 .size(EquipmentSize.create(1000,1200,1500))
@@ -62,7 +62,7 @@ public class EquipmentAddable implements DataAddable {
         resource0.configureEquipmentPositionType(CollectionUtils.random(EquipmentHelper.positionTypes()));
         equipment0.setResource(resource0);
         Equipment equipment1 = new Equipment(
-                YearModelValue.createTwoShift("两班次年度模型"),
+                YearModelValue.createTwoShift("两班次年度模型",2024),
                 EquipmentType.RESOURCE_ONE, EquipmentMaster.newBuilder().assetNo("CQ_1025")
                 .info(ChangeableInfo.create("车床二号","这是加工使用的车床,可以加工特质材料"))
                 .size(EquipmentSize.create(1200,1500,4000))
@@ -77,7 +77,7 @@ public class EquipmentAddable implements DataAddable {
         resource1.configureEquipmentPositionType(CollectionUtils.random(EquipmentHelper.positionTypes()));
         equipment1.setResource(resource1);
         Equipment equipment2 = new Equipment(
-                YearModelValue.createTwoShift("两班次年度模型"),
+                YearModelValue.createTwoShift("两班次年度模型",2024),
                 EquipmentType.RESOURCE_ONE, EquipmentMaster.newBuilder().assetNo("CQ_1026")
                 .info(ChangeableInfo.create("机床五号","这是加工使用的机床,主要用来加工特种锡膏"))
                 .size(EquipmentSize.create(4000,2000,1200))
@@ -92,7 +92,7 @@ public class EquipmentAddable implements DataAddable {
         resource2.configureEquipmentPositionType(CollectionUtils.random(EquipmentHelper.positionTypes()));
         equipment2.setResource(resource2);
         Equipment equipment3 = new Equipment(
-                YearModelValue.createThreeShift("三班次年度模型"),
+                YearModelValue.createThreeShift("三班次年度模型",2024),
                 EquipmentType.RESOURCE_ONE, EquipmentMaster.newBuilder().assetNo("CQ_1027")
                 .info(ChangeableInfo.create("压铸机5号","这是加工使用的机床,主要用来加工特种锡膏"))
                 .size(EquipmentSize.create(4000,4000,1200))
@@ -107,7 +107,7 @@ public class EquipmentAddable implements DataAddable {
         resource3.configureEquipmentPositionType(CollectionUtils.random(EquipmentHelper.positionTypes()));
         equipment3.setResource(resource3);
         Equipment equipment4 = new Equipment(
-                YearModelValue.createThreeShift("三班次年度模型"),
+                YearModelValue.createThreeShift("三班次年度模型",2024),
                 EquipmentType.RESOURCE_ONE, EquipmentMaster.newBuilder().assetNo("CQ_1028")
                 .info(ChangeableInfo.create("压铸机6号","这是加工使用的机床,主要用来加工特种锡膏"))
                 .size(EquipmentSize.create(4000,4000,1200))

@@ -6,19 +6,24 @@ import org.junit.Test;
 public class YearModelTest {
     @Test
     public void testCreateYearModel(){
-        YearModelValue yearModel = YearModelValue.createTwoShift("两班制有周末");
-        System.out.println(yearModel);
+        YearModelValue yearModel = YearModelValue.createTwoShift("两班制有周末",2024);
+        YearModelValue yearModel1 = YearModelValue.createThreeShift("三班制有周末",2024);
 
-        YearModelValue yearModel1 = YearModelValue.createThreeShift("三班制有周末");
-        System.out.println(yearModel1);
+        Assert.assertEquals(yearModel.minutes(),185760);
+        Assert.assertEquals(yearModel.hours(),3096.0,0.0);
+        Assert.assertEquals(yearModel.isHasWeekend(),true);
+        Assert.assertEquals(yearModel1.minutes(),278382);
+        Assert.assertEquals(yearModel1.hours(),4386.0,0.0);
+        Assert.assertEquals(yearModel1.isHasWeekend(),true);
 
-        Assert.assertEquals(yearModel.minutes(),185040);
-        Assert.assertEquals(yearModel1.minutes(),277303);
+        YearModelValue yearModel2 = YearModelValue.createTwoShift("两班制无周末", false,2024);
+        YearModelValue yearModel3 = YearModelValue.createThreeShift("三班制无周末", false,2024);
 
-        YearModelValue yearModel2 = YearModelValue.createTwoShift("两班制无周末", false);
-        YearModelValue yearModel3 = YearModelValue.createThreeShift("三班制无周末", false);
-
-        Assert.assertEquals(yearModel2.minutes(),259920);
-        Assert.assertEquals(yearModel3.minutes(),389519);
+        Assert.assertEquals(yearModel2.minutes(),260640);
+        Assert.assertEquals(yearModel2.hours(),4344,0.0);
+        Assert.assertEquals(yearModel2.isHasWeekend(),false);
+        Assert.assertEquals(yearModel3.minutes(),390598);
+        Assert.assertEquals(yearModel3.hours(),6154.0,0.0);
+        Assert.assertEquals(yearModel3.isHasWeekend(),false);
     }
 }

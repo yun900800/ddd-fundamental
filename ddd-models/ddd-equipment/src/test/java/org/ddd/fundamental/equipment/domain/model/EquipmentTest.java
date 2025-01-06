@@ -5,6 +5,7 @@ import org.ddd.fundamental.day.YearModelValue;
 import org.ddd.fundamental.day.range.DateRange;
 import org.ddd.fundamental.equipment.enums.EquipmentType;
 import org.ddd.fundamental.equipment.value.*;
+import org.ddd.fundamental.utils.DateTimeUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -14,7 +15,7 @@ public class EquipmentTest {
 
     private static Equipment create(){
         return new Equipment(
-                YearModelValue.createThreeShift("年度模型"),
+                YearModelValue.createThreeShift("年度模型",2024),
                 EquipmentType.RESOURCE_ONE, EquipmentMaster.newBuilder().assetNo("CQ_1024")
                 .info(ChangeableInfo.create("车床一号","这是加工使用的车床"))
                 .size(EquipmentSize.create(1000,1200,1500))
@@ -27,7 +28,7 @@ public class EquipmentTest {
 
     private static Equipment createTwoShiftEquipment(){
         return new Equipment(
-                YearModelValue.createTwoShift("年度模型"),
+                YearModelValue.createTwoShift("年度模型",2024),
                 EquipmentType.RESOURCE_ONE, EquipmentMaster.newBuilder().assetNo("CQ_1024")
                 .info(ChangeableInfo.create("车床一号","这是加工使用的车床"))
                 .size(EquipmentSize.create(1000,1200,1500))

@@ -29,10 +29,10 @@ public final class EquipmentHelper {
 
     public static List<YearModelValue> yearModelValueList(){
         return Arrays.asList(
-                YearModelValue.createThreeShift("电路板三班制"),
-                YearModelValue.createTwoShift("电路板两班制"),
-                YearModelValue.createThreeShift("电路板三班制",false),
-                YearModelValue.createTwoShift("电路板两班制",false)
+                YearModelValue.createThreeShift("电路板三班制",2024),
+                YearModelValue.createTwoShift("电路板两班制",2024),
+                YearModelValue.createThreeShift("电路板三班制",false,2024),
+                YearModelValue.createTwoShift("电路板两班制",false,2024)
         );
     }
 

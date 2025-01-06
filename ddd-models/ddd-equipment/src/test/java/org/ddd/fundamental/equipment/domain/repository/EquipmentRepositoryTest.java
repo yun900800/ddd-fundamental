@@ -11,6 +11,8 @@ import org.ddd.fundamental.equipment.enums.EquipmentType;
 import org.ddd.fundamental.equipment.domain.model.ToolingEquipment;
 import org.ddd.fundamental.equipment.value.*;
 import org.ddd.fundamental.factory.EquipmentId;
+import org.ddd.fundamental.utils.CollectionUtils;
+import org.ddd.fundamental.utils.DateTimeUtils;
 import org.ddd.fundamental.workorder.value.WorkOrderId;
 import org.ddd.fundamental.workprocess.enums.ProductResourceType;
 import org.ddd.fundamental.workprocess.value.WorkProcessId;
@@ -37,7 +39,7 @@ public class EquipmentRepositoryTest extends EquipmentAppTest {
     @Test
     public void testCreateEquipment(){
         Equipment equipment = new Equipment(
-                YearModelValue.createThreeShift("年度模型"),
+                YearModelValue.createThreeShift("年度模型",2024),
                 EquipmentType.RESOURCE_ONE, EquipmentMaster.newBuilder().assetNo("CQ_1024")
                 .info(ChangeableInfo.create("车床一号","这是加工使用的车床"))
                 .size(EquipmentSize.create(1000,1200,1500))

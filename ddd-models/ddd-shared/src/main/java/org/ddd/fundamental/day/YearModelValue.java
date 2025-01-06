@@ -1,5 +1,6 @@
 package org.ddd.fundamental.day;
 
+import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.core.ValueObject;
 
 import javax.persistence.Embeddable;
@@ -9,7 +10,8 @@ import java.util.Objects;
 
 @MappedSuperclass
 @Embeddable
-public class YearModelValue implements ValueObject, CalculateTime,Cloneable {
+@Slf4j
+public class YearModelValue implements ValueObject, CalculateTime, Cloneable {
 
     private String modelName;
 
@@ -21,20 +23,23 @@ public class YearModelValue implements ValueObject, CalculateTime,Cloneable {
     @Embedded
     private DayOff dayOff;
 
+    private int year;
+
     @SuppressWarnings("unused")
     YearModelValue(){}
 
     private YearModelValue(CalendarTypeValue dayType, DayOff off,
-                           String modelName){
-        this(dayType,off, modelName,true);
+                           String modelName, int year){
+        this(dayType,off, modelName,year,true);
     }
 
     private YearModelValue(CalendarTypeValue dayType, DayOff off,
-                           String modelName, boolean hasWeekend){
+                           String modelName, int year, boolean hasWeekend){
         this.dayOff = off;
         this.calendarType = dayType;
         this.modelName = modelName;
         this.hasWeekend = hasWeekend;
+        this.year = year;
     }
 
     public String getModelName() {
@@ -45,24 +50,24 @@ public class YearModelValue implements ValueObject, CalculateTime,Cloneable {
         return hasWeekend;
     }
 
-    public static YearModelValue createTwoShift(String modelName){
+    public static YearModelValue createTwoShift(String modelName, int year){
         return new YearModelValue(CalendarTypeValue.createTwoShiftDateType("两班制"),
-                DayOff.createDayOff(),modelName);
+                DayOff.createDayOff(year),modelName,year);
     }
 
-    public static YearModelValue createThreeShift(String modelName){
+    public static YearModelValue createThreeShift(String modelName, int year){
         return new YearModelValue(CalendarTypeValue.createThreeShiftDateType("三班制"),
-                DayOff.createDayOff(),modelName);
+                DayOff.createDayOff(year),modelName,year);
     }
 
-    public static YearModelValue createTwoShift(String modelName, boolean hasWeekend){
+    public static YearModelValue createTwoShift(String modelName, boolean hasWeekend, int year){
         return new YearModelValue(CalendarTypeValue.createTwoShiftDateType("两班制"),
-                DayOff.createDayOff(),modelName,hasWeekend);
+                DayOff.createDayOff(year),modelName,year,hasWeekend);
     }
 
-    public static YearModelValue createThreeShift(String modelName, boolean hasWeekend){
+    public static YearModelValue createThreeShift(String modelName, boolean hasWeekend, int year){
         return new YearModelValue(CalendarTypeValue.createThreeShiftDateType("三班制"),
-                DayOff.createDayOff(),modelName,hasWeekend);
+                DayOff.createDayOff(year),modelName,year,hasWeekend);
     }
 
     public CalendarTypeValue getCalendarType() {
@@ -88,22 +93,21 @@ public class YearModelValue implements ValueObject, CalculateTime,Cloneable {
 
     @Override
     public String toString() {
-        return "YearModel{" +
-                "modelName='" + modelName + '\'' +
-                ", hasWeekend=" + hasWeekend  +
-                ", dayType=" + calendarType +
-                ", dayOff=" + dayOff +
-                '}';
+        return objToString();
     }
 
     private long days(){
         long total = 365;
+        //休息的日期,包括节假期和周末
         long vocation = dayOff.getDays();
-        long weekend = 0;
         if (hasWeekend) {
-            weekend = 52 * 2;
+            log.info("has weekend days is {}",(total - vocation));
+            return total - vocation;
+        } else {
+            long weekend = DayOff.getWeekends(dayOff.getYear()).size();
+            log.info("no weekend days is {}",(total - vocation + weekend));
+            return total - vocation + weekend;
         }
-        return total - vocation - weekend;
     }
 
     @Override
@@ -112,6 +116,7 @@ public class YearModelValue implements ValueObject, CalculateTime,Cloneable {
     }
 
     public double hours(){
+        log.info("day hour is {}",calendarType.hours());
         return days() * calendarType.hours();
     }
 

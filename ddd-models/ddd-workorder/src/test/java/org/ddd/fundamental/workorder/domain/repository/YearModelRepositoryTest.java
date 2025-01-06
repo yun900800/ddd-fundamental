@@ -16,10 +16,10 @@ public class YearModelRepositoryTest extends WorkOrderAppTest {
     @Test
     public void testCreateYearModel(){
         YearModel yearModel = new YearModel(
-                YearModelValue.createTwoShift("两班制有周末"));
+                YearModelValue.createTwoShift("两班制有周末",2024));
         repository.save(yearModel);
         YearModel yearModel1 = new YearModel(
-                YearModelValue.createThreeShift("三班制有周末"));
+                YearModelValue.createThreeShift("三班制有周末",2024));
         repository.save(yearModel1);
     }
 
