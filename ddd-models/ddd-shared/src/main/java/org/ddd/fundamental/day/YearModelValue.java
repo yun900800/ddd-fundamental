@@ -62,6 +62,12 @@ public class YearModelValue implements ValueObject, CalculateTime, Cloneable {
                 DayOff.createDayOff(year),modelName,year);
     }
 
+    public static YearModelValue createRandomShiftModel1(String modelName, int year,
+                                                        CalendarTypeValue value){
+        return new YearModelValue(value,
+                DayOff.createDayOff(year),modelName,year);
+    }
+
     public static YearModelValue createTwoShift(String modelName, int year){
         return new YearModelValue(CalendarTypeValue.createTwoShiftDateType("两班制"),
                 DayOff.createDayOff(year),modelName,year);

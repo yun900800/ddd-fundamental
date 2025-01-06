@@ -187,12 +187,20 @@ public class FactoryCommandService {
         this.calendarTypeRepository.persist(calendarType);
     }
 
+    public void batchAddCalendarTypes(List<CalendarType> calendarTypes){
+        this.calendarTypeRepository.persistAll(calendarTypes);
+    }
+
     public void deleteAllYearModel(){
         this.yearModelRepository.deleteAllYearModel();
     }
 
     public void addYearModel(YearModel yearModel){
         this.yearModelRepository.persist(yearModel);
+    }
+
+    public void batchAddYearModels(List<YearModel> yearModels){
+        this.yearModelRepository.persistAll(yearModels);
     }
 
 }

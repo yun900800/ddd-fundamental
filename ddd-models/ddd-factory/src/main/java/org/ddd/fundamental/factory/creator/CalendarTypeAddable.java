@@ -1,6 +1,7 @@
 package org.ddd.fundamental.factory.creator;
 
 import lombok.extern.slf4j.Slf4j;
+import org.ddd.fundamental.core.generator.Generators;
 import org.ddd.fundamental.creator.DataAddable;
 import org.ddd.fundamental.day.CalendarTypeValue;
 import org.ddd.fundamental.day.Shift;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 @Slf4j
@@ -32,6 +35,12 @@ public class CalendarTypeAddable implements DataAddable {
         return calendarType;
     }
 
+    private static List<CalendarType> createCalendarList(){
+        List<CalendarType> calendarTypes = new ArrayList<>();
+        Generators.fill(calendarTypes,()->create(),50);
+        return calendarTypes;
+    }
+
     @Autowired(required = false)
     public CalendarTypeAddable(FactoryCommandService commandService){
         this.commandService = commandService;
@@ -39,6 +48,6 @@ public class CalendarTypeAddable implements DataAddable {
     @Override
     @Transactional
     public void execute() {
-        this.commandService.addCalendarType(create());
+        this.commandService.batchAddCalendarTypes(createCalendarList());
     }
 }
