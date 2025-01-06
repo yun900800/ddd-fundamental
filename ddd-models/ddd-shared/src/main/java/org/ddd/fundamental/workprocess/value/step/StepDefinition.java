@@ -2,11 +2,7 @@ package org.ddd.fundamental.workprocess.value.step;
 
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-
-import org.apache.commons.lang3.builder.ToStringStyle;
-import org.ddd.fundamental.changeable.ChangeableInfo;
+import org.ddd.fundamental.changeable.ChangeInfo;
 import org.ddd.fundamental.core.ValueObject;
 
 import javax.persistence.Embeddable;
@@ -30,7 +26,7 @@ public class StepDefinition implements ValueObject,Cloneable {
     /**
      * 步骤内容信息
      */
-    private ChangeableInfo stepInfo;
+    private ChangeInfo stepInfo;
 
     /**
      * 步骤顺序
@@ -41,16 +37,16 @@ public class StepDefinition implements ValueObject,Cloneable {
     protected StepDefinition(){
     }
 
-    private StepDefinition(ChangeableInfo stepInfo, int order){
+    private StepDefinition(ChangeInfo stepInfo, int order){
         this.stepInfo = stepInfo;
         this.order = order;
     }
 
-    public static StepDefinition create(ChangeableInfo stepInfo, int order){
+    public static StepDefinition create(ChangeInfo stepInfo, int order){
         return new StepDefinition(stepInfo, order);
     }
 
-    public StepDefinition changeStepInfo(ChangeableInfo stepInfo){
+    public StepDefinition changeStepInfo(ChangeInfo stepInfo){
         this.stepInfo = stepInfo;
         return this;
     }
@@ -60,7 +56,7 @@ public class StepDefinition implements ValueObject,Cloneable {
         return this;
     }
 
-    public ChangeableInfo getStepInfo() {
+    public ChangeInfo getStepInfo() {
         return stepInfo.clone();
     }
 

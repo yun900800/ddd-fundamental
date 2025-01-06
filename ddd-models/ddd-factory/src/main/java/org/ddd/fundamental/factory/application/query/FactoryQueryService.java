@@ -5,15 +5,18 @@ import org.ddd.fundamental.common.tenant.aop.TenantOperation;
 import org.ddd.fundamental.factory.MachineShopId;
 import org.ddd.fundamental.factory.ProductionLineId;
 import org.ddd.fundamental.factory.WorkStationId;
+import org.ddd.fundamental.factory.domain.model.CalendarType;
 import org.ddd.fundamental.factory.domain.model.MachineShop;
 import org.ddd.fundamental.factory.domain.model.ProductionLine;
 import org.ddd.fundamental.factory.domain.model.WorkStation;
+import org.ddd.fundamental.factory.domain.repository.CalendarTypeRepository;
 import org.ddd.fundamental.factory.domain.repository.MachineShopRepository;
 import org.ddd.fundamental.factory.domain.repository.ProductionLineRepository;
 import org.ddd.fundamental.factory.domain.repository.WorkStationRepository;
 import org.ddd.fundamental.factory.helper.FactoryHelper;
 import org.ddd.fundamental.factory.utils.SpringTransactionStatistics;
 import org.ddd.fundamental.redis.config.RedisStoreManager;
+import org.ddd.fundamental.shared.api.factory.CalendarTypeDTO;
 import org.ddd.fundamental.shared.api.factory.MachineShopDTO;
 import org.ddd.fundamental.shared.api.factory.ProductLineDTO;
 import org.ddd.fundamental.shared.api.factory.WorkStationDTO;
@@ -42,6 +45,9 @@ public class FactoryQueryService {
     @Autowired
     private WorkStationRepository workStationRepository;
 
+    @Autowired(required = false)
+    private CalendarTypeRepository calendarTypeRepository;
+
     @Autowired
     private RedisStoreManager manager;
 
@@ -60,6 +66,16 @@ public class FactoryQueryService {
         machineShopList.stream().map(v->MachineShopDTO.create(v.id(),v.getMachineShop()))
                 .collect(Collectors.toList());
         return machineShopDTOS;
+    }
+
+    public List<CalendarTypeDTO> calendarTypes(){
+        List<CalendarType> calendarTypes = calendarTypeRepository.findAll();
+        if (CollectionUtils.isEmpty(calendarTypes)) {
+            return new ArrayList<>();
+        }
+        return calendarTypes.stream().map(v->CalendarTypeDTO.create(
+                v.id(),v.getCalendarType()
+        )).collect(Collectors.toList());
     }
 
     private void simulateCostCall(){

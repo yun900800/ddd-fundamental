@@ -7,9 +7,11 @@ import org.ddd.fundamental.factory.MachineShopId;
 import org.ddd.fundamental.factory.ProductionLineId;
 import org.ddd.fundamental.factory.WorkStationId;
 import org.ddd.fundamental.factory.application.query.FactoryQueryService;
+import org.ddd.fundamental.factory.domain.model.CalendarType;
 import org.ddd.fundamental.factory.domain.model.MachineShop;
 import org.ddd.fundamental.factory.domain.model.ProductionLine;
 import org.ddd.fundamental.factory.domain.model.WorkStation;
+import org.ddd.fundamental.factory.domain.repository.CalendarTypeRepository;
 import org.ddd.fundamental.factory.domain.repository.MachineShopRepository;
 import org.ddd.fundamental.factory.domain.repository.ProductionLineRepository;
 import org.ddd.fundamental.factory.domain.repository.WorkStationRepository;
@@ -34,6 +36,8 @@ public class FactoryCommandService {
 
     private final WorkStationRepository workStationRepository;
 
+    private final CalendarTypeRepository calendarTypeRepository;
+
     private final FactoryQueryService queryService;
 
 
@@ -42,10 +46,12 @@ public class FactoryCommandService {
             MachineShopRepository machineShopRepository,
             ProductionLineRepository productionLineRepository,
             WorkStationRepository workStationRepository,
+            CalendarTypeRepository calendarTypeRepository,
             FactoryQueryService queryService){
         this.machineShopRepository = machineShopRepository;
         this.productionLineRepository = productionLineRepository;
         this.workStationRepository = workStationRepository;
+        this.calendarTypeRepository = calendarTypeRepository;
         this.queryService = queryService;
     }
 
@@ -173,6 +179,14 @@ public class FactoryCommandService {
      */
     public void deleteMachine(MachineShopId shopId){
         machineShopRepository.deleteById(shopId);
+    }
+
+    public void deleteAllCalendarType(){
+        calendarTypeRepository.deleteAllCalendarType();
+    }
+
+    public void addCalendarType(CalendarType calendarType){
+        this.calendarTypeRepository.persist(calendarType);
     }
 
 }

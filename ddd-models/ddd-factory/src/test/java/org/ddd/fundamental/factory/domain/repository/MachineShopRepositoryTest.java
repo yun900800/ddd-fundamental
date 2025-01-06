@@ -5,6 +5,7 @@ import org.ddd.fundamental.factory.MachineShopId;
 import org.ddd.fundamental.factory.domain.model.MachineShop;
 import org.ddd.fundamental.factory.domain.model.ProductionLine;
 import org.ddd.fundamental.factory.value.MachineShopValueObject;
+import org.ddd.fundamental.utils.CollectionUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

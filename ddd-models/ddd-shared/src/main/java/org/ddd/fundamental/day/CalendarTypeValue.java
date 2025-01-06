@@ -20,7 +20,7 @@ import java.util.Objects;
         name = "json",
         typeClass = JsonType.class
 )
-public class DayType implements ValueObject, CalculateTime {
+public class CalendarTypeValue implements ValueObject, CalculateTime {
 
     @Type(type = "json")
     @Column(columnDefinition = "json" , name = "shift_list")
@@ -29,31 +29,30 @@ public class DayType implements ValueObject, CalculateTime {
     private String dayTypeName;
 
     @SuppressWarnings("unused")
-    DayType(){}
+    CalendarTypeValue(){}
 
-    public DayType(List<Shift> shiftList,String dayTypeName){
+    private CalendarTypeValue(List<Shift> shiftList, String dayTypeName){
         this.shiftList = shiftList;
         this.dayTypeName = dayTypeName;
     }
 
-    public static DayType create(String dayTypeName,Shift... shifts){
-        return new DayType(Arrays.asList(shifts),dayTypeName);
+    public static CalendarTypeValue create(String dayTypeName, Shift... shifts){
+        return new CalendarTypeValue(Arrays.asList(shifts),dayTypeName);
     }
 
-    public static DayType createTwoShiftDateType(String dayTypeName) {
-        return new DayType(Shift.createTwoShift(),dayTypeName);
+    public static CalendarTypeValue create(List<Shift> shiftList, String dayTypeName){
+        return new CalendarTypeValue(shiftList,dayTypeName);
     }
 
-    public static DayType createThreeShiftDateType(String dayTypeName) {
-        return new DayType(Shift.createThreeShift(),dayTypeName);
+    public static CalendarTypeValue createTwoShiftDateType(String dayTypeName) {
+        return new CalendarTypeValue(Shift.createTwoShift(),dayTypeName);
     }
 
-    public static DayType create(List<Shift> shiftList,String dayTypeName){
-        return new DayType(shiftList,dayTypeName);
+    public static CalendarTypeValue createThreeShiftDateType(String dayTypeName) {
+        return new CalendarTypeValue(Shift.createThreeShift(),dayTypeName);
     }
 
-
-    public List<CalculateTime> getShiftList() {
+    public List<Shift> getShiftList() {
         return new ArrayList<>(shiftList);
     }
 
@@ -65,8 +64,8 @@ public class DayType implements ValueObject, CalculateTime {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof DayType)) return false;
-        DayType dayType = (DayType) o;
+        if (!(o instanceof CalendarTypeValue)) return false;
+        CalendarTypeValue dayType = (CalendarTypeValue) o;
         return Objects.equals(shiftList, dayType.shiftList);
     }
 
@@ -77,10 +76,7 @@ public class DayType implements ValueObject, CalculateTime {
 
     @Override
     public String toString() {
-        return "DayType{" +
-                "dayTypeName=" + dayTypeName +
-                ", shiftList=" + shiftList  +
-                "}";
+        return objToString();
     }
 
     @Override

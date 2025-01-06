@@ -4,7 +4,7 @@ package org.ddd.fundamental.workprocess.schedule;
 import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.shared.api.optemplate.WorkProcessTemplateDTO;
 import org.ddd.fundamental.utils.CollectionUtils;
-import org.ddd.fundamental.workprocess.WorkProcessHelper;
+import org.ddd.fundamental.workprocess.helper.WorkProcessHelper;
 import org.ddd.fundamental.workprocess.application.query.WorkProcessTemplateQueryService;
 import org.ddd.fundamental.workprocess.creator.WorkProcessTemplateAddable;
 import org.ddd.fundamental.workprocess.enums.BatchManagable;

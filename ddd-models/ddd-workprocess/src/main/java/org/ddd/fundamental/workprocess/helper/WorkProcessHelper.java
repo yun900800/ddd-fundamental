@@ -1,4 +1,4 @@
-package org.ddd.fundamental.workprocess;
+package org.ddd.fundamental.workprocess.helper;
 
 import org.ddd.fundamental.workprocess.enums.BatchManagable;
 

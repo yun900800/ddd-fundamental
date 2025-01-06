@@ -7,6 +7,7 @@ import org.ddd.fundamental.factory.ProductionLineId;
 import org.ddd.fundamental.factory.WorkStationId;
 import org.ddd.fundamental.factory.application.command.FactoryCommandService;
 import org.ddd.fundamental.factory.application.query.FactoryQueryService;
+import org.ddd.fundamental.shared.api.factory.CalendarTypeDTO;
 import org.ddd.fundamental.shared.api.factory.MachineShopDTO;
 import org.ddd.fundamental.shared.api.factory.ProductLineDTO;
 import org.ddd.fundamental.shared.api.factory.WorkStationDTO;
@@ -28,6 +29,11 @@ public class FactoryRest {
     @RequestMapping("/factory/machine-shops")
     public List<MachineShopDTO> machineShops() {
         return application.machineShops();
+    }
+
+    @RequestMapping("/calendar/calendar-types")
+    public List<CalendarTypeDTO> calendarTypes(){
+        return application.calendarTypes();
     }
 
     @RequestMapping("/factory/machine-shopsByIds")

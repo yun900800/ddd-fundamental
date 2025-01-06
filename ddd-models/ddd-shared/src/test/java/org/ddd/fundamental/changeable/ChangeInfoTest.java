@@ -42,4 +42,22 @@ public class ChangeInfoTest {
                 changeInfo.isUse(),true
         );
     }
+
+    @Test
+    public void testCopyChangeInfo(){
+        ChangeInfo changeInfo = ChangeInfo.create(
+                NameDescInfo.create("name","desc"),
+                false
+        );
+        ChangeInfo copy = changeInfo.clone();
+        changeInfo.enableUse();
+        changeInfo.changeInfo(NameDescInfo.create("name1","desc1"));
+
+        Assert.assertEquals(changeInfo.isUse(), true);
+        Assert.assertEquals(changeInfo.getNameDescInfo().getDesc(), "desc1");
+        Assert.assertEquals(changeInfo.getNameDescInfo().getName(), "name1");
+        Assert.assertEquals(copy.isUse(), false);
+        Assert.assertEquals(copy.getNameDescInfo().getDesc(), "desc");
+        Assert.assertEquals(copy.getNameDescInfo().getName(), "name");
+    }
 }

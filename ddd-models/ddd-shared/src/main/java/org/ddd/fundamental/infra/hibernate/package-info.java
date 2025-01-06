@@ -23,7 +23,9 @@
         @TypeDef(defaultForType = WorkProcessTimeId.class, typeClass = WorkProcessTimeIdType.class),
         @TypeDef(defaultForType = EquipmentRPAccountId.class, typeClass = EquipmentRPAccountIdType.class),
         @TypeDef(defaultForType = ScheduleId.class, typeClass = ScheduleIdType.class),
-        @TypeDef(defaultForType = OrderId.class, typeClass = OrderIdType.class)
+        @TypeDef(defaultForType = OrderId.class, typeClass = OrderIdType.class),
+        @TypeDef(defaultForType = CalendarTypeId.class, typeClass = CalendarTypeIdType.class)
+
 })
 
 
@@ -33,6 +35,7 @@ import io.hypersistence.utils.hibernate.type.json.JsonType;
 import org.ddd.fundamental.bom.ProductStructureDataId;
 import org.ddd.fundamental.core.tenant.FactoryId;
 import org.ddd.fundamental.core.tenant.TenantId;
+import org.ddd.fundamental.day.CalendarTypeId;
 import org.ddd.fundamental.equipment.value.EquipmentRPAccountId;
 import org.ddd.fundamental.equipment.value.EquipmentResourceId;
 import org.ddd.fundamental.equipment.value.RPAccountId;

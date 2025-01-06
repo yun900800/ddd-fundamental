@@ -1,5 +1,6 @@
 package org.ddd.fundamental.day;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -10,6 +11,7 @@ import org.ddd.fundamental.jackson.LocalTimeSerializer;
 
 import javax.persistence.Embeddable;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 
 import java.time.Duration;
 import java.time.LocalTime;
@@ -36,15 +38,34 @@ public class Shift implements ValueObject , CalculateTime{
 
     private String shiftName;
 
+    @Transient
+    @JsonIgnore
+    private  static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+
     @SuppressWarnings("unused")
     public Shift(){
     }
 
-    public Shift(LocalTime start, LocalTime end,String shiftName){
+    private Shift(LocalTime start, LocalTime end,String shiftName){
         this.shiftName = shiftName;
         this.start = start;
         this.end = end;
     }
+
+    public static Shift create(LocalTime start, LocalTime end,String shiftName){
+        return new Shift(start,end,shiftName);
+    }
+
+    public static Shift createFromStart(LocalTime start, int hour, String shiftName){
+        LocalTime endTime = start.plusHours(hour);
+        return create(start,endTime,shiftName);
+    }
+
+    public static Shift createFromEnd(LocalTime end, int hour, String shiftName){
+        LocalTime startTime = end.plusHours(-hour);
+        return create(startTime,end,shiftName);
+    }
+
 
     public static List<Shift> createTwoShift() {
         LocalTime start = LocalTime.parse("08:00:00");
@@ -78,7 +99,6 @@ public class Shift implements ValueObject , CalculateTime{
     }
 
     public String formatStart() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
         return start.format(formatter);
     }
 
@@ -87,7 +107,6 @@ public class Shift implements ValueObject , CalculateTime{
     }
 
     public String formatEnd(){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
         return end.format(formatter);
     }
 

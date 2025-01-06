@@ -12,13 +12,12 @@ import org.ddd.fundamental.shared.api.equipment.EquipmentDTO;
 import org.ddd.fundamental.shared.api.equipment.ToolingDTO;
 import org.ddd.fundamental.shared.api.material.MaterialDTO;
 import org.ddd.fundamental.shared.api.optemplate.WorkProcessTemplateDTO;
-import org.ddd.fundamental.workprocess.WorkProcessHelper;
+import org.ddd.fundamental.workprocess.helper.WorkProcessHelper;
 import org.ddd.fundamental.workprocess.client.EquipmentClient;
 import org.ddd.fundamental.workprocess.client.MaterialClient;
 import org.ddd.fundamental.workprocess.domain.model.WorkProcessTemplate;
 import org.ddd.fundamental.workprocess.domain.model.WorkProcessTemplateControl;
 import org.ddd.fundamental.workprocess.domain.repository.WorkProcessTemplateRepository;
-import org.ddd.fundamental.workprocess.enums.BatchManagable;
 import org.ddd.fundamental.workprocess.enums.ProductResourceType;
 import org.ddd.fundamental.workprocess.value.WorkProcessBeat;
 import org.ddd.fundamental.workprocess.value.controller.ReportingControl;
@@ -32,7 +31,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 

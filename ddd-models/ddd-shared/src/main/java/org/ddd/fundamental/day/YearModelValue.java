@@ -16,7 +16,7 @@ public class YearModelValue implements ValueObject, CalculateTime,Cloneable {
     private boolean hasWeekend;
 
     @Embedded
-    private DayType dayType;
+    private CalendarTypeValue dayType;
 
     @Embedded
     private DayOff dayOff;
@@ -24,12 +24,12 @@ public class YearModelValue implements ValueObject, CalculateTime,Cloneable {
     @SuppressWarnings("unused")
     YearModelValue(){}
 
-    private YearModelValue(DayType dayType, DayOff off,
+    private YearModelValue(CalendarTypeValue dayType, DayOff off,
                            String modelName){
         this(dayType,off, modelName,true);
     }
 
-    private YearModelValue(DayType dayType, DayOff off,
+    private YearModelValue(CalendarTypeValue dayType, DayOff off,
                            String modelName, boolean hasWeekend){
         this.dayOff = off;
         this.dayType = dayType;
@@ -46,26 +46,26 @@ public class YearModelValue implements ValueObject, CalculateTime,Cloneable {
     }
 
     public static YearModelValue createTwoShift(String modelName){
-        return new YearModelValue(DayType.createTwoShiftDateType("两班制"),
+        return new YearModelValue(CalendarTypeValue.createTwoShiftDateType("两班制"),
                 DayOff.createDayOff(),modelName);
     }
 
     public static YearModelValue createThreeShift(String modelName){
-        return new YearModelValue(DayType.createThreeShiftDateType("三班制"),
+        return new YearModelValue(CalendarTypeValue.createThreeShiftDateType("三班制"),
                 DayOff.createDayOff(),modelName);
     }
 
     public static YearModelValue createTwoShift(String modelName, boolean hasWeekend){
-        return new YearModelValue(DayType.createTwoShiftDateType("两班制"),
+        return new YearModelValue(CalendarTypeValue.createTwoShiftDateType("两班制"),
                 DayOff.createDayOff(),modelName,hasWeekend);
     }
 
     public static YearModelValue createThreeShift(String modelName, boolean hasWeekend){
-        return new YearModelValue(DayType.createThreeShiftDateType("三班制"),
+        return new YearModelValue(CalendarTypeValue.createThreeShiftDateType("三班制"),
                 DayOff.createDayOff(),modelName,hasWeekend);
     }
 
-    public DayType getDayType() {
+    public CalendarTypeValue getDayType() {
         return dayType;
     }
 

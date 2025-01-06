@@ -1,6 +1,7 @@
 package org.ddd.fundamental.workprocess.application.command;
 
 import org.ddd.fundamental.shared.api.optemplate.WorkProcessTemplateDTO;
+import org.ddd.fundamental.utils.CollectionUtils;
 import org.ddd.fundamental.workprocess.WorkProcessAppTest;
 import org.ddd.fundamental.workprocess.application.query.WorkProcessTemplateQueryService;
 import org.ddd.fundamental.workprocess.domain.model.WorkProcessTemplate;
