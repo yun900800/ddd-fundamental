@@ -90,4 +90,15 @@ public class CalendarTypeValue implements ValueObject, CalculateTime {
         }
         return sum;
     }
+
+    public double hours(){
+        if (shiftList == null || shiftList.size() ==0){
+            return 0;
+        }
+        double sum = 0 ;
+        for (Shift time: shiftList) {
+            sum+= time.hours();
+        }
+        return sum;
+    }
 }

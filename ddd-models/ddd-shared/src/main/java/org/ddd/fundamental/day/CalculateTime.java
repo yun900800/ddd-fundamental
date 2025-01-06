@@ -4,4 +4,6 @@ public interface CalculateTime {
 
     long minutes();
 
+
+
 }

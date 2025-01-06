@@ -3,7 +3,6 @@ package org.ddd.fundamental.equipment.domain.model;
 import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.changeable.ChangeableInfo;
 import org.ddd.fundamental.core.AbstractAggregateRoot;
-import org.ddd.fundamental.core.DomainObjectId;
 import org.ddd.fundamental.day.YearModelValue;
 import org.ddd.fundamental.day.range.DateRange;
 import org.ddd.fundamental.equipment.enums.EquipmentType;
@@ -178,7 +177,7 @@ public class Equipment extends AbstractAggregateRoot<EquipmentId> {
      * @return
      */
     public long minutesOfOutWork(){
-        return 24*60 - model.getDayType().minutes();
+        return 24*60 - model.getCalendarType().minutes();
     }
 
     /**
@@ -186,7 +185,7 @@ public class Equipment extends AbstractAggregateRoot<EquipmentId> {
      * @return
      */
     public long shiftMinutes(){
-        return model.getDayType().minutes();
+        return model.getCalendarType().minutes();
     }
 
     /**

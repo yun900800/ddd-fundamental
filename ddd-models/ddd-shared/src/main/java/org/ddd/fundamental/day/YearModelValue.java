@@ -16,7 +16,7 @@ public class YearModelValue implements ValueObject, CalculateTime,Cloneable {
     private boolean hasWeekend;
 
     @Embedded
-    private CalendarTypeValue dayType;
+    private CalendarTypeValue calendarType;
 
     @Embedded
     private DayOff dayOff;
@@ -32,7 +32,7 @@ public class YearModelValue implements ValueObject, CalculateTime,Cloneable {
     private YearModelValue(CalendarTypeValue dayType, DayOff off,
                            String modelName, boolean hasWeekend){
         this.dayOff = off;
-        this.dayType = dayType;
+        this.calendarType = dayType;
         this.modelName = modelName;
         this.hasWeekend = hasWeekend;
     }
@@ -65,8 +65,8 @@ public class YearModelValue implements ValueObject, CalculateTime,Cloneable {
                 DayOff.createDayOff(),modelName,hasWeekend);
     }
 
-    public CalendarTypeValue getDayType() {
-        return dayType;
+    public CalendarTypeValue getCalendarType() {
+        return calendarType;
     }
 
     public DayOff getDayOff() {
@@ -78,12 +78,12 @@ public class YearModelValue implements ValueObject, CalculateTime,Cloneable {
         if (this == o) return true;
         if (!(o instanceof YearModelValue)) return false;
         YearModelValue yearModel = (YearModelValue) o;
-        return Objects.equals(dayType, yearModel.dayType) && Objects.equals(dayOff, yearModel.dayOff);
+        return Objects.equals(calendarType, yearModel.calendarType) && Objects.equals(dayOff, yearModel.dayOff);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(dayType, dayOff);
+        return Objects.hash(calendarType, dayOff);
     }
 
     @Override
@@ -91,20 +91,28 @@ public class YearModelValue implements ValueObject, CalculateTime,Cloneable {
         return "YearModel{" +
                 "modelName='" + modelName + '\'' +
                 ", hasWeekend=" + hasWeekend  +
-                ", dayType=" + dayType +
+                ", dayType=" + calendarType +
                 ", dayOff=" + dayOff +
                 '}';
     }
 
-    @Override
-    public long minutes() {
+    private long days(){
         long total = 365;
         long vocation = dayOff.getDays();
         long weekend = 0;
         if (hasWeekend) {
             weekend = 52 * 2;
         }
-        return (total - vocation - weekend ) * dayType.minutes() ;
+        return total - vocation - weekend;
+    }
+
+    @Override
+    public long minutes() {
+        return days() * calendarType.minutes();
+    }
+
+    public double hours(){
+        return days() * calendarType.hours();
     }
 
 

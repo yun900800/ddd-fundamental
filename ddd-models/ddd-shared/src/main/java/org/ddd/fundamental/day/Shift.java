@@ -145,4 +145,9 @@ public class Shift implements ValueObject , CalculateTime{
         return duration.toMinutes();
     }
 
+    public double hours(){
+        Duration duration = Duration.between(start,end);
+        return duration.toHours();
+    }
+
 }
