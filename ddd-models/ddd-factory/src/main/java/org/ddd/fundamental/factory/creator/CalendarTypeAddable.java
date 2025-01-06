@@ -22,20 +22,10 @@ public class CalendarTypeAddable implements DataAddable {
 
     private static CalendarType create(){
         CalendarType calendarType = CalendarType.create(
-                CalendarTypeValue.create(
-                        "测试日类型",
-                        Shift.createFromEnd(
-                                LocalTime.parse("10:00:00"),
-                                4,"早班"
-                        ),
-                        Shift.createFromStart(
-                                LocalTime.parse("11:00:00"),
-                                4,"中班"
-                        ),
-                        Shift.createFromStart(
-                                LocalTime.parse("16:00:00"),
-                                4,"晚班"
-                        )
+                CalendarTypeValue.createRandomShift(
+                        "随机日历类型",
+                        LocalTime.of(6,0),LocalTime.of(22,0),
+                        240,220
                 )
 
         );
