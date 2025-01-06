@@ -3,9 +3,8 @@ package org.ddd.fundamental.day;
 import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.core.ValueObject;
 
-import javax.persistence.Embeddable;
-import javax.persistence.Embedded;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
+import javax.validation.OverridesAttribute;
 import java.util.Objects;
 
 @MappedSuperclass
@@ -21,6 +20,9 @@ public class YearModelValue implements ValueObject, CalculateTime, Cloneable {
     private CalendarTypeValue calendarType;
 
     @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "year",column = @Column(name = "year_to_day", nullable = true))
+    })
     private DayOff dayOff;
 
     private int year;

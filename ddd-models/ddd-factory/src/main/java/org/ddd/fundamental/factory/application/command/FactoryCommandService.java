@@ -7,14 +7,8 @@ import org.ddd.fundamental.factory.MachineShopId;
 import org.ddd.fundamental.factory.ProductionLineId;
 import org.ddd.fundamental.factory.WorkStationId;
 import org.ddd.fundamental.factory.application.query.FactoryQueryService;
-import org.ddd.fundamental.factory.domain.model.CalendarType;
-import org.ddd.fundamental.factory.domain.model.MachineShop;
-import org.ddd.fundamental.factory.domain.model.ProductionLine;
-import org.ddd.fundamental.factory.domain.model.WorkStation;
-import org.ddd.fundamental.factory.domain.repository.CalendarTypeRepository;
-import org.ddd.fundamental.factory.domain.repository.MachineShopRepository;
-import org.ddd.fundamental.factory.domain.repository.ProductionLineRepository;
-import org.ddd.fundamental.factory.domain.repository.WorkStationRepository;
+import org.ddd.fundamental.factory.domain.model.*;
+import org.ddd.fundamental.factory.domain.repository.*;
 import org.ddd.fundamental.factory.value.ProductionLineValue;
 import org.ddd.fundamental.shared.api.factory.MachineShopDTO;
 import org.ddd.fundamental.shared.api.factory.WorkStationDTO;
@@ -38,6 +32,8 @@ public class FactoryCommandService {
 
     private final CalendarTypeRepository calendarTypeRepository;
 
+    private final YearModelRepository yearModelRepository;
+
     private final FactoryQueryService queryService;
 
 
@@ -47,11 +43,13 @@ public class FactoryCommandService {
             ProductionLineRepository productionLineRepository,
             WorkStationRepository workStationRepository,
             CalendarTypeRepository calendarTypeRepository,
+            YearModelRepository yearModelRepository,
             FactoryQueryService queryService){
         this.machineShopRepository = machineShopRepository;
         this.productionLineRepository = productionLineRepository;
         this.workStationRepository = workStationRepository;
         this.calendarTypeRepository = calendarTypeRepository;
+        this.yearModelRepository = yearModelRepository;
         this.queryService = queryService;
     }
 
@@ -187,6 +185,14 @@ public class FactoryCommandService {
 
     public void addCalendarType(CalendarType calendarType){
         this.calendarTypeRepository.persist(calendarType);
+    }
+
+    public void deleteAllYearModel(){
+        this.yearModelRepository.deleteAllYearModel();
+    }
+
+    public void addYearModel(YearModel yearModel){
+        this.yearModelRepository.persist(yearModel);
     }
 
 }
