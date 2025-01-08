@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.core.ValueObject;
 
 import javax.persistence.*;
-import javax.validation.OverridesAttribute;
 import java.time.LocalTime;
 import java.util.Objects;
 
