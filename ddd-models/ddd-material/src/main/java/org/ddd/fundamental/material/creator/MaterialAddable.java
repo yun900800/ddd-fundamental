@@ -2,8 +2,10 @@ package org.ddd.fundamental.material.creator;
 
 import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.changeable.ChangeableInfo;
+import org.ddd.fundamental.changeable.NameDescInfo;
 import org.ddd.fundamental.creator.DataAddable;
 import org.ddd.fundamental.event.material.ProductEventCreated;
+import org.ddd.fundamental.material.MaterialCharacter;
 import org.ddd.fundamental.material.MaterialMaster;
 import org.ddd.fundamental.material.application.MaterialConverter;
 import org.ddd.fundamental.material.domain.model.Material;
@@ -76,8 +78,10 @@ public class MaterialAddable implements DataAddable {
         String materialName  = name+"-"+MaterialHelper.generateSerialNo(name,10);
         String materialDesc = MaterialHelper.generateSerialNo("这是一种高级材料",10);
 
-        MaterialMaster materialMaster = MaterialMaster.create(code,materialName,
-                spec,unit);
+        MaterialMaster materialMaster = MaterialMaster.create(NameDescInfo.create(materialName,materialDesc), MaterialCharacter.create(
+                code,
+                spec,unit
+        ));
 
         ControlProps materialControlProps = ControlProps.create(CollectionUtils.random(materialLevels()),
                 type);

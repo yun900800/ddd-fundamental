@@ -1,6 +1,8 @@
 package org.ddd.fundamental.material.domain.model;
 
 import org.ddd.fundamental.changeable.ChangeableInfo;
+import org.ddd.fundamental.changeable.NameDescInfo;
+import org.ddd.fundamental.material.MaterialCharacter;
 import org.ddd.fundamental.material.domain.repository.MaterialRepository;
 import org.ddd.fundamental.material.value.MaterialId;
 import org.ddd.fundamental.material.MaterialMaster;
@@ -19,9 +21,10 @@ public class MaterialRepositoryTest extends MaterialAppTest {
 
     @Test
     public void testSaveMaterial() {
-        //ChangeableInfo info = ChangeableInfo.create("螺纹钢","这是一种通用的钢材");
-        MaterialMaster materialMaster = MaterialMaster.create("XG-code","锡膏",
-                "XG-spec-001","瓶");
+        MaterialMaster materialMaster = MaterialMaster.create(NameDescInfo.create("螺纹钢","这是一种通用的钢材"), MaterialCharacter.create(
+                "XG-code",
+                "XG-spec-001","瓶"
+        ));
         Material material = Material.create(materialMaster);
         repository.save(material);
         Assert.assertEquals(material.name(),"螺纹钢");
@@ -29,9 +32,10 @@ public class MaterialRepositoryTest extends MaterialAppTest {
 
     @Test
     public void testChangeNameOfMaterial(){
-        //ChangeableInfo info = ChangeableInfo.create("螺纹钢","这是一种通用的钢材");
-        MaterialMaster materialMaster = MaterialMaster.create("XG-code","锡膏",
-                "XG-spec-001","瓶");
+        MaterialMaster materialMaster = MaterialMaster.create(NameDescInfo.create("螺纹钢","这是一种通用的钢材"), MaterialCharacter.create(
+                "XG-code",
+                "XG-spec-001","瓶"
+        ));
         Material material = Material.create(materialMaster);
         repository.save(material);
         material.changeName("特种螺纹钢");
@@ -41,9 +45,10 @@ public class MaterialRepositoryTest extends MaterialAppTest {
 
     @Test
     public void testChangeMaterialProps() {
-        ChangeableInfo info = ChangeableInfo.create("螺纹钢混合1","这是一种高级的钢材1");
-        MaterialMaster materialMaster = MaterialMaster.create("XG-code","锡膏",
-                "XG-spec-002","瓶");
+        MaterialMaster materialMaster = MaterialMaster.create(NameDescInfo.create("螺纹钢混合1","这是一种高级的钢材1"), MaterialCharacter.create(
+                "XG-code",
+                "XG-spec-002","瓶"
+        ));
         PropsContainer props = new PropsContainer.Builder(Set.of("usage","storageCondition","purchaseCycle"))
                 .addProperty("usage","生产电路板1")
                 .addProperty("storageCondition","干燥")

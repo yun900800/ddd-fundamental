@@ -1,6 +1,8 @@
 package org.ddd.fundamental.material.domain.model;
 
 import org.ddd.fundamental.changeable.ChangeableInfo;
+import org.ddd.fundamental.changeable.NameDescInfo;
+import org.ddd.fundamental.material.MaterialCharacter;
 import org.ddd.fundamental.material.MaterialMaster;
 import org.ddd.fundamental.material.value.PropsContainer;
 import org.junit.Assert;
@@ -18,9 +20,10 @@ public class MaterialTest {
                 .addProperty("spec","x37b")
                 .addProperty("optional","custom")
                 .build();
-        ChangeableInfo info = ChangeableInfo.create("螺纹钢混合1","这是一种高级的钢材1");
-        MaterialMaster materialMaster = MaterialMaster.create("XG-code","锡膏",
-                "XG-spec-002","瓶");
+        MaterialMaster materialMaster = MaterialMaster.create(NameDescInfo.create("螺纹钢混合1","这是一种高级的钢材1"), MaterialCharacter.create(
+                "XG-code",
+                "XG-spec-002","瓶"
+        ));
         Material material = Material.create(materialMaster,requiredPropsContainer,null,null);
         Assert.assertEquals(material.getMaterialRequiredProps().get("materialType"),"rawMaterial");
         Assert.assertEquals(material.getMaterialOptionalProps().get("spec"),"x37b");

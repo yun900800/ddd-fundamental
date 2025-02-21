@@ -2,7 +2,9 @@ package org.ddd.fundamental.material.domain.repository;
 
 import com.alibaba.fastjson.JSON;
 import org.ddd.fundamental.changeable.ChangeableInfo;
+import org.ddd.fundamental.changeable.NameDescInfo;
 import org.ddd.fundamental.day.Auditable;
+import org.ddd.fundamental.material.MaterialCharacter;
 import org.ddd.fundamental.material.creator.MaterialAddable;
 import org.ddd.fundamental.material.value.MaterialId;
 import org.ddd.fundamental.material.MaterialMaster;
@@ -33,9 +35,10 @@ public class MaterialRepositoryTest extends MaterialAppTest {
     private EntityManager entityManager;
 
     private Material createMaterial(){
-        //ChangeableInfo info = ChangeableInfo.create("螺纹钢","这是一种通用的钢材");
-        MaterialMaster materialMaster = MaterialMaster.create("XG-code","锡膏",
-                "XG-spec-001","瓶");
+        MaterialMaster materialMaster = MaterialMaster.create(NameDescInfo.create("螺纹钢","这是一种通用的钢材"), MaterialCharacter.create(
+                "XG-code",
+                "XG-spec-001","瓶"
+        ));
         Material material = Material.create(materialMaster);
         Map<String,String> json = new HashMap<>();
         json.put("name","rabbitMQ");
