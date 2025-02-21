@@ -50,12 +50,6 @@ public class MaterialRest {
         commandService.addMaterial(request);
     }
 
-    @PostMapping("/material/change_materialInfo/{id}")
-    public void changeMaterialInfo(@RequestBody ChangeableInfo info,
-                                   @PathVariable String id){
-        //commandService.changeMaterialInfo(info,new MaterialId(id));
-    }
-
     @PostMapping("/material/change_materialMaster/{id}")
     public void changeMaterialMaster(@RequestBody MaterialMaster materialMaster,
                                      @PathVariable String id){

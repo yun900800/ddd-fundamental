@@ -75,23 +75,6 @@ public class MaterialTemplateClient {
     }
 
     @Scheduled(cron = "*/600 * * * * ?")
-    public void changeMaterialInfo() {
-        if (org.springframework.util.CollectionUtils.isEmpty(materialCache)){
-            this.materialCache = materialQueryService.materials();
-        }
-        String id = CollectionUtils.random(materialCache).id().toUUID();
-        ChangeableInfo info = ChangeableInfo.create(
-                "基础物料测试", "测试物料的自动修改",
-                true
-        );
-        String url = String.format(CHANGE_MATERIAL,id);
-        log.info("url is {}",url);
-        RestTemplate restTemplate = new RestTemplate();
-        restTemplate.postForObject(url,info,Void.class);
-        log.info("change materialInfo finished");
-    }
-
-    @Scheduled(cron = "*/600 * * * * ?")
     public void changeMaterialMaster() {
         if (org.springframework.util.CollectionUtils.isEmpty(materialCache)){
             this.materialCache = materialQueryService.materials();
