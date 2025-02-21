@@ -20,7 +20,7 @@ public class MaterialRepositoryTest extends MaterialAppTest {
     @Test
     public void testSaveMaterial() {
         ChangeableInfo info = ChangeableInfo.create("螺纹钢","这是一种通用的钢材");
-        MaterialMaster materialMaster = new MaterialMaster("XG-code","锡膏",
+        MaterialMaster materialMaster = MaterialMaster.create("XG-code","锡膏",
                 "XG-spec-001","瓶");
         Material material = new Material(info,materialMaster);
         repository.save(material);
@@ -30,7 +30,7 @@ public class MaterialRepositoryTest extends MaterialAppTest {
     @Test
     public void testChangeNameOfMaterial(){
         ChangeableInfo info = ChangeableInfo.create("螺纹钢","这是一种通用的钢材");
-        MaterialMaster materialMaster = new MaterialMaster("XG-code","锡膏",
+        MaterialMaster materialMaster = MaterialMaster.create("XG-code","锡膏",
                 "XG-spec-001","瓶");
         Material material = new Material(info,materialMaster);
         repository.save(material);
@@ -42,7 +42,7 @@ public class MaterialRepositoryTest extends MaterialAppTest {
     @Test
     public void testChangeMaterialProps() {
         ChangeableInfo info = ChangeableInfo.create("螺纹钢混合1","这是一种高级的钢材1");
-        MaterialMaster materialMaster = new MaterialMaster("XG-code","锡膏",
+        MaterialMaster materialMaster = MaterialMaster.create("XG-code","锡膏",
                 "XG-spec-002","瓶");
         PropsContainer props = new PropsContainer.Builder(Set.of("usage","storageCondition","purchaseCycle"))
                 .addProperty("usage","生产电路板1")

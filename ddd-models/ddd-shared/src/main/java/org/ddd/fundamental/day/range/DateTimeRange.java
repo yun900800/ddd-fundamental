@@ -29,6 +29,10 @@ public class DateTimeRange implements ValueObject, Cloneable {
         return Duration.between(start,end).toDays();
     }
 
+    public long minutes(){
+        return Duration.between(start,end).toMinutes();
+    }
+
     public static DateTimeRange create(Instant start, Instant end){
         return new DateTimeRange(start,end);
     }
@@ -45,10 +49,7 @@ public class DateTimeRange implements ValueObject, Cloneable {
 
     @Override
     public String toString() {
-        return "DateTimeRange{" +
-                "start=" + start +
-                ", end=" + end +
-                '}';
+        return objToString();
     }
 
     @Override

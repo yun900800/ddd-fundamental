@@ -34,7 +34,7 @@ public class MaterialRepositoryTest extends MaterialAppTest {
 
     private Material createMaterial(){
         ChangeableInfo info = ChangeableInfo.create("螺纹钢","这是一种通用的钢材");
-        MaterialMaster materialMaster = new MaterialMaster("XG-code","锡膏",
+        MaterialMaster materialMaster = MaterialMaster.create("XG-code","锡膏",
                 "XG-spec-001","瓶");
         Material material = new Material(info,materialMaster);
         Map<String,String> json = new HashMap<>();

@@ -10,7 +10,7 @@ import java.util.List;
 public class ComputableTest {
 
     public static MaterialMaster createMaterialMaster(){
-        MaterialMaster materialMaster =  new MaterialMaster("XG-code","锡膏",
+        MaterialMaster materialMaster =  MaterialMaster.create("XG-code","锡膏",
                 "XG-spec-001","颗");
         return materialMaster;
     }

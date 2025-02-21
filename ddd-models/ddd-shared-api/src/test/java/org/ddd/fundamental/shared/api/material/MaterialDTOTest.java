@@ -13,7 +13,7 @@ public class MaterialDTOTest {
     @Test
     public void testMaterialDTOToJson() throws JsonProcessingException {
         MaterialDTO materialDTO = MaterialDTO.create(
-                new MaterialMaster("testCode","name","spec","单位"),
+                MaterialMaster.create("testCode","name","spec","单位"),
                 MaterialId.randomId(MaterialId.class),
                 MaterialType.PRODUCTION,
                 MaterialInputOutputType.MATERIAL_BOTH

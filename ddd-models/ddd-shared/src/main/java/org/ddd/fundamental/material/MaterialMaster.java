@@ -1,5 +1,6 @@
 package org.ddd.fundamental.material;
 
+import org.ddd.fundamental.changeable.NameDescInfo;
 import org.ddd.fundamental.core.ValueObject;
 
 import javax.persistence.Embeddable;
@@ -12,35 +13,44 @@ import java.util.Objects;
 public class MaterialMaster implements ValueObject, Cloneable{
 
     /**
-     * 物料编码
+     * name和desc描述信息
      */
-    private String code;
+    private NameDescInfo nameDescInfo;
 
     /**
-     * 物料名称
+     * 物料特征信息定义,包括编码,规则型号，单位
      */
-    private String name;
-
-    /**
-     * 规格型号
-     */
-    private String spec;
-
-    /**
-     * 单位
-     */
-    private String unit;
+    private MaterialCharacter materialCharacter;
 
     @SuppressWarnings("unused")
     protected MaterialMaster() {
     }
 
-    public MaterialMaster(@NotNull String code, @NotNull String name
+    private MaterialMaster(NameDescInfo nameDescInfo,MaterialCharacter materialCharacter){
+        this.nameDescInfo = nameDescInfo;
+        this.materialCharacter = materialCharacter;
+    }
+
+    private MaterialMaster(@NotNull String code, @NotNull String name
             ,@NotNull String spec,@NotNull String unit){
-        this.code = Objects.requireNonNull(code,"code must not be null");
-        this.name = Objects.requireNonNull(name, "name must not be null");
-        this.spec = Objects.requireNonNull(spec, "spec must not be null");
-        this.unit = Objects.requireNonNull(unit, "unit must not be null");
+        Objects.requireNonNull(code,"code must not be null");
+        Objects.requireNonNull(name, "name must not be null");
+        Objects.requireNonNull(spec, "spec must not be null");
+        Objects.requireNonNull(unit, "unit must not be null");
+        this.nameDescInfo = NameDescInfo.create(name,name);
+        this.materialCharacter = MaterialCharacter.create(code,spec,unit);
+    }
+
+    public NameDescInfo getNameDescInfo() {
+        return nameDescInfo;
+    }
+
+    public MaterialCharacter getMaterialCharacter() {
+        return materialCharacter;
+    }
+
+    public static MaterialMaster create(NameDescInfo nameDescInfo, MaterialCharacter materialCharacter){
+        return new MaterialMaster(nameDescInfo,materialCharacter);
     }
 
     public static MaterialMaster create(String code,String name,String spec,String unit){
@@ -48,19 +58,19 @@ public class MaterialMaster implements ValueObject, Cloneable{
     }
 
     public @NotNull String getCode() {
-        return code;
+        return materialCharacter.getCode();
     }
 
     public @NotNull String getName() {
-        return name;
+        return nameDescInfo.getName();
     }
 
     public @NotNull String getSpec() {
-        return spec;
+        return materialCharacter.getSpec();
     }
 
     public @NotNull String getUnit() {
-        return unit;
+        return materialCharacter.getUnit();
     }
 
     @Override
@@ -68,26 +78,18 @@ public class MaterialMaster implements ValueObject, Cloneable{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MaterialMaster that = (MaterialMaster) o;
-        return code.equals(that.code)
-                && name.equals(that.name)
-                && spec.equals(that.spec)
-                && unit.equals(that.unit);
+        return nameDescInfo.equals(that.nameDescInfo)
+                && materialCharacter.equals(that.materialCharacter);
     }
 
     @Override
     public int hashCode() { // <8>
-        return Objects.hash(code, name, spec,unit);
+        return Objects.hash(nameDescInfo, materialCharacter);
     }
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(code);
-        sb.append(", ");
-        sb.append(name).append(" ").append(spec);
-        sb.append(", ");
-        sb.append(unit);
-        return sb.toString();
+        return objToString();
     }
 
     @Override
