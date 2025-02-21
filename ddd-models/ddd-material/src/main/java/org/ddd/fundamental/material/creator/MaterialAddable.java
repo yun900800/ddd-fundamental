@@ -75,13 +75,13 @@ public class MaterialAddable implements DataAddable {
                 .build();
         String materialName  = name+"-"+MaterialHelper.generateSerialNo(name,10);
         String materialDesc = MaterialHelper.generateSerialNo("这是一种高级材料",10);
-        ChangeableInfo info = ChangeableInfo.create(materialName,materialDesc);
+
         MaterialMaster materialMaster = MaterialMaster.create(code,materialName,
                 spec,unit);
 
         ControlProps materialControlProps = ControlProps.create(CollectionUtils.random(materialLevels()),
                 type);
-        Material material = new Material(info,materialMaster,requiredPropsContainer,optionalCharacterContainer,materialControlProps);
+        Material material = Material.create(materialMaster,requiredPropsContainer,optionalCharacterContainer,materialControlProps);
         return material;
     }
 

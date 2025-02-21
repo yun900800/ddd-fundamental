@@ -118,11 +118,7 @@ public class PropsContainer implements ValueObject {
 
     @Override
     public String toString() {
-        return "MaterialPropsContainer{" +
-                "requiredMap=" + requiredMap +
-                ", optionalMap=" + optionalMap +
-                ", requiredSet=" + requiredSet +
-                '}';
+        return objToString();
     }
 
     @Override

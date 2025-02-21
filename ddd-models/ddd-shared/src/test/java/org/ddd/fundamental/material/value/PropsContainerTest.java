@@ -44,6 +44,7 @@ public class PropsContainerTest {
 
         Map<String,String> map = new MaterialProps1("测试","hello","2个月","rawMaterial").toMap();
         PropsContainer container = new PropsContainer.Builder(Set.of("materialType","purpose")).addMap(map).build();
+        Assert.assertEquals(container.toString(),"{\"optionalMap\":{\"purchaseCycle\":\"2个月\",\"storageCondition\":\"hello\"},\"requiredMap\":{\"purpose\":\"测试\",\"materialType\":\"rawMaterial\"},\"requiredSet\":[\"purpose\",\"materialType\"]}");
     }
 }
 

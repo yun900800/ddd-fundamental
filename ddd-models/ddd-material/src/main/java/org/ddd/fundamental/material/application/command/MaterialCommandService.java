@@ -75,18 +75,18 @@ public class MaterialCommandService {
         );
     }
 
-    /**
-     * 修改物料基本信息
-     * @param info
-     * @param id
-     */
-    public void changeMaterialInfo(ChangeableInfo info, MaterialId id){
-        Material material = materialRepository.findById(id).orElse(null);
-        if (null == material) {
-            return;
-        }
-        material.changeMaterialInfo(info);
-    }
+//    /**
+//     * 修改物料基本信息
+//     * @param info
+//     * @param id
+//     */
+//    public void changeMaterialInfo(ChangeableInfo info, MaterialId id){
+//        Material material = materialRepository.findById(id).orElse(null);
+//        if (null == material) {
+//            return;
+//        }
+//        material.changeMaterialInfo(info);
+//    }
 
     /**
      * 修改物料主数据

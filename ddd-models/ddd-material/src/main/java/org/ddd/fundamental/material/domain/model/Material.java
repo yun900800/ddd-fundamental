@@ -2,11 +2,11 @@ package org.ddd.fundamental.material.domain.model;
 
 import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.changeable.ChangeableInfo;
+import org.ddd.fundamental.changeable.NameDescInfo;
 import org.ddd.fundamental.core.AbstractAggregateRoot;
 import org.ddd.fundamental.core.DomainObjectId;
 import org.ddd.fundamental.event.core.DomainEventType;
 import org.ddd.fundamental.event.material.ProductEventCreated;
-import org.ddd.fundamental.event.workprocess.WorkProcessRecordCreated;
 import org.ddd.fundamental.material.domain.value.ControlProps;
 import org.ddd.fundamental.material.value.MaterialId;
 import org.ddd.fundamental.material.MaterialMaster;
@@ -25,24 +25,14 @@ import java.util.Map;
 @Table(name = "material")
 @Slf4j
 public class Material extends AbstractAggregateRoot<MaterialId> {
-    @Embedded
-    @AttributeOverrides({
-            @AttributeOverride(name = "name", column = @Column(name = "material_name", nullable = false)),
-            @AttributeOverride(name = "desc", column = @Column(name = "material_desc", nullable = false))
-    })
-    private ChangeableInfo materialInfo;
-
-
 
     @AttributeOverrides({
-            @AttributeOverride(name = "name", column = @Column(name = "master_name", nullable = false)),
-            @AttributeOverride(name = "code", column = @Column(name = "master_code", nullable = false)),
+            @AttributeOverride(name = "nameDescInfo.name", column = @Column(name = "master_name", nullable = false)),
+            @AttributeOverride(name = "nameDescInfo.desc", column = @Column(name = "master_desc", nullable = false)),
+            @AttributeOverride(name = "materialCharacter.code", column = @Column(name = "master_code", nullable = false)),
     })
     private MaterialMaster materialMaster;
 
-    @Type(type = "json")
-    @Column(columnDefinition = "json", name = "material_json")
-    private String json;
 
     /**
      * 物料控制属性
@@ -88,12 +78,11 @@ public class Material extends AbstractAggregateRoot<MaterialId> {
     private Material(){
     }
 
-    public Material(ChangeableInfo changeableInfo, MaterialMaster materialMaster,
+    private Material(MaterialMaster materialMaster,
                     PropsContainer propsContainer,
                     PropsContainer characterContainer,
                     ControlProps materialControlProps){
         super(DomainObjectId.randomId(MaterialId.class));
-        this.materialInfo = changeableInfo;
         this.materialMaster = materialMaster;
         if (null != propsContainer){
             this.materialRequiredProps = propsContainer.getRequiredMap();
@@ -111,12 +100,15 @@ public class Material extends AbstractAggregateRoot<MaterialId> {
 
     }
 
-    public Material(ChangeableInfo changeableInfo, MaterialMaster materialMaster){
-        this(changeableInfo,materialMaster, null, null,null);
+    public static Material create(MaterialMaster materialMaster){
+        return create(materialMaster, null, null,null);
     }
 
-    public ChangeableInfo getMaterialInfo() {
-        return materialInfo.clone();
+    public static Material create(MaterialMaster materialMaster,
+                                  PropsContainer propsContainer,
+                                  PropsContainer characterContainer,
+                                  ControlProps materialControlProps){
+        return new Material(materialMaster, propsContainer, characterContainer,materialControlProps);
     }
 
     public Material changeMaterialControl(ControlProps controlProps) {
@@ -136,26 +128,10 @@ public class Material extends AbstractAggregateRoot<MaterialId> {
         return this;
     }
 
-    public Material changeMaterialInfo(ChangeableInfo info){
-        this.materialInfo = info;
-        changeUpdated();
-        return this;
-    }
-
     public Material changeName(String name){
-        this.materialInfo = materialInfo.changeName(name);
+        NameDescInfo info = NameDescInfo.create(name,materialMaster.getNameDescInfo().getDesc());
+        this.materialMaster = MaterialMaster.create(info,materialMaster.getMaterialCharacter());
         changeUpdated();
-        return this;
-    }
-
-    public Material changeDesc(String desc){
-        this.materialInfo = materialInfo.changeDesc(desc);
-        changeUpdated();
-        return this;
-    }
-
-    public Material changeJson(String json){
-        this.json = json;
         return this;
     }
 
@@ -226,15 +202,13 @@ public class Material extends AbstractAggregateRoot<MaterialId> {
     }
 
     public String name(){
-        return materialInfo.getName();
+        return materialMaster.getName();
     }
 
     @Override
     public String toString() {
         return "Material{" +
-                "changeableInfo=" + materialInfo +
                 ", materialMaster=" + materialMaster +
-                ", json='" + json + '\'' +
                 ", materialRequiredProps=" + materialRequiredProps +
                 ", materialOptionalProps=" + materialOptionalProps +
                 ", materialRequiredCharacteristics=" + materialRequiredCharacteristics +

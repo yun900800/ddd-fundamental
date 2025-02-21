@@ -19,20 +19,20 @@ public class MaterialRepositoryTest extends MaterialAppTest {
 
     @Test
     public void testSaveMaterial() {
-        ChangeableInfo info = ChangeableInfo.create("螺纹钢","这是一种通用的钢材");
+        //ChangeableInfo info = ChangeableInfo.create("螺纹钢","这是一种通用的钢材");
         MaterialMaster materialMaster = MaterialMaster.create("XG-code","锡膏",
                 "XG-spec-001","瓶");
-        Material material = new Material(info,materialMaster);
+        Material material = Material.create(materialMaster);
         repository.save(material);
         Assert.assertEquals(material.name(),"螺纹钢");
     }
 
     @Test
     public void testChangeNameOfMaterial(){
-        ChangeableInfo info = ChangeableInfo.create("螺纹钢","这是一种通用的钢材");
+        //ChangeableInfo info = ChangeableInfo.create("螺纹钢","这是一种通用的钢材");
         MaterialMaster materialMaster = MaterialMaster.create("XG-code","锡膏",
                 "XG-spec-001","瓶");
-        Material material = new Material(info,materialMaster);
+        Material material = Material.create(materialMaster);
         repository.save(material);
         material.changeName("特种螺纹钢");
         repository.save(material);
@@ -49,7 +49,7 @@ public class MaterialRepositoryTest extends MaterialAppTest {
                 .addProperty("storageCondition","干燥")
                 .addProperty("purchaseCycle","三个月")
                 .build();
-        Material material = new Material(info,materialMaster,props,null,null);
+        Material material = Material.create(materialMaster,props,null,null);
         repository.save(material);
 
         MaterialId id = material.id();

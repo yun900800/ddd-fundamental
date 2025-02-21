@@ -33,13 +33,13 @@ public class MaterialRepositoryTest extends MaterialAppTest {
     private EntityManager entityManager;
 
     private Material createMaterial(){
-        ChangeableInfo info = ChangeableInfo.create("螺纹钢","这是一种通用的钢材");
+        //ChangeableInfo info = ChangeableInfo.create("螺纹钢","这是一种通用的钢材");
         MaterialMaster materialMaster = MaterialMaster.create("XG-code","锡膏",
                 "XG-spec-001","瓶");
-        Material material = new Material(info,materialMaster);
+        Material material = Material.create(materialMaster);
         Map<String,String> json = new HashMap<>();
         json.put("name","rabbitMQ");
-        material.changeJson(JSON.toJSONString(json));
+        //material.changeJson(JSON.toJSONString(json));
         materialRepository.persist(material);
         return material;
     }
@@ -58,7 +58,7 @@ public class MaterialRepositoryTest extends MaterialAppTest {
         Material queryData = materialRepository.getById(id);
         Assert.assertEquals(queryData.name(),"螺纹钢");
 
-        Material queryMaterial = new Material(material.getMaterialInfo(),null);
+        Material queryMaterial = Material.create(null);
 //        queryMaterial.changeId(null);
 //        queryMaterial.resetRequiredProps();
 //        queryMaterial.resetRequiredCharacter();

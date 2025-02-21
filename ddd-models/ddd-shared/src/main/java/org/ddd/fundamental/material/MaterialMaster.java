@@ -1,5 +1,6 @@
 package org.ddd.fundamental.material;
 
+import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.changeable.NameDescInfo;
 import org.ddd.fundamental.core.ValueObject;
 
@@ -10,6 +11,7 @@ import java.util.Objects;
 
 @Embeddable
 @MappedSuperclass
+@Slf4j
 public class MaterialMaster implements ValueObject, Cloneable{
 
     /**

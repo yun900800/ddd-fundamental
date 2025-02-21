@@ -53,7 +53,7 @@ public class MaterialRest {
     @PostMapping("/material/change_materialInfo/{id}")
     public void changeMaterialInfo(@RequestBody ChangeableInfo info,
                                    @PathVariable String id){
-        commandService.changeMaterialInfo(info,new MaterialId(id));
+        //commandService.changeMaterialInfo(info,new MaterialId(id));
     }
 
     @PostMapping("/material/change_materialMaster/{id}")

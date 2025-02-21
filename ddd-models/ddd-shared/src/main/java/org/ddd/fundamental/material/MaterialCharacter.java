@@ -1,5 +1,6 @@
 package org.ddd.fundamental.material;
 
+import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.core.ValueObject;
 
 import javax.persistence.Embeddable;
@@ -12,6 +13,7 @@ import java.util.Objects;
 
 @Embeddable
 @MappedSuperclass
+@Slf4j
 public class MaterialCharacter implements ValueObject, Cloneable {
 
     /**

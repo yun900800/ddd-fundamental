@@ -29,15 +29,15 @@ public class NameDescInfo implements ValueObject,Cloneable {
         return new NameDescInfo(name,desc);
     }
 
-    public NameDescInfo changeName(String name){
-        this.name = name;
-        return this;
-    }
-
-    public NameDescInfo changeDesc(String desc){
-        this.desc = desc;
-        return this;
-    }
+//    public NameDescInfo changeName(String name){
+//        this.name = name;
+//        return this;
+//    }
+//
+//    public NameDescInfo changeDesc(String desc){
+//        this.desc = desc;
+//        return this;
+//    }
 
     public String getName() {
         return name;
