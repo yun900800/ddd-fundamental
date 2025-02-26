@@ -84,7 +84,11 @@ public abstract class BaseHierarchy<ID extends DomainObjectId, T extends ValueOb
             return null;
         }
         for (Object temp: node.getChildren()) {
+            DATA tempResult = result;
             result = traverse(fn,(U)temp,result);
+            if (null == result){
+                result = tempResult;
+            }
         }
         return result;
     }

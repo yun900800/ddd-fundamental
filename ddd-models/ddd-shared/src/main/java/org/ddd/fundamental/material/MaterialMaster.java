@@ -28,7 +28,7 @@ public class MaterialMaster implements ValueObject, Cloneable{
     protected MaterialMaster() {
     }
 
-    private MaterialMaster(NameDescInfo nameDescInfo,MaterialCharacter materialCharacter){
+    protected MaterialMaster(NameDescInfo nameDescInfo,MaterialCharacter materialCharacter){
         this.nameDescInfo = nameDescInfo;
         this.materialCharacter = materialCharacter;
     }
