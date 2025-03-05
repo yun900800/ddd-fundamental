@@ -1,6 +1,6 @@
-package org.ddd.fundamental.factory.rest;
+package org.ddd.fundamental.material.rest;
 
-import org.ddd.fundamental.factory.FactoryAppTest;
+import org.ddd.fundamental.material.MaterialAppTest;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -11,18 +11,19 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
-public class FactoryRestTest extends FactoryAppTest {
+public class MaterialRestTest extends MaterialAppTest {
+
     @Autowired
     private MockMvc mvc;
 
     @Test
-    public void testMachineShops() throws Exception {
-        mvc.perform(get("/factory/machine-shops")
+    public void testMaterials() throws Exception {
+        mvc.perform(get("/material/materials")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content()
                         .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$", hasSize(greaterThanOrEqualTo(2))))
-                .andExpect(jsonPath("$[0].machineShopValue.machineShop.name", is("电路板三车间")));
+                .andExpect(jsonPath("$", hasSize(greaterThanOrEqualTo(11))));
+//                .andExpect(jsonPath("$[0].machineShopValue.machineShop.name", is("电路板三车间")));
     }
 }
