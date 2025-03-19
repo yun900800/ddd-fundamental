@@ -3,9 +3,11 @@ package org.ddd.fundamental.material.application.query;
 import com.blazebit.persistence.PagedList;
 import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.material.MaterialAppTest;
+import org.ddd.fundamental.material.creator.MaterialAddable;
 import org.ddd.fundamental.material.domain.model.Material;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import static org.junit.Assert.assertEquals;
 

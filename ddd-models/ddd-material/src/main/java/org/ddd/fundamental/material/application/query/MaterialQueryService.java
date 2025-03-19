@@ -45,7 +45,7 @@ public class MaterialQueryService implements ICacheLoaderService<MaterialDTO> {
     public List<MaterialDTO> materials() {
         List<Material> materials = null;
         materials = creator.getMaterialList();
-        if (!CollectionUtils.isEmpty(materials)) {
+        if (CollectionUtils.isEmpty(materials)) {
             log.info("fetch data from local cache");
             return MaterialConverter.entityToDTO(materials);
         }
