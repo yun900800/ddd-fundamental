@@ -15,6 +15,8 @@ public class FactoryLocation implements ValueObject {
 
     private String locationDesc;
 
+//    todo 警告，这里的MachineShopId没有jpa的注解，因此在生成源模型的时候不会生成对应的属性
+    // 如果需要这个属性需要MachineShopId添加注解
     private MachineShopId machineShopId;
 
     private ProductionLineId productionLineId;

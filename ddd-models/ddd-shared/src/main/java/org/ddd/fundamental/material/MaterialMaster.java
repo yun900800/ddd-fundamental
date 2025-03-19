@@ -4,8 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.ddd.fundamental.changeable.NameDescInfo;
 import org.ddd.fundamental.core.ValueObject;
 
-import javax.persistence.Embeddable;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
@@ -17,11 +16,20 @@ public class MaterialMaster implements ValueObject, Cloneable{
     /**
      * name和desc描述信息
      */
+    @AttributeOverrides({
+            @AttributeOverride(name = "name", column = @Column(name = "master_name", nullable = false)),
+            @AttributeOverride(name = "desc", column = @Column(name = "master_desc", nullable = false)),
+    })
     private NameDescInfo nameDescInfo;
 
     /**
      * 物料特征信息定义,包括编码,规则型号，单位
      */
+    @AttributeOverrides({
+            @AttributeOverride(name = "spec", column = @Column(name = "master_spec", nullable = false)),
+            @AttributeOverride(name = "code", column = @Column(name = "master_code", nullable = false)),
+            @AttributeOverride(name = "unit", column = @Column(name = "master_unit", nullable = false)),
+    })
     private MaterialCharacter materialCharacter;
 
     @SuppressWarnings("unused")

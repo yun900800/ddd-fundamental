@@ -11,10 +11,6 @@ import javax.persistence.*;
 public class MaterialRecordValue implements Computable, ValueObject {
 
     @Embedded
-    @AttributeOverrides({
-            @AttributeOverride(name = "name", column = @Column(name = "master_name", nullable = false)),
-            @AttributeOverride(name = "code", column = @Column(name = "master_code", nullable = false)),
-    })
     MaterialMaster materialMaster;
 
     private double qty;
